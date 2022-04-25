@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { Path } from '../other/Paths';
 import { tokenExpired } from '../zustand/jwtExpiration';
@@ -13,7 +13,6 @@ interface LoginResponse {
 }
 
 export default function useAuth() {
-  const queryClient = useQueryClient();
   const loginToStore = useStore((state) => state.loginUser);
   const user = useStore((state) => state.user);
   const navigate = useNavigate();
