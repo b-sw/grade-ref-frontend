@@ -1,16 +1,10 @@
 import {
   Box,
-  Button,
   Flex,
-  FormControl,
-  FormLabel,
   Heading,
-  Input,
   Stack,
   useColorModeValue,
-  Text,
 } from '@chakra-ui/react';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
 import GoogleButton from "../components/other/GoogleButton";
 
 export const Login = () => {

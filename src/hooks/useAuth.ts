@@ -15,7 +15,6 @@ interface LoginResponse {
 export default function useAuth() {
   const queryClient = useQueryClient();
   const loginToStore = useStore((state) => state.loginUser);
-  const logoutUserFromStore = useStore((state) => state.logoutUser);
   const user = useStore((state) => state.user);
   const navigate = useNavigate();
 
