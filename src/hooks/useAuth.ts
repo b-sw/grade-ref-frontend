@@ -17,11 +17,10 @@ export default function useAuth() {
   const user = useStore((state) => state.user);
   const navigate = useNavigate();
 
-  const login = async () => {
-    const response = await axios.get('google');
-    console.log(response);
+  const login = async (googleData: any) => {
+    const response = await axios.post('google/auth', { googleToken: googleData.tokenId });
     return response.data;
-  };
+  }
 
   const loginMutation = useMutation(login, {
     onSuccess: (response: LoginResponse) => {
