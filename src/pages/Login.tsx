@@ -6,10 +6,12 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import GoogleLogin from 'react-google-login';
+import { Constants } from "../other/constants";
+import { LoginFailureModal } from "../components/other/LoginFailureModal";
 import useAuth from "../hooks/useAuth";
-import {Constants} from "../other/constants";
 
 export const Login = () => {
+  const { onOpen: showModal, modal: loginFailureModal } = LoginFailureModal();
   const { loginMutation } = useAuth();
 
   const handleFailure = (result: any) => {
@@ -42,6 +44,7 @@ export const Login = () => {
           </Stack>
         </Box>
       </Stack>
+      {/*{loginFailureModal}*/}
     </Flex>
   );
 }

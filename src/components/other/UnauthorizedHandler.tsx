@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Path } from '../../other/Paths';
+import { Paths } from '../../other/Paths';
 import { StatusCodes } from 'http-status-codes';
 
 export const UnauthorizedHandler = () => {
@@ -14,7 +14,7 @@ export const UnauthorizedHandler = () => {
       (error) => {
         const statusCode: StatusCodes = error.response ? error.response.status : null;
         if (statusCode === StatusCodes.UNAUTHORIZED) {
-          navigate(Path.LOGIN, { state: { customMessage: 'You have been logged out.' } });
+          navigate(Paths.LOGIN, { state: { customMessage: 'You have been logged out.' } });
         }
       }
     );

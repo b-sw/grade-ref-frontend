@@ -4,9 +4,10 @@ import { HashRouter as Router, Navigate, Route, Routes } from 'react-router-dom'
 import { ChakraProvider, theme } from "@chakra-ui/react"
 import {UnauthorizedHandler} from "./components/other/UnauthorizedHandler";
 import {AnimatedTransition} from "./components/other/AnimatedTransition";
-import {Path} from "./other/Paths";
+import {Paths} from "./other/Paths";
 import {Login} from "./pages/Login";
-import {Explorer} from "./pages/Explorer";
+import {RequireAuthRoute} from "./components/other/RequireAuthRoute";
+import {Dashboard} from "./pages/Dashboard";
 
 const queryClient = new QueryClient();
 
@@ -17,9 +18,12 @@ export const App = () => (
         <UnauthorizedHandler />
         <Routes>
           <Route element={<AnimatedTransition />}>
-            <Route path={'*'} element={<Navigate to={Path.LOGIN} />} />
-            <Route path={Path.LOGIN} element={<Login />} />
-            <Route path={Path.EXPLORER} element={<Explorer />} />
+            <Route element={<RequireAuthRoute />}>
+              <Route path={'*'} element={<Navigate to={Paths.DASHBOARD} />} />
+              <Route path={Paths.DASHBOARD} element={<Dashboard />} />
+            </Route>
+
+            <Route path={Paths.LOGIN} element={<Login />} />
           </Route>
         </Routes>
       </Router>

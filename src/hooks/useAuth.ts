@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import { Path } from '../other/Paths';
+import { Paths } from '../other/Paths';
 import { tokenExpired } from '../zustand/jwtExpiration';
 import useStore from '../zustand/store';
 import {uuid} from "../other/uuid";
@@ -13,7 +13,9 @@ interface LoginResponse {
 }
 
 export default function useAuth() {
+  const queryClient = useQueryClient();
   const loginToStore = useStore((state) => state.loginUser);
+  const logoutFromStore = useStore((state) => state.logoutUser);
   const user = useStore((state) => state.user);
   const navigate = useNavigate();
 
@@ -22,12 +24,21 @@ export default function useAuth() {
     return response.data;
   }
 
+  const logout = () => {
+    logoutFromStore();
+    queryClient.clear();
+    delete axios.defaults.headers.common['Authorization'];
+  };
+
   const loginMutation = useMutation(login, {
     onSuccess: (response: LoginResponse) => {
       loginToStore(response.email, response.accessToken);
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.accessToken;
-      navigate(Path.EXPLORER);
+      navigate(Paths.DASHBOARD);
     },
+    onError: (_error) => {
+      console.log('bbbb');
+    }
   });
 
   const isLoggedIn: boolean = !(
@@ -37,5 +48,5 @@ export default function useAuth() {
     tokenExpired(user.accessToken)
   );
 
-  return { loginMutation, isLoggedIn };
+  return { loginMutation, isLoggedIn, logout };
 }
