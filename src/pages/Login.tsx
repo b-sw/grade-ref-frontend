@@ -7,13 +7,12 @@ import {
 } from '@chakra-ui/react';
 import GoogleLogin from 'react-google-login';
 import { Constants } from "../other/constants";
-import { LoginFailureModal } from "../components/other/LoginFailureModal";
+// import { LoginFailureModal } from "../components/other/LoginFailureModal";
 import useAuth from "../hooks/useAuth";
 
 export const Login = () => {
-  const { onOpen: showModal, modal: loginFailureModal } = LoginFailureModal();
+  // const { onOpen: showModal, modal: loginFailureModal } = LoginFailureModal();
   const { loginMutation } = useAuth();
-
   const handleFailure = (result: any) => {
     console.log('failure', result);
   }
