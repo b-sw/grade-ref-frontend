@@ -1,4 +1,3 @@
-require('dotenv').config();
 import {
   Box,
   Flex,
@@ -8,6 +7,7 @@ import {
 } from '@chakra-ui/react';
 import GoogleLogin from 'react-google-login';
 import useAuth from "../hooks/useAuth";
+import {Constants} from "../other/constants";
 
 export const Login = () => {
   const { loginMutation } = useAuth();
@@ -33,7 +33,7 @@ export const Login = () => {
           p={8}>
           <Stack spacing={4}>
             <GoogleLogin
-              clientId={process.env.OAUTH_CLIENT_ID}
+              clientId={Constants.GOOGLE_OAUTH_CLIENT_ID}
               buttonText="Log in with Google"
               onSuccess={(googleData: any) => loginMutation.mutate(googleData)}
               onFailure={handleFailure}
