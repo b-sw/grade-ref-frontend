@@ -21,6 +21,9 @@ export default function useAuth() {
 
   const login = async (googleData: any) => {
     const response = await axios.post('google/auth', { googleToken: googleData.tokenId });
+    if (!response) {
+      await Promise.reject(new Error());
+    }
     return response.data;
   }
 
@@ -35,9 +38,6 @@ export default function useAuth() {
       loginToStore(response.email, response.accessToken);
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.accessToken;
       navigate(Paths.DASHBOARD);
-    },
-    onError: (_error) => {
-      console.log('bbbb');
     }
   });
 

@@ -7,14 +7,21 @@ import {
 } from '@chakra-ui/react';
 import GoogleLogin from 'react-google-login';
 import { Constants } from "../other/constants";
-// import { LoginFailureModal } from "../components/other/LoginFailureModal";
 import useAuth from "../hooks/useAuth";
+import {LoginFailureModal} from "../components/other/LoginFailureModal";
 
 export const Login = () => {
-  // const { onOpen: showModal, modal: loginFailureModal } = LoginFailureModal();
+  const { onOpen: showModal, modal: loginFailureModal } = LoginFailureModal();
   const { loginMutation } = useAuth();
   const handleFailure = (result: any) => {
     console.log('failure', result);
+  }
+
+  const handleLogin = (googleData: any) => {
+    loginMutation.mutate(googleData);
+    if (loginMutation.error) {
+      showModal();
+    }
   }
 
   return (
@@ -36,14 +43,14 @@ export const Login = () => {
             <GoogleLogin
               clientId={Constants.GOOGLE_OAUTH_CLIENT_ID}
               buttonText="Log in with Google"
-              onSuccess={(googleData: any) => loginMutation.mutate(googleData)}
+              onSuccess={(googleData: any) => handleLogin(googleData)}
               onFailure={handleFailure}
               cookiePolicy={'single_host_origin'}
             />
           </Stack>
         </Box>
       </Stack>
-      {/*{loginFailureModal}*/}
+      {loginFailureModal}
     </Flex>
   );
 }
