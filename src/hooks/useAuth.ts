@@ -21,9 +21,6 @@ export default function useAuth() {
 
   const login = async (googleData: any) => {
     const response = await axios.post('google/auth', { googleToken: googleData.tokenId });
-    if (!response) {
-      await Promise.reject(new Error());
-    }
     return response.data;
   }
 

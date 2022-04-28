@@ -1,4 +1,4 @@
-export const enum Paths {
-  LOGIN = '/login',
-  DASHBOARD = '/dashboard'
+export const Paths = {
+  LOGIN: '/login',
+  DASHBOARD: '/dashboard'
 }

@@ -5,7 +5,7 @@ interface Token {
 }
 
 export const tokenExpired = (token: string | null): boolean => {
-  if (token !== null) { // or !== null?
+  if (token !== null) {
     const currentTime = new Date().getTime() / 1000;
     const decoded = jwtDecode<Token>(token);
     const expirationTime = decoded.exp;

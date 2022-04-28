@@ -6,7 +6,5 @@ export const RequireAuthRoute = () => {
   const auth = useAuth();
   const location = useLocation();
 
-  console.log('is logged in', auth.isLoggedIn);
-
   return auth.isLoggedIn ? <Outlet /> : <Navigate to={Paths.LOGIN} state={{ from: location }} replace />;
 };

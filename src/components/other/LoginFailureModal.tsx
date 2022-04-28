@@ -8,32 +8,28 @@ import {
   ModalCloseButton,
   ModalFooter,
 } from '@chakra-ui/react';
-import { useDisclosure } from "@chakra-ui/react"
 
 export interface Props {
-  userEmail: string
+  onClose: () => void,
+  isOpen: boolean
 }
 
-export const LoginFailureModal = (/*props: Props*/) => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
-
-  const modal = (
+export const LoginFailureModal = (props: Props) => {
+  return (
     <>
-      <Modal onClose={onClose} isOpen={isOpen} isCentered>
+      <Modal onClose={props.onClose} isOpen={props.isOpen} isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>User is not registered</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            If you believe this is an error then please contact <b>graderef@gmail.com</b>.
+            If you believe this is an error then please contact <b>help@graderef.com</b>.
           </ModalBody>
           <ModalFooter>
-            <Button onClick={onClose}>Close</Button>
+            <Button onClick={props.onClose}>Close</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
     </>
   );
-
-  return { onOpen, modal }
 }
