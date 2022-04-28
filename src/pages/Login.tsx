@@ -20,9 +20,13 @@ export const Login = () => {
   }
 
   useEffect(() => {
-    if (loginMutation.isError) {
-      onOpen();
-    }
+    const checkForFailure = () => {
+      if (loginMutation.isError) {
+        onOpen();
+      }
+    };
+    checkForFailure();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loginMutation.status]);
 
   return (
