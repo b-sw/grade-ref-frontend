@@ -1,17 +1,20 @@
 import axios from "axios";
 import * as React from "react";
-import ReactDOM from "react-dom";
 import { App } from "./App";
 import reportWebVitals from "./reportWebVitals";
 import * as serviceWorker from "./serviceWorker";
+import { createRoot } from 'react-dom/client';
 
 // axios.defaults.baseURL = 'http://localhost:3000/';
 axios.defaults.baseURL = 'https://graderef.bieda.it/';
 
-ReactDOM.render(
-    <App />,
-  document.getElementById("root"),
-)
+const root = createRoot(document.getElementById("root") as HTMLElement);
+
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

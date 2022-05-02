@@ -1,65 +1,27 @@
 import {
-  Box,
   Flex,
-  Avatar,
-  Button,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuDivider,
-  useColorModeValue,
-  Center,
+  SimpleGrid,
 } from '@chakra-ui/react';
-import useStore from "../zustand/store";
-import useAuth from "../hooks/useAuth";
+import { SettingsPanel } from '../components/dashboard/settings/SettingsPanel';
+import { MatchesPanel } from "../components/dashboard/matches/MatchesPanel";
+import { AssignmentsPanel } from '../components/dashboard/assignments/AssignmentsPanel';
+import { GradesPanel } from '../components/dashboard/grades/GradesPanel';
+import {HeaderPanel} from "../components/dashboard/header/HeaderPanel";
 
 export const Dashboard = () => {
-  const user = useStore((state) => state.user);
-  const { logout } = useAuth();
-
   return (
     <>
-      <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
-        <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-          <Box>GradeRef ⚽</Box>
-
-          <Flex alignItems={'center'}>
-              <Menu>
-                <MenuButton
-                  as={Button}
-                  rounded={'full'}
-                  variant={'link'}
-                  cursor={'pointer'}
-                  minW={0}>
-                  <Avatar
-                    name={user.email!}
-                    size={'sm'}
-                  />
-                </MenuButton>
-                <MenuList
-                  alignItems={'center'}
-                >
-                  <br />
-                  <Center>
-                    <Avatar
-                      name={user.email!}
-                      size={'xl'}
-                    />
-                  </Center>
-                  <br />
-                  <Center>
-                    <p>{user.email}</p>
-                  </Center>
-                  <br />
-                  <MenuDivider />
-                  <MenuItem>Account Settings</MenuItem>
-                  <MenuItem onClick={() => logout()}>Logout</MenuItem>
-                </MenuList>
-              </Menu>
+      <Flex p={10} m={0} h={['auto', '100vh']} direction={'column'} overflow={'hidden'}>
+        <HeaderPanel />
+        <SimpleGrid columns={[1, 1, 3]} flexGrow={1} overflowY={'hidden'} spacing={10} p={10} m={-10} pt={10}>
+          <MatchesPanel />
+          <GradesPanel />
+          <Flex direction={'column'} gap={10}>
+            <AssignmentsPanel />
+            <SettingsPanel />
           </Flex>
-        </Flex>
-      </Box>
+        </SimpleGrid>
+      </Flex>
     </>
   );
 }
