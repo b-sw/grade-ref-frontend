@@ -5,11 +5,15 @@ import { Paths } from '../other/Paths';
 import { tokenExpired } from '../zustand/jwtExpiration';
 import useStore from '../zustand/store';
 import {uuid} from "../other/uuid";
+import {Role} from "../components/other/Role";
 
-interface LoginResponse {
+export interface LoginResponse {
   id: uuid;
   email: string;
   accessToken: string;
+  role: Role;
+  firstName: string;
+  lastName: string;
 }
 
 export default function useAuth() {
@@ -32,7 +36,7 @@ export default function useAuth() {
 
   const loginMutation = useMutation(login, {
     onSuccess: (response: LoginResponse) => {
-      loginToStore(response.email, response.accessToken);
+      loginToStore(response);
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.accessToken;
       navigate(Paths.DASHBOARD);
     }
@@ -45,5 +49,7 @@ export default function useAuth() {
     tokenExpired(user.accessToken)
   );
 
-  return { loginMutation, isLoggedIn, logout };
+  const isLoggedInAsAdmin: boolean = isLoggedIn && user!.role === Role.Admin;
+
+  return { loginMutation, isLoggedIn, isLoggedInAsAdmin, logout };
 }

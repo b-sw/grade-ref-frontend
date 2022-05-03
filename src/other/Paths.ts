@@ -1,4 +1,5 @@
 export const Paths = {
   LOGIN: '/login',
-  DASHBOARD: '/dashboard'
+  DASHBOARD: '/dashboard',
+  ADMIN_DASHBOARD: '/admin-dashboard'
 }

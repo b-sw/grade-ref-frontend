@@ -16,23 +16,21 @@ import useAuth from "../../../hooks/useAuth";
 import {Paths} from "../../../other/Paths";
 import { useNavigate } from 'react-router-dom';
 
-export const HeaderPanel = () => {
+export const AdminHeaderPanel = () => {
   const user = useStore((state) => state.user);
-  const { logout, isLoggedInAsAdmin } = useAuth();
+  const { logout } = useAuth();
   const navigate = useNavigate();
 
   return (
     <>
       <Flex m={0} p={0} pb={10}>
-        <Heading>GradeRef ⚽</Heading>
+        <Heading>GradeRef ⚽ - admin dashboard</Heading>
         <Spacer />
 
         <Flex alignItems={'center'}>
-          { isLoggedInAsAdmin && (
-            <Button mr={3} onClick={() => navigate(Paths.ADMIN_DASHBOARD)}>
-              Admin dashboard
-            </Button>
-          )}
+          <Button mr={3} onClick={() => navigate(Paths.DASHBOARD)}>
+            Dashboard
+          </Button>
 
           <Menu>
             <MenuButton
