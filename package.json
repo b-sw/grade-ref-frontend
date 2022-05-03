@@ -1,6 +1,6 @@
 {
   "name": "grade-ref-frontend",
-  "homepage": "https://bartoszswitalski.github.io/grade-ref-frontend",
+  "homepage": "https://graderef.com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
