@@ -5,7 +5,7 @@ import { Paths } from '../other/Paths';
 import { tokenExpired } from '../zustand/jwtExpiration';
 import useStore from '../zustand/store';
 import {uuid} from "../other/uuid";
-import {Role} from "../components/other/Role";
+import {Role} from "../other/Role";
 
 export interface LoginResponse {
   id: uuid;
