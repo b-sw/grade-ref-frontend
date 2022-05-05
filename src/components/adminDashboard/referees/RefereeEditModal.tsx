@@ -36,6 +36,7 @@ export const RefereeEditModal = (props: Props) => {
       props.onClose();
       updateMutation.reset();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updateMutation.isSuccess]);
 
   const initialValues: FormikValues = {
