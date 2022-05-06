@@ -8,14 +8,16 @@ import dayjs from 'dayjs';
 import { CalendarIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import { BsClockFill, BsFillHouseDoorFill } from 'react-icons/bs';
 import {Constants} from "../../../other/Constants";
+import {refereeItem} from "../referees/RefereeListItem";
+import {observerItem} from "../observers/ObserverListItem";
 
 export interface Props {
   match: Match;
 }
 
 export const AdminMatchListItem = (props: Props) => {
-  const { isOpen: isEditModalOpen, onOpen: onEditModalOpen, onClose: onEditModalClose } = useDisclosure();
-  const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
+  const { /*isOpen: isEditModalOpen,*/ onOpen: onEditModalOpen, /*onClose: onEditModalClose*/ } = useDisclosure();
+  const { /*isOpen: isDeleteModalOpen,*/ onOpen: onDeleteModalOpen, /*onClose: onDeleteModalClose*/ } = useDisclosure();
   const { refereesQuery, observersQuery } = useUsers();
   const { query: teamsQuery } = useTeams();
 
@@ -23,7 +25,7 @@ export const AdminMatchListItem = (props: Props) => {
     <>
       {/*<AdminMatchEditModal isOpen={isEditModalOpen} onClose={onEditModalClose} match={props.match} />*/}
       {/*<AdminMatchDeleteModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} match={props.match} />*/}
-      <Flex py={2} borderRadius={5} alignItems={'center'}>
+      <Flex py={10} borderRadius={5} alignItems={'center'}>
         {matchItem(props.match, teamsQuery, refereesQuery, observersQuery)}
         <Spacer />
         <IconButton onClick={onEditModalOpen} variant={'ghost'} aria-label='Edit match' icon={<EditIcon />} />
@@ -45,45 +47,53 @@ export const matchItem = (match: Match, teamsQuery: any, refereesQuery: any, obs
 
   return (
     <>
-      <VStack>
+      <VStack align='left' w={'90%'}>
         <HStack>
-          <VStack align='left' mr={5} w={'65%'}>
+          <VStack align='left' mr={5} w={'50%'}>
             <HStack>
               <Avatar
                 name={homeTeam.name}
-                size={'sm'}
+                size={'md'}
               />
-              <Text>{homeTeam.name}</Text>
+              <Text fontSize={'xl'}>{homeTeam.name}</Text>
               <BsFillHouseDoorFill />
             </HStack>
             <HStack>
               <Avatar
                 name={awayTeam.name}
-                size={'sm'}
+                size={'md'}
               />
-              <Text>{awayTeam.name}</Text>
+              <Text fontSize={'xl'}>{awayTeam.name}</Text>
             </HStack>
           </VStack>
 
-          <Center height='75px' w={'5%'}>
+          <Center height='75px' w={'10%'}>
             <Divider orientation='vertical' />
           </Center>
 
-          <VStack align='left' ml={5} w={'30%'}>
+          <VStack align='left' ml={5} w={'40%'}>
             <HStack>
               <CalendarIcon />
-              <Text>{matchDate}</Text>
+              <Text fontSize={'xl'}>{matchDate}</Text>
             </HStack>
             <HStack>
               <BsClockFill />
-              <Text>{matchTime}</Text>
+              <Text fontSize={'xl'}>{matchTime}</Text>
             </HStack>
           </VStack>
         </HStack>
-        <HStack>
-          <Text>Referee: {referee.firstName} {referee.lastName}</Text>
-          <Text>Observer: {observer.firstName} {observer.lastName}</Text>
-        </HStack>
+
+        <VStack align='left'>
+          <Text fontSize={'xl'}><b>Assignments</b></Text>
+          <HStack>
+            <Text w={'20%'}>Referee:</Text>
+            {refereeItem(referee)}
+          </HStack>
+          <HStack>
+            <Text w={'20%'}>Observer:</Text>
+            {observerItem(observer)}
+          </HStack>
+        </VStack>
       </VStack>
     </>
   )
