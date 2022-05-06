@@ -18,6 +18,8 @@ import {useMatches} from "../../../hooks/useMatches";
 import {useTeams} from "../../../hooks/useTeams";
 import {Match, matchValidationSchema} from "../../../entities/Match";
 import {Team} from "../../../entities/Team";
+import {Constants} from "../../../other/Constants";
+import dayjs from 'dayjs';
 
 interface Props {
   isOpen: boolean;
@@ -56,9 +58,9 @@ export const AdminMatchCreateModal = (props: Props) => {
   };
 
   const createMatch = (values: FormikValues) => {
-    // console.log('bbbb');
+    const matchDate: Date = dayjs(values.date, Constants.DATETIME_FORMAT).toDate();
     postMutation.mutate({
-      date: new Date(),
+      date: matchDate,
       stadium: 'some stadium',
       homeTeamId: values.homeTeamId,
       awayTeamId: values.awayTeamId,
@@ -138,7 +140,7 @@ export const AdminMatchCreateModal = (props: Props) => {
               </ModalBody>
 
               <ModalFooter>
-                <Button mr={'3'} type='submit' onClick={() => console.log('aaa')} isLoading={postMutation.isLoading}>
+                <Button mr={'3'} type='submit' isLoading={postMutation.isLoading}>
                   Add
                 </Button>
                 <Button onClick={() => props.onClose()}>Cancel</Button>
