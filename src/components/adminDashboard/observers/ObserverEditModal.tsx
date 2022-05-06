@@ -11,14 +11,14 @@ import {
 import { Form, Formik } from 'formik';
 import { InputControl } from 'formik-chakra-ui';
 import { useEffect } from 'react';
-import {uuid} from "../../../other/uuid";
+import {User, userValidationSchema} from "../../../entities/User";
 import {useUsers} from "../../../hooks/useUsers";
 import {Role} from "../../../other/Role";
-import {User, userValidationSchema} from "../../../entities/User";
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
+  observer: User;
 }
 
 interface FormikValues {
@@ -28,30 +28,30 @@ interface FormikValues {
   lastName: string;
 }
 
-export const RefereeCreateModal = (props: Props) => {
-  const { postMutation } = useUsers();
+export const ObserverEditModal = (props: Props) => {
+  const { updateMutation } = useUsers();
 
   useEffect(() => {
-    if (postMutation.isSuccess) {
+    if (updateMutation.isSuccess) {
       props.onClose();
-      postMutation.reset();
+      updateMutation.reset();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [postMutation.isSuccess]);
+  }, [updateMutation.isSuccess]);
 
   const initialValues: FormikValues = {
-    email: '',
-    phoneNumber: '',
-    firstName: '',
-    lastName: ''
+    email: props.observer.email,
+    phoneNumber: props.observer.phoneNumber,
+    firstName: props.observer.firstName,
+    lastName: props.observer.lastName,
   };
 
   const editReferee = (values: FormikValues) => {
-    postMutation.mutate({
-      id: '' as uuid,
+    updateMutation.mutate({
+      id: props.observer.id,
       email: values.email,
       phoneNumber: values.phoneNumber,
-      role: Role.Referee,
+      role: Role.Observer,
       firstName: values.firstName,
       lastName: values.lastName
     } as User);
@@ -61,23 +61,23 @@ export const RefereeCreateModal = (props: Props) => {
     <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Add referee</ModalHeader>
+        <ModalHeader>Edit observer</ModalHeader>
         <ModalCloseButton />
 
         <Formik initialValues={initialValues} onSubmit={editReferee} validationSchema={userValidationSchema}>
           {({ handleSubmit }) => (
             <Form onSubmit={handleSubmit}>
               <ModalBody>
-                <InputControl name='email' label='Email address' inputProps={{ placeholder: 'john.doe@gmail.com' }} />
-                <InputControl name='phoneNumber' label='Phone number' inputProps={{ placeholder: '+48 669 797 907' }} />
-                <InputControl name='firstName' label='First name' inputProps={{ placeholder: 'John' }} />
-                <InputControl name='lastName' label='Last name' inputProps={{ placeholder: 'Doe' }} />
+                <InputControl name='email' label='Email address' />
+                <InputControl name='phoneNumber' label='Phone number' />
+                <InputControl name='firstName' label='First name' />
+                <InputControl name='lastName' label='Last name' />
               </ModalBody>
               <ModalFooter>
-                <Button mr={'3'} type='submit' isLoading={postMutation.isLoading}>
-                  Add
+                <Button mr={'3'} type='submit' isLoading={updateMutation.isLoading}>
+                  Save
                 </Button>
-                <Button onClick={() => props.onClose()}>Cancel</Button>
+                <Button onClick={props.onClose}>Cancel</Button>
               </ModalFooter>
             </Form>
           )}

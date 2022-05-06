@@ -68,7 +68,7 @@ export const RefereeEditModal = (props: Props) => {
           {({ handleSubmit }) => (
             <Form onSubmit={handleSubmit}>
               <ModalBody>
-                <InputControl name='email' label='Name' />
+                <InputControl name='email' label='Email address' />
                 <InputControl name='phoneNumber' label='Phone number' />
                 <InputControl name='firstName' label='First name' />
                 <InputControl name='lastName' label='Last name' />

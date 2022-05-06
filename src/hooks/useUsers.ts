@@ -28,7 +28,7 @@ export const useUsers = () => {
   }
 
   const updateUser = async (user: User): Promise<User> => {
-    const response = await axios.put(`users/${user.id}`);
+    const response = await axios.put(`users/${user.id}`, user);
     return response.data;
   }
 
@@ -63,7 +63,7 @@ export const useUsers = () => {
       queryClient.setQueryData(queryKey, (_) => users);
 
       toast({
-        title: `Successfully added ${user.role}`,
+        title: `Successfully updated ${user.role}`,
         status: 'success',
         position: 'bottom-right',
         duration: 2000,

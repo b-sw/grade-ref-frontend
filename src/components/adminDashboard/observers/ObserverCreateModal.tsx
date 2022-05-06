@@ -28,7 +28,7 @@ interface FormikValues {
   lastName: string;
 }
 
-export const RefereeCreateModal = (props: Props) => {
+export const ObserverCreateModal = (props: Props) => {
   const { postMutation } = useUsers();
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export const RefereeCreateModal = (props: Props) => {
       id: '' as uuid,
       email: values.email,
       phoneNumber: values.phoneNumber,
-      role: Role.Referee,
+      role: Role.Observer,
       firstName: values.firstName,
       lastName: values.lastName
     } as User);

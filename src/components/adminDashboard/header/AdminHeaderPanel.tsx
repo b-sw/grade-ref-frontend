@@ -14,6 +14,7 @@ import {
 import useStore from "../../../zustand/store";
 import useAuth from "../../../hooks/useAuth";
 import {Paths} from "../../../other/Paths";
+import { MdDashboard } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 
 export const AdminHeaderPanel = () => {
@@ -28,7 +29,7 @@ export const AdminHeaderPanel = () => {
         <Spacer />
 
         <Flex alignItems={'center'}>
-          <Button mr={3} onClick={() => navigate(Paths.DASHBOARD)}>
+          <Button mr={3} onClick={() => navigate(Paths.DASHBOARD)} leftIcon={<MdDashboard />}>
             Dashboard
           </Button>
 
