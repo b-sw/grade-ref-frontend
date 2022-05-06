@@ -9,21 +9,25 @@ import {
   Button,
   Text,
 } from '@chakra-ui/react';
-import {User} from "../../../entities/User";
+import {matchItem} from "./AdminMatchListItem";
+import {Match} from "../../../entities/Match";
+import {useMatches} from "../../../hooks/useMatches";
+import {useTeams} from "../../../hooks/useTeams";
 import {useUsers} from "../../../hooks/useUsers";
-import {observerItem} from "./ObserverListItem";
 
 export interface Props {
   isOpen: boolean;
   onClose: () => void;
-  observer: User;
+  match: Match;
 }
 
-export const ObserverDeleteModal = (props: Props) => {
-  const { deleteMutation } = useUsers();
+export const AdminMatchDeleteModal = (props: Props) => {
+  const { deleteMutation } = useMatches();
+  const { refereesQuery, observersQuery } = useUsers();
+  const { query: teamsQuery } = useTeams();
 
-  const deleteObserver = () => {
-    deleteMutation.mutate(props.observer.id);
+  const deleteMatch = () => {
+    deleteMutation.mutate(props.match.id);
   }
 
   return (
@@ -31,13 +35,13 @@ export const ObserverDeleteModal = (props: Props) => {
       <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Delete observer</ModalHeader>
+          <ModalHeader>Delete match</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Text fontWeight='bold' mb='1rem'>
-              Are you sure you want to delete the following observer?
+              Are you sure you want to delete the following match?
             </Text>
-            {observerItem(props.observer)}
+            {matchItem(props.match, teamsQuery, refereesQuery, observersQuery)}
             <Text fontWeight='bold' mt='1rem'>
               You can't undo this action afterwards.
             </Text>
@@ -47,7 +51,7 @@ export const ObserverDeleteModal = (props: Props) => {
             <Button onClick={props.onClose}>
               Cancel
             </Button>
-            <Button colorScheme='red' onClick={deleteObserver} isLoading={deleteMutation.isLoading} ml={3}>
+            <Button colorScheme='red' onClick={deleteMatch} isLoading={deleteMutation.isLoading} ml={3}>
               Delete
             </Button>
           </ModalFooter>

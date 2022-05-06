@@ -11,7 +11,6 @@ import {
 import { Form, Formik } from 'formik';
 import { InputControl } from 'formik-chakra-ui';
 import { useEffect } from 'react';
-import {uuid} from "../../../other/uuid";
 import {useUsers} from "../../../hooks/useUsers";
 import {Role} from "../../../other/Role";
 import {User, userValidationSchema} from "../../../entities/User";
@@ -46,9 +45,8 @@ export const ObserverCreateModal = (props: Props) => {
     lastName: ''
   };
 
-  const editReferee = (values: FormikValues) => {
+  const createObserver = (values: FormikValues) => {
     postMutation.mutate({
-      id: '' as uuid,
       email: values.email,
       phoneNumber: values.phoneNumber,
       role: Role.Observer,
@@ -61,10 +59,10 @@ export const ObserverCreateModal = (props: Props) => {
     <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Add referee</ModalHeader>
+        <ModalHeader>Add observer</ModalHeader>
         <ModalCloseButton />
 
-        <Formik initialValues={initialValues} onSubmit={editReferee} validationSchema={userValidationSchema}>
+        <Formik initialValues={initialValues} onSubmit={createObserver} validationSchema={userValidationSchema}>
           {({ handleSubmit }) => (
             <Form onSubmit={handleSubmit}>
               <ModalBody>

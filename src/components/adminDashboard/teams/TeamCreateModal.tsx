@@ -13,7 +13,6 @@ import { InputControl } from 'formik-chakra-ui';
 import { useEffect } from 'react';
 import {useTeams} from "../../../hooks/useTeams";
 import {Team, teamValidationSchema} from "../../../entities/Team";
-import {uuid} from "../../../other/uuid";
 
 interface Props {
   isOpen: boolean;
@@ -40,7 +39,7 @@ export const TeamCreateModal = (props: Props) => {
   };
 
   const editTeam = (values: FormikValues) => {
-    postMutation.mutate({ id: '' as uuid, name: values.name } as Team);
+    postMutation.mutate({ name: values.name } as Team);
   };
 
   return (

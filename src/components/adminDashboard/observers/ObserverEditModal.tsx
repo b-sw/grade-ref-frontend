@@ -46,7 +46,7 @@ export const ObserverEditModal = (props: Props) => {
     lastName: props.observer.lastName,
   };
 
-  const editReferee = (values: FormikValues) => {
+  const editObserver = (values: FormikValues) => {
     updateMutation.mutate({
       id: props.observer.id,
       email: values.email,
@@ -64,7 +64,7 @@ export const ObserverEditModal = (props: Props) => {
         <ModalHeader>Edit observer</ModalHeader>
         <ModalCloseButton />
 
-        <Formik initialValues={initialValues} onSubmit={editReferee} validationSchema={userValidationSchema}>
+        <Formik initialValues={initialValues} onSubmit={editObserver} validationSchema={userValidationSchema}>
           {({ handleSubmit }) => (
             <Form onSubmit={handleSubmit}>
               <ModalBody>
