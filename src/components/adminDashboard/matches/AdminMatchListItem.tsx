@@ -6,7 +6,7 @@ import {Team} from "../../../entities/Team";
 import {User} from "../../../entities/User";
 import dayjs from 'dayjs';
 import { CalendarIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
-import { BsClockFill, BsFillHouseDoorFill } from 'react-icons/bs';
+import { BsClockFill, BsFillHouseDoorFill, BsFillPeopleFill, BsBookmarks } from 'react-icons/bs';
 import {Constants} from "../../../other/Constants";
 import {refereeItem} from "../referees/RefereeListItem";
 import {observerItem} from "../observers/ObserverListItem";
@@ -92,9 +92,19 @@ export const matchItem = (match: Match, teamsQuery: any, refereesQuery: any, obs
         </HStack>
 
         <VStack align='left'>
-          <Text fontSize={'md'}><b>Assignments</b></Text>
+          <HStack>
+            <BsFillPeopleFill />
+            <Text fontSize={'md'}><b>Assignments</b></Text>
+          </HStack>
             {refereeItem(referee, 'xs', 'sm', 'xs', true)}
             {observerItem(observer, 'xs', 'sm', 'xs', true)}
+        </VStack>
+
+        <VStack align='left'>
+          <HStack>
+            <BsBookmarks />
+            <Text fontSize={'md'}><b>Grade</b></Text>
+          </HStack>
         </VStack>
       </VStack>
     </>

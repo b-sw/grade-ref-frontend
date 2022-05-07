@@ -47,7 +47,7 @@ export const observerItem = (user: User,
         <VStack spacing={0} alignItems={'baseline'}>
           <HStack>
             <Text fontSize={nameSize ?? 'md'}>{user.firstName} {user.lastName}</Text>
-            {showBadge && <Badge colorScheme='green' fontSize={'xs'}>Observer</Badge>}
+            {showBadge && <Badge colorScheme='purple' fontSize={'xs'}>Observer</Badge>}
           </HStack>
           <Text fontSize={descriptionSize ?? 'sm'} color={'gray.400'}>
             {user.email}, {user.phoneNumber}

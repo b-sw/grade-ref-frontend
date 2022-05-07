@@ -47,7 +47,7 @@ export const refereeItem = (user: User,
         <VStack spacing={0} alignItems={'baseline'}>
           <HStack>
             <Text fontSize={nameSize ?? 'md'}>{user.firstName} {user.lastName}</Text>
-            {showBadge && <Badge colorScheme='red' fontSize={'xs'}>Referee</Badge>}
+            {showBadge && <Badge colorScheme='facebook' fontSize={'xs'}>Referee</Badge>}
           </HStack>
           <Text fontSize={descriptionSize ?? 'sm'} color={'gray.400'}>
             {user.email}, {user.phoneNumber}
