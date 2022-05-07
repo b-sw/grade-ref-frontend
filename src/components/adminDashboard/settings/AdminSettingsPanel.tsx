@@ -11,6 +11,7 @@ export const AdminSettingsPanel = () => {
       backgroundColor={'gray.200'}
       shadow={'md'}
       overflowY={'hidden'}
+      flexShrink={0}
     >
       <Flex mb={4}>
         <Text fontWeight={'bold'} fontSize={'2xl'}>

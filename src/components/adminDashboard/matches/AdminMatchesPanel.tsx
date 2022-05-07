@@ -1,4 +1,4 @@
-import {Button, Flex, Spacer, Spinner, Text, useDisclosure } from '@chakra-ui/react';
+import {Button, Flex, Spacer, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useDisclosure } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import {scrollbarStyle} from "../../dashboard/shared/styles";
 import {Match} from "../../../entities/Match";
@@ -7,6 +7,8 @@ import {useMatches} from "../../../hooks/useMatches";
 import {AdminMatchCreateModal} from "./AdminMatchCreateModal";
 import {useUsers} from "../../../hooks/useUsers";
 import {useTeams} from "../../../hooks/useTeams";
+import {Constants} from "../../../other/Constants";
+import dayjs from 'dayjs';
 
 export const AdminMatchesPanel = () => {
   const { isOpen: isCreateModalOpen, onOpen: onCreateModalOpen, onClose: onCreateModalClose } = useDisclosure();
@@ -44,12 +46,34 @@ export const AdminMatchesPanel = () => {
           </Button>
         </Flex>
 
-        <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
-          {matchesQuery.data &&
-            matchesQuery.data.map((match: Match) =>
-              <AdminMatchListItem key={match.id} match={match} />
-            )}
-        </Flex>
+        <Tabs display='flex' flexDirection='column' isFitted variant='line' overflowY={'hidden'}>
+          <TabList>
+            <Tab>Past</Tab>
+            <Tab>Upcoming</Tab>
+          </TabList>
+          <TabPanels overflowY={'scroll'} css={scrollbarStyle}>
+            <TabPanel>
+              <Flex direction={'column'} gap={2}>
+                {matchesQuery.data &&
+                  matchesQuery.data
+                    .filter((match: Match) => dayjs(match.date, Constants.DATETIME_FORMAT).toDate().getTime() < Date.now())
+                    .map((match: Match) =>
+                      <AdminMatchListItem key={match.id} match={match} />
+                    )}
+              </Flex>
+            </TabPanel>
+            <TabPanel>
+              <Flex direction={'column'} gap={2}>
+                {matchesQuery.data &&
+                  matchesQuery.data
+                    .filter((match: Match) => dayjs(match.date, Constants.DATETIME_FORMAT).toDate().getTime() >= Date.now())
+                    .map((match: Match) =>
+                    <AdminMatchListItem key={match.id} match={match} />
+                  )}
+              </Flex>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
       </Flex>
     </>
   );

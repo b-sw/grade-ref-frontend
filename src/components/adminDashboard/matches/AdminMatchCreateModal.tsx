@@ -27,8 +27,7 @@ interface Props {
 }
 
 interface FormikValues {
-  date: Date;
-  stadium: string;
+  date: string;
   homeTeamId: uuid;
   awayTeamId: uuid;
   refereeId: uuid;
@@ -49,8 +48,7 @@ export const AdminMatchCreateModal = (props: Props) => {
   }, [postMutation.isSuccess]);
 
   const initialValues: FormikValues = {
-    date: new Date(),
-    stadium: '',
+    date: '',
     homeTeamId: '',
     awayTeamId: '',
     refereeId: '',

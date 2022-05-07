@@ -1,5 +1,5 @@
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
-import { Flex, Spacer, IconButton, VStack, Text, useDisclosure, Avatar, HStack } from '@chakra-ui/react';
+import { Flex, Spacer, IconButton, VStack, Text, useDisclosure, Avatar, HStack, Badge } from '@chakra-ui/react';
 import {User} from "../../../entities/User";
 import { RefereeDeleteModal } from './RefereeDeleteModal';
 import { RefereeEditModal } from './RefereeEditModal';
@@ -32,7 +32,11 @@ export const RefereeListItem = (props: Props) => {
   );
 }
 
-export const refereeItem = (user: User, avatarSize?: string, nameSize?: string, descriptionSize?: string) => {
+export const refereeItem = (user: User,
+                            avatarSize?: string,
+                            nameSize?: string,
+                            descriptionSize?: string,
+                            showBadge?: boolean) => {
   return (
     <>
       <HStack>
@@ -41,7 +45,10 @@ export const refereeItem = (user: User, avatarSize?: string, nameSize?: string, 
           size={avatarSize ?? 'sm'}
         />
         <VStack spacing={0} alignItems={'baseline'}>
-          <Text fontSize={nameSize ?? 'md'}>{user.firstName} {user.lastName}</Text>
+          <HStack>
+            <Text fontSize={nameSize ?? 'md'}>{user.firstName} {user.lastName}</Text>
+            {showBadge && <Badge colorScheme='red' fontSize={'xs'}>Referee</Badge>}
+          </HStack>
           <Text fontSize={descriptionSize ?? 'sm'} color={'gray.400'}>
             {user.email}, {user.phoneNumber}
           </Text>

@@ -11,20 +11,21 @@ import {Constants} from "../../../other/Constants";
 import {refereeItem} from "../referees/RefereeListItem";
 import {observerItem} from "../observers/ObserverListItem";
 import {AdminMatchDeleteModal} from "./AdminMatchDeleteModal";
+import {AdminMatchEditModal} from "./AdminMatchEditModal";
 
 export interface Props {
   match: Match;
 }
 
 export const AdminMatchListItem = (props: Props) => {
-  const { /*isOpen: isEditModalOpen,*/ onOpen: onEditModalOpen, /*onClose: onEditModalClose*/ } = useDisclosure();
+  const { isOpen: isEditModalOpen, onOpen: onEditModalOpen, onClose: onEditModalClose } = useDisclosure();
   const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
   const { refereesQuery, observersQuery } = useUsers();
   const { query: teamsQuery } = useTeams();
 
   return (
     <>
-      {/*<AdminMatchEditModal isOpen={isEditModalOpen} onClose={onEditModalClose} match={props.match} />*/}
+      <AdminMatchEditModal isOpen={isEditModalOpen} onClose={onEditModalClose} match={props.match} />
       <AdminMatchDeleteModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} match={props.match} />
       <Flex
         p={5}
@@ -92,14 +93,8 @@ export const matchItem = (match: Match, teamsQuery: any, refereesQuery: any, obs
 
         <VStack align='left'>
           <Text fontSize={'md'}><b>Assignments</b></Text>
-          <HStack>
-            <Text w={'20%'} fontSize={'sm'}>Referee:</Text>
-            {refereeItem(referee, 'xs', 'sm', 'xs')}
-          </HStack>
-          <HStack>
-            <Text w={'20%'} fontSize={'sm'}>Observer:</Text>
-            {observerItem(observer, 'xs', 'sm', 'xs')}
-          </HStack>
+            {refereeItem(referee, 'xs', 'sm', 'xs', true)}
+            {observerItem(observer, 'xs', 'sm', 'xs', true)}
         </VStack>
       </VStack>
     </>
