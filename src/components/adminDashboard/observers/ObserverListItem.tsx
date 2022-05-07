@@ -16,7 +16,13 @@ export const ObserverListItem = (props: Props) => {
     <>
       <ObserverEditModal isOpen={isEditModalOpen} onClose={onEditModalClose} observer={props.observer} />
       <ObserverDeleteModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} observer={props.observer} />
-      <Flex py={2} borderRadius={5} alignItems={'center'}>
+      <Flex
+        p={5}
+        borderRadius={10}
+        alignItems={'center'}
+        backgroundColor={'gray.50'}
+        cursor={'pointer'}
+      >
         {observerItem(props.observer)}
         <Spacer />
         <IconButton onClick={onEditModalOpen} variant={'ghost'} aria-label='Edit observer' icon={<EditIcon />} />
@@ -26,17 +32,17 @@ export const ObserverListItem = (props: Props) => {
   );
 }
 
-export const observerItem = (user: User) => {
+export const observerItem = (user: User, avatarSize?: string, nameSize?: string, descriptionSize?: string) => {
   return (
     <>
       <HStack>
         <Avatar
           name={user.firstName + ' ' + user.lastName}
-          size={'sm'}
+          size={avatarSize ?? 'sm'}
         />
         <VStack spacing={0} alignItems={'baseline'}>
-          <Text>{user.firstName} {user.lastName}</Text>
-          <Text fontSize={'sm'} color={'gray.400'}>
+          <Text fontSize={nameSize ?? 'md'}>{user.firstName} {user.lastName}</Text>
+          <Text fontSize={descriptionSize ?? 'sm'} color={'gray.400'}>
             {user.email}, {user.phoneNumber}
           </Text>
         </VStack>

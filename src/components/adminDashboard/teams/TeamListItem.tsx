@@ -16,7 +16,13 @@ export const TeamListItem = (props: Props) => {
     <>
       <TeamEditModal isOpen={isEditModalOpen} onClose={onEditModalClose} team={props.team} />
       <TeamDeleteModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} team={props.team} />
-      <Flex py={2} borderRadius={5} alignItems={'center'}>
+      <Flex
+        p={5}
+        borderRadius={10}
+        alignItems={'center'}
+        backgroundColor={'gray.50'}
+        cursor={'pointer'}
+      >
         {teamItem(props.team)}
         <Spacer />
         <IconButton onClick={onEditModalOpen} variant={'ghost'} aria-label='Edit team' icon={<EditIcon />} />

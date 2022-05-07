@@ -1,7 +1,7 @@
 import * as React from "react"
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { HashRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
-import { ChakraProvider, theme } from "@chakra-ui/react"
+import { ChakraProvider } from "@chakra-ui/react"
 import {UnauthorizedHandler} from "./components/other/UnauthorizedHandler";
 import {AnimatedTransition} from "./components/other/AnimatedTransition";
 import {Paths} from "./other/Paths";
@@ -10,6 +10,7 @@ import {RequireAuthRoute} from "./components/other/RequireAuthRoute";
 import {Dashboard} from "./pages/Dashboard";
 import {AdminDashboard} from "./pages/AdminDashboard";
 import {RequireAuthRouteAdmin} from "./components/other/RequireAuthRouteAdmin";
+import theme from "./other/theme";
 
 const queryClient = new QueryClient();
 

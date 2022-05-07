@@ -1,4 +1,4 @@
-import {Box, Button, Divider, Flex, Spacer, Text, useDisclosure } from '@chakra-ui/react';
+import {Button, Flex, Spacer, Text, useDisclosure } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import {scrollbarStyle} from "../../dashboard/shared/styles";
 import { useUsers } from '../../../hooks/useUsers';
@@ -16,9 +16,9 @@ export const RefereesPanel = () => {
       <Flex
         direction={'column'}
         borderRadius={10}
-        backgroundColor={'gray.750'}
-        p={7}
-        shadow={'dark-lg'}
+        p={5}
+        backgroundColor={'gray.200'}
+        shadow={'md'}
         overflowY={'hidden'}
         flexGrow={1}
       >
@@ -32,15 +32,12 @@ export const RefereesPanel = () => {
           </Button>
         </Flex>
 
-        <Box overflowY={'scroll'} css={scrollbarStyle}>
+        <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
           {refereesQuery.data &&
-            refereesQuery.data.map((referee: User, i: number) => (
-              <div key={referee.id}>
-                <RefereeListItem referee={referee} />
-                {i < refereesQuery.data.length - 1 && <Divider />}
-              </div>
-            ))}
-        </Box>
+            refereesQuery.data.map((referee: User) =>
+              <RefereeListItem key={referee.id} referee={referee} />
+            )}
+        </Flex>
       </Flex>
     </>
   );

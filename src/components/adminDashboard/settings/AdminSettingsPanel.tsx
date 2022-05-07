@@ -1,14 +1,15 @@
-import { Flex, Text } from '@chakra-ui/react';
+import {Box, Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
 
 export const AdminSettingsPanel = () => {
+  const { /*isOpen, */onOpen/*, onClose*/ } = useDisclosure();
 
   return (
     <Flex
       direction={'column'}
       borderRadius={10}
-      backgroundColor={'gray.750'}
-      p={7}
-      shadow={'dark-lg'}
+      p={5}
+      backgroundColor={'gray.200'}
+      shadow={'md'}
       overflowY={'hidden'}
     >
       <Flex mb={4}>
@@ -17,6 +18,9 @@ export const AdminSettingsPanel = () => {
         </Text>
       </Flex>
 
+      <Box>
+        <Button onClick={onOpen}>Delete league</Button>
+      </Box>
     </Flex>
   );
 };

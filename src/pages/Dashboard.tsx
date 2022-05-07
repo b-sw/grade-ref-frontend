@@ -11,7 +11,7 @@ import {HeaderPanel} from "../components/dashboard/header/HeaderPanel";
 export const Dashboard = () => {
   return (
     <>
-      <Flex p={5} m={0} h={['auto', '100vh']} direction={'column'} overflow={'hidden'}>
+      <Flex p={5} m={0} h={['auto', '100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.300'}>
         <HeaderPanel />
         <SimpleGrid columns={[1, 1, 3]} flexGrow={1} overflowY={'hidden'} spacing={5} p={5} m={-5} pt={5}>
           <MatchesPanel />

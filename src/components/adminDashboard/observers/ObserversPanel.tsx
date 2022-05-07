@@ -1,4 +1,4 @@
-import {Box, Button, Divider, Flex, Spacer, Text, useDisclosure } from '@chakra-ui/react';
+import {Button, Flex, Spacer, Text, useDisclosure } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import {ObserverCreateModal} from "./ObserverCreateModal";
 import {useUsers} from "../../../hooks/useUsers";
@@ -16,9 +16,9 @@ export const ObserversPanel = () => {
       <Flex
         direction={'column'}
         borderRadius={10}
-        backgroundColor={'gray.750'}
-        p={7}
-        shadow={'dark-lg'}
+        p={5}
+        backgroundColor={'gray.200'}
+        shadow={'md'}
         overflowY={'hidden'}
         flexGrow={1}
       >
@@ -32,15 +32,12 @@ export const ObserversPanel = () => {
           </Button>
         </Flex>
 
-        <Box overflowY={'scroll'} css={scrollbarStyle}>
+        <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
           {observersQuery.data &&
-            observersQuery.data.map((observer: User, i: number) => (
-              <div key={observer.id}>
-                <ObserverListItem observer={observer} />
-                {i < observersQuery.data.length - 1 && <Divider />}
-              </div>
-            ))}
-        </Box>
+            observersQuery.data.map((observer: User) =>
+              <ObserverListItem key={observer.id} observer={observer} />
+            )}
+        </Flex>
       </Flex>
     </>
   );

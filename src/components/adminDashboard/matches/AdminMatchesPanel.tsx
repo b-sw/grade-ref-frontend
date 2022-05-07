@@ -1,4 +1,4 @@
-import {Box, Button, Divider, Flex, Spacer, Spinner, Text, useDisclosure } from '@chakra-ui/react';
+import {Button, Flex, Spacer, Spinner, Text, useDisclosure } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import {scrollbarStyle} from "../../dashboard/shared/styles";
 import {Match} from "../../../entities/Match";
@@ -28,9 +28,9 @@ export const AdminMatchesPanel = () => {
       <Flex
         direction={'column'}
         borderRadius={10}
-        backgroundColor={'gray.750'}
-        p={7}
-        shadow={'dark-lg'}
+        p={5}
+        backgroundColor={'gray.200'}
+        shadow={'md'}
         overflowY={'hidden'}
         flexGrow={1}
       >
@@ -44,15 +44,12 @@ export const AdminMatchesPanel = () => {
           </Button>
         </Flex>
 
-        <Box overflowY={'scroll'} css={scrollbarStyle}>
+        <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
           {matchesQuery.data &&
-            matchesQuery.data.map((match: Match, i: number) => (
-              <div key={match.id}>
-                <AdminMatchListItem match={match} />
-                {i < matchesQuery.data.length - 1 && <Divider />}
-              </div>
-            ))}
-        </Box>
+            matchesQuery.data.map((match: Match) =>
+              <AdminMatchListItem key={match.id} match={match} />
+            )}
+        </Flex>
       </Flex>
     </>
   );

@@ -1,4 +1,4 @@
-import {Box, Button, Divider, Flex, Spacer, Text, useDisclosure } from '@chakra-ui/react';
+import {Button, Flex, Spacer, Text, useDisclosure } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import {scrollbarStyle} from "../../dashboard/shared/styles";
 import {Team} from "../../../entities/Team";
@@ -16,9 +16,9 @@ export const TeamsPanel = () => {
       <Flex
         direction={'column'}
         borderRadius={10}
-        backgroundColor={'gray.750'}
-        p={7}
-        shadow={'dark-lg'}
+        p={5}
+        backgroundColor={'gray.200'}
+        shadow={'md'}
         overflowY={'hidden'}
         flexGrow={1}
       >
@@ -32,15 +32,12 @@ export const TeamsPanel = () => {
           </Button>
         </Flex>
 
-        <Box overflowY={'scroll'} css={scrollbarStyle}>
+        <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
           {teamsQuery.data &&
-            teamsQuery.data.map((team: Team, i: number) => (
-              <div key={team.id}>
-                <TeamListItem team={team} />
-                {i < teamsQuery.data.length - 1 && <Divider />}
-              </div>
-            ))}
-        </Box>
+            teamsQuery.data.map((team: Team) =>
+              <TeamListItem key={team.id} team={team} />
+            )}
+        </Flex>
       </Flex>
     </>
   );

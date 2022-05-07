@@ -16,7 +16,13 @@ export const RefereeListItem = (props: Props) => {
     <>
       <RefereeEditModal isOpen={isEditModalOpen} onClose={onEditModalClose} referee={props.referee} />
       <RefereeDeleteModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} referee={props.referee} />
-      <Flex py={2} borderRadius={5} alignItems={'center'}>
+      <Flex
+        p={5}
+        borderRadius={10}
+        alignItems={'center'}
+        backgroundColor={'gray.50'}
+        cursor={'pointer'}
+      >
         {refereeItem(props.referee)}
         <Spacer />
         <IconButton onClick={onEditModalOpen} variant={'ghost'} aria-label='Edit referee' icon={<EditIcon />} />
@@ -26,17 +32,17 @@ export const RefereeListItem = (props: Props) => {
   );
 }
 
-export const refereeItem = (user: User) => {
+export const refereeItem = (user: User, avatarSize?: string, nameSize?: string, descriptionSize?: string) => {
   return (
     <>
       <HStack>
         <Avatar
           name={user.firstName + ' ' + user.lastName}
-          size={'sm'}
+          size={avatarSize ?? 'sm'}
         />
         <VStack spacing={0} alignItems={'baseline'}>
-          <Text>{user.firstName} {user.lastName}</Text>
-          <Text fontSize={'sm'} color={'gray.400'}>
+          <Text fontSize={nameSize ?? 'md'}>{user.firstName} {user.lastName}</Text>
+          <Text fontSize={descriptionSize ?? 'sm'} color={'gray.400'}>
             {user.email}, {user.phoneNumber}
           </Text>
         </VStack>
