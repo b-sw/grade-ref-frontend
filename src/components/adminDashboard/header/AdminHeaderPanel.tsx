@@ -15,22 +15,30 @@ import useStore from "../../../zustand/store";
 import useAuth from "../../../hooks/useAuth";
 import {Paths} from "../../../other/Paths";
 import { MdDashboard } from 'react-icons/md';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import {useLeagues} from "../../../hooks/useLeagues";
+import {uuid} from "../../../other/uuid";
+import {League} from "../../../entities/League";
 
 export const AdminHeaderPanel = () => {
   const user = useStore((state) => state.user);
   const { logout } = useAuth();
   const navigate = useNavigate();
+  const { query: leaguesQuery } = useLeagues();
+  const { leagueId } = useParams<{ leagueId: uuid }>();
+
+  const leagueIdx: number = leaguesQuery.data!.findIndex((l: League) => l.id === leagueId)!;
+  const leagueName: string = leaguesQuery.data![leagueIdx].name;
 
   return (
     <>
       <Flex m={0} p={0} pb={10}>
-        <Heading>GradeRef ⚽ - admin dashboard</Heading>
+        <Heading>GradeRef ⚽ - {leagueName} admin dashboard</Heading>
         <Spacer />
 
         <Flex alignItems={'center'}>
-          <Button mr={3} onClick={() => navigate(Paths.DASHBOARD)} leftIcon={<MdDashboard />}>
-            Dashboard
+          <Button mr={3} onClick={() => {navigate(Paths.ADMIN_EXPLORER)}} leftIcon={<MdDashboard />}>
+            Leagues
           </Button>
 
           <Menu>

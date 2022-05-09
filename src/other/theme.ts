@@ -9,7 +9,15 @@ const config = {
   useSystemColorMode: false,
 };
 
+const colors = {
+  customButton: {
+    50: '#CBD5E0',
+    100: '#E2E8F0',
+    600: '#1A202C',
+  }
+}
+
 // 3. extend the theme
-const theme = extendTheme({ config });
+const theme = extendTheme({ config, colors });
 
 export default theme;

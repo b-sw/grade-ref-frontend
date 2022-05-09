@@ -1,6 +1,7 @@
 import { useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { QueryClient, useMutation, useQuery, useQueryClient } from "react-query";
+import { useParams } from "react-router-dom";
 import {Match} from "../entities/Match";
 import {uuid} from "../other/uuid";
 
@@ -9,24 +10,25 @@ const MATCHES_QUERY_KEY = 'matches_qk';
 export const useMatches = () => {
   const toast = useToast();
   const queryClient: QueryClient = useQueryClient();
+  const { leagueId } = useParams<{ leagueId: uuid }>();
 
   const getMatches = async (): Promise<Match[]> => {
-    const response = await axios.get(`matches`);
+    const response = await axios.get(`leagues/${leagueId}/matches`);
     return response.data;
   }
 
   const postMatch = async (match: Match) => {
-    const response = await axios.post(`matches`, match);
+    const response = await axios.post(`leagues/${leagueId}/matches`, match);
     return response.data;
   }
 
   const updateMatch = async (match: Match) => {
-    const response = await axios.put(`matches/${match.id}`, match);
+    const response = await axios.put(`leagues/${leagueId}/matches/${match.id}`, match);
     return response.data;
   }
 
   const deleteMatch = async (matchId: uuid) => {
-    const response = await axios.delete(`matches/${matchId}`);
+    const response = await axios.delete(`leagues/${leagueId}/matches/${matchId}`);
     return response.data;
   }
 

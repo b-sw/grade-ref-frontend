@@ -11,6 +11,7 @@ import {Dashboard} from "./pages/Dashboard";
 import {AdminDashboard} from "./pages/AdminDashboard";
 import {RequireAuthRouteAdmin} from "./components/other/RequireAuthRouteAdmin";
 import theme from "./other/theme";
+import { AdminExplorer } from "./pages/AdminExplorer";
 
 const queryClient = new QueryClient();
 
@@ -21,16 +22,18 @@ export const App = () => (
         <UnauthorizedHandler />
         <Routes>
           <Route element={<AnimatedTransition />}>
+            <Route path={'*'} element={<Navigate to={Paths.LOGIN} />} />
+
+            <Route path={Paths.LOGIN} element={<Login />} />
+
             <Route element={<RequireAuthRouteAdmin />}>
-              <Route path={'*'} element={<Navigate to={Paths.ADMIN_DASHBOARD} />} />
-              <Route path={Paths.ADMIN_DASHBOARD} element={<AdminDashboard />} />
+              <Route path={Paths.ADMIN_EXPLORER} element={<AdminExplorer />} />
+              <Route path={Paths.ADMIN_DASHBOARD + '/:leagueId'} element={<AdminDashboard />} />
             </Route>
 
             <Route element={<RequireAuthRoute />}>
               <Route path={Paths.DASHBOARD} element={<Dashboard />} />
             </Route>
-
-            <Route path={Paths.LOGIN} element={<Login />} />
           </Route>
         </Routes>
       </Router>

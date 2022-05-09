@@ -38,7 +38,7 @@ export default function useAuth() {
     onSuccess: (response: LoginResponse) => {
       loginToStore(response);
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.accessToken;
-      navigate(Paths.DASHBOARD);
+      navigate(Paths.ADMIN_EXPLORER);
     }
   });
 

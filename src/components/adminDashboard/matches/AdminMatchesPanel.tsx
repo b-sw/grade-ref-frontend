@@ -31,7 +31,7 @@ export const AdminMatchesPanel = () => {
         direction={'column'}
         borderRadius={10}
         p={5}
-        backgroundColor={'gray.200'}
+        backgroundColor={'gray.300'}
         shadow={'md'}
         overflowY={'hidden'}
         flexGrow={1}

@@ -12,7 +12,7 @@ import {AdminSettingsPanel} from "../components/adminDashboard/settings/AdminSet
 export const AdminDashboard = () => {
   return (
     <>
-      <Flex p={5} m={0} h={['auto', '100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.300'}>
+      <Flex p={5} m={0} h={['auto', '100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
         <AdminHeaderPanel />
         <SimpleGrid columns={[1, 1, 3]} flexGrow={1} overflowY={'hidden'} spacing={5} p={5} m={-5} pt={5}>
           <AdminMatchesPanel />
