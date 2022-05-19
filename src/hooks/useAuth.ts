@@ -38,7 +38,7 @@ export default function useAuth() {
     onSuccess: (response: LoginResponse) => {
       loginToStore(response);
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.accessToken;
-      navigate(Paths.ADMIN_EXPLORER);
+      navigate(Paths.OWNER_DASHBOARD);
     }
   });
 
@@ -51,5 +51,7 @@ export default function useAuth() {
 
   const isLoggedInAsAdmin: boolean = isLoggedIn && user!.role === Role.Admin;
 
-  return { loginMutation, isLoggedIn, isLoggedInAsAdmin, logout };
+  const isLoggedInAsOwner: boolean = isLoggedIn && user!.role === Role.Owner;
+
+  return { loginMutation, isLoggedIn, isLoggedInAsAdmin, isLoggedInAsOwner, logout };
 }

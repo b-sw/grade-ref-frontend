@@ -1,11 +1,12 @@
 import {LoginResponse} from "../hooks/useAuth";
 
 export const createAuthSlice = (set: any) => ({
-  user: { email: null, accessToken: null, role: null, firstName: null, lastName: null },
+  user: { id: null, email: null, accessToken: null, role: null, firstName: null, lastName: null },
 
   loginUser: (loginResponse: LoginResponse) =>
     set((state: any) => {
       state.user = {
+        id: loginResponse.id,
         email: loginResponse.email,
         accessToken: loginResponse.accessToken,
         role: loginResponse.role,
@@ -15,6 +16,6 @@ export const createAuthSlice = (set: any) => ({
 
   logoutUser: () =>
     set((state: any) => {
-      state.user = { email: null, accessToken: null, role: null, firstName: null, lastName: null };
+      state.user = { id: null, email: null, accessToken: null, role: null, firstName: null, lastName: null };
     }),
 });

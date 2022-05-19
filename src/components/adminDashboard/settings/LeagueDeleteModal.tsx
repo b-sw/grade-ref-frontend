@@ -19,6 +19,7 @@ import {useSetState} from "../../../hooks/useSetState";
 import {League} from "../../../entities/League";
 import {uuid} from "../../../other/uuid";
 import {leagueItem} from "../../adminExplorer/LeagueCard";
+import useStore from "../../../zustand/store";
 
 interface Props {
   isOpen: boolean;
@@ -31,7 +32,8 @@ interface State {
 }
 
 export const LeagueDeleteModal = (props: Props) => {
-  const { query: leaguesQuery, deleteMutation } = useLeagues();
+  const user = useStore((state) => state.user);
+  const { query: leaguesQuery, deleteMutation } = useLeagues({ userId: user.id! });
   const { query: matchesQuery } = useMatches();
   const [state, setState] = useSetState({
     text: '',

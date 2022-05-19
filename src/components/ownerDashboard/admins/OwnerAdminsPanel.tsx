@@ -1,19 +1,18 @@
-import {Button, Flex, Spacer, Text, useDisclosure} from '@chakra-ui/react';
-import {AddIcon} from '@chakra-ui/icons';
+import {Button, Flex, Spacer, Text, useDisclosure } from '@chakra-ui/react';
+import { AddIcon } from '@chakra-ui/icons';
+import {AdminCreateModal} from "./AdminCreateModal";
+import {useUsers} from "../../../hooks/useUsers";
 import {scrollbarStyle} from "../../dashboard/shared/styles";
 import {User} from "../../../entities/User";
-import {RefereeListItem} from './RefereeListItem';
-import {RefereeCreateModal} from './RefereeCreateModal';
-import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
-import {Role} from "../../../other/Role";
+import {AdminListItem} from "./AdminListItem";
 
-export const RefereesPanel = () => {
+export const OwnerAdminsPanel = () => {
   const { isOpen: isCreateModalOpen, onOpen: onCreateModalOpen, onClose: onCreateModalClose } = useDisclosure();
-  const { query: refereesQuery } = useLeagueUsers(Role.Referee);
+  const { adminsQuery } = useUsers();
 
   return (
     <>
-      <RefereeCreateModal isOpen={isCreateModalOpen} onClose={onCreateModalClose} />
+      <AdminCreateModal isOpen={isCreateModalOpen} onClose={onCreateModalClose} />
       <Flex
         direction={'column'}
         borderRadius={10}
@@ -22,10 +21,11 @@ export const RefereesPanel = () => {
         shadow={'md'}
         overflowY={'hidden'}
         flexGrow={1}
+        h={'50%'}
       >
         <Flex mb={4}>
           <Text fontWeight={'bold'} fontSize={'2xl'}>
-            Referees
+            Admins
           </Text>
           <Spacer />
           <Button variant={'ghost'} leftIcon={<AddIcon />} onClick={onCreateModalOpen}>
@@ -34,9 +34,9 @@ export const RefereesPanel = () => {
         </Flex>
 
         <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
-          {refereesQuery.data &&
-            refereesQuery.data.map((referee: User) =>
-              <RefereeListItem key={referee.id} referee={referee} />
+          {adminsQuery.data &&
+            adminsQuery.data.map((admin: User) =>
+              <AdminListItem key={admin.id} admin={admin} />
             )}
         </Flex>
       </Flex>

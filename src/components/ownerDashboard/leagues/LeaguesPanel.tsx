@@ -1,19 +1,18 @@
-import {Button, Flex, Spacer, Text, useDisclosure} from '@chakra-ui/react';
-import {AddIcon} from '@chakra-ui/icons';
+import {Button, Flex, Spacer, Text, useDisclosure } from '@chakra-ui/react';
+import { AddIcon } from '@chakra-ui/icons';
+import {LeagueCreateModal} from "./LeagueCreateModal";
 import {scrollbarStyle} from "../../dashboard/shared/styles";
-import {User} from "../../../entities/User";
-import {RefereeListItem} from './RefereeListItem';
-import {RefereeCreateModal} from './RefereeCreateModal';
-import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
-import {Role} from "../../../other/Role";
+import {LeagueListItem} from "./LeagueListItem";
+import {useLeagues} from "../../../hooks/useLeagues";
+import {League} from "../../../entities/League";
 
-export const RefereesPanel = () => {
+export const LeaguesPanel = () => {
   const { isOpen: isCreateModalOpen, onOpen: onCreateModalOpen, onClose: onCreateModalClose } = useDisclosure();
-  const { query: refereesQuery } = useLeagueUsers(Role.Referee);
+  const { query: leaguesQuery } = useLeagues();
 
   return (
     <>
-      <RefereeCreateModal isOpen={isCreateModalOpen} onClose={onCreateModalClose} />
+      <LeagueCreateModal isOpen={isCreateModalOpen} onClose={onCreateModalClose} />
       <Flex
         direction={'column'}
         borderRadius={10}
@@ -22,10 +21,11 @@ export const RefereesPanel = () => {
         shadow={'md'}
         overflowY={'hidden'}
         flexGrow={1}
+        h={'50%'}
       >
         <Flex mb={4}>
           <Text fontWeight={'bold'} fontSize={'2xl'}>
-            Referees
+            Leagues
           </Text>
           <Spacer />
           <Button variant={'ghost'} leftIcon={<AddIcon />} onClick={onCreateModalOpen}>
@@ -34,9 +34,9 @@ export const RefereesPanel = () => {
         </Flex>
 
         <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
-          {refereesQuery.data &&
-            refereesQuery.data.map((referee: User) =>
-              <RefereeListItem key={referee.id} referee={referee} />
+          {leaguesQuery.data &&
+            leaguesQuery.data.map((league: League) =>
+              <LeagueListItem key={league.id} league={league} />
             )}
         </Flex>
       </Flex>

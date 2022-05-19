@@ -8,15 +8,16 @@ import {
   ModalFooter,
   Button,
 } from '@chakra-ui/react';
-import { Formik, Form } from 'formik';
+import { Form, Formik } from 'formik';
 import { InputControl } from 'formik-chakra-ui';
 import { useEffect } from 'react';
-import {useLeagues} from "../../hooks/useLeagues";
-import {League, leagueValidationSchema} from "../../entities/League";
+import {League, leagueValidationSchema} from "../../../entities/League";
+import {useLeagues} from "../../../hooks/useLeagues";
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
+  league: League;
 }
 
 interface FormikValues {
@@ -25,25 +26,25 @@ interface FormikValues {
   country: string;
 }
 
-export const LeagueCreateModal = (props: Props) => {
-  const { postMutation } = useLeagues();
+export const LeagueEditModal = (props: Props) => {
+  const { updateMutation } = useLeagues();
 
   useEffect(() => {
-    if (postMutation.isSuccess) {
+    if (updateMutation.isSuccess) {
       props.onClose();
-      postMutation.reset();
+      updateMutation.reset();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [postMutation.isSuccess]);
+  }, [updateMutation.isSuccess]);
 
   const initialValues: FormikValues = {
-    name: '',
-    shortName: '',
-    country: '',
+    name: props.league.name,
+    shortName: props.league.shortName,
+    country: props.league.country,
   };
 
-  const createLeague = (values: FormikValues) => {
-    postMutation.mutate({
+  const editLeague = (values: FormikValues) => {
+    updateMutation.mutate({
       name: values.name,
       shortName: values.shortName,
       country: values.country,
@@ -54,19 +55,21 @@ export const LeagueCreateModal = (props: Props) => {
     <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Create league</ModalHeader>
+        <ModalHeader>Edit league</ModalHeader>
         <ModalCloseButton />
-        <Formik initialValues={initialValues} onSubmit={createLeague} validationSchema={leagueValidationSchema}>
+
+        <Formik initialValues={initialValues} onSubmit={editLeague} validationSchema={leagueValidationSchema}>
           {({ handleSubmit }) => (
             <Form onSubmit={handleSubmit}>
               <ModalBody>
-                <InputControl name='name' label='Name' />
-                <InputControl name='shortName' label='Short name' mt={5} />
-                <InputControl name='country' label='Country' mt={5} />
+                <InputControl name='email' label='Email address' />
+                <InputControl name='phoneNumber' label='Phone number' />
+                <InputControl name='firstName' label='First name' />
+                <InputControl name='lastName' label='Last name' />
               </ModalBody>
               <ModalFooter>
-                <Button colorScheme='blue' mr={'3'} type='submit' isLoading={postMutation.isLoading}>
-                  Create
+                <Button mr={'3'} type='submit' isLoading={updateMutation.isLoading}>
+                  Save
                 </Button>
                 <Button onClick={props.onClose}>Cancel</Button>
               </ModalFooter>

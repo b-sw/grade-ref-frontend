@@ -8,8 +8,25 @@ import {RefereesPanel} from "../components/adminDashboard/referees/RefereesPanel
 import {ObserversPanel} from "../components/adminDashboard/observers/ObserversPanel";
 import {TeamsPanel} from "../components/adminDashboard/teams/TeamsPanel";
 import {AdminSettingsPanel} from "../components/adminDashboard/settings/AdminSettingsPanel";
+import {useUsers} from "../hooks/useUsers";
+import {useTeams} from "../hooks/useTeams";
+import {useMatches} from "../hooks/useMatches";
+import {LoadingOverlay} from "./LoadingOverlay";
+import {useLeagues} from "../hooks/useLeagues";
+import useStore from "../zustand/store";
 
 export const AdminDashboard = () => {
+  const user = useStore((state) => state.user);
+  const { refereesQuery, observersQuery } = useUsers();
+  const { query: teamsQuery } = useTeams();
+  const { query: matchesQuery } = useMatches();
+  const { query: leaguesQuery } = useLeagues({ userId: user.id! });
+  const queries = [refereesQuery, observersQuery, teamsQuery, matchesQuery, leaguesQuery];
+
+  if (queries.some((query) => query.isLoading)) {
+    return (<LoadingOverlay />);
+  }
+
   return (
     <>
       <Flex p={5} m={0} h={['auto', '100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>

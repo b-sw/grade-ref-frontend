@@ -8,13 +8,18 @@ import { useNavigate } from "react-router-dom";
 
 const LEAGUES_QUERY_KEY: string = 'leagues_qk'
 
-export const useLeagues = () => {
+export interface Props {
+  userId: uuid,
+}
+
+export const useLeagues = (props?: Props) => {
   const navigate = useNavigate();
   const toast = useToast();
   const queryClient: QueryClient = useQueryClient();
 
   const getLeagues = async (): Promise<League[]> => {
-    const response = await axios.get(`leagues`);
+    const url: string = props ? `users/${props.userId}/leagues` : `leagues`;
+    const response = await axios.get(url);
     return response.data;
   }
 
@@ -33,7 +38,7 @@ export const useLeagues = () => {
     return response.data;
   }
 
-  const query = useQuery(LEAGUES_QUERY_KEY, getLeagues);
+  const query = useQuery(props ? [LEAGUES_QUERY_KEY, props.userId] : LEAGUES_QUERY_KEY, getLeagues);
 
   const postMutation = useMutation(postLeague, {
     onSuccess: (league: League) => {

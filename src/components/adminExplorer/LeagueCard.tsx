@@ -1,7 +1,11 @@
-import {Avatar, Button, Flex, HStack, Text, VStack } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
+import {Avatar, Button, Flex, HStack, Text, VStack} from '@chakra-ui/react';
+import {useNavigate} from 'react-router-dom';
 import {Paths} from '../../other/Paths';
 import {League} from "../../entities/League";
+import {useTeams} from "../../hooks/useTeams";
+import {useMatches} from "../../hooks/useMatches";
+import {useLeagueUsers} from "../../hooks/useLeagueUsers";
+import {Role} from "../../other/Role";
 
 interface Props {
   league: League;
@@ -9,8 +13,16 @@ interface Props {
 
 export const LeagueCard = (props: Props) => {
   const navigate = useNavigate();
+  const { query: refereesQuery } = useLeagueUsers(Role.Referee, { disableAutoRefetch: true, leagueId: props.league.id });
+  const { query: observersQuery } = useLeagueUsers(Role.Observer, { disableAutoRefetch: true, leagueId: props.league.id });
+  const { query: teamsQuery } = useTeams({ disableAutoRefetch: true, leagueId: props.league.id });
+  const { query: matchesQuery } = useMatches({ disableAutoRefetch: true, leagueId: props.league.id });
+  const queries = [refereesQuery, observersQuery, teamsQuery, matchesQuery]
 
-  const navigateToDashboard = (league: League) => {
+  const navigateToDashboard = async (league: League) => {
+    await Promise.all(queries.map(async (query): Promise<any> => {
+      await query.refetch();
+    }));
     navigate(`${Paths.ADMIN_DASHBOARD}/${league.id}`);
   };
 
@@ -18,7 +30,11 @@ export const LeagueCard = (props: Props) => {
     <Flex borderRadius={5} p={5} backgroundColor={'gray.300'} shadow={'md'} w={['80%', '80%', '20%']}>
       <VStack alignItems={'baseline'} w={'100%'}>
         {leagueItem(props.league)}
-        <Button w={'100%'} onClick={() => navigateToDashboard(props.league)}>
+        <Button
+          w={'100%'}
+          onClick={async () => await navigateToDashboard(props.league)}
+          isLoading={queries.some((query) => query.isLoading)}
+        >
           Select
         </Button>
       </VStack>

@@ -10,12 +10,20 @@ import { HiOutlineLogout } from 'react-icons/hi';
 import {useLeagues} from "../hooks/useLeagues";
 import {League} from "../entities/League";
 import {LeagueCard} from "../components/adminExplorer/LeagueCard";
-import {LeagueCreateModal} from "../components/adminExplorer/LeagueCreateModal";
+import {LoadingOverlay} from "./LoadingOverlay";
+import {LeagueCreateModal} from "../components/ownerDashboard/leagues/LeagueCreateModal";
+import useStore from "../zustand/store";
 
 export const AdminExplorer = () => {
+  const user = useStore((state) => state.user);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { query: leaguesQuery } = useLeagues();
+  const { query: leaguesQuery } = useLeagues({ userId: user.id! });
   const { logout } = useAuth();
+  const queries = [leaguesQuery];
+
+  if (queries.some((query) => query.isLoading)) {
+    return (<LoadingOverlay />);
+  }
 
   return (
     <Flex p={4} m={0} h={['100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
@@ -34,6 +42,7 @@ export const AdminExplorer = () => {
           mt={-10}
           justifyContent={'center'}
           align={'center'}
+          wrap={'wrap'}
         >
           {leaguesQuery.data &&
             leaguesQuery.data.map((league: League) => (
@@ -45,7 +54,7 @@ export const AdminExplorer = () => {
             rightIcon={<PlusSquareIcon />}
             variant={'outline'}
             w={['80%', '80%', '20%']}
-            h={'100%'}
+            h={'20%'}
             minH={'10em'}
             colorScheme={'customButton'}
           >

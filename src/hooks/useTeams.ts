@@ -7,10 +7,16 @@ import {uuid} from "../other/uuid";
 
 const TEAMS_QUERY_KEY: string = 'teams_qk'
 
-export const useTeams = () => {
+export interface Props {
+  disableAutoRefetch: boolean;
+  leagueId: uuid;
+}
+
+export const useTeams = (props?: Props) => {
   const toast = useToast();
   const queryClient: QueryClient = useQueryClient();
-  const { leagueId } = useParams<{ leagueId: uuid }>();
+  let { leagueId } = useParams<{ leagueId: uuid }>();
+  leagueId = props ? props.leagueId : leagueId;
 
   const getTeams = async (): Promise<Team[]> => {
     const response = await axios.get(`leagues/${leagueId}/teams`);
@@ -32,11 +38,15 @@ export const useTeams = () => {
     return response.data;
   }
 
-  const query = useQuery(TEAMS_QUERY_KEY, getTeams);
+  const query = useQuery(
+    [TEAMS_QUERY_KEY, leagueId],
+    getTeams,
+    { enabled: props ? !props.disableAutoRefetch : true },
+  );
 
   const postMutation = useMutation(postTeam, {
     onSuccess: (team: Team) => {
-      queryClient.setQueryData(TEAMS_QUERY_KEY, (old: any) => [...old, team]);
+      queryClient.setQueryData([TEAMS_QUERY_KEY, leagueId], (old: any) => [...old, team]);
       toast({
         title: 'Successfully added a team',
         status: 'success',
@@ -48,10 +58,10 @@ export const useTeams = () => {
 
   const updateMutation = useMutation(updateTeam, {
     onSuccess: (team: Team) => {
-      const teams: Team[] = queryClient.getQueryData(TEAMS_QUERY_KEY)!;
+      const teams: Team[] = queryClient.getQueryData([TEAMS_QUERY_KEY, leagueId])!;
       const index: number = teams.findIndex((t: Team) => t.id === team.id);
       teams[index] = team;
-      queryClient.setQueryData(TEAMS_QUERY_KEY, (_) => teams);
+      queryClient.setQueryData([TEAMS_QUERY_KEY, leagueId], (_) => teams);
       toast({
         title: 'Successfully updated a team',
         status: 'success',
@@ -63,7 +73,7 @@ export const useTeams = () => {
 
   const deleteMutation = useMutation(deleteTeam, {
     onSuccess: (team: Team) => {
-      queryClient.setQueryData(TEAMS_QUERY_KEY, (old: any) => old.filter((t: Team) => t.id !== team.id));
+      queryClient.setQueryData([TEAMS_QUERY_KEY, leagueId], (old: any) => old.filter((t: Team) => t.id !== team.id));
       toast({
         title: 'Successfully deleted a team',
         status: 'success',

@@ -7,10 +7,16 @@ import {uuid} from "../other/uuid";
 
 const MATCHES_QUERY_KEY = 'matches_qk';
 
-export const useMatches = () => {
+export interface Props {
+  disableAutoRefetch: boolean;
+  leagueId: uuid;
+}
+
+export const useMatches = (props?: Props) => {
   const toast = useToast();
   const queryClient: QueryClient = useQueryClient();
-  const { leagueId } = useParams<{ leagueId: uuid }>();
+  let { leagueId } = useParams<{ leagueId: uuid }>();
+  leagueId = props ? props.leagueId : leagueId;
 
   const getMatches = async (): Promise<Match[]> => {
     const response = await axios.get(`leagues/${leagueId}/matches`);
@@ -32,11 +38,15 @@ export const useMatches = () => {
     return response.data;
   }
 
-  const query = useQuery(MATCHES_QUERY_KEY, getMatches);
+  const query = useQuery(
+    [MATCHES_QUERY_KEY, leagueId],
+    getMatches,
+    { enabled: props ? !props.disableAutoRefetch : true },
+  );
 
   const postMutation = useMutation(postMatch, {
     onSuccess: (match: Match) => {
-      queryClient.setQueryData(MATCHES_QUERY_KEY, (old: any) => [...old, match]);
+      queryClient.setQueryData([MATCHES_QUERY_KEY, leagueId], (old: any) => [...old, match]);
       toast({
         title: 'Successfully added a match',
         status: 'success',
@@ -48,10 +58,10 @@ export const useMatches = () => {
 
   const updateMutation = useMutation(updateMatch, {
     onSuccess: (match: Match) => {
-      const matches: Match[] = queryClient.getQueryData(MATCHES_QUERY_KEY)!;
+      const matches: Match[] = queryClient.getQueryData([MATCHES_QUERY_KEY, leagueId])!;
       const index: number = matches.findIndex((m: Match) => m.id === match.id);
       matches[index] = match;
-      queryClient.setQueryData(MATCHES_QUERY_KEY, (_) => matches);
+      queryClient.setQueryData([MATCHES_QUERY_KEY, leagueId], (_) => matches);
       toast({
         title: 'Successfully updated a match',
         status: 'success',
@@ -63,7 +73,7 @@ export const useMatches = () => {
 
   const deleteMutation = useMutation(deleteMatch, {
     onSuccess: (match: Match) => {
-      queryClient.setQueryData(MATCHES_QUERY_KEY, (old: any) => old.filter((m: Match) => m.id !== match.id));
+      queryClient.setQueryData([MATCHES_QUERY_KEY, leagueId], (old: any) => old.filter((m: Match) => m.id !== match.id));
       toast({
         title: 'Successfully deleted a match',
         status: 'success',

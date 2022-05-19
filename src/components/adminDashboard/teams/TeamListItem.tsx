@@ -42,9 +42,6 @@ export const teamItem = (team: Team) => {
         />
         <VStack spacing={0} alignItems={'baseline'}>
           <Text>{team.name}</Text>
-          <Text fontSize={'sm'} color={'gray.400'}>
-            Stadium?
-          </Text>
         </VStack>
       </HStack>
     </>

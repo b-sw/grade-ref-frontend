@@ -4,12 +4,11 @@ import {scrollbarStyle} from "../../dashboard/shared/styles";
 import {User} from "../../../entities/User";
 import {RefereeListItem} from './RefereeListItem';
 import {RefereeCreateModal} from './RefereeCreateModal';
-import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
-import {Role} from "../../../other/Role";
+import {useUsers} from "../../../hooks/useUsers";
 
-export const RefereesPanel = () => {
+export const OwnerRefereesPanel = () => {
   const { isOpen: isCreateModalOpen, onOpen: onCreateModalOpen, onClose: onCreateModalClose } = useDisclosure();
-  const { query: refereesQuery } = useLeagueUsers(Role.Referee);
+  const { refereesQuery } = useUsers();
 
   return (
     <>

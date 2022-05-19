@@ -12,6 +12,8 @@ import {AdminDashboard} from "./pages/AdminDashboard";
 import {RequireAuthRouteAdmin} from "./components/other/RequireAuthRouteAdmin";
 import theme from "./other/theme";
 import { AdminExplorer } from "./pages/AdminExplorer";
+import {RequireAuthRouteOwner} from "./components/other/RequireAuthRouteOwner";
+import {OwnerDashboard} from "./pages/OwnerDashboard";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +27,10 @@ export const App = () => (
             <Route path={'*'} element={<Navigate to={Paths.LOGIN} />} />
 
             <Route path={Paths.LOGIN} element={<Login />} />
+
+            <Route element={<RequireAuthRouteOwner />}>
+              <Route path={Paths.OWNER_DASHBOARD} element={<OwnerDashboard />} />
+            </Route>
 
             <Route element={<RequireAuthRouteAdmin />}>
               <Route path={Paths.ADMIN_EXPLORER} element={<AdminExplorer />} />

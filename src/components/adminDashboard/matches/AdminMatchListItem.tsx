@@ -6,12 +6,13 @@ import {Team} from "../../../entities/Team";
 import {User} from "../../../entities/User";
 import dayjs from 'dayjs';
 import { CalendarIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
-import { BsClockFill, BsFillHouseDoorFill, BsFillPeopleFill, BsBookmarks } from 'react-icons/bs';
+import { BsClockFill, BsFillHouseDoorFill, BsBookmarks } from 'react-icons/bs';
 import {Constants} from "../../../other/Constants";
 import {refereeItem} from "../referees/RefereeListItem";
 import {observerItem} from "../observers/ObserverListItem";
 import {AdminMatchDeleteModal} from "./AdminMatchDeleteModal";
 import {AdminMatchEditModal} from "./AdminMatchEditModal";
+import { MdPeople } from 'react-icons/md';
 
 export interface Props {
   match: Match;
@@ -93,7 +94,7 @@ export const matchItem = (match: Match, teamsQuery: any, refereesQuery: any, obs
 
         <VStack align='left'>
           <HStack>
-            <BsFillPeopleFill />
+            <MdPeople />
             <Text fontSize={'md'}><b>Assignments</b></Text>
           </HStack>
             {refereeItem(referee, 'xs', 'sm', 'xs', true)}

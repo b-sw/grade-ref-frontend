@@ -6,7 +6,10 @@ Yup.setLocale({
   },
   string: {
     max: ({ max }) => {
-      return `Enter maximum of ${max} characters.`;
+      return `Field must be at most ${max} characters`;
+    },
+    min: ({ min }) => {
+      return `Field must be at least ${min} characters`;
     },
   },
 });

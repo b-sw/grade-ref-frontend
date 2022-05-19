@@ -1,7 +1,8 @@
-import {Button, Flex, Spacer, Text, useDisclosure } from '@chakra-ui/react';
+import {Button, Flex, Input, InputGroup, InputLeftElement, Spacer, Text, useDisclosure } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import {scrollbarStyle} from "../../dashboard/shared/styles";
 import {Team} from "../../../entities/Team";
+import { MdSearch } from "react-icons/md";
 import {TeamListItem} from "./TeamListItem";
 import {useTeams} from "../../../hooks/useTeams";
 import {TeamCreateModal} from "./TeamCreateModal";
@@ -31,6 +32,16 @@ export const TeamsPanel = () => {
             Add
           </Button>
         </Flex>
+
+        <InputGroup>
+          <InputLeftElement
+            pointerEvents={'none'}
+            children={<MdSearch />}
+          />
+          <Input
+            mb={5}
+          />
+        </InputGroup>
 
         <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
           {teamsQuery.data &&

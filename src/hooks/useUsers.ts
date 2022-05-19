@@ -6,9 +6,14 @@ import {User} from "../entities/User";
 import {Role} from "../other/Role";
 
 const REFEREES_QUERY_KEY = 'referees_qk';
-const OBSERVERS_QUERY_KEY = 'observers_qk'
+const OBSERVERS_QUERY_KEY = 'observers_qk';
+const ADMINS_QUERY_KEY = 'admins_qk';
 
-export const useUsers = () => {
+export interface Props {
+  disableAutoRefetch: boolean;
+}
+
+export const useUsers = (props?: Props) => {
   const toast = useToast();
   const queryClient: QueryClient = useQueryClient();
 
@@ -19,6 +24,11 @@ export const useUsers = () => {
 
   const getObservers = async (): Promise<User[]> => {
     const response = await axios.get(`users/observers`);
+    return response.data;
+  }
+
+  const getAdmins = async (): Promise<User[]> => {
+    const response = await axios.get(`users/admins`);
     return response.data;
   }
 
@@ -37,8 +47,23 @@ export const useUsers = () => {
     return response.data;
   }
 
-  const refereesQuery = useQuery(REFEREES_QUERY_KEY, getReferees);
-  const observersQuery = useQuery(OBSERVERS_QUERY_KEY, getObservers);
+  const refereesQuery = useQuery(
+    REFEREES_QUERY_KEY,
+    getReferees,
+    { enabled: props ? !props.disableAutoRefetch : true },
+  );
+
+  const observersQuery = useQuery(
+    OBSERVERS_QUERY_KEY,
+    getObservers,
+    { enabled: props ? !props.disableAutoRefetch : true },
+  );
+
+  const adminsQuery = useQuery(
+    ADMINS_QUERY_KEY,
+    getAdmins,
+    { enabled: props ? !props.disableAutoRefetch : true },
+  );
 
   const postMutation = useMutation(postUser, {
     onSuccess: (user: User) => {
@@ -85,5 +110,5 @@ export const useUsers = () => {
     },
   });
 
-  return { refereesQuery, observersQuery, postMutation, updateMutation, deleteMutation }
+  return { refereesQuery, observersQuery, adminsQuery, postMutation, updateMutation, deleteMutation }
 }
