@@ -13,7 +13,7 @@ import { InputControl } from 'formik-chakra-ui';
 import { useEffect } from 'react';
 import {User, userValidationSchema} from "../../../entities/User";
 import {useUsers} from "../../../hooks/useUsers";
-import {Role} from "../../../other/Role";
+import {Role} from "../../../shared/Role";
 
 interface Props {
   isOpen: boolean;

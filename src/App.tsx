@@ -4,13 +4,13 @@ import { HashRouter as Router, Navigate, Route, Routes } from 'react-router-dom'
 import { ChakraProvider } from "@chakra-ui/react"
 import {UnauthorizedHandler} from "./components/other/UnauthorizedHandler";
 import {AnimatedTransition} from "./components/other/AnimatedTransition";
-import {Paths} from "./other/Paths";
+import {Paths} from "./shared/Paths";
 import {Login} from "./pages/Login";
 import {RequireAuthRoute} from "./components/other/RequireAuthRoute";
 import {Dashboard} from "./pages/Dashboard";
 import {AdminDashboard} from "./pages/AdminDashboard";
 import {RequireAuthRouteAdmin} from "./components/other/RequireAuthRouteAdmin";
-import theme from "./other/theme";
+import theme from "./shared/theme";
 import { AdminExplorer } from "./pages/AdminExplorer";
 import {RequireAuthRouteOwner} from "./components/other/RequireAuthRouteOwner";
 import {OwnerDashboard} from "./pages/OwnerDashboard";

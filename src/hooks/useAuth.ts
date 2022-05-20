@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import { Paths } from '../other/Paths';
+import { Paths } from '../shared/Paths';
 import { tokenExpired } from '../zustand/jwtExpiration';
 import useStore from '../zustand/store';
-import {uuid} from "../other/uuid";
-import {Role} from "../other/Role";
+import {uuid} from "../shared/uuid";
+import {Role} from "../shared/Role";
 
 export interface LoginResponse {
   id: uuid;

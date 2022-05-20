@@ -1,14 +1,37 @@
-import {Button, Flex, Spacer, Text, useDisclosure } from '@chakra-ui/react';
+import {Button, Flex, InputLeftElement, InputGroup, Spacer, Text, useDisclosure, Input } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import {LeagueCreateModal} from "./LeagueCreateModal";
 import {scrollbarStyle} from "../../dashboard/shared/styles";
 import {LeagueListItem} from "./LeagueListItem";
-import {useLeagues} from "../../../hooks/useLeagues";
 import {League} from "../../../entities/League";
+import {useLeagues} from "../../../hooks/useLeagues";
+import { MdSearch } from 'react-icons/md';
+import {useSetState} from "../../../hooks/useSetState";
+import {leagueFilter} from "../../shared/filters";
+import {useEffect} from 'react';
+
+interface State {
+  leagues: League[],
+  filter: string,
+}
 
 export const LeaguesPanel = () => {
   const { isOpen: isCreateModalOpen, onOpen: onCreateModalOpen, onClose: onCreateModalClose } = useDisclosure();
   const { query: leaguesQuery } = useLeagues();
+
+  const [state, setState] = useSetState({
+    leagues: [],
+    filter: '',
+  } as State);
+
+  useEffect(() => {
+    setState({ leagues: leaguesQuery.data })
+  }, [leaguesQuery.data]);
+
+  useEffect(() => {
+    const filteredLeagues: League[] = leagueFilter(leaguesQuery.data!, state.filter);
+    setState({ leagues: filteredLeagues });
+  }, [state.filter]);
 
   return (
     <>
@@ -33,9 +56,20 @@ export const LeaguesPanel = () => {
           </Button>
         </Flex>
 
+        <InputGroup>
+          <InputLeftElement
+            pointerEvents={'none'}
+            children={<MdSearch />}
+          />
+          <Input
+            mb={2}
+            onChange={(event) => setState({ filter: event.target.value })}
+          />
+        </InputGroup>
+
         <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
-          {leaguesQuery.data &&
-            leaguesQuery.data.map((league: League) =>
+          {state.leagues &&
+            state.leagues.map((league: League) =>
               <LeagueListItem key={league.id} league={league} />
             )}
         </Flex>

@@ -1,11 +1,11 @@
 import {Avatar, Button, Flex, HStack, Text, VStack} from '@chakra-ui/react';
 import {useNavigate} from 'react-router-dom';
-import {Paths} from '../../other/Paths';
+import {Paths} from '../../shared/Paths';
 import {League} from "../../entities/League";
 import {useTeams} from "../../hooks/useTeams";
 import {useMatches} from "../../hooks/useMatches";
 import {useLeagueUsers} from "../../hooks/useLeagueUsers";
-import {Role} from "../../other/Role";
+import {Role} from "../../shared/Role";
 
 interface Props {
   league: League;

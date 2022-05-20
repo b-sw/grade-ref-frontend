@@ -1,6 +1,6 @@
-import Yup from '../other/yup';
-import {uuid} from "../other/uuid";
-import {Role} from "../other/Role";
+import Yup from '../shared/yup';
+import {uuid} from "../shared/uuid";
+import {Role} from "../shared/Role";
 
 export type User = {
   id: uuid;

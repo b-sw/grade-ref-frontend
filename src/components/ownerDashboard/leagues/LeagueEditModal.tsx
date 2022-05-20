@@ -45,6 +45,7 @@ export const LeagueEditModal = (props: Props) => {
 
   const editLeague = (values: FormikValues) => {
     updateMutation.mutate({
+      id: props.league.id,
       name: values.name,
       shortName: values.shortName,
       country: values.country,
@@ -62,10 +63,9 @@ export const LeagueEditModal = (props: Props) => {
           {({ handleSubmit }) => (
             <Form onSubmit={handleSubmit}>
               <ModalBody>
-                <InputControl name='email' label='Email address' />
-                <InputControl name='phoneNumber' label='Phone number' />
-                <InputControl name='firstName' label='First name' />
-                <InputControl name='lastName' label='Last name' />
+                <InputControl name='name' label='Name' />
+                <InputControl name='shortName' label='Short name' />
+                <InputControl name='country' label='Country' />
               </ModalBody>
               <ModalFooter>
                 <Button mr={'3'} type='submit' isLoading={updateMutation.isLoading}>

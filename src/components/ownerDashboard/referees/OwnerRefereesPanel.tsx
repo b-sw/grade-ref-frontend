@@ -1,14 +1,37 @@
-import {Button, Flex, Spacer, Text, useDisclosure} from '@chakra-ui/react';
+import {Button, Flex, Input, InputGroup, InputLeftElement, Spacer, Text, useDisclosure} from '@chakra-ui/react';
 import {AddIcon} from '@chakra-ui/icons';
 import {scrollbarStyle} from "../../dashboard/shared/styles";
 import {User} from "../../../entities/User";
 import {RefereeListItem} from './RefereeListItem';
 import {RefereeCreateModal} from './RefereeCreateModal';
 import {useUsers} from "../../../hooks/useUsers";
+import { MdSearch } from 'react-icons/md';
+import {useSetState} from "../../../hooks/useSetState";
+import {userFilter} from "../../shared/filters";
+import { useEffect } from 'react';
+
+interface State {
+  referees: User[],
+  filter: string,
+}
 
 export const OwnerRefereesPanel = () => {
   const { isOpen: isCreateModalOpen, onOpen: onCreateModalOpen, onClose: onCreateModalClose } = useDisclosure();
   const { refereesQuery } = useUsers();
+
+  const [state, setState] = useSetState({
+    referees: [],
+    filter: '',
+  } as State);
+
+  useEffect(() => {
+    setState({ referees: refereesQuery.data })
+  }, [refereesQuery.data]);
+
+  useEffect(() => {
+    const filteredReferees: User[] = userFilter(refereesQuery.data!, state.filter);
+    setState({ referees: filteredReferees });
+  }, [state.filter]);
 
   return (
     <>
@@ -32,9 +55,20 @@ export const OwnerRefereesPanel = () => {
           </Button>
         </Flex>
 
+        <InputGroup>
+          <InputLeftElement
+            pointerEvents={'none'}
+            children={<MdSearch />}
+          />
+          <Input
+            mb={2}
+            onChange={(event) => setState({ filter: event.target.value })}
+          />
+        </InputGroup>
+
         <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
-          {refereesQuery.data &&
-            refereesQuery.data.map((referee: User) =>
+          {state.referees &&
+            state.referees.map((referee: User) =>
               <RefereeListItem key={referee.id} referee={referee} />
             )}
         </Flex>

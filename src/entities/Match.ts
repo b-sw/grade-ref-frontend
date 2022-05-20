@@ -1,5 +1,5 @@
-import {uuid} from "../other/uuid";
-import Yup from "../other/yup";
+import {uuid} from "../shared/uuid";
+import Yup from "../shared/yup";
 
 export type Match = {
   id: uuid;

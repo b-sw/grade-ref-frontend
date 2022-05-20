@@ -13,14 +13,12 @@ import {useTeams} from "../hooks/useTeams";
 import {useMatches} from "../hooks/useMatches";
 import {LoadingOverlay} from "./LoadingOverlay";
 import {useLeagues} from "../hooks/useLeagues";
-import useStore from "../zustand/store";
 
 export const AdminDashboard = () => {
-  const user = useStore((state) => state.user);
   const { refereesQuery, observersQuery } = useUsers();
   const { query: teamsQuery } = useTeams();
   const { query: matchesQuery } = useMatches();
-  const { query: leaguesQuery } = useLeagues({ userId: user.id! });
+  const { query: leaguesQuery } = useLeagues();
   const queries = [refereesQuery, observersQuery, teamsQuery, matchesQuery, leaguesQuery];
 
   if (queries.some((query) => query.isLoading)) {

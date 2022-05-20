@@ -7,7 +7,7 @@ import {User} from "../../../entities/User";
 import dayjs from 'dayjs';
 import { CalendarIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import { BsClockFill, BsFillHouseDoorFill, BsBookmarks } from 'react-icons/bs';
-import {Constants} from "../../../other/Constants";
+import {Constants} from "../../../shared/Constants";
 import {refereeItem} from "../referees/RefereeListItem";
 import {observerItem} from "../observers/ObserverListItem";
 import {AdminMatchDeleteModal} from "./AdminMatchDeleteModal";

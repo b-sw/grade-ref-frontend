@@ -13,18 +13,18 @@ import {
 } from '@chakra-ui/react';
 import useStore from "../../../zustand/store";
 import useAuth from "../../../hooks/useAuth";
-import {Paths} from "../../../other/Paths";
+import {Paths} from "../../../shared/Paths";
 import { MdDashboard, MdPeople } from 'react-icons/md';
 import { useNavigate, useParams } from 'react-router-dom';
 import {useLeagues} from "../../../hooks/useLeagues";
-import {uuid} from "../../../other/uuid";
+import {uuid} from "../../../shared/uuid";
 import {League} from "../../../entities/League";
 
 export const AdminHeaderPanel = () => {
   const user = useStore((state) => state.user);
   const { logout } = useAuth();
   const navigate = useNavigate();
-  const { query: leaguesQuery } = useLeagues({ userId: user.id! });
+  const { query: leaguesQuery } = useLeagues();
   const { leagueId } = useParams<{ leagueId: uuid }>();
 
   const leagueIdx: number = leaguesQuery.data!.findIndex((l: League) => l.id === leagueId)!;

@@ -1,9 +1,9 @@
 import {useToast} from "@chakra-ui/react";
 import axios from "axios";
 import {QueryClient, useMutation, useQuery, useQueryClient} from "react-query";
-import {uuid} from "../other/uuid";
+import {uuid} from "../shared/uuid";
 import {User} from "../entities/User";
-import {Role} from "../other/Role";
+import {Role} from "../shared/Role";
 import { useParams } from "react-router-dom";
 
 const REFEREES_QUERY_KEY = 'referees_qk';

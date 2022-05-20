@@ -1,14 +1,37 @@
-import {Button, Flex, Spacer, Text, useDisclosure } from '@chakra-ui/react';
+import {Button, Flex, Input, InputGroup, InputLeftElement, Spacer, Text, useDisclosure } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import {AdminCreateModal} from "./AdminCreateModal";
 import {useUsers} from "../../../hooks/useUsers";
 import {scrollbarStyle} from "../../dashboard/shared/styles";
 import {User} from "../../../entities/User";
 import {AdminListItem} from "./AdminListItem";
+import { MdSearch } from 'react-icons/md';
+import {useSetState} from "../../../hooks/useSetState";
+import {useEffect} from "react";
+import {userFilter} from "../../shared/filters";
+
+interface State {
+  admins: User[],
+  filter: string,
+}
 
 export const OwnerAdminsPanel = () => {
   const { isOpen: isCreateModalOpen, onOpen: onCreateModalOpen, onClose: onCreateModalClose } = useDisclosure();
   const { adminsQuery } = useUsers();
+
+  const [state, setState] = useSetState({
+    admins: [],
+    filter: '',
+  } as State);
+
+  useEffect(() => {
+    setState({ admins: adminsQuery.data })
+  }, [adminsQuery.data]);
+
+  useEffect(() => {
+    const filteredAdmins: User[] = userFilter(adminsQuery.data!, state.filter);
+    setState({ admins: filteredAdmins });
+  }, [state.filter]);
 
   return (
     <>
@@ -33,9 +56,20 @@ export const OwnerAdminsPanel = () => {
           </Button>
         </Flex>
 
+        <InputGroup>
+          <InputLeftElement
+            pointerEvents={'none'}
+            children={<MdSearch />}
+          />
+          <Input
+            mb={2}
+            onChange={(event) => setState({ filter: event.target.value })}
+          />
+        </InputGroup>
+
         <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
-          {adminsQuery.data &&
-            adminsQuery.data.map((admin: User) =>
+          {state.admins &&
+            state.admins.map((admin: User) =>
               <AdminListItem key={admin.id} admin={admin} />
             )}
         </Flex>

@@ -14,10 +14,10 @@ import { useEffect } from 'react';
 import {User} from "../../../entities/User";
 import {useUsers} from "../../../hooks/useUsers";
 import {Match, matchValidationSchema} from "../../../entities/Match";
-import {uuid} from "../../../other/uuid";
+import {uuid} from "../../../shared/uuid";
 import {useMatches} from "../../../hooks/useMatches";
 import {useTeams} from "../../../hooks/useTeams";
-import {Constants} from "../../../other/Constants";
+import {Constants} from "../../../shared/Constants";
 import dayjs from 'dayjs';
 import {Team} from "../../../entities/Team";
 

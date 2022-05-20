@@ -1,5 +1,5 @@
-import Yup from '../other/yup';
-import {uuid} from "../other/uuid";
+import Yup from '../shared/yup';
+import {uuid} from "../shared/uuid";
 
 export type Team = {
   id: uuid;

@@ -12,7 +12,7 @@ import { Form, Formik } from 'formik';
 import { InputControl } from 'formik-chakra-ui';
 import { useEffect } from 'react';
 import {useUsers} from "../../../hooks/useUsers";
-import {Role} from "../../../other/Role";
+import {Role} from "../../../shared/Role";
 import {User, userValidationSchema} from "../../../entities/User";
 
 interface Props {

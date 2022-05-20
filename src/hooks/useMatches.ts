@@ -3,7 +3,7 @@ import axios from "axios";
 import { QueryClient, useMutation, useQuery, useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
 import {Match} from "../entities/Match";
-import {uuid} from "../other/uuid";
+import {uuid} from "../shared/uuid";
 
 const MATCHES_QUERY_KEY = 'matches_qk';
 

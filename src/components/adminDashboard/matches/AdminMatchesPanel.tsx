@@ -7,7 +7,7 @@ import {useMatches} from "../../../hooks/useMatches";
 import {AdminMatchCreateModal} from "./AdminMatchCreateModal";
 import {useUsers} from "../../../hooks/useUsers";
 import {useTeams} from "../../../hooks/useTeams";
-import {Constants} from "../../../other/Constants";
+import {Constants} from "../../../shared/Constants";
 import dayjs from 'dayjs';
 
 export const AdminMatchesPanel = () => {

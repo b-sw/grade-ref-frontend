@@ -11,14 +11,14 @@ import {
 import { Form, Formik } from 'formik';
 import { InputControl, SelectControl } from 'formik-chakra-ui';
 import { useEffect } from 'react';
-import {uuid} from "../../../other/uuid";
+import {uuid} from "../../../shared/uuid";
 import {useUsers} from "../../../hooks/useUsers";
 import {User} from "../../../entities/User";
 import {useMatches} from "../../../hooks/useMatches";
 import {useTeams} from "../../../hooks/useTeams";
 import {Match, matchValidationSchema} from "../../../entities/Match";
 import {Team} from "../../../entities/Team";
-import {Constants} from "../../../other/Constants";
+import {Constants} from "../../../shared/Constants";
 import dayjs from 'dayjs';
 
 interface Props {

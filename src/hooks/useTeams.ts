@@ -1,9 +1,10 @@
 import { useToast } from "@chakra-ui/react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import {QueryClient, useMutation, useQuery, useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
 import {Team} from "../entities/Team";
-import {uuid} from "../other/uuid";
+import {uuid} from "../shared/uuid";
+import {toastError} from "./shared/toastError";
 
 const TEAMS_QUERY_KEY: string = 'teams_qk'
 
@@ -54,6 +55,7 @@ export const useTeams = (props?: Props) => {
         duration: 2000,
       });
     },
+    onError: (error: AxiosError, _variables, _context) => toastError(toast, error),
   });
 
   const updateMutation = useMutation(updateTeam, {
@@ -69,6 +71,7 @@ export const useTeams = (props?: Props) => {
         duration: 2000,
       });
     },
+    onError: (error: AxiosError, _variables, _context) => toastError(toast, error),
   });
 
   const deleteMutation = useMutation(deleteTeam, {

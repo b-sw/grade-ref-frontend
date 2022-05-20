@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import useStore from "../../../zustand/store";
 import useAuth from "../../../hooks/useAuth";
-import {Paths} from "../../../other/Paths";
+import {Paths} from "../../../shared/Paths";
 import { MdDashboard } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 

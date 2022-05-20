@@ -1,6 +1,6 @@
 import {Box, Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
 import {LeagueDeleteModal} from "./LeagueDeleteModal";
-import {uuid} from "../../../other/uuid";
+import {uuid} from "../../../shared/uuid";
 import { useParams } from 'react-router-dom';
 
 export const AdminSettingsPanel = () => {

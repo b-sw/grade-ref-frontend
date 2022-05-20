@@ -6,7 +6,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import GoogleLogin from 'react-google-login';
-import { Constants } from "../other/Constants";
+import { Constants } from "../shared/Constants";
 import useAuth from "../hooks/useAuth";
 import {LoginFailureModal} from "../components/other/LoginFailureModal";
 import {useEffect} from "react";

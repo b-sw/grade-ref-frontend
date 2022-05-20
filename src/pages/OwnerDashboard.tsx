@@ -9,10 +9,12 @@ import {OwnerRefereesPanel} from "../components/ownerDashboard/referees/OwnerRef
 import {OwnerObserversPanel} from "../components/ownerDashboard/observers/OwnerObserversPanel";
 import {OwnerAdminsPanel} from "../components/ownerDashboard/admins/OwnerAdminsPanel";
 import {LeaguesPanel} from "../components/ownerDashboard/leagues/LeaguesPanel";
+import {useLeagues} from "../hooks/useLeagues";
 
 export const OwnerDashboard = () => {
   const { adminsQuery, refereesQuery, observersQuery } = useUsers();
-  const queries = [adminsQuery, refereesQuery, observersQuery];
+  const { query: leaguesQuery } = useLeagues();
+  const queries = [adminsQuery, refereesQuery, observersQuery, leaguesQuery];
 
   if (queries.some((query) => query.isLoading)) {
     return (<LoadingOverlay />);

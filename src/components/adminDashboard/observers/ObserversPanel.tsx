@@ -21,6 +21,7 @@ export const ObserversPanel = () => {
         shadow={'md'}
         overflowY={'hidden'}
         flexGrow={1}
+        h={'50%'}
       >
         <Flex mb={4}>
           <Text fontWeight={'bold'} fontSize={'2xl'}>

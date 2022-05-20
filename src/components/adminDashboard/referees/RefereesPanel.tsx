@@ -5,7 +5,7 @@ import {User} from "../../../entities/User";
 import {RefereeListItem} from './RefereeListItem';
 import {RefereeCreateModal} from './RefereeCreateModal';
 import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
-import {Role} from "../../../other/Role";
+import {Role} from "../../../shared/Role";
 
 export const RefereesPanel = () => {
   const { isOpen: isCreateModalOpen, onOpen: onCreateModalOpen, onClose: onCreateModalClose } = useDisclosure();
@@ -22,6 +22,7 @@ export const RefereesPanel = () => {
         shadow={'md'}
         overflowY={'hidden'}
         flexGrow={1}
+        h={'50%'}
       >
         <Flex mb={4}>
           <Text fontWeight={'bold'} fontSize={'2xl'}>

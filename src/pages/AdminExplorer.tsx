@@ -12,12 +12,10 @@ import {League} from "../entities/League";
 import {LeagueCard} from "../components/adminExplorer/LeagueCard";
 import {LoadingOverlay} from "./LoadingOverlay";
 import {LeagueCreateModal} from "../components/ownerDashboard/leagues/LeagueCreateModal";
-import useStore from "../zustand/store";
 
 export const AdminExplorer = () => {
-  const user = useStore((state) => state.user);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { query: leaguesQuery } = useLeagues({ userId: user.id! });
+  const { query: leaguesQuery } = useLeagues();
   const { logout } = useAuth();
   const queries = [leaguesQuery];
 

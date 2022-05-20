@@ -1,9 +1,10 @@
 import {useToast} from "@chakra-ui/react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import {QueryClient, useMutation, useQuery, useQueryClient} from "react-query";
-import {uuid} from "../other/uuid";
+import {uuid} from "../shared/uuid";
 import {User} from "../entities/User";
-import {Role} from "../other/Role";
+import {Role} from "../shared/Role";
+import {toastError} from "./shared/toastError";
 
 const REFEREES_QUERY_KEY = 'referees_qk';
 const OBSERVERS_QUERY_KEY = 'observers_qk';
@@ -12,6 +13,11 @@ const ADMINS_QUERY_KEY = 'admins_qk';
 export interface Props {
   disableAutoRefetch: boolean;
 }
+
+const queryKeys: { [id: string] : any } = {};
+queryKeys[Role.Admin] = ADMINS_QUERY_KEY;
+queryKeys[Role.Referee] = REFEREES_QUERY_KEY;
+queryKeys[Role.Observer] = OBSERVERS_QUERY_KEY;
 
 export const useUsers = (props?: Props) => {
   const toast = useToast();
@@ -67,7 +73,7 @@ export const useUsers = (props?: Props) => {
 
   const postMutation = useMutation(postUser, {
     onSuccess: (user: User) => {
-      const queryKey: any = user.role === Role.Referee ? REFEREES_QUERY_KEY : OBSERVERS_QUERY_KEY;
+      const queryKey: any = queryKeys[user.role];
       queryClient.setQueryData(queryKey, (old: any) => [...old, user]);
 
       toast({
@@ -77,11 +83,12 @@ export const useUsers = (props?: Props) => {
         duration: 2000,
       });
     },
+    onError: (error: AxiosError, _variables, _context) => toastError(toast, error),
   });
 
   const updateMutation = useMutation(updateUser, {
     onSuccess: (user: User) => {
-      const queryKey: any = user.role === Role.Referee ? REFEREES_QUERY_KEY : OBSERVERS_QUERY_KEY;
+      const queryKey: any = queryKeys[user.role];
       const users: User[] = queryClient.getQueryData(queryKey)!;
       const index: number = users.findIndex((u: User) => u.id === user.id);
       users[index] = user;
@@ -94,11 +101,12 @@ export const useUsers = (props?: Props) => {
         duration: 2000,
       });
     },
+    onError: (error: AxiosError, _variables, _context) => toastError(toast, error),
   });
 
   const deleteMutation = useMutation(deleteUser, {
     onSuccess: (user: User) => {
-      const queryKey: any = user.role === Role.Referee ? REFEREES_QUERY_KEY : OBSERVERS_QUERY_KEY;
+      const queryKey: any = queryKeys[user.role];
       queryClient.setQueryData(queryKey, (old: any) => old.filter((u: User) => u.id !== user.id));
 
       toast({
