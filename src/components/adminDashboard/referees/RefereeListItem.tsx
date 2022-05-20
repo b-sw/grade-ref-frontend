@@ -1,22 +1,19 @@
-import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
+import { DeleteIcon } from '@chakra-ui/icons';
 import { Flex, Spacer, IconButton, VStack, Text, useDisclosure, Avatar, HStack, Badge } from '@chakra-ui/react';
 import { MdAssessment } from 'react-icons/md';
 import {User} from "../../../entities/User";
-import { RefereeDeleteModal } from './RefereeDeleteModal';
-import { RefereeEditModal } from './RefereeEditModal';
+import { RefereeRemoveModal } from './RefereeRemoveModal';
 
 export interface Props {
   referee: User;
 }
 
 export const RefereeListItem = (props: Props) => {
-  const { isOpen: isEditModalOpen, onOpen: onEditModalOpen, onClose: onEditModalClose } = useDisclosure();
   const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
 
   return (
     <>
-      <RefereeEditModal isOpen={isEditModalOpen} onClose={onEditModalClose} referee={props.referee} />
-      <RefereeDeleteModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} referee={props.referee} />
+      <RefereeRemoveModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} referee={props.referee} />
       <Flex
         p={5}
         borderRadius={10}
@@ -27,7 +24,6 @@ export const RefereeListItem = (props: Props) => {
         {refereeItem(props.referee)}
         <Spacer />
         <IconButton onClick={() => {}} variant={'ghost'} aria-label='See grades' icon={<MdAssessment />} />
-        <IconButton onClick={onEditModalOpen} variant={'ghost'} aria-label='Edit referee' icon={<EditIcon />} />
         <IconButton onClick={onDeleteModalOpen} variant={'ghost'} aria-label='Delete referee' icon={<DeleteIcon />} />
       </Flex>
     </>

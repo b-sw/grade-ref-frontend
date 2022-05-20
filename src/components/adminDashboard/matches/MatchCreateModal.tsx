@@ -12,7 +12,6 @@ import { Form, Formik } from 'formik';
 import { InputControl, SelectControl } from 'formik-chakra-ui';
 import { useEffect } from 'react';
 import {uuid} from "../../../shared/uuid";
-import {useUsers} from "../../../hooks/useUsers";
 import {User} from "../../../entities/User";
 import {useMatches} from "../../../hooks/useMatches";
 import {useTeams} from "../../../hooks/useTeams";
@@ -20,6 +19,8 @@ import {Match, matchValidationSchema} from "../../../entities/Match";
 import {Team} from "../../../entities/Team";
 import {Constants} from "../../../shared/Constants";
 import dayjs from 'dayjs';
+import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
+import {Role} from "../../../shared/Role";
 
 interface Props {
   isOpen: boolean;
@@ -34,10 +35,11 @@ interface FormikValues {
   observerId: uuid;
 }
 
-export const AdminMatchCreateModal = (props: Props) => {
+export const MatchCreateModal = (props: Props) => {
   const { postMutation } = useMatches();
   const { query: teamsQuery } = useTeams();
-  const { refereesQuery, observersQuery } = useUsers();
+  const { leagueUsersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
+  const { leagueUsersQuery: observersQuery } = useLeagueUsers(Role.Observer);
 
   useEffect(() => {
     if (postMutation.isSuccess) {

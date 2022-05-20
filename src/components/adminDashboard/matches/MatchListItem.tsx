@@ -1,6 +1,5 @@
 import { Flex, Spacer, VStack, Text, Avatar, HStack, Divider, Center, useDisclosure, IconButton } from '@chakra-ui/react';
 import {Match} from "../../../entities/Match";
-import {useUsers} from "../../../hooks/useUsers";
 import {useTeams} from "../../../hooks/useTeams";
 import {Team} from "../../../entities/Team";
 import {User} from "../../../entities/User";
@@ -10,24 +9,27 @@ import { BsClockFill, BsFillHouseDoorFill, BsBookmarks } from 'react-icons/bs';
 import {Constants} from "../../../shared/Constants";
 import {refereeItem} from "../referees/RefereeListItem";
 import {observerItem} from "../observers/ObserverListItem";
-import {AdminMatchDeleteModal} from "./AdminMatchDeleteModal";
-import {AdminMatchEditModal} from "./AdminMatchEditModal";
+import {MatchDeleteModal} from "./MatchDeleteModal";
+import {MatchEditModal} from "./MatchEditModal";
 import { MdPeople } from 'react-icons/md';
+import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
+import {Role} from "../../../shared/Role";
 
 export interface Props {
   match: Match;
 }
 
-export const AdminMatchListItem = (props: Props) => {
+export const MatchListItem = (props: Props) => {
   const { isOpen: isEditModalOpen, onOpen: onEditModalOpen, onClose: onEditModalClose } = useDisclosure();
   const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
-  const { refereesQuery, observersQuery } = useUsers();
+  const { leagueUsersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
+  const { leagueUsersQuery: observersQuery } = useLeagueUsers(Role.Observer);
   const { query: teamsQuery } = useTeams();
 
   return (
     <>
-      <AdminMatchEditModal isOpen={isEditModalOpen} onClose={onEditModalClose} match={props.match} />
-      <AdminMatchDeleteModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} match={props.match} />
+      <MatchEditModal isOpen={isEditModalOpen} onClose={onEditModalClose} match={props.match} />
+      <MatchDeleteModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} match={props.match} />
       <Flex
         p={5}
         borderRadius={10}

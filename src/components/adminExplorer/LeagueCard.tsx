@@ -13,8 +13,8 @@ interface Props {
 
 export const LeagueCard = (props: Props) => {
   const navigate = useNavigate();
-  const { query: refereesQuery } = useLeagueUsers(Role.Referee, { disableAutoRefetch: true, leagueId: props.league.id });
-  const { query: observersQuery } = useLeagueUsers(Role.Observer, { disableAutoRefetch: true, leagueId: props.league.id });
+  const { leagueUsersQuery: refereesQuery } = useLeagueUsers(Role.Referee, { disableAutoRefetch: true, leagueId: props.league.id });
+  const { leagueUsersQuery: observersQuery } = useLeagueUsers(Role.Observer, { disableAutoRefetch: true, leagueId: props.league.id });
   const { query: teamsQuery } = useTeams({ disableAutoRefetch: true, leagueId: props.league.id });
   const { query: matchesQuery } = useMatches({ disableAutoRefetch: true, leagueId: props.league.id });
   const queries = [refereesQuery, observersQuery, teamsQuery, matchesQuery]

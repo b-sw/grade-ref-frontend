@@ -11,9 +11,9 @@ import {
 import { Form, Formik } from 'formik';
 import { InputControl } from 'formik-chakra-ui';
 import { useEffect } from 'react';
-import {useUsers} from "../../../hooks/useUsers";
 import {Role} from "../../../shared/Role";
 import {User, userValidationSchema} from "../../../entities/User";
+import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
 
 interface Props {
   isOpen: boolean;
@@ -27,16 +27,16 @@ interface FormikValues {
   lastName: string;
 }
 
-export const RefereeCreateModal = (props: Props) => {
-  const { postMutation } = useUsers();
+export const ObserverAddModal = (props: Props) => {
+  const { addMutation } = useLeagueUsers(Role.Observer);
 
   useEffect(() => {
-    if (postMutation.isSuccess) {
+    if (addMutation.isSuccess) {
       props.onClose();
-      postMutation.reset();
+      addMutation.reset();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [postMutation.isSuccess]);
+  }, [addMutation.isSuccess]);
 
   const initialValues: FormikValues = {
     email: '',
@@ -45,11 +45,11 @@ export const RefereeCreateModal = (props: Props) => {
     lastName: ''
   };
 
-  const createReferee = (values: FormikValues) => {
-    postMutation.mutate({
+  const assignObserver = (values: FormikValues) => {
+    addMutation.mutate({
       email: values.email,
       phoneNumber: values.phoneNumber,
-      role: Role.Referee,
+      role: Role.Observer,
       firstName: values.firstName,
       lastName: values.lastName
     } as User);
@@ -59,10 +59,10 @@ export const RefereeCreateModal = (props: Props) => {
     <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Add referee</ModalHeader>
+        <ModalHeader>Add observer</ModalHeader>
         <ModalCloseButton />
 
-        <Formik initialValues={initialValues} onSubmit={createReferee} validationSchema={userValidationSchema}>
+        <Formik initialValues={initialValues} onSubmit={assignObserver} validationSchema={userValidationSchema}>
           {({ handleSubmit }) => (
             <Form onSubmit={handleSubmit}>
               <ModalBody>
@@ -72,7 +72,7 @@ export const RefereeCreateModal = (props: Props) => {
                 <InputControl name='lastName' label='Last name' inputProps={{ placeholder: 'Doe' }} />
               </ModalBody>
               <ModalFooter>
-                <Button mr={'3'} type='submit' isLoading={postMutation.isLoading}>
+                <Button mr={'3'} type='submit' isLoading={addMutation.isLoading}>
                   Add
                 </Button>
                 <Button onClick={() => props.onClose()}>Cancel</Button>

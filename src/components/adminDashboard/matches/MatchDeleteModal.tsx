@@ -9,11 +9,12 @@ import {
   Button,
   Text,
 } from '@chakra-ui/react';
-import {matchItem} from "./AdminMatchListItem";
+import {matchItem} from "./MatchListItem";
 import {Match} from "../../../entities/Match";
 import {useMatches} from "../../../hooks/useMatches";
 import {useTeams} from "../../../hooks/useTeams";
-import {useUsers} from "../../../hooks/useUsers";
+import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
+import {Role} from "../../../shared/Role";
 
 export interface Props {
   isOpen: boolean;
@@ -21,9 +22,10 @@ export interface Props {
   match: Match;
 }
 
-export const AdminMatchDeleteModal = (props: Props) => {
+export const MatchDeleteModal = (props: Props) => {
   const { deleteMutation } = useMatches();
-  const { refereesQuery, observersQuery } = useUsers();
+  const { leagueUsersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
+  const { leagueUsersQuery: observersQuery } = useLeagueUsers(Role.Observer);
   const { query: teamsQuery } = useTeams();
 
   const deleteMatch = () => {

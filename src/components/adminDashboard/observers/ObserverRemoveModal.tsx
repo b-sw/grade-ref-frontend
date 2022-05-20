@@ -10,8 +10,9 @@ import {
   Text,
 } from '@chakra-ui/react';
 import {User} from "../../../entities/User";
-import {useUsers} from "../../../hooks/useUsers";
 import {observerItem} from "./ObserverListItem";
+import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
+import {Role} from "../../../shared/Role";
 
 export interface Props {
   isOpen: boolean;
@@ -19,11 +20,11 @@ export interface Props {
   observer: User;
 }
 
-export const ObserverDeleteModal = (props: Props) => {
-  const { deleteMutation } = useUsers();
+export const ObserverRemoveModal = (props: Props) => {
+  const { removeMutation } = useLeagueUsers(Role.Observer);
 
   const deleteObserver = () => {
-    deleteMutation.mutate(props.observer.id);
+    removeMutation.mutate(props.observer.id);
   }
 
   return (
@@ -47,7 +48,7 @@ export const ObserverDeleteModal = (props: Props) => {
             <Button onClick={props.onClose}>
               Cancel
             </Button>
-            <Button colorScheme='red' onClick={deleteObserver} isLoading={deleteMutation.isLoading} ml={3}>
+            <Button colorScheme='red' onClick={deleteObserver} isLoading={removeMutation.isLoading} ml={3}>
               Delete
             </Button>
           </ModalFooter>

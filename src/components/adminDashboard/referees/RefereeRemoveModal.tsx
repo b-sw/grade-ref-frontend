@@ -1,17 +1,18 @@
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   Button,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Text,
 } from '@chakra-ui/react';
 import {User} from "../../../entities/User";
-import {useUsers} from "../../../hooks/useUsers";
 import {refereeItem} from "./RefereeListItem";
+import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
+import {Role} from "../../../shared/Role";
 
 export interface Props {
   isOpen: boolean;
@@ -19,11 +20,11 @@ export interface Props {
   referee: User;
 }
 
-export const RefereeDeleteModal = (props: Props) => {
-  const { deleteMutation } = useUsers();
+export const RefereeRemoveModal = (props: Props) => {
+  const { removeMutation } = useLeagueUsers(Role.Referee);
 
   const deleteReferee = () => {
-    deleteMutation.mutate(props.referee.id);
+    removeMutation.mutate(props.referee.id);
   }
 
   return (
@@ -47,7 +48,7 @@ export const RefereeDeleteModal = (props: Props) => {
             <Button onClick={props.onClose}>
               Cancel
             </Button>
-            <Button colorScheme='red' onClick={deleteReferee} isLoading={deleteMutation.isLoading} ml={3}>
+            <Button colorScheme='red' onClick={deleteReferee} isLoading={removeMutation.isLoading} ml={3}>
               Delete
             </Button>
           </ModalFooter>

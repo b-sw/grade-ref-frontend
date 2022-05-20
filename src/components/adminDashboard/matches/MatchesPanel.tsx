@@ -2,18 +2,20 @@ import {Button, Flex, Spacer, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, 
 import { AddIcon } from '@chakra-ui/icons';
 import {scrollbarStyle} from "../../dashboard/shared/styles";
 import {Match} from "../../../entities/Match";
-import {AdminMatchListItem} from "./AdminMatchListItem";
+import {MatchListItem} from "./MatchListItem";
 import {useMatches} from "../../../hooks/useMatches";
-import {AdminMatchCreateModal} from "./AdminMatchCreateModal";
-import {useUsers} from "../../../hooks/useUsers";
+import {MatchCreateModal} from "./MatchCreateModal";
 import {useTeams} from "../../../hooks/useTeams";
 import {Constants} from "../../../shared/Constants";
 import dayjs from 'dayjs';
+import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
+import {Role} from "../../../shared/Role";
 
-export const AdminMatchesPanel = () => {
+export const MatchesPanel = () => {
   const { isOpen: isCreateModalOpen, onOpen: onCreateModalOpen, onClose: onCreateModalClose } = useDisclosure();
   const { query: matchesQuery } = useMatches();
-  const { refereesQuery, observersQuery } = useUsers();
+  const { leagueUsersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
+  const { leagueUsersQuery: observersQuery } = useLeagueUsers(Role.Observer);
   const { query: teamsQuery } = useTeams();
 
   if (refereesQuery.isLoading || observersQuery.isLoading || teamsQuery.isLoading) {
@@ -26,7 +28,7 @@ export const AdminMatchesPanel = () => {
 
   return (
     <>
-      <AdminMatchCreateModal isOpen={isCreateModalOpen} onClose={onCreateModalClose} />
+      <MatchCreateModal isOpen={isCreateModalOpen} onClose={onCreateModalClose} />
       <Flex
         direction={'column'}
         borderRadius={10}
@@ -58,7 +60,7 @@ export const AdminMatchesPanel = () => {
                   matchesQuery.data
                     .filter((match: Match) => dayjs(match.date, Constants.DATETIME_FORMAT).toDate().getTime() < Date.now())
                     .map((match: Match) =>
-                      <AdminMatchListItem key={match.id} match={match} />
+                      <MatchListItem key={match.id} match={match} />
                     )}
               </Flex>
             </TabPanel>
@@ -68,7 +70,7 @@ export const AdminMatchesPanel = () => {
                   matchesQuery.data
                     .filter((match: Match) => dayjs(match.date, Constants.DATETIME_FORMAT).toDate().getTime() >= Date.now())
                     .map((match: Match) =>
-                    <AdminMatchListItem key={match.id} match={match} />
+                    <MatchListItem key={match.id} match={match} />
                   )}
               </Flex>
             </TabPanel>
