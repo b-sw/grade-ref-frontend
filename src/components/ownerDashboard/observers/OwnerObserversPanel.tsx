@@ -64,15 +64,15 @@ export const OwnerObserversPanel = () => {
           />
           <Input
             mb={2}
+            placeholder={'Search observer'}
             onChange={(event) => setState({ filter: event.target.value })}
           />
         </InputGroup>
 
         <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
-          {state.observers &&
-            state.observers.map((observer: User) =>
+          {state.observers.map((observer: User) =>
               <ObserverListItem key={observer.id} observer={observer} />
-            )}
+          )}
         </Flex>
       </Flex>
     </>

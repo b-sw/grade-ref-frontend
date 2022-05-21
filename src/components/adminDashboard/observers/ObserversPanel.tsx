@@ -1,4 +1,4 @@
-import {Button, Flex, Spacer, Text, useDisclosure} from '@chakra-ui/react';
+import {Button, Flex, Input, InputGroup, InputLeftElement, Spacer, Text, useDisclosure} from '@chakra-ui/react';
 import {AddIcon} from '@chakra-ui/icons';
 import {ObserverAddModal} from "./ObserverAddModal";
 import {scrollbarStyle} from "../../dashboard/shared/styles";
@@ -6,10 +6,35 @@ import {User} from "../../../entities/User";
 import {ObserverListItem} from "./ObserverListItem";
 import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
 import {Role} from "../../../shared/Role";
+import { MdSearch } from 'react-icons/md';
+import {useSetState} from "../../../hooks/useSetState";
+import {userFilter} from "../../shared/filters";
+import { useEffect } from 'react';
+
+interface State {
+  observers: User[],
+  filter: string,
+}
 
 export const ObserversPanel = () => {
-  const { isOpen: isCreateModalOpen, onOpen: onCreateModalOpen, onClose: onCreateModalClose } = useDisclosure();
+  const {isOpen: isCreateModalOpen, onOpen: onCreateModalOpen, onClose: onCreateModalClose } = useDisclosure();
   const { leagueUsersQuery: observersQuery } = useLeagueUsers(Role.Observer);
+
+  const [state, setState] = useSetState({
+    observers: [],
+    filter: '',
+  } as State);
+
+  useEffect(() => {
+    setState({ observers: observersQuery.data })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [observersQuery.data]);
+
+  useEffect(() => {
+    const filteredObservers: User[] = userFilter(observersQuery.data!, state.filter);
+    setState({ observers: filteredObservers });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.filter]);
 
   return (
     <>
@@ -34,11 +59,22 @@ export const ObserversPanel = () => {
           </Button>
         </Flex>
 
+        <InputGroup>
+          <InputLeftElement
+            pointerEvents={'none'}
+            children={<MdSearch />}
+          />
+          <Input
+            mb={2}
+            placeholder={'Search observer'}
+            onChange={(event) => setState({ filter: event.target.value })}
+          />
+        </InputGroup>
+
         <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
-          {observersQuery.data &&
-            observersQuery.data.map((observer: User) =>
+          {state.observers.map((observer: User) =>
               <ObserverListItem key={observer.id} observer={observer} />
-            )}
+          )}
         </Flex>
       </Flex>
     </>

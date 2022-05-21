@@ -64,15 +64,15 @@ export const OwnerRefereesPanel = () => {
           />
           <Input
             mb={2}
+            placeholder={'Search referee'}
             onChange={(event) => setState({ filter: event.target.value })}
           />
         </InputGroup>
 
         <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
-          {state.referees &&
-            state.referees.map((referee: User) =>
+          {state.referees.map((referee: User) =>
               <RefereeListItem key={referee.id} referee={referee} />
-            )}
+          )}
         </Flex>
       </Flex>
     </>

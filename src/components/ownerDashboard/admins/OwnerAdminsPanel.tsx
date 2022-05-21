@@ -65,15 +65,15 @@ export const OwnerAdminsPanel = () => {
           />
           <Input
             mb={2}
+            placeholder={'Search admin'}
             onChange={(event) => setState({ filter: event.target.value })}
           />
         </InputGroup>
 
         <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
-          {state.admins &&
-            state.admins.map((admin: User) =>
+          {state.admins.map((admin: User) =>
               <AdminListItem key={admin.id} admin={admin} />
-            )}
+          )}
         </Flex>
       </Flex>
     </>

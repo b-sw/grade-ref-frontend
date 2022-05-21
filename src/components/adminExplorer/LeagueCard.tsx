@@ -13,11 +13,14 @@ interface Props {
 
 export const LeagueCard = (props: Props) => {
   const navigate = useNavigate();
-  const { leagueUsersQuery: refereesQuery } = useLeagueUsers(Role.Referee, { disableAutoRefetch: true, leagueId: props.league.id });
-  const { leagueUsersQuery: observersQuery } = useLeagueUsers(Role.Observer, { disableAutoRefetch: true, leagueId: props.league.id });
+  const { usersQuery: allRefereesQuery, leagueUsersQuery: refereesQuery } =
+    useLeagueUsers(Role.Referee, { disableAutoRefetch: true, leagueId: props.league.id });
+  const { usersQuery: allObserversQuery, leagueUsersQuery: observersQuery } =
+    useLeagueUsers(Role.Observer, { disableAutoRefetch: true, leagueId: props.league.id });
   const { query: teamsQuery } = useTeams({ disableAutoRefetch: true, leagueId: props.league.id });
   const { query: matchesQuery } = useMatches({ disableAutoRefetch: true, leagueId: props.league.id });
-  const queries = [refereesQuery, observersQuery, teamsQuery, matchesQuery]
+
+  const queries = [allRefereesQuery, refereesQuery, allObserversQuery, observersQuery, teamsQuery, matchesQuery];
 
   const navigateToDashboard = async (league: League) => {
     await Promise.all(queries.map(async (query): Promise<any> => {

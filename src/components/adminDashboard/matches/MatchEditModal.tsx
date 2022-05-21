@@ -51,7 +51,7 @@ export const MatchEditModal = (props: Props) => {
   }, [updateMutation.isSuccess]);
 
   const initialValues: FormikValues = {
-    date: dayjs(props.match.date).format('YYYY-MM-DDThh:mm'),
+    date: dayjs(props.match.matchDate).format('YYYY-MM-DDThh:mm'),
     homeTeamId: props.match.homeTeamId,
     awayTeamId: props.match.awayTeamId,
     refereeId: props.match.refereeId,
@@ -62,7 +62,7 @@ export const MatchEditModal = (props: Props) => {
     const matchDate: Date = dayjs(values.date, Constants.DATETIME_FORMAT).toDate();
     updateMutation.mutate({
       id: props.match.id,
-      date: matchDate,
+      matchDate: matchDate,
       stadium: 'some stadium',
       homeTeamId: values.homeTeamId,
       awayTeamId: values.awayTeamId,

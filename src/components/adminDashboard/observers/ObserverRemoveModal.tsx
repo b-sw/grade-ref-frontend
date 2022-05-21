@@ -32,16 +32,13 @@ export const ObserverRemoveModal = (props: Props) => {
       <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Delete observer</ModalHeader>
+          <ModalHeader>Remove observer</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Text fontWeight='bold' mb='1rem'>
-              Are you sure you want to delete the following observer?
+              Are you sure you want to remove the following observer from this league?
             </Text>
             {observerItem(props.observer)}
-            <Text fontWeight='bold' mt='1rem'>
-              You can't undo this action afterwards.
-            </Text>
           </ModalBody>
 
           <ModalFooter>
@@ -49,7 +46,7 @@ export const ObserverRemoveModal = (props: Props) => {
               Cancel
             </Button>
             <Button colorScheme='red' onClick={deleteObserver} isLoading={removeMutation.isLoading} ml={3}>
-              Delete
+              Remove
             </Button>
           </ModalFooter>
         </ModalContent>

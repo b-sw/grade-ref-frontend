@@ -3,12 +3,17 @@ import Yup from "../shared/yup";
 
 export type Match = {
   id: uuid;
-  date: Date;
+  userReadableKey: string;
+  matchDate: Date;
   stadium: string;
   homeTeamId: uuid;
   awayTeamId: uuid;
   refereeId: uuid;
   observerId: uuid;
+  refereeGrade: number;
+  refereeGradeDate: Date;
+  refereeSmsId: uuid;
+  observerSmsId: uuid;
 }
 
 export const matchValidationSchema = Yup.object({

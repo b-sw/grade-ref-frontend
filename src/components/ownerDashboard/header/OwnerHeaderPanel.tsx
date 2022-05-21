@@ -13,14 +13,11 @@ import {
 } from '@chakra-ui/react';
 import useStore from "../../../zustand/store";
 import useAuth from "../../../hooks/useAuth";
-import {Paths} from "../../../shared/Paths";
 import { MdDashboard, MdPeople } from 'react-icons/md';
-import { useNavigate } from 'react-router-dom';
 
 export const OwnerHeaderPanel = () => {
   const user = useStore((state) => state.user);
   const { logout } = useAuth();
-  const navigate = useNavigate();
 
   return (
     <>
@@ -32,7 +29,7 @@ export const OwnerHeaderPanel = () => {
           <Button mr={3} onClick={() => {}} leftIcon={<MdPeople />}>
             Mock button 1
           </Button>
-          <Button mr={3} onClick={() => {navigate(Paths.ADMIN_EXPLORER)}} leftIcon={<MdDashboard />}>
+          <Button mr={3} onClick={() => {}} leftIcon={<MdDashboard />}>
             Mock button 2
           </Button>
 

@@ -53,8 +53,8 @@ export const matchItem = (match: Match, teamsQuery: any, refereesQuery: any, obs
   const referee: User = refereesQuery.data!.find((referee: User) => referee.id === match.refereeId)!;
   const observer: User = observersQuery.data!.find((observer: User) => observer.id === match.observerId)!;
 
-  const matchDate = dayjs(match.date, Constants.DATETIME_FORMAT).format('DD-MM-YYYY');
-  const matchTime = dayjs(match.date, Constants.DATETIME_FORMAT).format('HH:mm');
+  const matchDate = dayjs(match.matchDate, Constants.DATETIME_FORMAT).format('DD-MM-YYYY');
+  const matchTime = dayjs(match.matchDate, Constants.DATETIME_FORMAT).format('HH:mm');
 
   return (
     <>

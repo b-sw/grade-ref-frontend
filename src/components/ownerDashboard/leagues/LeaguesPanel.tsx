@@ -65,15 +65,15 @@ export const LeaguesPanel = () => {
           />
           <Input
             mb={2}
+            placeholder={'Search league'}
             onChange={(event) => setState({ filter: event.target.value })}
           />
         </InputGroup>
 
         <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
-          {state.leagues &&
-            state.leagues.map((league: League) =>
+          {state.leagues.map((league: League) =>
               <LeagueListItem key={league.id} league={league} />
-            )}
+          )}
         </Flex>
       </Flex>
     </>

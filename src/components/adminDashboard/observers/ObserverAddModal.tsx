@@ -7,12 +7,14 @@ import {
   ModalBody,
   ModalFooter,
   Button,
+  FormControl,
+  FormLabel,
 } from '@chakra-ui/react';
-import { Form, Formik } from 'formik';
-import { InputControl } from 'formik-chakra-ui';
 import { useEffect } from 'react';
 import {Role} from "../../../shared/Role";
-import {User, userValidationSchema} from "../../../entities/User";
+import { MultiValue, Select } from 'chakra-react-select';
+import { User } from '../../../entities/User';
+import {useSetState} from "../../../hooks/useSetState";
 import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
 
 interface Props {
@@ -20,15 +22,44 @@ interface Props {
   onClose: () => void;
 }
 
-interface FormikValues {
-  email: string;
-  phoneNumber: string;
-  firstName: string;
-  lastName: string;
+interface Option {
+  value: User,
+  label: string,
 }
 
+interface State {
+  selectedOptions: MultiValue<Option>,
+  mappedObservers: Option[],
+}
+
+
 export const ObserverAddModal = (props: Props) => {
-  const { addMutation } = useLeagueUsers(Role.Observer);
+  const {
+    usersQuery: observersQuery,
+    leagueUsersQuery: leagueObserversQuery,
+    addMutation
+  } = useLeagueUsers(Role.Observer);
+
+  const [state, setState] = useSetState({
+    selectedOptions: [],
+    mappedObservers: [],
+  } as State);
+
+  const updateSelection = (selection: MultiValue<Option>) => {
+    setState({ selectedOptions: selection });
+  }
+
+  useEffect(() => {
+    const filteredReferees: User[] = observersQuery.data!.filter((observer: User) =>
+      !leagueObserversQuery.data!.some((leagueObserver) => leagueObserver.id === observer.id)
+    );
+    const observers: Option[] = filteredReferees.map((observer) => ({
+      value: observer,
+      label: observer.firstName + ' ' + observer.lastName,
+    }));
+    setState({ mappedObservers: observers });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [leagueObserversQuery.data]);
 
   useEffect(() => {
     if (addMutation.isSuccess) {
@@ -38,21 +69,9 @@ export const ObserverAddModal = (props: Props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addMutation.isSuccess]);
 
-  const initialValues: FormikValues = {
-    email: '',
-    phoneNumber: '',
-    firstName: '',
-    lastName: ''
-  };
-
-  const assignObserver = (values: FormikValues) => {
-    addMutation.mutate({
-      email: values.email,
-      phoneNumber: values.phoneNumber,
-      role: Role.Observer,
-      firstName: values.firstName,
-      lastName: values.lastName
-    } as User);
+  const addObservers = () => {
+    const selectedObservers: User[] = state.selectedOptions.map((option: Option) => option.value as User);
+    selectedObservers.forEach((referee) => addMutation.mutate(referee));
   };
 
   return (
@@ -62,24 +81,27 @@ export const ObserverAddModal = (props: Props) => {
         <ModalHeader>Add observer</ModalHeader>
         <ModalCloseButton />
 
-        <Formik initialValues={initialValues} onSubmit={assignObserver} validationSchema={userValidationSchema}>
-          {({ handleSubmit }) => (
-            <Form onSubmit={handleSubmit}>
-              <ModalBody>
-                <InputControl name='email' label='Email address' inputProps={{ placeholder: 'john.doe@gmail.com' }} />
-                <InputControl name='phoneNumber' label='Phone number' inputProps={{ placeholder: '+48 669 797 907' }} />
-                <InputControl name='firstName' label='First name' inputProps={{ placeholder: 'John' }} />
-                <InputControl name='lastName' label='Last name' inputProps={{ placeholder: 'Doe' }} />
-              </ModalBody>
-              <ModalFooter>
-                <Button mr={'3'} type='submit' isLoading={addMutation.isLoading}>
-                  Add
-                </Button>
-                <Button onClick={() => props.onClose()}>Cancel</Button>
-              </ModalFooter>
-            </Form>
-          )}
-        </Formik>
+        <ModalBody>
+          <FormControl p={4}>
+            <FormLabel>
+              Select observer
+            </FormLabel>
+            <Select
+              isMulti
+              name={'referees'}
+              options={state.mappedObservers}
+              placeholder={'Select observer'}
+              closeMenuOnSelect={false}
+              onChange={(selection) => updateSelection(selection)}
+            />
+          </FormControl>
+        </ModalBody>
+        <ModalFooter>
+          <Button mr={'3'} onClick={addObservers} isLoading={addMutation.isLoading}>
+            Add
+          </Button>
+          <Button onClick={() => props.onClose()}>Cancel</Button>
+        </ModalFooter>
       </ModalContent>
     </Modal>
   );

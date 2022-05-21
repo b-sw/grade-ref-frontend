@@ -60,7 +60,7 @@ export const MatchCreateModal = (props: Props) => {
   const createMatch = (values: FormikValues) => {
     const matchDate: Date = dayjs(values.date, Constants.DATETIME_FORMAT).toDate();
     postMutation.mutate({
-      date: matchDate,
+      matchDate: matchDate,
       stadium: 'some stadium',
       homeTeamId: values.homeTeamId,
       awayTeamId: values.awayTeamId,

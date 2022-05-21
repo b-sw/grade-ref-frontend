@@ -50,8 +50,9 @@ export default function useAuth() {
   );
 
   const isLoggedInAsAdmin: boolean = isLoggedIn && user!.role === Role.Admin;
-
   const isLoggedInAsOwner: boolean = isLoggedIn && user!.role === Role.Owner;
+  const isLoggedInAsReferee: boolean = isLoggedIn && user!.role === Role.Referee;
+  const isLoggedInAsObserver: boolean = isLoggedIn && user!.role === Role.Referee;
 
-  return { loginMutation, isLoggedIn, isLoggedInAsAdmin, isLoggedInAsOwner, logout };
+  return { loginMutation, isLoggedIn, isLoggedInAsAdmin, isLoggedInAsOwner, isLoggedInAsReferee, isLoggedInAsObserver, logout };
 }

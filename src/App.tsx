@@ -6,7 +6,7 @@ import {UnauthorizedHandler} from "./components/other/UnauthorizedHandler";
 import {AnimatedTransition} from "./components/other/AnimatedTransition";
 import {Paths} from "./shared/Paths";
 import {Login} from "./pages/Login";
-import {RequireAuthRoute} from "./components/other/RequireAuthRoute";
+import {RequireAuthRouteRefereeObserver} from "./components/other/RequireAuthRouteRefereeObserver";
 import {Dashboard} from "./pages/Dashboard";
 import {AdminDashboard} from "./pages/AdminDashboard";
 import {RequireAuthRouteAdmin} from "./components/other/RequireAuthRouteAdmin";
@@ -37,7 +37,7 @@ export const App = () => (
               <Route path={Paths.ADMIN_DASHBOARD + '/:leagueId'} element={<AdminDashboard />} />
             </Route>
 
-            <Route element={<RequireAuthRoute />}>
+            <Route element={<RequireAuthRouteRefereeObserver />}>
               <Route path={Paths.DASHBOARD} element={<Dashboard />} />
             </Route>
           </Route>

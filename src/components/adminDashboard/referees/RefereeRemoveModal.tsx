@@ -25,6 +25,7 @@ export const RefereeRemoveModal = (props: Props) => {
 
   const deleteReferee = () => {
     removeMutation.mutate(props.referee.id);
+    props.onClose();
   }
 
   return (
@@ -32,16 +33,13 @@ export const RefereeRemoveModal = (props: Props) => {
       <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Delete referee</ModalHeader>
+          <ModalHeader>Remove referee</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Text fontWeight='bold' mb='1rem'>
-              Are you sure you want to delete the following referee?
+              Are you sure you want to remove the following referee from this league?
             </Text>
             {refereeItem(props.referee)}
-            <Text fontWeight='bold' mt='1rem'>
-              You can't undo this action afterwards.
-            </Text>
           </ModalBody>
 
           <ModalFooter>
@@ -49,7 +47,7 @@ export const RefereeRemoveModal = (props: Props) => {
               Cancel
             </Button>
             <Button colorScheme='red' onClick={deleteReferee} isLoading={removeMutation.isLoading} ml={3}>
-              Delete
+              Remove
             </Button>
           </ModalFooter>
         </ModalContent>

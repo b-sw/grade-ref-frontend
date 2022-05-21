@@ -1,31 +1,55 @@
 import {User} from "../../entities/User";
 import {Team} from "../../entities/Team";
 import {League} from "../../entities/League";
+import {Match} from "../../entities/Match";
+import {uuid} from "../../shared/uuid";
 
-export const userFilter = (initialUsers: User[], filter: string) => {
+export const userFilter = (initialUsers: User[], filter: string): User[] => {
   filter = filter.toLowerCase();
   return initialUsers.filter((user) => {
     const fullName: string = user.firstName + ' ' + user.lastName;
-    return user.firstName.toLowerCase().includes(filter) ||
-      user.lastName.toLowerCase().includes(filter) ||
-      fullName.toLowerCase().includes(filter) ||
+    return fullName.toLowerCase().includes(filter) ||
       user.email.toLowerCase().includes(filter) ||
       user.phoneNumber.toLowerCase().includes(filter);
   });
 }
 
-export const teamFilter = (initialTeams: Team[], filter: string) => {
+export const teamFilter = (initialTeams: Team[], filter: string): Team[] => {
   filter = filter.toLowerCase();
   return initialTeams.filter((team) => (
     team.name.toLowerCase().includes(filter)
   ));
 }
 
-export const leagueFilter = (initialLeagues: League[], filter: string) => {
+export const leagueFilter = (initialLeagues: League[], filter: string): League[] => {
   filter = filter.toLowerCase();
   return initialLeagues.filter((league) => (
     league.name.toLowerCase().includes(filter) ||
     league.shortName.toLowerCase().includes(filter) ||
     league.country.toLowerCase().includes(filter)
   ));
+}
+
+export const matchFilter = (initialMatches: Match[],
+                            teams: { [id: uuid]: Team },
+                            referees: { [id: uuid]: User },
+                            observers: { [id: uuid]: User },
+                            filter: string): Match[] => {
+  filter = filter.toLowerCase();
+  return initialMatches.filter((match) => {
+    const homeTeam: Team = teams[match.homeTeamId];
+    const awayTeam: Team = teams[match.awayTeamId];
+    const referee: User = referees[match.refereeId];
+    const observer: User = observers[match.observerId];
+
+    const refereeFullName: string = referee.firstName + ' ' + referee.lastName;
+    const observerFullName: string = observer.firstName + ' ' + observer.lastName;
+
+    return match.userReadableKey.toLowerCase().includes(filter) ||
+      match.stadium.toLowerCase().includes(filter) ||
+      homeTeam.name.toLowerCase().includes(filter) ||
+      awayTeam.name.toLowerCase().includes(filter) ||
+      refereeFullName.toLowerCase().includes(filter) ||
+      observerFullName.toLowerCase().includes(filter);
+  });
 }
