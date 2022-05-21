@@ -1,10 +1,10 @@
-import { Flex, Spacer, VStack, Text, Avatar, HStack, Divider, Center, useDisclosure, IconButton } from '@chakra-ui/react';
+import { Flex, VStack, Text, Avatar, HStack, Divider, Center, useDisclosure, Badge } from '@chakra-ui/react';
 import {Match} from "../../../entities/Match";
 import {useTeams} from "../../../hooks/useTeams";
 import {Team} from "../../../entities/Team";
 import {User} from "../../../entities/User";
 import dayjs from 'dayjs';
-import { CalendarIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
+import { CalendarIcon } from '@chakra-ui/icons';
 import { BsClockFill, BsFillHouseDoorFill, BsBookmarks } from 'react-icons/bs';
 import {Constants} from "../../../shared/Constants";
 import {refereeItem} from "../referees/RefereeListItem";
@@ -14,17 +14,23 @@ import {MatchEditModal} from "./MatchEditModal";
 import { MdPeople } from 'react-icons/md';
 import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
 import {Role} from "../../../shared/Role";
+import {determineGradeStatus} from "../../shared/gradeStatus";
 
 export interface Props {
   match: Match;
 }
 
 export const MatchListItem = (props: Props) => {
-  const { isOpen: isEditModalOpen, onOpen: onEditModalOpen, onClose: onEditModalClose } = useDisclosure();
-  const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
+  const { isOpen: isEditModalOpen, /*onOpen: onEditModalOpen, */onClose: onEditModalClose } = useDisclosure();
+  const { isOpen: isDeleteModalOpen, /*onOpen: onDeleteModalOpen, */onClose: onDeleteModalClose } = useDisclosure();
   const { leagueUsersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
   const { leagueUsersQuery: observersQuery } = useLeagueUsers(Role.Observer);
   const { query: teamsQuery } = useTeams();
+
+  // const isMatchInThePast = () => {
+  //   const matchDate: Dayjs = dayjs(props.match.matchDate);
+  //   return matchDate < dayjs();
+  // }
 
   return (
     <>
@@ -38,9 +44,9 @@ export const MatchListItem = (props: Props) => {
         cursor={'pointer'}
       >
         {matchItem(props.match, teamsQuery, refereesQuery, observersQuery)}
-        <Spacer />
-        <IconButton onClick={onEditModalOpen} variant={'ghost'} aria-label='Edit match' icon={<EditIcon />} />
-        <IconButton onClick={onDeleteModalOpen} variant={'ghost'} aria-label='Delete match' icon={<DeleteIcon />} />
+        {/*<Spacer />*/}
+        {/*<IconButton onClick={onEditModalOpen} variant={'ghost'} aria-label='Edit match' icon={<EditIcon />} disabled={isMatchInThePast()} />*/}
+        {/*<IconButton onClick={onDeleteModalOpen} variant={'ghost'} aria-label='Delete match' icon={<DeleteIcon />} />*/}
       </Flex>
     </>
   );
@@ -53,20 +59,23 @@ export const matchItem = (match: Match, teamsQuery: any, refereesQuery: any, obs
   const referee: User = refereesQuery.data!.find((referee: User) => referee.id === match.refereeId)!;
   const observer: User = observersQuery.data!.find((observer: User) => observer.id === match.observerId)!;
 
-  const matchDate = dayjs(match.matchDate, Constants.DATETIME_FORMAT).format('DD-MM-YYYY');
-  const matchTime = dayjs(match.matchDate, Constants.DATETIME_FORMAT).format('HH:mm');
+  const matchDate: string = dayjs(match.matchDate, Constants.DATETIME_FORMAT).format('DD-MM-YYYY');
+  const matchTime: string = dayjs(match.matchDate, Constants.DATETIME_FORMAT).format('HH:mm');
+
+  const { gradeStatus, gradeBadgeScheme } = determineGradeStatus(match);
 
   return (
     <>
-      <VStack align='left' w={'90%'}>
+      <VStack align='left' w={'100%'}>
+        <Text fontSize={'md'}><b>#{match.userReadableKey}</b></Text>
         <HStack>
-          <VStack align='left' mr={5} w={'50%'}>
+          <VStack align='left' mr={5} w={'40%'}>
             <HStack>
               <Avatar
                 name={homeTeam.name}
                 size={'sm'}
               />
-              <Text fontSize={'md'}>{homeTeam.name}</Text>
+              <Text fontSize={'sm'}>{homeTeam.name}</Text>
               <BsFillHouseDoorFill />
             </HStack>
             <HStack>
@@ -74,41 +83,54 @@ export const matchItem = (match: Match, teamsQuery: any, refereesQuery: any, obs
                 name={awayTeam.name}
                 size={'sm'}
               />
-              <Text fontSize={'md'}>{awayTeam.name}</Text>
+              <Text fontSize={'sm'}>{awayTeam.name}</Text>
             </HStack>
           </VStack>
 
-          <Center height='75px' w={'10%'}>
+          <Center height='100px' w={'20%'}>
             <Divider orientation='vertical' />
           </Center>
 
           <VStack align='left' ml={5} w={'40%'}>
             <HStack>
               <CalendarIcon />
-              <Text fontSize={'md'}>{matchDate}</Text>
+              <Text fontSize={'sm'}>{matchDate}</Text>
             </HStack>
             <HStack>
               <BsClockFill />
-              <Text fontSize={'md'}>{matchTime}</Text>
+              <Text fontSize={'sm'}>{matchTime}</Text>
             </HStack>
           </VStack>
         </HStack>
 
-        <VStack align='left'>
-          <HStack>
-            <MdPeople />
-            <Text fontSize={'md'}><b>Assignments</b></Text>
-          </HStack>
+        <HStack align='top'>
+          <VStack align='left' w={'40%'}>
+            <HStack>
+              <MdPeople />
+              <Text fontSize={'md'}><b>Assignments</b></Text>
+            </HStack>
             {refereeItem(referee, 'xs', 'sm', 'xs', true)}
             {observerItem(observer, 'xs', 'sm', 'xs', true)}
-        </VStack>
+          </VStack>
 
-        <VStack align='left'>
-          <HStack>
-            <BsBookmarks />
-            <Text fontSize={'md'}><b>Grade</b></Text>
-          </HStack>
-        </VStack>
+          <Center height='100px' w={'20%'} />
+
+          <VStack align='left' w={'40%'}>
+            <HStack>
+              <BsBookmarks />
+              <Text fontSize={'md'}><b>Report</b></Text>
+            </HStack>
+            <HStack>
+              <Text>Status:</Text>
+              <Badge colorScheme={gradeBadgeScheme} fontSize={'xs'}>{gradeStatus}</Badge>
+            </HStack>
+            <HStack>
+              <Text>Grade:</Text>
+              <Badge variant={'outline'} colorScheme={gradeBadgeScheme} fontSize={'xs'}>{match.refereeGrade ?? 'N/A'}</Badge>
+            </HStack>
+          </VStack>
+        </HStack>
+
       </VStack>
     </>
   )
