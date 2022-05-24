@@ -56,7 +56,7 @@ export const TeamCreateModal = (props: Props) => {
                 <InputControl name='name' label='Name' inputProps={{ placeholder: 'Legia Warszawa' }} />
               </ModalBody>
               <ModalFooter>
-                <Button mr={'3'} type='submit' isLoading={postMutation.isLoading}>
+                <Button colorScheme='blue' mr={'3'} type='submit' isLoading={postMutation.isLoading}>
                   Add
                 </Button>
                 <Button onClick={() => props.onClose()}>Cancel</Button>

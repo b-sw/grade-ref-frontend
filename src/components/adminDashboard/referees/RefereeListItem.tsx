@@ -3,6 +3,7 @@ import { Flex, Spacer, IconButton, VStack, Text, useDisclosure, Avatar, HStack, 
 import { MdAssessment } from 'react-icons/md';
 import {User} from "../../../entities/User";
 import { RefereeRemoveModal } from './RefereeRemoveModal';
+import {RefereeGradesModal} from "./RefereeGradesModal";
 
 export interface Props {
   referee: User;
@@ -10,20 +11,21 @@ export interface Props {
 
 export const RefereeListItem = (props: Props) => {
   const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
+  const { isOpen: isGradesModalOpen, onOpen: onGradesModalOpen, onClose: onGradesModalClose } = useDisclosure();
 
   return (
     <>
       <RefereeRemoveModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} referee={props.referee} />
+      <RefereeGradesModal isOpen={isGradesModalOpen} onClose={onGradesModalClose} referee={props.referee} />
       <Flex
         p={5}
         borderRadius={10}
         alignItems={'center'}
         backgroundColor={'gray.50'}
-        cursor={'pointer'}
       >
         {refereeItem(props.referee)}
         <Spacer />
-        <IconButton onClick={() => {}} variant={'ghost'} aria-label='See grades' icon={<MdAssessment />} />
+        <IconButton onClick={onGradesModalOpen} variant={'ghost'} aria-label='See grades' icon={<MdAssessment />} />
         <IconButton onClick={onDeleteModalOpen} variant={'ghost'} aria-label='Delete referee' icon={<DeleteIcon />} />
       </Flex>
     </>

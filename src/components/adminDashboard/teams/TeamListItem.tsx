@@ -21,7 +21,6 @@ export const TeamListItem = (props: Props) => {
         borderRadius={10}
         alignItems={'center'}
         backgroundColor={'gray.50'}
-        cursor={'pointer'}
       >
         {teamItem(props.team)}
         <Spacer />

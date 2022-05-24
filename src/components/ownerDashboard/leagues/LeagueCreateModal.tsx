@@ -66,7 +66,7 @@ export const LeagueCreateModal = (props: Props) => {
                 <InputControl name='country' label='Country' inputProps={{ placeholder: 'England' }} />
               </ModalBody>
               <ModalFooter>
-                <Button mr={'3'} type='submit' isLoading={postMutation.isLoading}>
+                <Button colorScheme='blue' mr={'3'} type='submit' isLoading={postMutation.isLoading}>
                   Add
                 </Button>
                 <Button onClick={() => props.onClose()}>Cancel</Button>

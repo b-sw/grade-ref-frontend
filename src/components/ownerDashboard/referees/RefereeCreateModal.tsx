@@ -72,7 +72,7 @@ export const RefereeCreateModal = (props: Props) => {
                 <InputControl name='lastName' label='Last name' inputProps={{ placeholder: 'Doe' }} />
               </ModalBody>
               <ModalFooter>
-                <Button mr={'3'} type='submit' isLoading={postMutation.isLoading}>
+                <Button colorScheme='blue' mr={'3'} type='submit' isLoading={postMutation.isLoading}>
                   Add
                 </Button>
                 <Button onClick={() => props.onClose()}>Cancel</Button>

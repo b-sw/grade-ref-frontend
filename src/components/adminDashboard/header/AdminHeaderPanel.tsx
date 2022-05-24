@@ -37,7 +37,7 @@ export const AdminHeaderPanel = () => {
         <Spacer />
 
         <Flex alignItems={'center'}>
-          <Button mr={3} onClick={() => {}} leftIcon={<MdPeople />}>
+          <Button mr={3} disabled={true} onClick={() => {}} leftIcon={<MdPeople />}>
             Grades
           </Button>
           <Button mr={3} onClick={() => {navigate(Paths.ADMIN_EXPLORER)}} leftIcon={<MdDashboard />}>

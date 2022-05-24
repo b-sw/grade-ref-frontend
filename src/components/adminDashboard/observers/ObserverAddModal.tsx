@@ -97,7 +97,7 @@ export const ObserverAddModal = (props: Props) => {
           </FormControl>
         </ModalBody>
         <ModalFooter>
-          <Button mr={'3'} onClick={addObservers} isLoading={addMutation.isLoading}>
+          <Button colorScheme='blue' mr={'3'} onClick={addObservers} isLoading={addMutation.isLoading}>
             Add
           </Button>
           <Button onClick={() => props.onClose()}>Cancel</Button>

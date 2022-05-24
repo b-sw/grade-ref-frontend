@@ -57,7 +57,7 @@ export const TeamEditModal = (props: Props) => {
                 <InputControl name='name' label='Nazwa' />
               </ModalBody>
               <ModalFooter>
-                <Button mr={'3'} type='submit' isLoading={updateMutation.isLoading}>
+                <Button colorScheme='blue' mr={'3'} type='submit' isLoading={updateMutation.isLoading}>
                   Save
                 </Button>
                 <Button onClick={props.onClose}>Cancel</Button>

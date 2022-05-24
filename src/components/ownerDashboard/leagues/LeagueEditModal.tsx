@@ -68,7 +68,7 @@ export const LeagueEditModal = (props: Props) => {
                 <InputControl name='country' label='Country' />
               </ModalBody>
               <ModalFooter>
-                <Button mr={'3'} type='submit' isLoading={updateMutation.isLoading}>
+                <Button colorScheme='blue' mr={'3'} type='submit' isLoading={updateMutation.isLoading}>
                   Save
                 </Button>
                 <Button onClick={props.onClose}>Cancel</Button>

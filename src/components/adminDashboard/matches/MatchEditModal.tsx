@@ -7,6 +7,7 @@ import {
   ModalBody,
   ModalFooter,
   Button,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { InputControl, SelectControl } from 'formik-chakra-ui';
@@ -21,6 +22,7 @@ import dayjs from 'dayjs';
 import {Team} from "../../../entities/Team";
 import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
 import {Role} from "../../../shared/Role";
+import {MatchDeleteModal} from "./MatchDeleteModal";
 
 interface Props {
   isOpen: boolean;
@@ -37,6 +39,8 @@ interface FormikValues {
 }
 
 export const MatchEditModal = (props: Props) => {
+  const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
+
   const { updateMutation } = useMatches();
   const { query: teamsQuery } = useTeams();
   const { leagueUsersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
@@ -72,81 +76,88 @@ export const MatchEditModal = (props: Props) => {
   };
 
   return (
-    <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Edit match</ModalHeader>
-        <ModalCloseButton />
+    <>
+      <MatchDeleteModal isOpen={isDeleteModalOpen} onClose={() => { onDeleteModalClose(); props.onClose() }} match={props.match} />
 
-        <Formik initialValues={initialValues} onSubmit={editMatch} validationSchema={matchValidationSchema}>
-          {({ handleSubmit }) => (
-            <Form onSubmit={handleSubmit}>
-              <ModalBody>
-                <InputControl name='date' label='Date' inputProps={{ type: 'datetime-local' }} />
+      <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Edit match</ModalHeader>
+          <ModalCloseButton />
 
-                <SelectControl
-                  name='homeTeamId'
-                  label='Home team'
-                  mt={3}
-                >
-                  {teamsQuery.data &&
-                    (teamsQuery.data as Team[]).map((team) => (
-                      <option key={team.id} value={team.id}>
-                        {team.name}
-                      </option>
-                    ))}
-                </SelectControl>
+          <Formik initialValues={initialValues} onSubmit={editMatch} validationSchema={matchValidationSchema}>
+            {({ handleSubmit }) => (
+              <Form onSubmit={handleSubmit}>
+                <ModalBody>
+                  <InputControl name='date' label='Date' inputProps={{ type: 'datetime-local' }} />
 
-                <SelectControl
-                  name='awayTeamId'
-                  label='Away team'
-                  mt={3}
-                >
-                  {teamsQuery.data &&
-                    (teamsQuery.data as Team[]).map((team) => (
-                      <option key={team.id} value={team.id}>
-                        {team.name}
-                      </option>
-                    ))}
-                </SelectControl>
+                  <SelectControl
+                    name='homeTeamId'
+                    label='Home team'
+                    mt={3}
+                  >
+                    {teamsQuery.data &&
+                      (teamsQuery.data as Team[]).map((team) => (
+                        <option key={team.id} value={team.id}>
+                          {team.name}
+                        </option>
+                      ))}
+                  </SelectControl>
 
-                <SelectControl
-                  name='refereeId'
-                  label='Referee'
-                  mt={3}
-                >
-                  {refereesQuery.data &&
-                    (refereesQuery.data as User[]).map((referee) => (
-                      <option key={referee.id} value={referee.id}>
-                        {referee.firstName} {referee.lastName}
-                      </option>
-                    ))}
-                </SelectControl>
+                  <SelectControl
+                    name='awayTeamId'
+                    label='Away team'
+                    mt={3}
+                  >
+                    {teamsQuery.data &&
+                      (teamsQuery.data as Team[]).map((team) => (
+                        <option key={team.id} value={team.id}>
+                          {team.name}
+                        </option>
+                      ))}
+                  </SelectControl>
 
-                <SelectControl
-                  name='observerId'
-                  label='Observer'
-                  mt={3}
-                >
-                  {observersQuery.data &&
-                    (observersQuery.data as User[]).map((observer) => (
-                      <option key={observer.id} value={observer.id}>
-                        {observer.firstName} {observer.lastName}
-                      </option>
-                    ))}
-                </SelectControl>
-              </ModalBody>
+                  <SelectControl
+                    name='refereeId'
+                    label='Referee'
+                    mt={3}
+                  >
+                    {refereesQuery.data &&
+                      (refereesQuery.data as User[]).map((referee) => (
+                        <option key={referee.id} value={referee.id}>
+                          {referee.firstName} {referee.lastName}
+                        </option>
+                      ))}
+                  </SelectControl>
 
-              <ModalFooter>
-                <Button mr={'3'} type='submit' isLoading={updateMutation.isLoading}>
-                  Save
-                </Button>
-                <Button onClick={() => props.onClose()}>Cancel</Button>
-              </ModalFooter>
-            </Form>
-          )}
-        </Formik>
-      </ModalContent>
-    </Modal>
+                  <SelectControl
+                    name='observerId'
+                    label='Observer'
+                    mt={3}
+                  >
+                    {observersQuery.data &&
+                      (observersQuery.data as User[]).map((observer) => (
+                        <option key={observer.id} value={observer.id}>
+                          {observer.firstName} {observer.lastName}
+                        </option>
+                      ))}
+                  </SelectControl>
+                </ModalBody>
+
+                <ModalFooter>
+                  <Button type='submit' colorScheme='blue' mr={'3'} isLoading={updateMutation.isLoading}>
+                    Save
+                  </Button>
+                  <Button colorScheme='red' mr={'3'} onClick={onDeleteModalOpen}>
+                    Delete
+                  </Button>
+                  <Button onClick={() => props.onClose()}>Cancel</Button>
+                </ModalFooter>
+              </Form>
+            )}
+          </Formik>
+        </ModalContent>
+      </Modal>
+    </>
   );
 };

@@ -9,7 +9,6 @@ import { BsClockFill, BsFillHouseDoorFill, BsBookmarks } from 'react-icons/bs';
 import {Constants} from "../../../shared/Constants";
 import {refereeItem} from "../referees/RefereeListItem";
 import {observerItem} from "../observers/ObserverListItem";
-import {MatchDeleteModal} from "./MatchDeleteModal";
 import {MatchEditModal} from "./MatchEditModal";
 import { MdPeople } from 'react-icons/md';
 import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
@@ -21,8 +20,7 @@ export interface Props {
 }
 
 export const MatchListItem = (props: Props) => {
-  const { isOpen: isEditModalOpen, /*onOpen: onEditModalOpen, */onClose: onEditModalClose } = useDisclosure();
-  const { isOpen: isDeleteModalOpen, /*onOpen: onDeleteModalOpen, */onClose: onDeleteModalClose } = useDisclosure();
+  const { isOpen: isEditModalOpen, onOpen: onEditModalOpen, onClose: onEditModalClose } = useDisclosure();
   const { leagueUsersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
   const { leagueUsersQuery: observersQuery } = useLeagueUsers(Role.Observer);
   const { query: teamsQuery } = useTeams();
@@ -35,18 +33,15 @@ export const MatchListItem = (props: Props) => {
   return (
     <>
       <MatchEditModal isOpen={isEditModalOpen} onClose={onEditModalClose} match={props.match} />
-      <MatchDeleteModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} match={props.match} />
       <Flex
         p={5}
         borderRadius={10}
         alignItems={'center'}
         backgroundColor={'gray.50'}
         cursor={'pointer'}
+        onClick={onEditModalOpen}
       >
         {matchItem(props.match, teamsQuery, refereesQuery, observersQuery)}
-        {/*<Spacer />*/}
-        {/*<IconButton onClick={onEditModalOpen} variant={'ghost'} aria-label='Edit match' icon={<EditIcon />} disabled={isMatchInThePast()} />*/}
-        {/*<IconButton onClick={onDeleteModalOpen} variant={'ghost'} aria-label='Delete match' icon={<DeleteIcon />} />*/}
       </Flex>
     </>
   );
