@@ -44,6 +44,7 @@ export const RefereeGradesModal = (props: Props) => {
       observersQuery.data!.forEach((observer) => mappedObservers[observer.id] = observer);
       setState({ observers: mappedObservers } as State);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [observersQuery.isSuccess])
 
   return (
