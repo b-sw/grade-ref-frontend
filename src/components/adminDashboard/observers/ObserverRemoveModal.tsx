@@ -8,6 +8,7 @@ import {
   ModalFooter,
   Button,
   Text,
+  Flex,
 } from '@chakra-ui/react';
 import {User} from "../../../entities/User";
 import {observerItem} from "./ObserverListItem";
@@ -38,7 +39,14 @@ export const ObserverRemoveModal = (props: Props) => {
             <Text fontWeight='bold' mb='1rem'>
               Are you sure you want to remove the following observer from this league?
             </Text>
-            {observerItem(props.observer)}
+            <Flex
+              p={5}
+              borderRadius={10}
+              alignItems={'center'}
+              backgroundColor={'gray.50'}
+            >
+              {observerItem(props.observer)}
+            </Flex>
           </ModalBody>
 
           <ModalFooter>

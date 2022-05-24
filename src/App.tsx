@@ -10,7 +10,7 @@ import {RequireAuthRouteRefereeObserver} from "./components/other/RequireAuthRou
 import {Dashboard} from "./pages/Dashboard";
 import {AdminDashboard} from "./pages/AdminDashboard";
 import {RequireAuthRouteAdmin} from "./components/other/RequireAuthRouteAdmin";
-import theme from "./shared/theme";
+import theme from "./theme/theme";
 import { AdminExplorer } from "./pages/AdminExplorer";
 import {RequireAuthRouteOwner} from "./components/other/RequireAuthRouteOwner";
 import {OwnerDashboard} from "./pages/OwnerDashboard";

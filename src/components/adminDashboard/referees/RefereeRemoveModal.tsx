@@ -1,5 +1,6 @@
 import {
   Button,
+  Flex,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -39,7 +40,14 @@ export const RefereeRemoveModal = (props: Props) => {
             <Text fontWeight='bold' mb='1rem'>
               Are you sure you want to remove the following referee from this league?
             </Text>
-            {refereeItem(props.referee)}
+            <Flex
+              p={5}
+              borderRadius={10}
+              alignItems={'center'}
+              backgroundColor={'gray.50'}
+            >
+              {refereeItem(props.referee)}
+            </Flex>
           </ModalBody>
 
           <ModalFooter>

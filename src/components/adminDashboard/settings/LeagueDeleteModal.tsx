@@ -12,6 +12,7 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Flex,
 } from '@chakra-ui/react';
 import {useLeagues} from "../../../hooks/useLeagues";
 import {useMatches} from "../../../hooks/useMatches";
@@ -61,7 +62,15 @@ export const LeagueDeleteModal = (props: Props) => {
               ? 'If you remove this league all its matches and their grades will also be purged.'
               : 'Are you sure you want to delete this league?'}
           </Text>
-          {leagueItem(league)}
+          <Flex
+            my={2}
+            p={5}
+            borderRadius={10}
+            alignItems={'center'}
+            backgroundColor={'gray.50'}
+          >
+            {leagueItem(league)}
+          </Flex>
           <Text color={'red'}>
             This operation cannot be reversed.
           </Text>

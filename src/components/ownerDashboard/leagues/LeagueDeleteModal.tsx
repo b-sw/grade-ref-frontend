@@ -8,6 +8,7 @@ import {
   ModalFooter,
   Button,
   Text,
+  Flex,
 } from '@chakra-ui/react';
 import {useUsers} from "../../../hooks/useUsers";
 import {leagueItem} from "./LeagueListItem";
@@ -37,7 +38,14 @@ export const LeagueDeleteModal = (props: Props) => {
             <Text fontWeight='bold' mb='1rem'>
               Are you sure you want to delete the following league?
             </Text>
-            {leagueItem(props.league)}
+            <Flex
+              p={5}
+              borderRadius={10}
+              alignItems={'center'}
+              backgroundColor={'gray.50'}
+            >
+              {leagueItem(props.league)}
+            </Flex>
             <Text fontWeight='bold' mt='1rem'>
               You can't undo this action afterwards.
             </Text>

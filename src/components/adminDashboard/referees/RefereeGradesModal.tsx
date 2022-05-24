@@ -51,17 +51,19 @@ export const RefereeGradesModal = (props: Props) => {
       isOpen={props.isOpen}
       onClose={props.onClose}
       isCentered
-      colorScheme={'red'}
       size={'xl'}
     >
       <ModalOverlay />
+      {/*<ModalContent background={'gray.200'}>*/}
       <ModalContent>
         <ModalHeader>{props.referee.firstName} {props.referee.lastName}'s grades</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
             {matchesQuery.data && state.observers !== {} ?
-              matchesQuery.data.map((match) => <MatchGradeListItem match={match} observer={state.observers[match.observerId]} />) :
+              matchesQuery.data.map((match) =>
+                <MatchGradeListItem key={match.id} match={match} observer={state.observers[match.observerId]} />
+              ) :
               <Spinner />
             }
           </Flex>

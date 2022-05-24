@@ -21,6 +21,7 @@ export const LeagueCard = (props: Props) => {
   const { query: matchesQuery } = useMatches({ disableAutoRefetch: true, leagueId: props.league.id });
 
   const queries = [allRefereesQuery, refereesQuery, allObserversQuery, observersQuery, teamsQuery, matchesQuery];
+  const loadingQueries = [refereesQuery, observersQuery, teamsQuery, matchesQuery];
 
   const navigateToDashboard = async (league: League) => {
     await Promise.all(queries.map(async (query): Promise<any> => {
@@ -36,7 +37,7 @@ export const LeagueCard = (props: Props) => {
         <Button
           w={'100%'}
           onClick={async () => await navigateToDashboard(props.league)}
-          isLoading={queries.some((query) => query.isLoading)}
+          isLoading={loadingQueries.some((query) => query.isLoading)}
         >
           Select
         </Button>
@@ -48,7 +49,7 @@ export const LeagueCard = (props: Props) => {
 export const leagueItem = (league: League) => {
   return (
     <>
-      <HStack py={2}>
+      <HStack>
         <Avatar
           name={league.name}
           size={'md'}
