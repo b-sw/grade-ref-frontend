@@ -10,7 +10,11 @@ export const RequireAuthRouteAdmin = () => {
     return <Outlet />;
   }
 
-  if (auth.isLoggedIn) {
+  if (auth.isLoggedInAsOwner) {
+    return <Navigate to={Paths.OWNER_DASHBOARD} state={{ from: location }} replace />;
+  }
+
+  if (auth.isLoggedInAsReferee || auth.isLoggedInAsObserver) {
     return <Navigate to={Paths.DASHBOARD} state={{ from: location }} replace />;
   }
 

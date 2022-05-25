@@ -13,7 +13,7 @@ import {
   Text,
   useDisclosure
 } from '@chakra-ui/react';
-import {AddIcon} from '@chakra-ui/icons';
+import {AddIcon, AttachmentIcon} from '@chakra-ui/icons';
 import {scrollbarStyle} from "../../dashboard/shared/styles";
 import {Match} from "../../../entities/Match";
 import {MatchListItem} from "./MatchListItem";
@@ -85,6 +85,9 @@ export const MatchesPanel = () => {
             Matches
           </Text>
           <Spacer />
+          <Button variant={'ghost'} leftIcon={<AttachmentIcon />} onClick={() => {}} disabled={true}>
+            Load
+          </Button>
           <Button variant={'ghost'} leftIcon={<AddIcon />} onClick={onCreateModalOpen}>
             Add
           </Button>

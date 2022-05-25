@@ -14,7 +14,7 @@ export const RequireAuthRouteOwner = () => {
     return <Navigate to={Paths.ADMIN_EXPLORER} state={{ from: location }} replace />;
   }
 
-  if (auth.isLoggedIn) {
+  if (auth.isLoggedInAsReferee || auth.isLoggedInAsObserver) {
     return <Navigate to={Paths.DASHBOARD} state={{ from: location }} replace />;
   }
 
