@@ -1,4 +1,4 @@
-import { Flex, VStack, Text, Avatar, HStack, Divider, Center, useDisclosure, Badge } from '@chakra-ui/react';
+import { Flex, VStack, Text, Avatar, HStack, Divider, Center, useDisclosure, Badge, Tooltip } from '@chakra-ui/react';
 import {Match} from "../../../entities/Match";
 import {useTeams} from "../../../hooks/useTeams";
 import {Team} from "../../../entities/Team";
@@ -14,6 +14,7 @@ import { MdPeople } from 'react-icons/md';
 import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
 import {Role} from "../../../shared/Role";
 import {determineGradeStatus} from "../../shared/gradeStatus";
+import { WarningIcon } from '@chakra-ui/icons';
 
 export interface Props {
   match: Match;
@@ -24,11 +25,6 @@ export const MatchListItem = (props: Props) => {
   const { leagueUsersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
   const { leagueUsersQuery: observersQuery } = useLeagueUsers(Role.Observer);
   const { query: teamsQuery } = useTeams();
-
-  // const isMatchInThePast = () => {
-  //   const matchDate: Dayjs = dayjs(props.match.matchDate);
-  //   return matchDate < dayjs();
-  // }
 
   return (
     <>
@@ -57,7 +53,7 @@ export const matchItem = (match: Match, teamsQuery: any, refereesQuery: any, obs
   const matchDate: string = dayjs(match.matchDate, Constants.DATETIME_FORMAT).format('DD-MM-YYYY');
   const matchTime: string = dayjs(match.matchDate, Constants.DATETIME_FORMAT).format('HH:mm');
 
-  const { gradeStatus, gradeBadgeScheme } = determineGradeStatus(match);
+  const { gradeStatus, gradeBadgeScheme, delay: gradeDelay } = determineGradeStatus(match);
 
   return (
     <>
@@ -123,6 +119,14 @@ export const matchItem = (match: Match, teamsQuery: any, refereesQuery: any, obs
               <Text>Grade:</Text>
               <Badge variant={'outline'} colorScheme={gradeBadgeScheme} fontSize={'xs'}>{match.refereeGrade ?? 'N/A'}</Badge>
             </HStack>
+            {gradeDelay &&
+              <HStack>
+                <Tooltip label='delay'>
+                  <WarningIcon color={'red.600'}/>
+                </Tooltip>
+                <Text color={'red.600'}>+{gradeDelay}</Text>
+              </HStack>
+            }
           </VStack>
         </HStack>
 

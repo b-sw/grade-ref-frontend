@@ -1,15 +1,16 @@
 import {Match} from "../../entities/Match";
 import {User} from "../../entities/User";
-import {Avatar, Flex, Text, VStack, HStack, Badge} from "@chakra-ui/react";
+import {Avatar, Badge, Flex, HStack, Text, VStack} from "@chakra-ui/react";
 import {Constants} from "../../shared/Constants";
 import dayjs from "dayjs";
-import { CalendarIcon } from "@chakra-ui/icons";
+import {CalendarIcon} from "@chakra-ui/icons";
 import {BsClockFill} from "react-icons/bs";
 import {determineGradeStatus} from "./gradeStatus";
+import {Role} from "../../shared/Role";
 
 interface Props {
   match: Match;
-  observer: User;
+  user: User;
 }
 
 export const MatchGradeListItem = (props: Props) => {
@@ -22,13 +23,13 @@ export const MatchGradeListItem = (props: Props) => {
         alignItems={'center'}
         backgroundColor={'gray.50'}
       >
-        {matchGradeItem(props.match, props.observer)}
+        {matchGradeItem(props.match, props.user)}
       </Flex>
     </>
   );
 }
 
-export const matchGradeItem = (match: Match, observer: User) => {
+export const matchGradeItem = (match: Match, user: User) => {
   let gradeDate: string = 'TBD';
   let gradeTime: string = 'TBD';
   if (match.refereeGradeDate) {
@@ -36,6 +37,7 @@ export const matchGradeItem = (match: Match, observer: User) => {
     gradeTime = dayjs(match.refereeGradeDate, Constants.DATETIME_FORMAT).format('HH:mm');
   }
   const { gradeStatus, gradeBadgeScheme } = determineGradeStatus(match);
+  const { badgeColor, badgeString } = getUserBadge(user);
 
   return (
     <>
@@ -44,28 +46,24 @@ export const matchGradeItem = (match: Match, observer: User) => {
         <HStack w={'100%'}>
           <HStack w={'40%'}>
             <Avatar
-              name={observer.firstName + ' ' + observer.lastName}
+              name={user.firstName + ' ' + user.lastName}
               size={'sm'}
             />
             <VStack spacing={0} alignItems={'baseline'}>
               <HStack>
-                <Text fontSize={'sm'}>{observer.firstName} {observer.lastName}</Text>
-                <Badge colorScheme='purple' fontSize={'xs'}>Observer</Badge>
+                <Text fontSize={'sm'}>{user.firstName} {user.lastName}</Text>
+                <Badge colorScheme={badgeColor} fontSize={'xs'}>{badgeString}</Badge>
               </HStack>
               <VStack alignItems={'baseline'} spacing={0}>
                 <Text fontSize={'xs'} color={'gray.400'}>
-                  {observer.email}
+                  {user.email}
                 </Text>
                 <Text fontSize={'xs'} color={'gray.400'}>
-                  {observer.phoneNumber}
+                  {user.phoneNumber}
                 </Text>
               </VStack>
             </VStack>
           </HStack>
-
-          {/*<Center height='50px' w={'20%'}>*/}
-          {/*  <Divider orientation='vertical' />*/}
-          {/*</Center>*/}
 
           <VStack alignItems={'baseline'} w={'30%'}>
             <HStack>
@@ -92,4 +90,12 @@ export const matchGradeItem = (match: Match, observer: User) => {
       </VStack>
     </>
   );
+}
+
+const getUserBadge = (user: User): { badgeColor: string, badgeString: string } => {
+  if (user.role === Role.Referee) {
+    return { badgeColor: 'facebook', badgeString: 'Referee' };
+  } else {
+    return { badgeColor: 'purple', badgeString: 'Observer' };
+  }
 }

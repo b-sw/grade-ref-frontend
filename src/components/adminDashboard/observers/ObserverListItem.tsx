@@ -3,6 +3,7 @@ import { Flex, Spacer, IconButton, VStack, Text, useDisclosure, Avatar, HStack, 
 import { MdAssignment } from 'react-icons/md';
 import {User} from "../../../entities/User";
 import { ObserverRemoveModal } from './ObserverRemoveModal';
+import {ObserverGradesModal} from "./ObserverGradesModal";
 
 export interface Props {
   observer: User;
@@ -10,10 +11,12 @@ export interface Props {
 
 export const ObserverListItem = (props: Props) => {
   const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
+  const { isOpen: isGradesModalOpen, onOpen: onGradesModalOpen, onClose: onGradesModalClose } = useDisclosure();
 
   return (
     <>
       <ObserverRemoveModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} observer={props.observer} />
+      <ObserverGradesModal observer={props.observer} isOpen={isGradesModalOpen} onClose={onGradesModalClose} />
       <Flex
         p={5}
         borderRadius={10}
@@ -22,7 +25,7 @@ export const ObserverListItem = (props: Props) => {
       >
         {observerItem(props.observer)}
         <Spacer />
-        <IconButton onClick={() => {}} variant={'ghost'} aria-label='See grades' icon={<MdAssignment />} />
+        <IconButton onClick={onGradesModalOpen} variant={'ghost'} aria-label='See grades' icon={<MdAssignment />} />
         <IconButton onClick={onDeleteModalOpen} variant={'ghost'} aria-label='Delete observer' icon={<DeleteIcon />} />
       </Flex>
     </>
