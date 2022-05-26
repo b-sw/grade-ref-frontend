@@ -1,20 +1,12 @@
-import {
-  Flex,
-  Spacer,
-  Button,
-  useDisclosure,
-} from '@chakra-ui/react';
-import useAuth from '../hooks/useAuth';
-import { PlusSquareIcon } from '@chakra-ui/icons';
-import { HiOutlineLogout } from 'react-icons/hi';
 import {useLeagues} from "../hooks/useLeagues";
-import {League} from "../entities/League";
-import {AdminLeagueCard} from "../components/adminExplorer/AdminLeagueCard";
+import useAuth from "../hooks/useAuth";
 import {LoadingOverlay} from "./LoadingOverlay";
-import {LeagueCreateModal} from "../components/ownerDashboard/leagues/LeagueCreateModal";
+import {League} from "../entities/League";
+import {Button, Flex, Spacer } from "@chakra-ui/react";
+import { HiOutlineLogout } from "react-icons/hi";
+import { LeagueCard } from "../components/explorer/LeagueCard";
 
-export const AdminExplorer = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+export const Explorer = () => {
   const { query: leaguesQuery } = useLeagues();
   const { logout } = useAuth();
   const queries = [leaguesQuery];
@@ -25,7 +17,6 @@ export const AdminExplorer = () => {
 
   return (
     <Flex p={4} m={0} h={['100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
-      <LeagueCreateModal isOpen={isOpen} onClose={onClose} />
       <Flex mb={5}>
         <Spacer />
         <Button ml={3} onClick={() => logout()} leftIcon={<HiOutlineLogout />}>
@@ -44,22 +35,10 @@ export const AdminExplorer = () => {
         >
           {leaguesQuery.data &&
             leaguesQuery.data.map((league: League) => (
-              <AdminLeagueCard key={league.id} league={league} />
+              <LeagueCard key={league.id} league={league} />
             ))}
-          <Button
-            ml={5}
-            onClick={onOpen}
-            rightIcon={<PlusSquareIcon />}
-            variant={'outline'}
-            w={['80%', '80%', '20%']}
-            h={'20%'}
-            minH={'10em'}
-            colorScheme={'customButton'}
-          >
-            Add league
-          </Button>
         </Flex>
       </Flex>
     </Flex>
   );
-};
+}

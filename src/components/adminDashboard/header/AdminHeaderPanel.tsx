@@ -14,7 +14,8 @@ import {
 import useStore from "../../../zustand/store";
 import useAuth from "../../../hooks/useAuth";
 import {Paths} from "../../../shared/Paths";
-import { MdDashboard, MdPeople } from 'react-icons/md';
+import { MdDashboard } from 'react-icons/md';
+import { CalendarIcon } from '@chakra-ui/icons';
 import { useNavigate, useParams } from 'react-router-dom';
 import {useLeagues} from "../../../hooks/useLeagues";
 import {uuid} from "../../../shared/uuid";
@@ -37,8 +38,8 @@ export const AdminHeaderPanel = () => {
         <Spacer />
 
         <Flex alignItems={'center'}>
-          <Button mr={3} disabled={true} onClick={() => {}} leftIcon={<MdPeople />}>
-            Grades
+          <Button mr={3} disabled={true} onClick={() => {}} leftIcon={<CalendarIcon />}>
+            Calendar
           </Button>
           <Button mr={3} onClick={() => {navigate(Paths.ADMIN_EXPLORER)}} leftIcon={<MdDashboard />}>
             Leagues

@@ -38,8 +38,8 @@ interface FormikValues {
 export const MatchCreateModal = (props: Props) => {
   const { postMutation } = useMatches();
   const { query: teamsQuery } = useTeams();
-  const { leagueUsersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
-  const { leagueUsersQuery: observersQuery } = useLeagueUsers(Role.Observer);
+  const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
+  const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
 
   useEffect(() => {
     if (postMutation.isSuccess) {

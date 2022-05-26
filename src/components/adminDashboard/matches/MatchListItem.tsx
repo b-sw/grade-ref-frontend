@@ -18,17 +18,18 @@ import { WarningIcon } from '@chakra-ui/icons';
 
 export interface Props {
   match: Match;
+  readOnly?: boolean;
 }
 
 export const MatchListItem = (props: Props) => {
   const { isOpen: isEditModalOpen, onOpen: onEditModalOpen, onClose: onEditModalClose } = useDisclosure();
-  const { leagueUsersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
-  const { leagueUsersQuery: observersQuery } = useLeagueUsers(Role.Observer);
+  const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
+  const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
   const { query: teamsQuery } = useTeams();
 
   return (
     <>
-      <MatchEditModal isOpen={isEditModalOpen} onClose={onEditModalClose} match={props.match} />
+      {!props.readOnly && <MatchEditModal isOpen={isEditModalOpen} onClose={onEditModalClose} match={props.match} />}
       <Flex
         p={5}
         borderRadius={10}

@@ -13,7 +13,7 @@ import {
 import {useParams} from "react-router-dom";
 import {User} from "../../../entities/User";
 import {uuid} from "../../../shared/uuid";
-import {useLeagueMatches} from "../../../hooks/useLeagueMatches";
+import {useUserMatches} from "../../../hooks/useUserMatches";
 import {MatchGradeListItem} from "../../shared/MatchGradeListItem";
 import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
 import {Role} from "../../../shared/Role";
@@ -34,8 +34,8 @@ interface State {
 
 export const ObserverGradesModal = (props: Props) => {
   const { leagueId } = useParams<{ leagueId: uuid }>();
-  const { query: matchesQuery } = useLeagueMatches({ userId: props.observer.id, leagueId: leagueId!, disableAutoRefetch: true });
-  const { leagueUsersQuery: refereesQuery } = useLeagueUsers(Role.Referee, { disableAutoRefetch: true, leagueId: leagueId! });
+  const { query: matchesQuery } = useUserMatches({ userId: props.observer.id, leagueId: leagueId!, disableAutoRefetch: true });
+  const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee, { disableAutoRefetch: true, leagueId: leagueId! });
 
   const [state, setState] = useSetState({ referees: {} } as State);
 

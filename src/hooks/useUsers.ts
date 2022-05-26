@@ -5,10 +5,12 @@ import {uuid} from "../shared/uuid";
 import {User} from "../entities/User";
 import {Role} from "../shared/Role";
 import {toastError} from "./shared/toastError";
+import {useReferees} from "./useReferees";
+import {useObservers} from "./useObservers";
 
-const REFEREES_QUERY_KEY = 'referees_qk';
-const OBSERVERS_QUERY_KEY = 'observers_qk';
-const ADMINS_QUERY_KEY = 'admins_qk';
+export const REFEREES_QUERY_KEY = 'referees_qk';
+export const OBSERVERS_QUERY_KEY = 'observers_qk';
+export const ADMINS_QUERY_KEY = 'admins_qk';
 
 export interface Props {
   disableAutoRefetch: boolean;
@@ -22,16 +24,6 @@ queryKeys[Role.Observer] = OBSERVERS_QUERY_KEY;
 export const useUsers = (props?: Props) => {
   const toast = useToast();
   const queryClient: QueryClient = useQueryClient();
-
-  const getReferees = async (): Promise<User[]> => {
-    const response = await axios.get(`users/referees`);
-    return response.data;
-  }
-
-  const getObservers = async (): Promise<User[]> => {
-    const response = await axios.get(`users/observers`);
-    return response.data;
-  }
 
   const getAdmins = async (): Promise<User[]> => {
     const response = await axios.get(`users/admins`);
@@ -53,17 +45,9 @@ export const useUsers = (props?: Props) => {
     return response.data;
   }
 
-  const refereesQuery = useQuery(
-    REFEREES_QUERY_KEY,
-    getReferees,
-    { enabled: props ? !props.disableAutoRefetch : true },
-  );
+  const { refereesQuery } = useReferees(props);
 
-  const observersQuery = useQuery(
-    OBSERVERS_QUERY_KEY,
-    getObservers,
-    { enabled: props ? !props.disableAutoRefetch : true },
-  );
+  const { observersQuery } = useObservers(props);
 
   const adminsQuery = useQuery(
     ADMINS_QUERY_KEY,

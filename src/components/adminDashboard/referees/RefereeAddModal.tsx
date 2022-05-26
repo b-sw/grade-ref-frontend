@@ -16,6 +16,7 @@ import {MultiValue, Select} from "chakra-react-select";
 import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
 import {useSetState} from "../../../hooks/useSetState";
 import {User} from "../../../entities/User";
+import {useReferees} from "../../../hooks/useReferees";
 
 interface Props {
   isOpen: boolean;
@@ -33,11 +34,8 @@ interface State {
 }
 
 export const RefereeAddModal = (props: Props) => {
-  const {
-    usersQuery: refereesQuery,
-    leagueUsersQuery: leagueRefereesQuery,
-    addMutation
-  } = useLeagueUsers(Role.Referee);
+  const { usersQuery: leagueRefereesQuery, addMutation } = useLeagueUsers(Role.Referee);
+  const { refereesQuery } = useReferees();
 
   const [state, setState] = useSetState({
     selectedOptions: [],

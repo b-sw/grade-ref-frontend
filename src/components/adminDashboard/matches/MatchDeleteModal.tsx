@@ -24,8 +24,8 @@ export interface Props {
 
 export const MatchDeleteModal = (props: Props) => {
   const { deleteMutation } = useMatches();
-  const { leagueUsersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
-  const { leagueUsersQuery: observersQuery } = useLeagueUsers(Role.Observer);
+  const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
+  const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
   const { query: teamsQuery } = useTeams();
 
   const deleteMatch = () => {

@@ -19,7 +19,7 @@ import {useMatches} from "../../../hooks/useMatches";
 import {useSetState} from "../../../hooks/useSetState";
 import {League} from "../../../entities/League";
 import {uuid} from "../../../shared/uuid";
-import {leagueItem} from "../../adminExplorer/LeagueCard";
+import {leagueItem} from "../../adminExplorer/AdminLeagueCard";
 
 interface Props {
   isOpen: boolean;

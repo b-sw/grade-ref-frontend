@@ -15,7 +15,7 @@ export const RequireAuthRouteAdmin = () => {
   }
 
   if (auth.isLoggedInAsReferee || auth.isLoggedInAsObserver) {
-    return <Navigate to={Paths.DASHBOARD} state={{ from: location }} replace />;
+    return <Navigate to={Paths.EXPLORER} state={{ from: location }} replace />;
   }
 
   return <Navigate to={Paths.LOGIN} state={{ from: location }} replace />;

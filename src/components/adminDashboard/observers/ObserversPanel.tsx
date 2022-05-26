@@ -18,7 +18,7 @@ interface State {
 
 export const ObserversPanel = () => {
   const {isOpen: isCreateModalOpen, onOpen: onCreateModalOpen, onClose: onCreateModalClose } = useDisclosure();
-  const { leagueUsersQuery: observersQuery } = useLeagueUsers(Role.Observer);
+  const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
 
   const [state, setState] = useSetState({
     observers: [],

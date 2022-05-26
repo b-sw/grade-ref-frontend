@@ -13,14 +13,11 @@ import {
 } from '@chakra-ui/react';
 import useStore from "../../../zustand/store";
 import useAuth from "../../../hooks/useAuth";
-import {Paths} from "../../../shared/Paths";
-import { MdDashboard } from 'react-icons/md';
-import { useNavigate } from 'react-router-dom';
+import { CalendarIcon } from '@chakra-ui/icons';
 
 export const HeaderPanel = () => {
   const user = useStore((state) => state.user);
-  const { logout, isLoggedInAsAdmin } = useAuth();
-  const navigate = useNavigate();
+  const { logout } = useAuth();
 
   return (
     <>
@@ -29,11 +26,9 @@ export const HeaderPanel = () => {
         <Spacer />
 
         <Flex alignItems={'center'}>
-          { isLoggedInAsAdmin && (
-            <Button mr={3} onClick={() => navigate(Paths.ADMIN_DASHBOARD)} leftIcon={<MdDashboard />}>
-              Admin dashboard
-            </Button>
-          )}
+          <Button mr={3} disabled={true} onClick={() => {}} leftIcon={<CalendarIcon />}>
+            Calendar
+          </Button>
 
           <Menu>
             <MenuButton

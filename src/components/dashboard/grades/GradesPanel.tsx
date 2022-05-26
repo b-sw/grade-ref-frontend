@@ -1,5 +1,4 @@
-import { Button, Flex, Spacer, Text } from '@chakra-ui/react';
-import { AddIcon } from '@chakra-ui/icons';
+import { Flex, Spacer, Text } from '@chakra-ui/react';
 
 export const GradesPanel = () => {
   return (
@@ -7,9 +6,9 @@ export const GradesPanel = () => {
       <Flex
         direction={'column'}
         borderRadius={10}
-        backgroundColor={'gray.750'}
-        p={7}
-        shadow={'dark-lg'}
+        p={5}
+        backgroundColor={'gray.300'}
+        shadow={'md'}
         overflowY={'hidden'}
         flexGrow={1}
       >
@@ -18,9 +17,6 @@ export const GradesPanel = () => {
             Grades
           </Text>
           <Spacer />
-          <Button variant={'ghost'} leftIcon={<AddIcon />}>
-            Add
-          </Button>
         </Flex>
       </Flex>
     </>

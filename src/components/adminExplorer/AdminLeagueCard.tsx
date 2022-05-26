@@ -6,22 +6,26 @@ import {useTeams} from "../../hooks/useTeams";
 import {useMatches} from "../../hooks/useMatches";
 import {useLeagueUsers} from "../../hooks/useLeagueUsers";
 import {Role} from "../../shared/Role";
+import {useReferees} from "../../hooks/useReferees";
+import {useObservers} from "../../hooks/useObservers";
 
 interface Props {
   league: League;
 }
 
-export const LeagueCard = (props: Props) => {
+export const AdminLeagueCard = (props: Props) => {
   const navigate = useNavigate();
-  const { usersQuery: allRefereesQuery, leagueUsersQuery: refereesQuery } =
+  const { usersQuery: refereesQuery } =
     useLeagueUsers(Role.Referee, { disableAutoRefetch: true, leagueId: props.league.id });
-  const { usersQuery: allObserversQuery, leagueUsersQuery: observersQuery } =
+  const { usersQuery: observersQuery } =
     useLeagueUsers(Role.Observer, { disableAutoRefetch: true, leagueId: props.league.id });
   const { query: teamsQuery } = useTeams({ disableAutoRefetch: true, leagueId: props.league.id });
   const { query: matchesQuery } = useMatches({ disableAutoRefetch: true, leagueId: props.league.id });
+  const { refereesQuery: allRefereesQuery } = useReferees({ disableAutoRefetch: true });
+  const { observersQuery: allObserversQuery } = useObservers({ disableAutoRefetch: true });
 
-  const queries = [allRefereesQuery, refereesQuery, allObserversQuery, observersQuery, teamsQuery, matchesQuery];
   const loadingQueries = [refereesQuery, observersQuery, teamsQuery, matchesQuery];
+  const queries = [allRefereesQuery, allObserversQuery, ...loadingQueries];
 
   const navigateToDashboard = async (league: League) => {
     await Promise.all(queries.map(async (query): Promise<any> => {

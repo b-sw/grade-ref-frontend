@@ -17,7 +17,6 @@ import {AddIcon, AttachmentIcon} from '@chakra-ui/icons';
 import {scrollbarStyle} from "../../dashboard/shared/styles";
 import {Match} from "../../../entities/Match";
 import {MatchListItem} from "./MatchListItem";
-import {useMatches} from "../../../hooks/useMatches";
 import {MatchCreateModal} from "./MatchCreateModal";
 import {Constants} from "../../../shared/Constants";
 import dayjs from 'dayjs';
@@ -33,16 +32,20 @@ import {User} from "../../../entities/User";
 import {Team} from "../../../entities/Team";
 
 interface State {
-  matches: Match[],
-  filter: string,
+  matches: Match[];
+  filter: string;
 }
 
-export const MatchesPanel = () => {
+interface Props {
+  matches: Match[];
+  readOnly?: boolean;
+}
+
+export const MatchesPanel = (props: Props) => {
   const { isOpen: isCreateModalOpen, onOpen: onCreateModalOpen, onClose: onCreateModalClose } = useDisclosure();
-  const { query: matchesQuery } = useMatches();
   const { query: teamsQuery } = useTeams();
-  const { leagueUsersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
-  const { leagueUsersQuery: observersQuery } = useLeagueUsers(Role.Observer);
+  const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
+  const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
 
   let referees: { [id: uuid]: User } = {};
   let observers: { [id: uuid]: User } = {};
@@ -58,19 +61,19 @@ export const MatchesPanel = () => {
   } as State);
 
   useEffect(() => {
-    setState({ matches: matchesQuery.data })
+    setState({ matches: props.matches })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [matchesQuery.data]);
+  }, [props.matches]);
 
   useEffect(() => {
-    const filteredMatches: Match[] = matchFilter(matchesQuery.data!, teams, referees, observers, state.filter);
+    const filteredMatches: Match[] = matchFilter(props.matches, teams, referees, observers, state.filter);
     setState({ matches: filteredMatches });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.filter]);
 
   return (
     <>
-      <MatchCreateModal isOpen={isCreateModalOpen} onClose={onCreateModalClose} />
+      {!props.readOnly && <MatchCreateModal isOpen={isCreateModalOpen} onClose={onCreateModalClose} />}
       <Flex
         direction={'column'}
         borderRadius={10}
@@ -85,12 +88,15 @@ export const MatchesPanel = () => {
             Matches
           </Text>
           <Spacer />
-          <Button variant={'ghost'} leftIcon={<AttachmentIcon />} onClick={() => {}} disabled={true}>
-            Load
-          </Button>
-          <Button variant={'ghost'} leftIcon={<AddIcon />} onClick={onCreateModalOpen}>
-            Add
-          </Button>
+          {!props.readOnly &&
+              <>
+                <Button variant={'ghost'} leftIcon={<AttachmentIcon />} onClick={() => {}} disabled={true}>
+                    Load
+                </Button>
+                <Button variant={'ghost'} leftIcon={<AddIcon />} onClick={onCreateModalOpen}>
+                    Add
+                </Button>
+              </>}
         </Flex>
 
         <InputGroup>

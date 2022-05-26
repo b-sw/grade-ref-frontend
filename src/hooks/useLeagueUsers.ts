@@ -23,11 +23,6 @@ export const useLeagueUsers = (role: Role, props?: Props) => {
 
   const usersTypes: string = role === Role.Referee ? 'referees' : 'observers';
 
-  const getAllUsers = async (): Promise<User[]> => {
-    const response = await axios.get(`users/${usersTypes}`);
-    return response.data;
-  }
-
   const getAssignedUsers = async (): Promise<User[]> => {
     const response = await axios.get(`leagues/${leagueId}/${usersTypes}`);
     return response.data;
@@ -44,12 +39,6 @@ export const useLeagueUsers = (role: Role, props?: Props) => {
   }
 
   const usersQuery = useQuery(
-    role === Role.Referee ? REFEREES_QUERY_KEY : OBSERVERS_QUERY_KEY,
-    getAllUsers,
-    { enabled: props ? !props.disableAutoRefetch : true },
-  );
-
-  const leagueUsersQuery = useQuery(
     [role === Role.Referee ? REFEREES_QUERY_KEY : OBSERVERS_QUERY_KEY, leagueId],
     getAssignedUsers,
     { enabled: props ? !props.disableAutoRefetch : true },
@@ -84,5 +73,5 @@ export const useLeagueUsers = (role: Role, props?: Props) => {
     },
   });
 
-  return { usersQuery, leagueUsersQuery, addMutation, removeMutation }
+  return { usersQuery, addMutation, removeMutation }
 }

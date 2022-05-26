@@ -18,7 +18,7 @@ interface State {
 
 export const RefereesPanel = () => {
   const { isOpen: isCreateModalOpen, onOpen: onCreateModalOpen, onClose: onCreateModalClose } = useDisclosure();
-  const { leagueUsersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
+  const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
 
   const [state, setState] = useSetState({
     referees: [],

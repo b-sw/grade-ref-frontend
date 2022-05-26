@@ -2,24 +2,34 @@ import {
   Flex,
   SimpleGrid,
 } from '@chakra-ui/react';
-import { SettingsPanel } from '../components/dashboard/settings/SettingsPanel';
-import { MatchesPanel } from "../components/dashboard/matches/MatchesPanel";
-import { AssignmentsPanel } from '../components/dashboard/assignments/AssignmentsPanel';
-import { GradesPanel } from '../components/dashboard/grades/GradesPanel';
+import {GradesPanel} from '../components/dashboard/grades/GradesPanel';
 import {HeaderPanel} from "../components/dashboard/header/HeaderPanel";
+import {LoadingOverlay} from "./LoadingOverlay";
+import {useUserMatches} from "../hooks/useUserMatches";
+import {MatchesPanel} from "../components/adminDashboard/matches/MatchesPanel";
+import {useLeagueUsers} from "../hooks/useLeagueUsers";
+import {Role} from "../shared/Role";
+import {useTeams} from "../hooks/useTeams";
 
 export const Dashboard = () => {
+  const { query: matchesQuery } = useUserMatches();
+  const { query: teamsQuery } = useTeams();
+  const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
+  const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
+
+  const queries = [matchesQuery, refereesQuery, observersQuery, teamsQuery];
+
+  if (queries.some((query) => query.isLoading)) {
+    return (<LoadingOverlay />);
+  }
+
   return (
     <>
-      <Flex p={5} m={0} h={['auto', '100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.300'}>
+      <Flex p={5} m={0} h={['auto', '100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
         <HeaderPanel />
-        <SimpleGrid columns={[1, 1, 3]} flexGrow={1} overflowY={'hidden'} spacing={5} p={5} m={-5} pt={5}>
-          <MatchesPanel />
+        <SimpleGrid columns={[1, 1, 2]} flexGrow={1} overflowY={'hidden'} spacing={5} px={[5, 5, 60]} m={-5} py={5}>
+          <MatchesPanel readOnly={true} matches={matchesQuery.data!}/>
           <GradesPanel />
-          <Flex direction={'column'} gap={5}>
-            <AssignmentsPanel />
-            <SettingsPanel />
-          </Flex>
         </SimpleGrid>
       </Flex>
     </>

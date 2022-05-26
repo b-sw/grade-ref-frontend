@@ -14,6 +14,7 @@ import theme from "./theme/theme";
 import { AdminExplorer } from "./pages/AdminExplorer";
 import {RequireAuthRouteOwner} from "./components/other/RequireAuthRouteOwner";
 import {OwnerDashboard} from "./pages/OwnerDashboard";
+import {Explorer} from "./pages/Explorer";
 
 const queryClient = new QueryClient();
 
@@ -38,7 +39,8 @@ export const App = () => (
             </Route>
 
             <Route element={<RequireAuthRouteRefereeObserver />}>
-              <Route path={Paths.DASHBOARD} element={<Dashboard />} />
+              <Route path={Paths.EXPLORER} element={<Explorer />} />
+              <Route path={Paths.DASHBOARD + '/:leagueId'} element={<Dashboard />} />
             </Route>
           </Route>
         </Routes>

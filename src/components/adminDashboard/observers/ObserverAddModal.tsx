@@ -16,6 +16,7 @@ import { MultiValue, Select } from 'chakra-react-select';
 import { User } from '../../../entities/User';
 import {useSetState} from "../../../hooks/useSetState";
 import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
+import {useObservers} from "../../../hooks/useObservers";
 
 interface Props {
   isOpen: boolean;
@@ -34,11 +35,8 @@ interface State {
 
 
 export const ObserverAddModal = (props: Props) => {
-  const {
-    usersQuery: observersQuery,
-    leagueUsersQuery: leagueObserversQuery,
-    addMutation
-  } = useLeagueUsers(Role.Observer);
+  const { usersQuery: leagueObserversQuery, addMutation } = useLeagueUsers(Role.Observer);
+  const { observersQuery } = useObservers();
 
   const [state, setState] = useSetState({
     selectedOptions: [],
