@@ -26,15 +26,10 @@ export const ObserversPanel = () => {
   } as State);
 
   useEffect(() => {
-    setState({ observers: observersQuery.data })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [observersQuery.data]);
-
-  useEffect(() => {
     const filteredObservers: User[] = userFilter(observersQuery.data!, state.filter);
     setState({ observers: filteredObservers });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.filter]);
+  }, [state.filter, observersQuery.data]);
 
   return (
     <>

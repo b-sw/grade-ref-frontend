@@ -24,7 +24,7 @@ import {useSetState} from "../../../hooks/useSetState";
 import {matchFilter} from "../../shared/filters";
 import {useEffect} from "react";
 import {MdSearch} from 'react-icons/md';
-import {useTeams} from "../../../hooks/useTeams";
+import {useLeagueTeams} from "../../../hooks/useLeagueTeams";
 import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
 import {Role} from "../../../shared/Role";
 import {uuid} from "../../../shared/uuid";
@@ -43,7 +43,7 @@ interface Props {
 
 export const MatchesPanel = (props: Props) => {
   const { isOpen: isCreateModalOpen, onOpen: onCreateModalOpen, onClose: onCreateModalClose } = useDisclosure();
-  const { query: teamsQuery } = useTeams();
+  const { query: teamsQuery } = useLeagueTeams();
   const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
   const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
 
@@ -61,15 +61,10 @@ export const MatchesPanel = (props: Props) => {
   } as State);
 
   useEffect(() => {
-    setState({ matches: props.matches })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.matches]);
-
-  useEffect(() => {
     const filteredMatches: Match[] = matchFilter(props.matches, teams, referees, observers, state.filter);
     setState({ matches: filteredMatches });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.filter]);
+  }, [state.filter, props.matches]);
 
   return (
     <>
@@ -124,7 +119,7 @@ export const MatchesPanel = (props: Props) => {
                   .filter((match: Match) =>
                     dayjs(match.matchDate, Constants.DATETIME_FORMAT).toDate().getTime() < Date.now())
                   .map((match: Match) =>
-                    <MatchListItem key={match.id} match={match} />)
+                    <MatchListItem key={match.id} readOnly={props.readOnly} match={match} />)
                 }
               </Flex>
             </TabPanel>
@@ -135,7 +130,7 @@ export const MatchesPanel = (props: Props) => {
                   .filter((match: Match) =>
                     dayjs(match.matchDate, Constants.DATETIME_FORMAT).toDate().getTime() >= Date.now())
                   .map((match: Match) =>
-                    <MatchListItem key={match.id} match={match} />)
+                    <MatchListItem key={match.id} readOnly={props.readOnly} match={match} />)
                 }
               </Flex>
             </TabPanel>

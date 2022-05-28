@@ -73,10 +73,7 @@ export const useUsers = (props?: Props) => {
   const updateMutation = useMutation(updateUser, {
     onSuccess: (user: User) => {
       const queryKey: any = queryKeys[user.role];
-      const users: User[] = queryClient.getQueryData(queryKey)!;
-      const index: number = users.findIndex((u: User) => u.id === user.id);
-      users[index] = user;
-      queryClient.setQueryData(queryKey, (_) => users);
+      queryClient.setQueryData(queryKey, (old: any) => [...old.filter((u: User) => u.id !== user.id), user]);
 
       toast({
         title: `Successfully updated ${user.role}`,

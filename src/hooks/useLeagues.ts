@@ -57,10 +57,7 @@ export const useLeagues = () => {
 
   const updateMutation = useMutation(updateLeague, {
     onSuccess: (league: League) => {
-      const leagues: League[] = queryClient.getQueryData(queryKey)!;
-      const index: number = leagues.findIndex((l: League) => l.id === league.id);
-      leagues[index] = league;
-      queryClient.setQueryData(queryKey, (_) => leagues);
+      queryClient.setQueryData(queryKey, (old: any) => [...old.filter((l: League) => l.id !== league.id), league]);
       toast({
         title: 'Successfully updated a league',
         status: 'success',

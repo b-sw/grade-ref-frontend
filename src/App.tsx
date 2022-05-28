@@ -15,12 +15,15 @@ import { AdminExplorer } from "./pages/AdminExplorer";
 import {RequireAuthRouteOwner} from "./components/other/RequireAuthRouteOwner";
 import {OwnerDashboard} from "./pages/OwnerDashboard";
 import {Explorer} from "./pages/Explorer";
+import { ReactQueryDevtools } from 'react-query/devtools';
+import {AdminCalendar} from "./pages/AdminCalendar";
 
 const queryClient = new QueryClient();
 
 export const App = () => (
   <ChakraProvider theme={theme}>
     <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
       <Router basename='/'>
         <UnauthorizedHandler />
         <Routes>
@@ -36,6 +39,7 @@ export const App = () => (
             <Route element={<RequireAuthRouteAdmin />}>
               <Route path={Paths.ADMIN_EXPLORER} element={<AdminExplorer />} />
               <Route path={Paths.ADMIN_DASHBOARD + '/:leagueId'} element={<AdminDashboard />} />
+              <Route path={Paths.ADMIN_CALENDAR + '/:leagueId'} element={<AdminCalendar />} />
             </Route>
 
             <Route element={<RequireAuthRouteRefereeObserver />}>

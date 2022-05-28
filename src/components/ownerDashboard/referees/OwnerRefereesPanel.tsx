@@ -4,11 +4,11 @@ import {scrollbarStyle} from "../../dashboard/shared/styles";
 import {User} from "../../../entities/User";
 import {RefereeListItem} from './RefereeListItem';
 import {RefereeCreateModal} from './RefereeCreateModal';
-import {useUsers} from "../../../hooks/useUsers";
 import { MdSearch } from 'react-icons/md';
 import {useSetState} from "../../../hooks/useSetState";
 import {userFilter} from "../../shared/filters";
 import { useEffect } from 'react';
+import {useReferees} from "../../../hooks/useReferees";
 
 interface State {
   referees: User[],
@@ -17,7 +17,7 @@ interface State {
 
 export const OwnerRefereesPanel = () => {
   const { isOpen: isCreateModalOpen, onOpen: onCreateModalOpen, onClose: onCreateModalClose } = useDisclosure();
-  const { refereesQuery } = useUsers();
+  const { refereesQuery } = useReferees();
 
   const [state, setState] = useSetState({
     referees: [],
@@ -25,15 +25,10 @@ export const OwnerRefereesPanel = () => {
   } as State);
 
   useEffect(() => {
-    setState({ referees: refereesQuery.data })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refereesQuery.data]);
-
-  useEffect(() => {
     const filteredReferees: User[] = userFilter(refereesQuery.data!, state.filter);
     setState({ referees: filteredReferees });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.filter]);
+  }, [state.filter, refereesQuery.data]);
 
   return (
     <>

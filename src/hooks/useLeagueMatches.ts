@@ -12,7 +12,7 @@ export interface Props {
   leagueId: uuid;
 }
 
-export const useMatches = (props?: Props) => {
+export const useLeagueMatches = (props?: Props) => {
   const toast = useToast();
   const queryClient: QueryClient = useQueryClient();
   let { leagueId } = useParams<{ leagueId: uuid }>();
@@ -58,10 +58,7 @@ export const useMatches = (props?: Props) => {
 
   const updateMutation = useMutation(updateMatch, {
     onSuccess: (match: Match) => {
-      const matches: Match[] = queryClient.getQueryData([MATCHES_QUERY_KEY, leagueId])!;
-      const index: number = matches.findIndex((m: Match) => m.id === match.id);
-      matches[index] = match;
-      queryClient.setQueryData([MATCHES_QUERY_KEY, leagueId], (_) => matches);
+      queryClient.setQueryData([MATCHES_QUERY_KEY, leagueId], (old: any) => [...old.filter((m: Match) => m.id !== match.id), match]);
       toast({
         title: 'Successfully updated a match',
         status: 'success',

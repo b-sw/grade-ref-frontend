@@ -12,7 +12,7 @@ import { Form, Formik } from 'formik';
 import { InputControl } from 'formik-chakra-ui';
 import { useEffect } from 'react';
 import {Team, teamValidationSchema} from "../../../entities/Team";
-import {useTeams} from "../../../hooks/useTeams";
+import {useLeagueTeams} from "../../../hooks/useLeagueTeams";
 
 interface Props {
   isOpen: boolean;
@@ -25,7 +25,7 @@ interface FormikValues {
 }
 
 export const TeamEditModal = (props: Props) => {
-  const { updateMutation } = useTeams();
+  const { updateMutation } = useLeagueTeams();
 
   useEffect(() => {
     if (updateMutation.isSuccess) {

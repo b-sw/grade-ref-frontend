@@ -15,8 +15,8 @@ import { useEffect } from 'react';
 import {User} from "../../../entities/User";
 import {Match, matchValidationSchema} from "../../../entities/Match";
 import {uuid} from "../../../shared/uuid";
-import {useMatches} from "../../../hooks/useMatches";
-import {useTeams} from "../../../hooks/useTeams";
+import {useLeagueMatches} from "../../../hooks/useLeagueMatches";
+import {useLeagueTeams} from "../../../hooks/useLeagueTeams";
 import {Constants} from "../../../shared/Constants";
 import dayjs from 'dayjs';
 import {Team} from "../../../entities/Team";
@@ -41,8 +41,8 @@ interface FormikValues {
 export const MatchEditModal = (props: Props) => {
   const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
 
-  const { updateMutation } = useMatches();
-  const { query: teamsQuery } = useTeams();
+  const { updateMutation } = useLeagueMatches();
+  const { query: teamsQuery } = useLeagueTeams();
   const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
   const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
 

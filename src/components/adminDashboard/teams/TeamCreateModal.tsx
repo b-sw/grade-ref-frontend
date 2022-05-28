@@ -11,7 +11,7 @@ import {
 import { Form, Formik } from 'formik';
 import { InputControl } from 'formik-chakra-ui';
 import { useEffect } from 'react';
-import {useTeams} from "../../../hooks/useTeams";
+import {useLeagueTeams} from "../../../hooks/useLeagueTeams";
 import {Team, teamValidationSchema} from "../../../entities/Team";
 
 interface Props {
@@ -24,7 +24,7 @@ interface FormikValues {
 }
 
 export const TeamCreateModal = (props: Props) => {
-  const { postMutation } = useTeams();
+  const { postMutation } = useLeagueTeams();
 
   useEffect(() => {
     if (postMutation.isSuccess) {

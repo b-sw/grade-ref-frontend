@@ -25,15 +25,10 @@ export const OwnerAdminsPanel = () => {
   } as State);
 
   useEffect(() => {
-    setState({ admins: adminsQuery.data })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [adminsQuery.data]);
-
-  useEffect(() => {
     const filteredAdmins: User[] = userFilter(adminsQuery.data!, state.filter);
     setState({ admins: filteredAdmins });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.filter]);
+  }, [state.filter, adminsQuery.data]);
 
   return (
     <>

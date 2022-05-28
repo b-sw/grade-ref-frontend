@@ -5,8 +5,8 @@ import {RefereesPanel} from "../components/adminDashboard/referees/RefereesPanel
 import {ObserversPanel} from "../components/adminDashboard/observers/ObserversPanel";
 import {TeamsPanel} from "../components/adminDashboard/teams/TeamsPanel";
 import {AdminSettingsPanel} from "../components/adminDashboard/settings/AdminSettingsPanel";
-import {useTeams} from "../hooks/useTeams";
-import {useMatches} from "../hooks/useMatches";
+import {useLeagueTeams} from "../hooks/useLeagueTeams";
+import {useLeagueMatches} from "../hooks/useLeagueMatches";
 import {LoadingOverlay} from "./LoadingOverlay";
 import {useLeagues} from "../hooks/useLeagues";
 import {useLeagueUsers} from "../hooks/useLeagueUsers";
@@ -19,8 +19,8 @@ export const AdminDashboard = () => {
   const { observersQuery: allObserversQuery } = useObservers();
   const { usersQuery: leagueRefereesQuery } = useLeagueUsers(Role.Referee);
   const { usersQuery: leagueObserversQuery } = useLeagueUsers(Role.Observer);
-  const { query: teamsQuery } = useTeams();
-  const { query: matchesQuery } = useMatches();
+  const { query: teamsQuery } = useLeagueTeams();
+  const { query: matchesQuery } = useLeagueMatches();
   const { query: leaguesQuery } = useLeagues();
 
   const queries = [leagueRefereesQuery, leagueObserversQuery, teamsQuery, matchesQuery, leaguesQuery, allRefereesQuery, allObserversQuery];
@@ -32,7 +32,7 @@ export const AdminDashboard = () => {
   return (
     <>
       <Flex p={5} m={0} h={['auto', '100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
-        <AdminHeaderPanel />
+        <AdminHeaderPanel pageTitle={'admin dashboard'} />
         <SimpleGrid columns={[1, 1, 3]} flexGrow={1} overflowY={'hidden'} spacing={5} p={5} m={-5} pt={5}>
           <MatchesPanel matches={matchesQuery.data!} />
           <Flex direction={'column'} gap={5} overflowY={'hidden'}>

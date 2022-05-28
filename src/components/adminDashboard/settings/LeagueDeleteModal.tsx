@@ -15,7 +15,7 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import {useLeagues} from "../../../hooks/useLeagues";
-import {useMatches} from "../../../hooks/useMatches";
+import {useLeagueMatches} from "../../../hooks/useLeagueMatches";
 import {useSetState} from "../../../hooks/useSetState";
 import {League} from "../../../entities/League";
 import {uuid} from "../../../shared/uuid";
@@ -34,7 +34,7 @@ interface State {
 export const LeagueDeleteModal = (props: Props) => {
   const { deleteMutation } = useLeagues();
   const { query: leaguesQuery } = useLeagues();
-  const { query: matchesQuery } = useMatches();
+  const { query: matchesQuery } = useLeagueMatches();
   const [state, setState] = useSetState({
     text: '',
   } as State);

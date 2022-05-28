@@ -2,7 +2,7 @@ import {Button, Flex, VStack} from '@chakra-ui/react';
 import {useNavigate} from 'react-router-dom';
 import {Paths} from '../../shared/Paths';
 import {League} from "../../entities/League";
-import {useTeams} from "../../hooks/useTeams";
+import {useLeagueTeams} from "../../hooks/useLeagueTeams";
 import {useLeagueUsers} from "../../hooks/useLeagueUsers";
 import {Role} from "../../shared/Role";
 import {leagueItem} from "../adminExplorer/AdminLeagueCard";
@@ -18,7 +18,7 @@ export const LeagueCard = (props: Props) => {
   const user = useStore((state) => state.user);
   const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee, { disableAutoRefetch: true, leagueId: props.league.id });
   const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer, { disableAutoRefetch: true, leagueId: props.league.id });
-  const { query: teamsQuery } = useTeams({ disableAutoRefetch: true, leagueId: props.league.id });
+  const { query: teamsQuery } = useLeagueTeams({ disableAutoRefetch: true, leagueId: props.league.id });
   const { query: matchesQuery } = useUserMatches({ userId: user.id!, disableAutoRefetch: true, leagueId: props.league.id });
 
   const queries = [refereesQuery, observersQuery, teamsQuery, matchesQuery];

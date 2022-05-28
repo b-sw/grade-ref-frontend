@@ -13,7 +13,7 @@ export interface Props {
   leagueId: uuid;
 }
 
-export const useTeams = (props?: Props) => {
+export const useLeagueTeams = (props?: Props) => {
   const toast = useToast();
   const queryClient: QueryClient = useQueryClient();
   let { leagueId } = useParams<{ leagueId: uuid }>();
@@ -60,10 +60,7 @@ export const useTeams = (props?: Props) => {
 
   const updateMutation = useMutation(updateTeam, {
     onSuccess: (team: Team) => {
-      const teams: Team[] = queryClient.getQueryData([TEAMS_QUERY_KEY, leagueId])!;
-      const index: number = teams.findIndex((t: Team) => t.id === team.id);
-      teams[index] = team;
-      queryClient.setQueryData([TEAMS_QUERY_KEY, leagueId], (_) => teams);
+      queryClient.setQueryData([TEAMS_QUERY_KEY, leagueId], (old: any) => [...old.filter((t: Team) => t.id !== team.id), team]);
       toast({
         title: 'Successfully updated a team',
         status: 'success',

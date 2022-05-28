@@ -2,8 +2,8 @@ import {Avatar, Button, Flex, HStack, Text, VStack} from '@chakra-ui/react';
 import {useNavigate} from 'react-router-dom';
 import {Paths} from '../../shared/Paths';
 import {League} from "../../entities/League";
-import {useTeams} from "../../hooks/useTeams";
-import {useMatches} from "../../hooks/useMatches";
+import {useLeagueTeams} from "../../hooks/useLeagueTeams";
+import {useLeagueMatches} from "../../hooks/useLeagueMatches";
 import {useLeagueUsers} from "../../hooks/useLeagueUsers";
 import {Role} from "../../shared/Role";
 import {useReferees} from "../../hooks/useReferees";
@@ -19,8 +19,8 @@ export const AdminLeagueCard = (props: Props) => {
     useLeagueUsers(Role.Referee, { disableAutoRefetch: true, leagueId: props.league.id });
   const { usersQuery: observersQuery } =
     useLeagueUsers(Role.Observer, { disableAutoRefetch: true, leagueId: props.league.id });
-  const { query: teamsQuery } = useTeams({ disableAutoRefetch: true, leagueId: props.league.id });
-  const { query: matchesQuery } = useMatches({ disableAutoRefetch: true, leagueId: props.league.id });
+  const { query: teamsQuery } = useLeagueTeams({ disableAutoRefetch: true, leagueId: props.league.id });
+  const { query: matchesQuery } = useLeagueMatches({ disableAutoRefetch: true, leagueId: props.league.id });
   const { refereesQuery: allRefereesQuery } = useReferees({ disableAutoRefetch: true });
   const { observersQuery: allObserversQuery } = useObservers({ disableAutoRefetch: true });
 

@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import {Team} from "../../../entities/Team";
 import {teamItem} from "./TeamListItem";
-import {useTeams} from "../../../hooks/useTeams";
+import {useLeagueTeams} from "../../../hooks/useLeagueTeams";
 
 export interface Props {
   isOpen: boolean;
@@ -21,7 +21,7 @@ export interface Props {
 }
 
 export const TeamDeleteModal = (props: Props) => {
-  const { deleteMutation } = useTeams();
+  const { deleteMutation } = useLeagueTeams();
 
   const deleteTeam = () => {
     deleteMutation.mutate(props.team.id);

@@ -11,8 +11,8 @@ import {
 } from '@chakra-ui/react';
 import {matchItem} from "./MatchListItem";
 import {Match} from "../../../entities/Match";
-import {useMatches} from "../../../hooks/useMatches";
-import {useTeams} from "../../../hooks/useTeams";
+import {useLeagueMatches} from "../../../hooks/useLeagueMatches";
+import {useLeagueTeams} from "../../../hooks/useLeagueTeams";
 import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
 import {Role} from "../../../shared/Role";
 
@@ -23,10 +23,10 @@ export interface Props {
 }
 
 export const MatchDeleteModal = (props: Props) => {
-  const { deleteMutation } = useMatches();
+  const { deleteMutation } = useLeagueMatches();
   const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
   const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
-  const { query: teamsQuery } = useTeams();
+  const { query: teamsQuery } = useLeagueTeams();
 
   const deleteMatch = () => {
     deleteMutation.mutate(props.match.id);

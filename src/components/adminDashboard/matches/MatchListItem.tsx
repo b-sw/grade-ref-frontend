@@ -1,6 +1,6 @@
 import { Flex, VStack, Text, Avatar, HStack, Divider, Center, useDisclosure, Badge, Tooltip } from '@chakra-ui/react';
 import {Match} from "../../../entities/Match";
-import {useTeams} from "../../../hooks/useTeams";
+import {useLeagueTeams} from "../../../hooks/useLeagueTeams";
 import {Team} from "../../../entities/Team";
 import {User} from "../../../entities/User";
 import dayjs from 'dayjs';
@@ -25,7 +25,7 @@ export const MatchListItem = (props: Props) => {
   const { isOpen: isEditModalOpen, onOpen: onEditModalOpen, onClose: onEditModalClose } = useDisclosure();
   const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
   const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
-  const { query: teamsQuery } = useTeams();
+  const { query: teamsQuery } = useLeagueTeams();
 
   return (
     <>
@@ -35,8 +35,8 @@ export const MatchListItem = (props: Props) => {
         borderRadius={10}
         alignItems={'center'}
         backgroundColor={'gray.50'}
-        cursor={'pointer'}
-        onClick={onEditModalOpen}
+        cursor={props.readOnly ? 'default' : 'pointer'}
+        onClick={props.readOnly ? () => {} : onEditModalOpen}
       >
         {matchItem(props.match, teamsQuery, refereesQuery, observersQuery)}
       </Flex>

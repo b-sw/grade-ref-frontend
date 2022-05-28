@@ -25,15 +25,10 @@ export const LeaguesPanel = () => {
   } as State);
 
   useEffect(() => {
-    setState({ leagues: leaguesQuery.data })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [leaguesQuery.data]);
-
-  useEffect(() => {
     const filteredLeagues: League[] = leagueFilter(leaguesQuery.data!, state.filter);
     setState({ leagues: filteredLeagues });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.filter]);
+  }, [state.filter, leaguesQuery.data]);
 
   return (
     <>

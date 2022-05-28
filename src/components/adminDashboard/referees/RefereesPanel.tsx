@@ -26,15 +26,10 @@ export const RefereesPanel = () => {
   } as State);
 
   useEffect(() => {
-    setState({ referees: refereesQuery.data })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refereesQuery.data]);
-
-  useEffect(() => {
     const filteredReferees: User[] = userFilter(refereesQuery.data!, state.filter);
     setState({ referees: filteredReferees });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.filter]);
+  }, [state.filter, refereesQuery.data]);
 
   return (
     <>

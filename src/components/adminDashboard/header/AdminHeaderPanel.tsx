@@ -21,7 +21,11 @@ import {useLeagues} from "../../../hooks/useLeagues";
 import {uuid} from "../../../shared/uuid";
 import {League} from "../../../entities/League";
 
-export const AdminHeaderPanel = () => {
+interface Props {
+  pageTitle: string;
+}
+
+export const AdminHeaderPanel = (props: Props) => {
   const user = useStore((state) => state.user);
   const { logout } = useAuth();
   const navigate = useNavigate();
@@ -34,7 +38,7 @@ export const AdminHeaderPanel = () => {
   return (
     <>
       <Flex m={0} p={0} pb={10}>
-        <Heading>GradeRef ⚽ - {leagueName} admin dashboard</Heading>
+        <Heading>GradeRef ⚽ - {leagueName} {props.pageTitle}</Heading>
         <Spacer />
 
         <Flex alignItems={'center'}>

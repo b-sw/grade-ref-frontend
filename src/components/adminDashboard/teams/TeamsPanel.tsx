@@ -4,7 +4,7 @@ import {scrollbarStyle} from "../../dashboard/shared/styles";
 import {Team} from "../../../entities/Team";
 import { MdSearch } from "react-icons/md";
 import {TeamListItem} from "./TeamListItem";
-import {useTeams} from "../../../hooks/useTeams";
+import {useLeagueTeams} from "../../../hooks/useLeagueTeams";
 import {TeamCreateModal} from "./TeamCreateModal";
 import {useSetState} from "../../../hooks/useSetState";
 import {teamFilter} from "../../shared/filters";
@@ -17,7 +17,7 @@ interface State {
 
 export const TeamsPanel = () => {
   const { isOpen: isCreateModalOpen, onOpen: onCreateModalOpen, onClose: onCreateModalClose } = useDisclosure();
-  const { query: teamsQuery } = useTeams();
+  const { query: teamsQuery } = useLeagueTeams();
 
   const [state, setState] = useSetState({
     teams: [],
@@ -25,15 +25,10 @@ export const TeamsPanel = () => {
   } as State);
 
   useEffect(() => {
-    setState({ teams: teamsQuery.data })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [teamsQuery.data]);
-
-  useEffect(() => {
     const filteredTeams: Team[] = teamFilter(teamsQuery.data!, state.filter);
     setState({ teams: filteredTeams });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.filter]);
+  }, [state.filter, teamsQuery.data]);
 
   return (
     <>

@@ -13,8 +13,8 @@ import { InputControl, SelectControl } from 'formik-chakra-ui';
 import { useEffect } from 'react';
 import {uuid} from "../../../shared/uuid";
 import {User} from "../../../entities/User";
-import {useMatches} from "../../../hooks/useMatches";
-import {useTeams} from "../../../hooks/useTeams";
+import {useLeagueMatches} from "../../../hooks/useLeagueMatches";
+import {useLeagueTeams} from "../../../hooks/useLeagueTeams";
 import {Match, matchValidationSchema} from "../../../entities/Match";
 import {Team} from "../../../entities/Team";
 import {Constants} from "../../../shared/Constants";
@@ -36,8 +36,8 @@ interface FormikValues {
 }
 
 export const MatchCreateModal = (props: Props) => {
-  const { postMutation } = useMatches();
-  const { query: teamsQuery } = useTeams();
+  const { postMutation } = useLeagueMatches();
+  const { query: teamsQuery } = useLeagueTeams();
   const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
   const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
 
