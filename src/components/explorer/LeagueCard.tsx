@@ -1,6 +1,6 @@
 import {Button, Flex, VStack} from '@chakra-ui/react';
 import {useNavigate} from 'react-router-dom';
-import {Paths} from '../../shared/Paths';
+import {Path} from '../../shared/Path';
 import {League} from "../../entities/League";
 import {useLeagueTeams} from "../../hooks/useLeagueTeams";
 import {useLeagueUsers} from "../../hooks/useLeagueUsers";
@@ -27,7 +27,7 @@ export const LeagueCard = (props: Props) => {
     await Promise.all(queries.map(async (query): Promise<any> => {
       await query.refetch();
     }));
-    navigate(`${Paths.DASHBOARD}/${league.id}`);
+    navigate(`${Path.DASHBOARD}/${league.id}`);
   };
 
   return (

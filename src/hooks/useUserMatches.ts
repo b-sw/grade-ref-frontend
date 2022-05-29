@@ -30,5 +30,5 @@ export const useUserMatches = (props?: Props) => {
     { enabled: props ? props.disableAutoRefetch : true }
   );
 
-  return { query }
+  return { query };
 }

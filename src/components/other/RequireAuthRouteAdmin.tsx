@@ -1,6 +1,6 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
-import {Paths} from "../../shared/Paths";
+import {Path} from "../../shared/Path";
 
 export const RequireAuthRouteAdmin = () => {
   const auth = useAuth();
@@ -11,12 +11,12 @@ export const RequireAuthRouteAdmin = () => {
   }
 
   if (auth.isLoggedInAsOwner) {
-    return <Navigate to={Paths.OWNER_DASHBOARD} state={{ from: location }} replace />;
+    return <Navigate to={Path.OWNER_DASHBOARD} state={{ from: location }} replace />;
   }
 
   if (auth.isLoggedInAsReferee || auth.isLoggedInAsObserver) {
-    return <Navigate to={Paths.EXPLORER} state={{ from: location }} replace />;
+    return <Navigate to={Path.EXPLORER} state={{ from: location }} replace />;
   }
 
-  return <Navigate to={Paths.LOGIN} state={{ from: location }} replace />;
+  return <Navigate to={Path.LOGIN} state={{ from: location }} replace />;
 };

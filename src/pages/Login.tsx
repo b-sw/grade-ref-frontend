@@ -25,7 +25,7 @@ export const Login = () => {
       }
     };
     checkForFailure();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loginMutation.status]);
 
   return (

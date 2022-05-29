@@ -54,7 +54,7 @@ export const AdminExplorer = () => {
             w={['80%', '80%', '20%']}
             h={'20%'}
             minH={'10em'}
-            colorScheme={'customButton'}
+            colorScheme={'explorerButton'}
           >
             Add league
           </Button>

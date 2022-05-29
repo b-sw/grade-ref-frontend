@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import { Paths } from '../shared/Paths';
+import { Path } from '../shared/Path';
 import { tokenExpired } from '../zustand/jwtExpiration';
 import useStore from '../zustand/store';
 import {uuid} from "../shared/uuid";
@@ -38,7 +38,7 @@ export default function useAuth() {
     onSuccess: (response: LoginResponse) => {
       loginToStore(response);
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.accessToken;
-      navigate(Paths.OWNER_DASHBOARD);
+      navigate(Path.OWNER_DASHBOARD);
     }
   });
 

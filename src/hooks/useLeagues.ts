@@ -3,7 +3,7 @@ import axios, { AxiosError } from "axios";
 import {QueryClient, useMutation, useQuery, useQueryClient } from "react-query";
 import {uuid} from "../shared/uuid";
 import {League} from "../entities/League";
-import {Paths} from "../shared/Paths";
+import {Path} from "../shared/Path";
 import { useNavigate } from "react-router-dom";
 import useStore from "../zustand/store";
 import {Role} from "../shared/Role";
@@ -77,7 +77,7 @@ export const useLeagues = () => {
         position: 'bottom-right',
         duration: 2000,
       });
-      navigate(Paths.ADMIN_EXPLORER);
+      navigate(Path.ADMIN_EXPLORER);
     },
   });
 

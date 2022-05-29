@@ -13,7 +13,7 @@ const config = {
 };
 
 const colors = {
-  customButton: {
+  explorerButton: {
     50: '#CBD5E0',
     100: '#E2E8F0',
     600: '#1A202C',

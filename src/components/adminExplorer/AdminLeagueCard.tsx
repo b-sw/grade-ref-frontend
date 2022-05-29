@@ -1,6 +1,6 @@
 import {Avatar, Button, Flex, HStack, Text, VStack} from '@chakra-ui/react';
 import {useNavigate} from 'react-router-dom';
-import {Paths} from '../../shared/Paths';
+import {Path} from '../../shared/Path';
 import {League} from "../../entities/League";
 import {useLeagueTeams} from "../../hooks/useLeagueTeams";
 import {useLeagueMatches} from "../../hooks/useLeagueMatches";
@@ -31,7 +31,7 @@ export const AdminLeagueCard = (props: Props) => {
     await Promise.all(queries.map(async (query): Promise<any> => {
       await query.refetch();
     }));
-    navigate(`${Paths.ADMIN_DASHBOARD}/${league.id}`);
+    navigate(`${Path.ADMIN_DASHBOARD}/${league.id}`);
   };
 
   return (

@@ -13,6 +13,7 @@ import {useLeagueUsers} from "../hooks/useLeagueUsers";
 import {Role} from "../shared/Role";
 import {useReferees} from "../hooks/useReferees";
 import {useObservers} from "../hooks/useObservers";
+import {PageTitle} from "../shared/PageTitle";
 
 export const AdminDashboard = () => {
   const { refereesQuery: allRefereesQuery } = useReferees();
@@ -32,7 +33,7 @@ export const AdminDashboard = () => {
   return (
     <>
       <Flex p={5} m={0} h={['auto', '100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
-        <AdminHeaderPanel pageTitle={'admin dashboard'} />
+        <AdminHeaderPanel pageTitle={PageTitle.AdminDashboard} />
         <SimpleGrid columns={[1, 1, 3]} flexGrow={1} overflowY={'hidden'} spacing={5} p={5} m={-5} pt={5}>
           <MatchesPanel matches={matchesQuery.data!} />
           <Flex direction={'column'} gap={5} overflowY={'hidden'}>

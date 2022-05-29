@@ -4,7 +4,7 @@ import { HashRouter as Router, Navigate, Route, Routes } from 'react-router-dom'
 import { ChakraProvider } from "@chakra-ui/react"
 import {UnauthorizedHandler} from "./components/other/UnauthorizedHandler";
 import {AnimatedTransition} from "./components/other/AnimatedTransition";
-import {Paths} from "./shared/Paths";
+import {Path} from "./shared/Path";
 import {Login} from "./pages/Login";
 import {RequireAuthRouteRefereeObserver} from "./components/other/RequireAuthRouteRefereeObserver";
 import {Dashboard} from "./pages/Dashboard";
@@ -28,23 +28,23 @@ export const App = () => (
         <UnauthorizedHandler />
         <Routes>
           <Route element={<AnimatedTransition />}>
-            <Route path={'*'} element={<Navigate to={Paths.LOGIN} />} />
+            <Route path={'*'} element={<Navigate to={Path.LOGIN} />} />
 
-            <Route path={Paths.LOGIN} element={<Login />} />
+            <Route path={Path.LOGIN} element={<Login />} />
 
             <Route element={<RequireAuthRouteOwner />}>
-              <Route path={Paths.OWNER_DASHBOARD} element={<OwnerDashboard />} />
+              <Route path={Path.OWNER_DASHBOARD} element={<OwnerDashboard />} />
             </Route>
 
             <Route element={<RequireAuthRouteAdmin />}>
-              <Route path={Paths.ADMIN_EXPLORER} element={<AdminExplorer />} />
-              <Route path={Paths.ADMIN_DASHBOARD + '/:leagueId'} element={<AdminDashboard />} />
-              <Route path={Paths.ADMIN_CALENDAR + '/:leagueId'} element={<AdminCalendar />} />
+              <Route path={Path.ADMIN_EXPLORER} element={<AdminExplorer />} />
+              <Route path={Path.ADMIN_DASHBOARD + '/:leagueId'} element={<AdminDashboard />} />
+              <Route path={Path.ADMIN_CALENDAR + '/:leagueId'} element={<AdminCalendar />} />
             </Route>
 
             <Route element={<RequireAuthRouteRefereeObserver />}>
-              <Route path={Paths.EXPLORER} element={<Explorer />} />
-              <Route path={Paths.DASHBOARD + '/:leagueId'} element={<Dashboard />} />
+              <Route path={Path.EXPLORER} element={<Explorer />} />
+              <Route path={Path.DASHBOARD + '/:leagueId'} element={<Dashboard />} />
             </Route>
           </Route>
         </Routes>

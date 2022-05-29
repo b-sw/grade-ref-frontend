@@ -1,28 +1,29 @@
 import {
-  Flex,
   Avatar,
   Button,
+  Center,
+  Flex,
+  Heading,
   Menu,
   MenuButton,
-  MenuList,
-  MenuItem,
   MenuDivider,
-  Center,
-  Heading,
+  MenuItem,
+  MenuList,
   Spacer,
 } from '@chakra-ui/react';
 import useStore from "../../../zustand/store";
 import useAuth from "../../../hooks/useAuth";
-import {Paths} from "../../../shared/Paths";
-import { MdDashboard } from 'react-icons/md';
-import { CalendarIcon } from '@chakra-ui/icons';
-import { useNavigate, useParams } from 'react-router-dom';
+import {Path} from "../../../shared/Path";
+import {MdApps, MdDashboard} from 'react-icons/md';
+import {CalendarIcon} from '@chakra-ui/icons';
+import {useNavigate, useParams} from 'react-router-dom';
 import {useLeagues} from "../../../hooks/useLeagues";
 import {uuid} from "../../../shared/uuid";
 import {League} from "../../../entities/League";
+import {PageTitle} from "../../../shared/PageTitle";
 
 interface Props {
-  pageTitle: string;
+  pageTitle: PageTitle;
 }
 
 export const AdminHeaderPanel = (props: Props) => {
@@ -42,10 +43,27 @@ export const AdminHeaderPanel = (props: Props) => {
         <Spacer />
 
         <Flex alignItems={'center'}>
-          <Button mr={3} disabled={true} onClick={() => {}} leftIcon={<CalendarIcon />}>
+          <Button
+            mr={3}
+            onClick={() => {navigate(`${Path.ADMIN_CALENDAR}/${leagueId}`)}}
+            leftIcon={<CalendarIcon />}
+            colorScheme={props.pageTitle.includes(PageTitle.Calendar) ? 'blue' : 'gray'}
+          >
             Calendar
           </Button>
-          <Button mr={3} onClick={() => {navigate(Paths.ADMIN_EXPLORER)}} leftIcon={<MdDashboard />}>
+          <Button
+            mr={3}
+            onClick={() => {navigate(`${Path.ADMIN_DASHBOARD}/${leagueId}`)}}
+            leftIcon={<MdDashboard />}
+            colorScheme={props.pageTitle.includes(PageTitle.Dashboard) ? 'blue' : 'gray'}
+          >
+            Dashboard
+          </Button>
+          <Button
+            mr={3}
+            onClick={() => {navigate(Path.ADMIN_EXPLORER)}}
+            leftIcon={<MdApps />}
+          >
             Leagues
           </Button>
 
