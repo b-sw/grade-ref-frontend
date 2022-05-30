@@ -6,6 +6,8 @@ import {CalendarTile} from "./CalendarTile";
 import { useEffect } from "react";
 import { useCalendar } from "../../../hooks/useCalendar";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
+import {Match} from "../../../entities/Match";
+import {getMatchesByDate} from "../../../hooks/shared/matches";
 
 export enum SlideDirection {
   LEFT = -1,
@@ -23,6 +25,7 @@ export enum DayShortNames {
 }
 
 interface Props {
+  matches: Match[];
   readOnly?: boolean;
 }
 
@@ -84,6 +87,7 @@ export const CalendarPanel = (props: Props) => {
           <CalendarTile
             key={day.toString()}
             date={day}
+            matches={getMatchesByDate(day, props.matches)}
             slideDirection={state.slideDirection}
             monthOffset={state.monthOffset}
           />

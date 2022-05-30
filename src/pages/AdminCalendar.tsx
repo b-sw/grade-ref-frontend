@@ -8,6 +8,15 @@ import {useLeagueMatches} from "../hooks/useLeagueMatches";
 import {CalendarPanel} from "../components/adminDashboard/calendar/CalendarPanel";
 import { PageTitle } from "../shared/PageTitle";
 import {useLeagues} from "../hooks/useLeagues";
+import {MatchesPanel} from "../components/adminDashboard/matches/MatchesPanel";
+import {Match} from "../entities/Match";
+import {useEffect, useState} from "react";
+import useStore from "../zustand/store";
+import dayjs, { Dayjs } from "dayjs";
+
+interface State {
+  matches: Match[];
+}
 
 export const AdminCalendar = () => {
   const { query: matchesQuery } = useLeagueMatches();
@@ -16,7 +25,18 @@ export const AdminCalendar = () => {
   const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
   const { query: leaguesQuery } = useLeagues();
 
-  const queries = [matchesQuery, refereesQuery, observersQuery, teamsQuery, leaguesQuery];
+  const selectedDate: Dayjs = useStore((state) => state.selectedDate);
+  const [state, setState] = useState<State>({
+    matches: [],
+  });
+
+  useEffect(() => {
+    const filteredMatches = matchesQuery.data?.filter((match) => dayjs(match.matchDate).isSame(selectedDate, 'day'));
+    setState({ matches: filteredMatches ?? [] });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedDate]);
+
+  const queries = [refereesQuery, observersQuery, teamsQuery, matchesQuery, leaguesQuery];
 
   if (queries.some((query) => query.isLoading)) {
     return (<LoadingOverlay />);
@@ -26,7 +46,8 @@ export const AdminCalendar = () => {
     <Flex p={5} m={0} h={['100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
       <AdminHeaderPanel pageTitle={PageTitle.Calendar} />
       <Flex flexGrow={1} gap={[2, 2, 4]} direction={['column', 'row']} overflow={'hidden'} m={-10} p={10}>
-        <CalendarPanel />
+        <CalendarPanel matches={matchesQuery.data!} />
+        <MatchesPanel matches={state.matches} hideTabs={true} />
       </Flex>
     </Flex>
   );

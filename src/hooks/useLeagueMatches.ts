@@ -1,9 +1,11 @@
 import { useToast } from "@chakra-ui/react";
 import axios from "axios";
+import { Dayjs } from "dayjs";
 import { QueryClient, useMutation, useQuery, useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
 import {Match} from "../entities/Match";
 import {uuid} from "../shared/uuid";
+import {getMatchesByDate} from "./shared/matches";
 
 const MATCHES_QUERY_KEY = 'matches_qk';
 
@@ -80,5 +82,9 @@ export const useLeagueMatches = (props?: Props) => {
     },
   });
 
-  return { query, postMutation, updateMutation, deleteMutation }
+  const getByDate = (date: Dayjs) => {
+    return getMatchesByDate(date, query.data);
+  }
+
+  return { query, postMutation, updateMutation, deleteMutation, getByDate };
 }

@@ -37,7 +37,7 @@ export const matchGradeItem = (match: Match, user: User) => {
     gradeTime = dayjs(match.refereeGradeDate, Constants.DATETIME_FORMAT).format('HH:mm');
   }
   const { gradeStatus, gradeBadgeScheme } = determineGradeStatus(match);
-  const { badgeColor, badgeString } = getUserBadge(user);
+  const { badgeColor, badgeString } = getUserBadge(user.role);
 
   return (
     <>
@@ -92,10 +92,18 @@ export const matchGradeItem = (match: Match, user: User) => {
   );
 }
 
-const getUserBadge = (user: User): { badgeColor: string, badgeString: string } => {
-  if (user.role === Role.Referee) {
+export const getUserBadge = (userRole: Role): { badgeColor: string, badgeString: string } => {
+  if (userRole === Role.Referee) {
     return { badgeColor: 'facebook', badgeString: 'Referee' };
-  } else {
+  }
+
+  if (userRole === Role.Observer) {
     return { badgeColor: 'purple', badgeString: 'Observer' };
   }
+
+  if (userRole === Role.Admin) {
+    return { badgeColor: 'orange', badgeString: 'League admin' };
+  }
+
+  return { badgeColor: 'linkedin', badgeString: 'Owner' };
 }

@@ -1,12 +1,14 @@
-import { Flex, SlideFade, Spacer, Text } from "@chakra-ui/react";
+import {Badge, Flex, SlideFade, Spacer, Text } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
 import { SlideDirection } from "./CalendarPanel";
 import useStore from "../../../zustand/store";
+import {Match} from "../../../entities/Match";
 
 export interface Props {
   date: Dayjs;
   slideDirection: SlideDirection;
   monthOffset: number;
+  matches: Match[];
 }
 
 export const CalendarTile = (props: Props) => {
@@ -39,7 +41,6 @@ export const CalendarTile = (props: Props) => {
         align={'center'}
         borderRadius={10}
         backgroundColor={getTileColor()}
-        minHeight={'0px'}
         p={2}
         gap={0}
         minW={0}
@@ -52,6 +53,11 @@ export const CalendarTile = (props: Props) => {
         <Text fontWeight={'medium'} fontSize={'md'} opacity={isCurrentMonth ? 1 : 0.5}>
           {props.date.format('DD')}
         </Text>
+        {props.matches.length > 0 &&
+          <Badge variant={'solid'} colorScheme={'red'} opacity={isCurrentMonth ? 1 : 0.5}>
+            {props.matches.length}
+          </Badge>
+        }
         <Spacer />
       </Flex>
     </SlideFade>

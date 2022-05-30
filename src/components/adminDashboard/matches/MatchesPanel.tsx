@@ -39,6 +39,7 @@ interface State {
 interface Props {
   matches: Match[];
   readOnly?: boolean;
+  hideTabs?: boolean;
 }
 
 export const MatchesPanel = (props: Props) => {
@@ -106,36 +107,43 @@ export const MatchesPanel = (props: Props) => {
           />
         </InputGroup>
 
-        <Tabs display='flex' flexDirection='column' isFitted variant='line' overflowY={'hidden'}>
-          <TabList>
-            <Tab>Past</Tab>
-            <Tab>Upcoming</Tab>
-          </TabList>
-          <TabPanels overflowY={'scroll'} css={scrollbarStyle}>
-            <TabPanel>
-              <Flex direction={'column'} gap={2}>
-                {
-                  state.matches
-                  .filter((match: Match) =>
-                    dayjs(match.matchDate, Constants.DATETIME_FORMAT).toDate().getTime() < Date.now())
-                  .map((match: Match) =>
-                    <MatchListItem key={match.id} readOnly={props.readOnly} match={match} />)
-                }
-              </Flex>
-            </TabPanel>
-            <TabPanel>
-              <Flex direction={'column'} gap={2}>
-                {
-                  state.matches
-                  .filter((match: Match) =>
-                    dayjs(match.matchDate, Constants.DATETIME_FORMAT).toDate().getTime() >= Date.now())
-                  .map((match: Match) =>
-                    <MatchListItem key={match.id} readOnly={props.readOnly} match={match} />)
-                }
-              </Flex>
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
+        {props.hideTabs ?
+          <Flex direction={'column'} gap={2}>
+            {state.matches.map((match: Match) =>
+                <MatchListItem key={match.id} readOnly={props.readOnly} match={match} />)}
+          </Flex>
+          :
+          <Tabs display='flex' flexDirection='column' isFitted variant='line' overflowY={'hidden'}>
+            <TabList>
+              <Tab>Past</Tab>
+              <Tab>Upcoming</Tab>
+            </TabList>
+            <TabPanels overflowY={'scroll'} css={scrollbarStyle}>
+              <TabPanel>
+                <Flex direction={'column'} gap={2}>
+                  {
+                    state.matches
+                      .filter((match: Match) =>
+                        dayjs(match.matchDate, Constants.DATETIME_FORMAT).toDate().getTime() < Date.now())
+                      .map((match: Match) =>
+                        <MatchListItem key={match.id} readOnly={props.readOnly} match={match} />)
+                  }
+                </Flex>
+              </TabPanel>
+              <TabPanel>
+                <Flex direction={'column'} gap={2}>
+                  {
+                    state.matches
+                      .filter((match: Match) =>
+                        dayjs(match.matchDate, Constants.DATETIME_FORMAT).toDate().getTime() >= Date.now())
+                      .map((match: Match) =>
+                        <MatchListItem key={match.id} readOnly={props.readOnly} match={match} />)
+                  }
+                </Flex>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        }
       </Flex>
     </>
   );

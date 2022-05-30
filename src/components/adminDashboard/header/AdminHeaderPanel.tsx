@@ -1,7 +1,6 @@
 import {
   Avatar,
   Button,
-  Center,
   Flex,
   Heading,
   Menu,
@@ -10,6 +9,8 @@ import {
   MenuItem,
   MenuList,
   Spacer,
+  Text,
+  Badge,
 } from '@chakra-ui/react';
 import useStore from "../../../zustand/store";
 import useAuth from "../../../hooks/useAuth";
@@ -21,6 +22,7 @@ import {useLeagues} from "../../../hooks/useLeagues";
 import {uuid} from "../../../shared/uuid";
 import {League} from "../../../entities/League";
 import {PageTitle} from "../../../shared/PageTitle";
+import {getUserBadge} from "../../shared/MatchGradeListItem";
 
 interface Props {
   pageTitle: PageTitle;
@@ -35,6 +37,8 @@ export const AdminHeaderPanel = (props: Props) => {
 
   const leagueIdx: number = leaguesQuery.data!.findIndex((l: League) => l.id === leagueId)!;
   const leagueName: string = leaguesQuery.data![leagueIdx].name;
+
+  const { badgeColor, badgeString } = getUserBadge(user.role!);
 
   return (
     <>
@@ -82,20 +86,24 @@ export const AdminHeaderPanel = (props: Props) => {
             <MenuList
               alignItems={'center'}
             >
-              <br />
-              <Center>
+              <Flex
+                direction={'column'}
+                align={'center'}
+                p={2}
+              >
                 <Avatar
                   name={user.firstName + ' ' + user.lastName}
                   size={'xl'}
                 />
-              </Center>
-              <br />
-              <Center>
-                <p>{user.firstName} {user.lastName}</p>
-              </Center>
-              <br />
+                <Badge my={2} colorScheme={badgeColor} fontSize={'xs'}>{badgeString}</Badge>
+                <Text>
+                  {user.firstName} {user.lastName}
+                </Text>
+                <Text fontSize={'sm'} color={'gray.400'}>
+                  {user.email}
+                </Text>
+              </Flex>
               <MenuDivider />
-              <MenuItem>Account Settings</MenuItem>
               <MenuItem onClick={() => logout()}>Logout</MenuItem>
             </MenuList>
           </Menu>

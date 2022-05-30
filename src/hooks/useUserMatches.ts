@@ -4,6 +4,8 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import useStore from "../zustand/store";
 import { useParams } from "react-router-dom";
+import { Dayjs } from "dayjs";
+import {getMatchesByDate} from "./shared/matches";
 
 interface Props {
   userId?: uuid;
@@ -30,5 +32,9 @@ export const useUserMatches = (props?: Props) => {
     { enabled: props ? props.disableAutoRefetch : true }
   );
 
-  return { query };
+  const getByDate = (date: Dayjs) => {
+    return getMatchesByDate(date, query.data);
+  }
+
+  return { query, getByDate };
 }
