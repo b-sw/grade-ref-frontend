@@ -7,17 +7,33 @@ import {
   MenuList,
   MenuItem,
   MenuDivider,
-  Center,
   Heading,
   Spacer,
+  Badge,
+  Text,
 } from '@chakra-ui/react';
 import useStore from "../../../zustand/store";
 import useAuth from "../../../hooks/useAuth";
 import { CalendarIcon } from '@chakra-ui/icons';
+import {Path} from "../../../shared/Path";
+import {PageTitle} from "../../../shared/PageTitle";
+import {uuid} from "../../../shared/uuid";
+import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import {MdApps, MdDashboard } from 'react-icons/md';
+import {getUserBadge} from "../../shared/MatchGradeListItem";
 
-export const HeaderPanel = () => {
+interface Props {
+  pageTitle: string;
+}
+
+export const HeaderPanel = (props: Props) => {
   const user = useStore((state) => state.user);
+  const navigate = useNavigate();
+  const { leagueId } = useParams<{ leagueId: uuid }>();
   const { logout } = useAuth();
+
+  const { badgeColor, badgeString } = getUserBadge(user.role!);
 
   return (
     <>
@@ -26,8 +42,30 @@ export const HeaderPanel = () => {
         <Spacer />
 
         <Flex alignItems={'center'}>
-          <Button mr={3} disabled={true} onClick={() => {}} leftIcon={<CalendarIcon />}>
+          <Button
+            mr={3}
+            onClick={() => {
+              navigate(`${Path.CALENDAR}/${leagueId}`);
+            }}
+            leftIcon={<CalendarIcon />}
+            colorScheme={props.pageTitle.includes(PageTitle.Calendar) ? 'blue' : 'gray'}
+          >
             Calendar
+          </Button>
+          <Button
+            mr={3}
+            onClick={() => {navigate(`${Path.DASHBOARD}/${leagueId}`)}}
+            leftIcon={<MdDashboard />}
+            colorScheme={props.pageTitle.includes(PageTitle.Dashboard) ? 'blue' : 'gray'}
+          >
+            Dashboard
+          </Button>
+          <Button
+            mr={3}
+            onClick={() => {navigate(Path.EXPLORER)}}
+            leftIcon={<MdApps />}
+          >
+            Leagues
           </Button>
 
           <Menu>
@@ -45,19 +83,26 @@ export const HeaderPanel = () => {
             <MenuList
               alignItems={'center'}
             >
-              <br />
-              <Center>
+              <Flex
+                direction={'column'}
+                align={'center'}
+                p={2}
+              >
                 <Avatar
                   name={user.firstName + ' ' + user.lastName}
                   size={'xl'}
                 />
-              </Center>
-              <br />
-              <Center>
-                <p>{user.firstName} {user.lastName}</p>
-              </Center>
-              <br />
+                <Badge my={2} colorScheme={badgeColor} fontSize={'xs'}>{badgeString}</Badge>
+                <Text>
+                  {user.firstName} {user.lastName}
+                </Text>
+                <Text fontSize={'sm'} color={'gray.400'}>
+                  {user.email}
+                </Text>
+              </Flex>
+
               <MenuDivider />
+
               <MenuItem>Account Settings</MenuItem>
               <MenuItem onClick={() => logout()}>Logout</MenuItem>
             </MenuList>

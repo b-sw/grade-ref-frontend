@@ -17,6 +17,7 @@ import {OwnerDashboard} from "./pages/OwnerDashboard";
 import {Explorer} from "./pages/Explorer";
 import { ReactQueryDevtools } from 'react-query/devtools';
 import {AdminCalendar} from "./pages/AdminCalendar";
+import {Calendar} from "./pages/Calendar";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +46,7 @@ export const App = () => (
             <Route element={<RequireAuthRouteRefereeObserver />}>
               <Route path={Path.EXPLORER} element={<Explorer />} />
               <Route path={Path.DASHBOARD + '/:leagueId'} element={<Dashboard />} />
+              <Route path={Path.CALENDAR + '/:leagueId'} element={<Calendar />} />
             </Route>
           </Route>
         </Routes>

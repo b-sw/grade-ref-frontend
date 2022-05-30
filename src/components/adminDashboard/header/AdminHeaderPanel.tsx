@@ -103,7 +103,9 @@ export const AdminHeaderPanel = (props: Props) => {
                   {user.email}
                 </Text>
               </Flex>
+
               <MenuDivider />
+
               <MenuItem onClick={() => logout()}>Logout</MenuItem>
             </MenuList>
           </Menu>
