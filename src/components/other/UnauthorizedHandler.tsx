@@ -14,7 +14,7 @@ export const UnauthorizedHandler = () => {
       (error) => {
         const statusCode: StatusCodes = error.response ? error.response.status : null;
         if (statusCode === StatusCodes.UNAUTHORIZED) {
-          navigate(Path.LOGIN, { state: { customMessage: 'You have been logged out.' } });
+          navigate(Path.LANDING_PAGE, { state: { customMessage: 'You have been logged out.' } });
         } else {
           return Promise.reject(error);
         }

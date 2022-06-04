@@ -5,19 +5,19 @@ import { ChakraProvider } from "@chakra-ui/react"
 import {UnauthorizedHandler} from "./components/other/UnauthorizedHandler";
 import {AnimatedTransition} from "./components/other/AnimatedTransition";
 import {Path} from "./shared/Path";
-import {Login} from "./pages/Login";
 import {RequireAuthRouteRefereeObserver} from "./components/other/RequireAuthRouteRefereeObserver";
 import {Dashboard} from "./pages/Dashboard";
-import {AdminDashboard} from "./pages/AdminDashboard";
+import {AdminDashboard} from "./pages/admin/AdminDashboard";
 import {RequireAuthRouteAdmin} from "./components/other/RequireAuthRouteAdmin";
 import theme from "./theme/theme";
-import { AdminExplorer } from "./pages/AdminExplorer";
+import { AdminExplorer } from "./pages/admin/AdminExplorer";
 import {RequireAuthRouteOwner} from "./components/other/RequireAuthRouteOwner";
-import {OwnerDashboard} from "./pages/OwnerDashboard";
+import {OwnerDashboard} from "./pages/owner/OwnerDashboard";
 import {Explorer} from "./pages/Explorer";
 import { ReactQueryDevtools } from 'react-query/devtools';
-import {AdminCalendar} from "./pages/AdminCalendar";
+import {AdminCalendar} from "./pages/admin/AdminCalendar";
 import {Calendar} from "./pages/Calendar";
+import {LandingPage} from "./pages/LandingPage";
 
 const queryClient = new QueryClient();
 
@@ -29,9 +29,9 @@ export const App = () => (
         <UnauthorizedHandler />
         <Routes>
           <Route element={<AnimatedTransition />}>
-            <Route path={'*'} element={<Navigate to={Path.LOGIN} />} />
+            <Route path={'*'} element={<Navigate to={Path.LANDING_PAGE} />} />
 
-            <Route path={Path.LOGIN} element={<Login />} />
+            <Route path={Path.LANDING_PAGE} element={<LandingPage />} />
 
             <Route element={<RequireAuthRouteOwner />}>
               <Route path={Path.OWNER_DASHBOARD} element={<OwnerDashboard />} />

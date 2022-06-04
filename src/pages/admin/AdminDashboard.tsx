@@ -1,19 +1,19 @@
 import {Flex, SimpleGrid,} from '@chakra-ui/react';
-import {AdminHeaderPanel} from "../components/adminDashboard/header/AdminHeaderPanel";
-import {MatchesPanel} from "../components/adminDashboard/matches/MatchesPanel";
-import {RefereesPanel} from "../components/adminDashboard/referees/RefereesPanel";
-import {ObserversPanel} from "../components/adminDashboard/observers/ObserversPanel";
-import {TeamsPanel} from "../components/adminDashboard/teams/TeamsPanel";
-import {AdminSettingsPanel} from "../components/adminDashboard/settings/AdminSettingsPanel";
-import {useLeagueTeams} from "../hooks/useLeagueTeams";
-import {useLeagueMatches} from "../hooks/useLeagueMatches";
-import {LoadingOverlay} from "./LoadingOverlay";
-import {useLeagues} from "../hooks/useLeagues";
-import {useLeagueUsers} from "../hooks/useLeagueUsers";
-import {Role} from "../shared/Role";
-import {useReferees} from "../hooks/useReferees";
-import {useObservers} from "../hooks/useObservers";
-import {PageTitle} from "../shared/PageTitle";
+import {AdminHeaderPanel} from "../../components/adminDashboard/header/AdminHeaderPanel";
+import {MatchesPanel} from "../../components/adminDashboard/matches/MatchesPanel";
+import {RefereesPanel} from "../../components/adminDashboard/referees/RefereesPanel";
+import {ObserversPanel} from "../../components/adminDashboard/observers/ObserversPanel";
+import {TeamsPanel} from "../../components/adminDashboard/teams/TeamsPanel";
+import {AdminSettingsPanel} from "../../components/adminDashboard/settings/AdminSettingsPanel";
+import {useLeagueTeams} from "../../hooks/useLeagueTeams";
+import {useLeagueMatches} from "../../hooks/useLeagueMatches";
+import {LoadingOverlay} from "../LoadingOverlay";
+import {useLeagues} from "../../hooks/useLeagues";
+import {useLeagueUsers} from "../../hooks/useLeagueUsers";
+import {Role} from "../../shared/Role";
+import {useReferees} from "../../hooks/useReferees";
+import {useObservers} from "../../hooks/useObservers";
+import {PageTitle} from "../../shared/PageTitle";
 
 export const AdminDashboard = () => {
   const { refereesQuery: allRefereesQuery } = useReferees();

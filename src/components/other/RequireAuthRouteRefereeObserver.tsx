@@ -18,5 +18,5 @@ export const RequireAuthRouteRefereeObserver = () => {
     return <Navigate to={Path.ADMIN_EXPLORER} state={{ from: location }} replace />;
   }
 
-  return <Navigate to={Path.LOGIN} state={{ from: location }} replace />;
+  return <Navigate to={Path.LANDING_PAGE} state={{ from: location }} replace />;
 };
