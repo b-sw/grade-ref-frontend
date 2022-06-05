@@ -9,7 +9,7 @@ export const Stats = () => {
         h={'100vh'}
         direction={'column'}
         align={'center'}
-        backgroundColor={'gray.400'}
+        backgroundColor={'gray.600'}
       >
         <Flex>
           <Spacer />

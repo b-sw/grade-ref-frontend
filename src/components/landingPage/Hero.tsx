@@ -1,11 +1,7 @@
-import {Button, Divider, Flex, Heading, ScaleFade, Spacer, Stack, Text} from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
-import {Path} from "../../shared/Path";
+import {Divider, Flex, Spacer, Text} from "@chakra-ui/react";
 import {HeroLoginPanel} from "./HeroLoginPanel";
 
 export const Hero = () => {
-  const navigate = useNavigate();
-
   return (
     <Flex
       p={4}
