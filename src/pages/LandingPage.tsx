@@ -1,4 +1,3 @@
-import { Stats } from "../components/landingPage/Stats";
 import { Hero } from "../components/landingPage/Hero";
 
 export const LandingPage = () => {
@@ -6,7 +5,7 @@ export const LandingPage = () => {
   return (
     <>
       <Hero />
-      <Stats />
+      {/*<Stats />*/}
     </>
   );
 }

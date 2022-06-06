@@ -1,7 +1,25 @@
 import {Divider, Flex, Spacer, Text} from "@chakra-ui/react";
+import 'react-device-frameset/styles/marvel-devices.min.css'
 import {HeroLoginPanel} from "./HeroLoginPanel";
+import {useEffect} from "react";
+import {useSetState} from "../../hooks/useSetState";
+import {Device} from "./Device";
+
+interface State {
+  isMobile: boolean;
+}
+
+const MOBILE_WINDOW_WIDTH = 768;
 
 export const Hero = () => {
+  const [state, setState] = useSetState({
+    isMobile: window.innerWidth < MOBILE_WINDOW_WIDTH
+  } as State);
+
+  useEffect(() => {
+    window.addEventListener('resize', () => setState({ isMobile: window.innerWidth < MOBILE_WINDOW_WIDTH }));
+  }, []);
+
   return (
     <Flex
       p={4}
@@ -14,25 +32,32 @@ export const Hero = () => {
       backgroundImage={`url(https://graderef.s3.eu-west-2.amazonaws.com/hero.jpg)`}
       backgroundPosition={'center'}
       backgroundRepeat={'no-repeat'}
+      backgroundSize={'cover'}
     >
-      <Flex
-        h={['50%', '50%', '100%']}
-        direction={'column'}
-        w={['100%', '100%', '50%']}
-        order={[2, 2, 1]}
-        textAlign={'center'}
-      >
-        <Spacer />
-        <Text fontSize={'4xl'} color={'gray.200'} mb={5}>
-          Dummy text
-        </Text>
-        <Spacer />
-      </Flex>
+      {!state.isMobile && (
+        <Flex
+          h={['50%', '50%', '100%']}
+          w={['100%', '100%', '50%']}
+          direction={'column'}
+          order={[2, 2, 1]}
+          align={'center'}
+        >
+          <Spacer />
+          <Flex
+            w={['100%', '100%', '90%']}
+            direction={'row'}
+          >
+            <Spacer />
+            <Device />
+          </Flex>
+          <Spacer />
+        </Flex>
+      )}
 
       <Flex
         h={['50%', '50%', '100%']}
-        direction={'column'}
         w={['100%', '100%', '50%']}
+        direction={'column'}
         order={[1, 1, 2]}
       >
         <Spacer />

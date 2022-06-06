@@ -47,7 +47,7 @@ export const AdminExplorer = () => {
               <AdminLeagueCard key={league.id} league={league} />
             ))}
           <Button
-            ml={5}
+            ml={[0, 0, 5]}
             onClick={onOpen}
             rightIcon={<PlusSquareIcon />}
             variant={'outline'}
