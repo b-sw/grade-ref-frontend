@@ -18,6 +18,7 @@ export const Hero = () => {
 
   useEffect(() => {
     window.addEventListener('resize', () => setState({ isMobile: window.innerWidth < MOBILE_WINDOW_WIDTH }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
