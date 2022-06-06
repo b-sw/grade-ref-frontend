@@ -17,7 +17,7 @@ import {Match, matchValidationSchema} from "../../../entities/Match";
 import {uuid} from "../../../shared/uuid";
 import {useLeagueMatches} from "../../../hooks/useLeagueMatches";
 import {useLeagueTeams} from "../../../hooks/useLeagueTeams";
-import {Constants} from "../../../shared/Constants";
+import {Constants, FORMIK_DATETIME_FORMAT} from "../../../shared/Constants";
 import dayjs from 'dayjs';
 import {Team} from "../../../entities/Team";
 import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
@@ -55,7 +55,7 @@ export const MatchEditModal = (props: Props) => {
   }, [updateMutation.isSuccess]);
 
   const initialValues: FormikValues = {
-    date: dayjs(props.match.matchDate).format('YYYY-MM-DDThh:mm'),
+    date: dayjs(props.match.matchDate).format(FORMIK_DATETIME_FORMAT),
     homeTeamId: props.match.homeTeamId,
     awayTeamId: props.match.awayTeamId,
     refereeId: props.match.refereeId,

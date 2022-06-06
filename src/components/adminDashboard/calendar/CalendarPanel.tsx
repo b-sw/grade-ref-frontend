@@ -36,6 +36,7 @@ interface State {
 }
 
 export const CalendarPanel = (props: Props) => {
+  const setCalendarYear = useStore((state) => state.setCalendarYear);
   const setSelectedDate: (date: Dayjs) => void = useStore((state) => state.setSelectedDate);
   const [state, setState] = useSetState({
     days: [],
@@ -52,6 +53,7 @@ export const CalendarPanel = (props: Props) => {
 
   useEffect(() => {
     setState({ days: getCalendarPageDays(state.monthOffset) });
+    setCalendarYear(dayjs().add(state.monthOffset, 'month').year());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.monthOffset]);
 

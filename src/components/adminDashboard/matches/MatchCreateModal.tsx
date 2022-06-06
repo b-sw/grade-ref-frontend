@@ -17,10 +17,11 @@ import {useLeagueMatches} from "../../../hooks/useLeagueMatches";
 import {useLeagueTeams} from "../../../hooks/useLeagueTeams";
 import {Match, matchValidationSchema} from "../../../entities/Match";
 import {Team} from "../../../entities/Team";
-import {Constants} from "../../../shared/Constants";
-import dayjs from 'dayjs';
+import {Constants, FORMIK_DATETIME_FORMAT} from "../../../shared/Constants";
+import dayjs, { Dayjs } from 'dayjs';
 import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
 import {Role} from "../../../shared/Role";
+import useStore from "../../../zustand/store";
 
 interface Props {
   isOpen: boolean;
@@ -36,6 +37,7 @@ interface FormikValues {
 }
 
 export const MatchCreateModal = (props: Props) => {
+  const selectedDate: Dayjs = useStore((state) => state.selectedDate);
   const { postMutation } = useLeagueMatches();
   const { query: teamsQuery } = useLeagueTeams();
   const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
@@ -50,7 +52,7 @@ export const MatchCreateModal = (props: Props) => {
   }, [postMutation.isSuccess]);
 
   const initialValues: FormikValues = {
-    date: '',
+    date: dayjs(selectedDate).format(FORMIK_DATETIME_FORMAT),
     homeTeamId: '',
     awayTeamId: '',
     refereeId: '',

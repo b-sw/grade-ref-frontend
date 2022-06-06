@@ -4,14 +4,14 @@ import {
   Button,
   useDisclosure,
 } from '@chakra-ui/react';
-import useAuth from '../hooks/useAuth';
+import useAuth from '../../hooks/useAuth';
 import { PlusSquareIcon } from '@chakra-ui/icons';
 import { HiOutlineLogout } from 'react-icons/hi';
-import {useLeagues} from "../hooks/useLeagues";
-import {League} from "../entities/League";
-import {AdminLeagueCard} from "../components/adminExplorer/AdminLeagueCard";
-import {LoadingOverlay} from "./LoadingOverlay";
-import {LeagueCreateModal} from "../components/ownerDashboard/leagues/LeagueCreateModal";
+import {useLeagues} from "../../hooks/useLeagues";
+import {League} from "../../entities/League";
+import {AdminLeagueCard} from "../../components/adminExplorer/AdminLeagueCard";
+import {LoadingOverlay} from "../LoadingOverlay";
+import {LeagueCreateModal} from "../../components/ownerDashboard/leagues/LeagueCreateModal";
 
 export const AdminExplorer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -47,7 +47,7 @@ export const AdminExplorer = () => {
               <AdminLeagueCard key={league.id} league={league} />
             ))}
           <Button
-            ml={5}
+            ml={[0, 0, 5]}
             onClick={onOpen}
             rightIcon={<PlusSquareIcon />}
             variant={'outline'}

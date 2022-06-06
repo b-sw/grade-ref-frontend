@@ -18,5 +18,5 @@ export const RequireAuthRouteAdmin = () => {
     return <Navigate to={Path.EXPLORER} state={{ from: location }} replace />;
   }
 
-  return <Navigate to={Path.LOGIN} state={{ from: location }} replace />;
+  return <Navigate to={Path.LANDING_PAGE} state={{ from: location }} replace />;
 };

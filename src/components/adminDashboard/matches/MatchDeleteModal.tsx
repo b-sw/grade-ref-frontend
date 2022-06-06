@@ -8,6 +8,7 @@ import {
   ModalFooter,
   Button,
   Text,
+  Flex,
 } from '@chakra-ui/react';
 import {matchItem} from "./MatchListItem";
 import {Match} from "../../../entities/Match";
@@ -43,7 +44,14 @@ export const MatchDeleteModal = (props: Props) => {
             <Text fontWeight='bold' mb='1rem'>
               Are you sure you want to delete the following match?
             </Text>
-            {matchItem(props.match, teamsQuery, refereesQuery, observersQuery)}
+            <Flex
+              p={5}
+              borderRadius={10}
+              alignItems={'center'}
+              backgroundColor={'gray.50'}
+            >
+              {matchItem(props.match, teamsQuery, refereesQuery, observersQuery)}
+            </Flex>
             <Text fontWeight='bold' mt='1rem'>
               You can't undo this action afterwards.
             </Text>

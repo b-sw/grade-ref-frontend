@@ -1,5 +1,5 @@
 export const Path = {
-  LOGIN: '/login',
+  LANDING_PAGE: '/landing-page',
   DASHBOARD: '/dashboard',
   EXPLORER: '/explorer',
   CALENDAR: '/calendar',

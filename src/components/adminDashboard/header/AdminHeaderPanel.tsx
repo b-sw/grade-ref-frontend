@@ -23,6 +23,7 @@ import {uuid} from "../../../shared/uuid";
 import {League} from "../../../entities/League";
 import {PageTitle} from "../../../shared/PageTitle";
 import {getUserBadge} from "../../shared/MatchGradeListItem";
+import dayjs from 'dayjs';
 
 interface Props {
   pageTitle: PageTitle;
@@ -30,6 +31,8 @@ interface Props {
 
 export const AdminHeaderPanel = (props: Props) => {
   const user = useStore((state) => state.user);
+  const calendarYear: number = useStore((state) => state.calendarYear);
+  const setCalendarYear = useStore((state) => state.setCalendarYear);
   const { logout } = useAuth();
   const navigate = useNavigate();
   const { query: leaguesQuery } = useLeagues();
@@ -43,7 +46,7 @@ export const AdminHeaderPanel = (props: Props) => {
   return (
     <>
       <Flex m={0} p={0} pb={10}>
-        <Heading>GradeRef ⚽ - {leagueName} {props.pageTitle}</Heading>
+        <Heading>GradeRef ⚽ - {leagueName} {props.pageTitle} {calendarYear}</Heading>
         <Spacer />
 
         <Flex alignItems={'center'}>
@@ -57,7 +60,10 @@ export const AdminHeaderPanel = (props: Props) => {
           </Button>
           <Button
             mr={3}
-            onClick={() => {navigate(`${Path.ADMIN_DASHBOARD}/${leagueId}`)}}
+            onClick={() => {
+              setCalendarYear(dayjs().year());
+              navigate(`${Path.ADMIN_DASHBOARD}/${leagueId}`);
+            }}
             leftIcon={<MdDashboard />}
             colorScheme={props.pageTitle.includes(PageTitle.Dashboard) ? 'blue' : 'gray'}
           >
@@ -65,7 +71,10 @@ export const AdminHeaderPanel = (props: Props) => {
           </Button>
           <Button
             mr={3}
-            onClick={() => {navigate(Path.ADMIN_EXPLORER)}}
+            onClick={() => {
+              setCalendarYear(dayjs().year());
+              navigate(Path.ADMIN_EXPLORER);
+            }}
             leftIcon={<MdApps />}
           >
             Leagues
