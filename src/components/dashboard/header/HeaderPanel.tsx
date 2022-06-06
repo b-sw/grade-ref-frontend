@@ -22,6 +22,8 @@ import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import {MdApps, MdDashboard } from 'react-icons/md';
 import {getUserBadge} from "../../shared/MatchGradeListItem";
+import {League} from "../../../entities/League";
+import {useLeagues} from "../../../hooks/useLeagues";
 
 interface Props {
   pageTitle: string;
@@ -29,21 +31,26 @@ interface Props {
 
 export const HeaderPanel = (props: Props) => {
   const user = useStore((state) => state.user);
+  const calendarYear: number = useStore((state) => state.calendarYear);
   const navigate = useNavigate();
   const { leagueId } = useParams<{ leagueId: uuid }>();
   const { logout } = useAuth();
+  const { query: leaguesQuery } = useLeagues();
+
+  const leagueIdx: number = leaguesQuery.data!.findIndex((l: League) => l.id === leagueId)!;
+  const leagueName: string = leaguesQuery.data![leagueIdx].name;
 
   const { badgeColor, badgeString } = getUserBadge(user.role!);
 
   return (
     <>
-      <Flex m={0} p={0} pb={10}>
-        <Heading>GradeRef ⚽</Heading>
+      <Flex m={0} p={0} pb={10} direction={['column', 'row']}>
+        <Heading>{leagueName} {props.pageTitle} {calendarYear}</Heading>
         <Spacer />
 
-        <Flex alignItems={'center'}>
+        <Flex alignItems={'center'} direction={['column', 'row']} gap={2}>
           <Button
-            mr={3}
+            // mr={3}
             onClick={() => {
               navigate(`${Path.CALENDAR}/${leagueId}`);
             }}
@@ -53,7 +60,7 @@ export const HeaderPanel = (props: Props) => {
             Calendar
           </Button>
           <Button
-            mr={3}
+            // mr={3}
             onClick={() => {navigate(`${Path.DASHBOARD}/${leagueId}`)}}
             leftIcon={<MdDashboard />}
             colorScheme={props.pageTitle.includes(PageTitle.Dashboard) ? 'blue' : 'gray'}
@@ -61,7 +68,7 @@ export const HeaderPanel = (props: Props) => {
             Dashboard
           </Button>
           <Button
-            mr={3}
+            // mr={3}
             onClick={() => {navigate(Path.EXPLORER)}}
             leftIcon={<MdApps />}
           >

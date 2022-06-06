@@ -34,7 +34,7 @@ export const AdminCalendar = () => {
     const filteredMatches = matchesQuery.data?.filter((match) => dayjs(match.matchDate).isSame(selectedDate, 'day'));
     setState({ matches: filteredMatches ?? [] });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedDate]);
+  }, [selectedDate, matchesQuery.data]);
 
   const queries = [refereesQuery, observersQuery, teamsQuery, matchesQuery, leaguesQuery];
 
@@ -43,7 +43,7 @@ export const AdminCalendar = () => {
   }
 
   return (
-    <Flex p={5} m={0} h={['100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
+    <Flex p={5} m={0} h={['auto', '100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
       <AdminHeaderPanel pageTitle={PageTitle.Calendar} />
       <Flex flexGrow={1} gap={[2, 2, 4]} direction={['column', 'row']} overflow={'hidden'} m={-10} p={10}>
         <CalendarPanel matches={matchesQuery.data!} />

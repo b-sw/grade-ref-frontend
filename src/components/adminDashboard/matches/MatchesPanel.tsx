@@ -108,7 +108,7 @@ export const MatchesPanel = (props: Props) => {
         </InputGroup>
 
         {props.hideTabs ?
-          <Flex direction={'column'} gap={2}>
+          <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
             {state.matches.map((match: Match) =>
                 <MatchListItem key={match.id} readOnly={props.readOnly} match={match} />)}
           </Flex>

@@ -9,7 +9,7 @@ interface State {
   isMobile: boolean;
 }
 
-const MOBILE_WINDOW_WIDTH = 768;
+export const MOBILE_WINDOW_WIDTH = 768;
 
 export const Hero = () => {
   const [state, setState] = useSetState({

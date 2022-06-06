@@ -1,13 +1,14 @@
 import dayjs, { Dayjs } from "dayjs";
 import useStore from "../../../zustand/store";
 import {useSetState} from "../../../hooks/useSetState";
-import {Center, Flex, Grid, GridItem, IconButton, SimpleGrid, Spacer, Text } from "@chakra-ui/react";
+import {Center, Flex, Grid, GridItem, IconButton, SimpleGrid, Spacer, Text, VStack } from "@chakra-ui/react";
 import {CalendarTile} from "./CalendarTile";
 import { useEffect } from "react";
 import { useCalendar } from "../../../hooks/useCalendar";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import {Match} from "../../../entities/Match";
 import {getMatchesByDate} from "../../../hooks/shared/matches";
+import { MOBILE_WINDOW_WIDTH } from "../../landingPage/Hero";
 
 export enum SlideDirection {
   LEFT = -1,
@@ -33,6 +34,7 @@ interface State {
   days: Dayjs[];
   monthOffset: number;
   slideDirection: SlideDirection;
+  isMobile: boolean;
 }
 
 export const CalendarPanel = (props: Props) => {
@@ -42,12 +44,14 @@ export const CalendarPanel = (props: Props) => {
     days: [],
     monthOffset: 0,
     slideDirection: SlideDirection.RIGHT,
+    isMobile: window.innerWidth < MOBILE_WINDOW_WIDTH,
   } as State);
 
   const { getCalendarPageDays, getMonthName } = useCalendar();
 
   useEffect(() => {
     setSelectedDate(dayjs());
+    window.addEventListener('resize', () => setState({ isMobile: window.innerWidth < MOBILE_WINDOW_WIDTH }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -95,29 +99,38 @@ export const CalendarPanel = (props: Props) => {
           />
         ))}
         <GridItem colSpan={3} >
-          <Center gap={4} borderRadius={10} h={'100%'}>
-            <Spacer />
-            <IconButton
-              aria-label='left'
-              icon={<ArrowBackIcon />}
-              onClick={() => {
-                setState({ monthOffset: state.monthOffset - 1 });
-                setState({ slideDirection: SlideDirection.LEFT });
-              }}
-            />
-            <Text fontWeight={'medium'} fontSize={'2xl'} textAlign={'center'} width={'30%'}>
-              {getMonthName(state.monthOffset)}
-            </Text>
-            <IconButton
-              aria-label='left'
-              icon={<ArrowForwardIcon />}
-              onClick={() => {
-                setState({ monthOffset: state.monthOffset + 1 });
-                setState({ slideDirection: SlideDirection.RIGHT });
-              }}
-            />
-            <Spacer />
-          </Center>
+          <VStack align={'center'} h={'100%'} w={'100%'}>
+            <Center gap={4} borderRadius={10} w={'100%'} h={'100%'}>
+              <IconButton
+                aria-label='left'
+                icon={<ArrowBackIcon />}
+                onClick={() => {
+                  setState({ monthOffset: state.monthOffset - 1 });
+                  setState({ slideDirection: SlideDirection.LEFT });
+                }}
+              />
+              {!state.isMobile &&
+                <Text fontWeight={'medium'} fontSize={'2xl'} textAlign={'center'} width={'30%'}>
+                  {getMonthName(state.monthOffset)}
+                </Text>
+              }
+              <IconButton
+                aria-label='left'
+                icon={<ArrowForwardIcon />}
+                onClick={() => {
+                  setState({ monthOffset: state.monthOffset + 1 });
+                  setState({ slideDirection: SlideDirection.RIGHT });
+                }}
+              />
+            </Center>
+            {state.isMobile &&
+              <Center gap={4} borderRadius={10} w={'100%'} h={'100%'}>
+                <Text fontWeight={'medium'} fontSize={['xl', '2xl']} textAlign={'center'}>
+                  {getMonthName(state.monthOffset)}
+                </Text>
+              </Center>
+            }
+          </VStack>
         </GridItem>
       </Grid>
     </Flex>

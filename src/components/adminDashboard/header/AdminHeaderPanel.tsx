@@ -45,13 +45,12 @@ export const AdminHeaderPanel = (props: Props) => {
 
   return (
     <>
-      <Flex m={0} p={0} pb={10}>
-        <Heading>GradeRef ⚽ - {leagueName} {props.pageTitle} {calendarYear}</Heading>
+      <Flex m={0} p={0} pb={10} direction={['column', 'row']}>
+        <Heading>{leagueName} {props.pageTitle} {calendarYear}</Heading>
         <Spacer />
 
-        <Flex alignItems={'center'}>
+        <Flex alignItems={'center'} direction={['column', 'row']} gap={2}>
           <Button
-            mr={3}
             onClick={() => {navigate(`${Path.ADMIN_CALENDAR}/${leagueId}`)}}
             leftIcon={<CalendarIcon />}
             colorScheme={props.pageTitle.includes(PageTitle.Calendar) ? 'blue' : 'gray'}
@@ -59,7 +58,6 @@ export const AdminHeaderPanel = (props: Props) => {
             Calendar
           </Button>
           <Button
-            mr={3}
             onClick={() => {
               setCalendarYear(dayjs().year());
               navigate(`${Path.ADMIN_DASHBOARD}/${leagueId}`);
@@ -70,7 +68,6 @@ export const AdminHeaderPanel = (props: Props) => {
             Dashboard
           </Button>
           <Button
-            mr={3}
             onClick={() => {
               setCalendarYear(dayjs().year());
               navigate(Path.ADMIN_EXPLORER);
