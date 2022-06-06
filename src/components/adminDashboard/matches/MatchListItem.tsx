@@ -1,4 +1,4 @@
-import { Flex, VStack, Text, Avatar, HStack, Divider, Center, useDisclosure, Badge, Tooltip } from '@chakra-ui/react';
+import { Flex, VStack, Text, Avatar, HStack, Divider, Center, useDisclosure, Badge, Tooltip, Spacer } from '@chakra-ui/react';
 import {Match} from "../../../entities/Match";
 import {useLeagueTeams} from "../../../hooks/useLeagueTeams";
 import {Team} from "../../../entities/Team";
@@ -95,7 +95,7 @@ export const matchItem = (match: Match, teamsQuery: any, refereesQuery: any, obs
           </VStack>
         </HStack>
 
-        <HStack align='top'>
+        <Flex direction={['column', 'row']}>
           <VStack align='left' w={'40%'}>
             <HStack>
               <MdPeople />
@@ -105,7 +105,7 @@ export const matchItem = (match: Match, teamsQuery: any, refereesQuery: any, obs
             {observerItem(observer, 'xs', 'sm', 'xs', true)}
           </VStack>
 
-          <Center height='100px' w={'20%'} />
+          <Spacer />
 
           <VStack align='left' w={'40%'}>
             <HStack>
@@ -129,7 +129,7 @@ export const matchItem = (match: Match, teamsQuery: any, refereesQuery: any, obs
               </HStack>
             }
           </VStack>
-        </HStack>
+        </Flex>
 
       </VStack>
     </>
