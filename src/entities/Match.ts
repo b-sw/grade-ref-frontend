@@ -1,6 +1,9 @@
 import {uuid} from "../shared/uuid";
 import Yup from "../shared/yup";
 
+export const GRADE_ADMISSION_TIME_WINDOW = 4;
+export const MATCH_DURATION_TIME = 2;
+
 export type Match = {
   id: uuid;
   userReadableKey: string;

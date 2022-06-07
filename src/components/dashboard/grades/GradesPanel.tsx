@@ -1,4 +1,4 @@
-import { Flex, Spacer, Text } from '@chakra-ui/react';
+import { Flex, Input, InputGroup, InputLeftElement, Spacer, Text } from '@chakra-ui/react';
 import {MatchGradeSummaryHeader} from "../../shared/MatchGradeSummaryHeader";
 import {scrollbarStyle} from "../shared/styles";
 import {MatchGradeListItem} from "../../shared/MatchGradeListItem";
@@ -10,6 +10,11 @@ import {Match} from "../../../entities/Match";
 import {useSetState} from "../../../hooks/useSetState";
 import {User} from "../../../entities/User";
 import {useEffect} from "react";
+import { MdSearch } from 'react-icons/md';
+import {matchFilter} from "../../shared/filters";
+import {useLeagueTeams} from "../../../hooks/useLeagueTeams";
+import {Team} from "../../../entities/Team";
+import useStore from "../../../zustand/store";
 
 interface State {
   matches: Match[];
@@ -22,8 +27,20 @@ interface Props {
 }
 
 export const GradesPanel = (props: Props) => {
+  const user = useStore((state) => state.user);
   const { query: matchesQuery } = useUserMatches();
+  const { query: teamsQuery } = useLeagueTeams();
   const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
+  const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
+
+  let referees: { [id: uuid]: User } = {};
+  let observers: { [id: uuid]: User } = {};
+  let teams: { [id: uuid]: Team } = {};
+
+  refereesQuery.data!.forEach((referee) => referees[referee.id] = referee);
+  observersQuery.data!.forEach((observer) => observers[observer.id] = observer);
+  teamsQuery.data!.forEach((team) => teams[team.id] = team);
+
 
   const [state, setState] = useSetState({
     matches: [],
@@ -41,7 +58,7 @@ export const GradesPanel = (props: Props) => {
   }, [observersQuery.data])
 
   useEffect(() => {
-    const filteredMatches: Match[] = props.matches;
+    const filteredMatches: Match[] = matchFilter(props.matches, teams, referees, observers, state.filter);
     setState({ matches: filteredMatches });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.filter, state.observers, props.matches]);
@@ -65,11 +82,25 @@ export const GradesPanel = (props: Props) => {
         </Flex>
 
         <MatchGradeSummaryHeader matches={matchesQuery.data!} />
+
+        <InputGroup>
+          <InputLeftElement
+            pointerEvents={'none'}
+            children={<MdSearch />}
+          />
+          <Input
+            mb={2}
+            placeholder={'Search match'}
+            onChange={(event) => setState({ filter: event.target.value })}
+          />
+        </InputGroup>
+
         <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
           {state.observers !== {} && state.matches.map((match) =>
-            <MatchGradeListItem key={match.id} match={match} user={state.observers[match.observerId]} />
+            <MatchGradeListItem key={match.id} readOnly={user.role !== Role.Observer} match={match} user={state.observers[match.observerId]} />
           )}
         </Flex>
+
       </Flex>
     </>
   );

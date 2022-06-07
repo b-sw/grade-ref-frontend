@@ -10,9 +10,9 @@ import {
   Text,
   Flex,
 } from '@chakra-ui/react';
-import {useUsers} from "../../../hooks/useUsers";
 import {leagueItem} from "./LeagueListItem";
 import {League} from "../../../entities/League";
+import {useLeagues} from "../../../hooks/useLeagues";
 
 export interface Props {
   isOpen: boolean;
@@ -21,7 +21,7 @@ export interface Props {
 }
 
 export const LeagueDeleteModal = (props: Props) => {
-  const { deleteMutation } = useUsers();
+  const { deleteMutation } = useLeagues();
 
   const deleteLeague = () => {
     deleteMutation.mutate(props.league.id);

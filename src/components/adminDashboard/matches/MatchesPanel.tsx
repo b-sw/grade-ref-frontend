@@ -30,6 +30,7 @@ import {Role} from "../../../shared/Role";
 import {uuid} from "../../../shared/uuid";
 import {User} from "../../../entities/User";
 import {Team} from "../../../entities/Team";
+import {isPast} from "../../shared/MatchGradeListItem";
 
 interface State {
   matches: Match[];
@@ -110,7 +111,7 @@ export const MatchesPanel = (props: Props) => {
         {props.hideTabs ?
           <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
             {state.matches.map((match: Match) =>
-                <MatchListItem key={match.id} readOnly={props.readOnly} match={match} />)}
+                <MatchListItem key={match.id} readOnly={props.readOnly || isPast(match)} match={match} />)}
           </Flex>
           :
           <Tabs display='flex' flexDirection='column' isFitted variant='line' overflowY={'hidden'}>
@@ -126,7 +127,7 @@ export const MatchesPanel = (props: Props) => {
                       .filter((match: Match) =>
                         dayjs(match.matchDate, Constants.DATETIME_FORMAT).toDate().getTime() < Date.now())
                       .map((match: Match) =>
-                        <MatchListItem key={match.id} readOnly={props.readOnly} match={match} />)
+                        <MatchListItem key={match.id} readOnly={props.readOnly || isPast(match)} match={match} />)
                   }
                 </Flex>
               </TabPanel>

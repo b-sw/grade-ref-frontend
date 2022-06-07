@@ -1,9 +1,9 @@
-import {Match} from "../../entities/Match";
+import {GRADE_ADMISSION_TIME_WINDOW, Match, MATCH_DURATION_TIME} from "../../entities/Match";
 import {User} from "../../entities/User";
-import {Avatar, Badge, Flex, HStack, IconButton, Spacer, Text, useDisclosure, VStack} from "@chakra-ui/react";
+import {Avatar, Badge, Flex, HStack, IconButton, Spacer, Text, Tooltip, useDisclosure, VStack} from "@chakra-ui/react";
 import {Constants} from "../../shared/Constants";
 import dayjs from "dayjs";
-import {CalendarIcon, EditIcon} from "@chakra-ui/icons";
+import {CalendarIcon, EditIcon, WarningIcon} from "@chakra-ui/icons";
 import {BsClockFill} from "react-icons/bs";
 import {determineGradeStatus} from "./gradeStatus";
 import {Role} from "../../shared/Role";
@@ -18,6 +18,8 @@ interface Props {
 export const MatchGradeListItem = (props: Props) => {
   const { isOpen: isEditModalOpen, onOpen: onEditModalOpen, onClose: onEditModalClose } = useDisclosure();
 
+  const enableEdit: boolean = !props.readOnly && (!isPast(props.match) || !props.match.refereeGrade) && !isFuture(props.match);
+
   return (
     <>
       {!props.readOnly && <GradeEditModal isOpen={isEditModalOpen} onClose={onEditModalClose} match={props.match} />}
@@ -28,15 +30,19 @@ export const MatchGradeListItem = (props: Props) => {
         backgroundColor={'gray.50'}
       >
         {matchGradeItem(props.match, props.user)}
-        {!props.readOnly &&
-          <>
-            <Spacer />
-            <IconButton onClick={onEditModalOpen} variant={'ghost'} aria-label='Edit grade' icon={<EditIcon />} />
-          </>
-        }
+        <Spacer />
+        <IconButton onClick={onEditModalOpen} disabled={!enableEdit} variant={'ghost'} aria-label='Edit grade' icon={<EditIcon />} />
       </Flex>
     </>
   );
+}
+
+export const isPast = (match: Match): boolean => {
+  return dayjs(match.matchDate).add(GRADE_ADMISSION_TIME_WINDOW, 'hour').isBefore(dayjs());
+}
+
+export const isFuture = (match: Match): boolean => {
+  return dayjs(match.matchDate).add(MATCH_DURATION_TIME, 'hour').isAfter(dayjs());
 }
 
 export const matchGradeItem = (match: Match, user: User) => {
@@ -46,15 +52,15 @@ export const matchGradeItem = (match: Match, user: User) => {
     gradeDate = dayjs(match.refereeGradeDate, Constants.DATETIME_FORMAT).format('DD-MM-YYYY');
     gradeTime = dayjs(match.refereeGradeDate, Constants.DATETIME_FORMAT).format('HH:mm');
   }
-  const { gradeStatus, gradeBadgeScheme } = determineGradeStatus(match);
+  const { gradeStatus, gradeBadgeScheme, delay: gradeDelay } = determineGradeStatus(match);
   const { badgeColor, badgeString } = getUserBadge(user.role);
 
   return (
     <>
       <VStack w={'100%'} align={'left'}>
         <Text fontSize={'sm'}><b>Match #{match.userReadableKey}</b></Text>
-        <HStack w={'100%'}>
-          <HStack w={'40%'}>
+        <Flex direction={['column', 'row']} gap={2}>
+          <HStack w={['100$', '40%']}>
             <Avatar
               name={user.firstName + ' ' + user.lastName}
               size={'sm'}
@@ -75,7 +81,7 @@ export const matchGradeItem = (match: Match, user: User) => {
             </VStack>
           </HStack>
 
-          <VStack alignItems={'baseline'} w={'30%'}>
+          <VStack alignItems={'baseline'} w={['100$', '30%']}>
             <HStack>
               <Text>Status:</Text>
               <Badge colorScheme={gradeBadgeScheme} fontSize={'xs'}>{gradeStatus}</Badge>
@@ -86,7 +92,7 @@ export const matchGradeItem = (match: Match, user: User) => {
             </HStack>
           </VStack>
 
-          <VStack alignItems={'baseline'} w={'30%'}>
+          <VStack alignItems={'baseline'} w={['100$', '30%']}>
             <HStack>
               <CalendarIcon />
               <Text fontSize={'sm'}>{gradeDate}</Text>
@@ -94,9 +100,14 @@ export const matchGradeItem = (match: Match, user: User) => {
             <HStack>
               <BsClockFill />
               <Text fontSize={'sm'}>{gradeTime}</Text>
+              {gradeDelay &&
+                <Tooltip label={'+' + gradeDelay}>
+                  <WarningIcon color={'red.600'}/>
+                </Tooltip>
+              }
             </HStack>
           </VStack>
-        </HStack>
+        </Flex>
       </VStack>
     </>
   );
