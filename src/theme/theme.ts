@@ -5,6 +5,7 @@ import { extendTheme } from '@chakra-ui/react';
 import { Input } from "./input";
 import { Modal } from './modal';
 import { Select } from './select';
+import {NumberInput} from "./numberInput";
 
 // 2. Add your color mode config
 const config = {
@@ -22,6 +23,7 @@ const colors = {
 
 const components = {
   Input,
+  NumberInput,
   Modal,
   Select,
 }

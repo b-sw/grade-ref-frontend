@@ -1,22 +1,26 @@
 import {Match} from "../../entities/Match";
 import {User} from "../../entities/User";
-import {Avatar, Badge, Flex, HStack, Text, VStack} from "@chakra-ui/react";
+import {Avatar, Badge, Flex, HStack, IconButton, Spacer, Text, useDisclosure, VStack} from "@chakra-ui/react";
 import {Constants} from "../../shared/Constants";
 import dayjs from "dayjs";
-import {CalendarIcon} from "@chakra-ui/icons";
+import {CalendarIcon, EditIcon} from "@chakra-ui/icons";
 import {BsClockFill} from "react-icons/bs";
 import {determineGradeStatus} from "./gradeStatus";
 import {Role} from "../../shared/Role";
+import { GradeEditModal } from "../dashboard/grades/GradeEditModal";
 
 interface Props {
   match: Match;
   user: User;
+  readOnly?: boolean;
 }
 
 export const MatchGradeListItem = (props: Props) => {
+  const { isOpen: isEditModalOpen, onOpen: onEditModalOpen, onClose: onEditModalClose } = useDisclosure();
 
   return (
     <>
+      {!props.readOnly && <GradeEditModal isOpen={isEditModalOpen} onClose={onEditModalClose} match={props.match} />}
       <Flex
         p={5}
         borderRadius={10}
@@ -24,6 +28,12 @@ export const MatchGradeListItem = (props: Props) => {
         backgroundColor={'gray.50'}
       >
         {matchGradeItem(props.match, props.user)}
+        {!props.readOnly &&
+          <>
+            <Spacer />
+            <IconButton onClick={onEditModalOpen} variant={'ghost'} aria-label='Edit grade' icon={<EditIcon />} />
+          </>
+        }
       </Flex>
     </>
   );

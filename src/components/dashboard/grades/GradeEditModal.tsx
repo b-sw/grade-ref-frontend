@@ -8,53 +8,53 @@ import {
   ModalFooter,
   Button,
 } from '@chakra-ui/react';
-import { Form, Formik } from 'formik';
-import { InputControl } from 'formik-chakra-ui';
-import { useEffect } from 'react';
-import {Team, teamValidationSchema} from "../../../entities/Team";
-import {useLeagueTeams} from "../../../hooks/useLeagueTeams";
+import {Form, Formik } from "formik";
+import { useEffect } from "react";
+import {gradeValidationSchema, Match} from "../../../entities/Match";
+import {useGrades} from "../../../hooks/useGrades";
+import { NumberInputControl } from 'formik-chakra-ui';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  team: Team;
+  match: Match;
 }
 
 interface FormikValues {
-  name: string;
+  grade: number;
 }
 
-export const TeamEditModal = (props: Props) => {
-  const { updateMutation } = useLeagueTeams();
+export const GradeEditModal = (props: Props) => {
+  const { updateMutation } = useGrades({ matchId: props.match.id })
 
   useEffect(() => {
     if (updateMutation.isSuccess) {
       props.onClose();
       updateMutation.reset();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updateMutation.isSuccess]);
 
   const initialValues: FormikValues = {
-    name: props.team.name,
+    grade: props.match.refereeGrade ?? 0,
   };
 
-  const editTeam = (values: FormikValues) => {
-    updateMutation.mutate({ id: props.team.id, name: values.name });
+  const editGrade = (values: FormikValues) => {
+    updateMutation.mutate({ refereeGrade: values.grade } as Match);
   };
 
   return (
-    <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
+    <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered size={'xs'}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Edit team</ModalHeader>
+        <ModalHeader>Edit grade</ModalHeader>
         <ModalCloseButton />
 
-        <Formik initialValues={initialValues} onSubmit={editTeam} validationSchema={teamValidationSchema}>
+        <Formik initialValues={initialValues} onSubmit={editGrade} validationSchema={gradeValidationSchema}>
           {({ handleSubmit }) => (
             <Form onSubmit={handleSubmit}>
               <ModalBody>
-                <InputControl name='name' label='Name' />
+                <NumberInputControl name='grade' label='Grade' />
               </ModalBody>
               <ModalFooter>
                 <Button colorScheme='blue' mr={'3'} type='submit' isLoading={updateMutation.isLoading}>
@@ -68,4 +68,4 @@ export const TeamEditModal = (props: Props) => {
       </ModalContent>
     </Modal>
   );
-};
+}

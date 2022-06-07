@@ -39,14 +39,14 @@ export const AdminHeaderPanel = (props: Props) => {
   const { leagueId } = useParams<{ leagueId: uuid }>();
 
   const leagueIdx: number = leaguesQuery.data!.findIndex((l: League) => l.id === leagueId)!;
-  const leagueName: string = leaguesQuery.data![leagueIdx].name;
+  const leagueShortName: string = leaguesQuery.data![leagueIdx].shortName;
 
   const { badgeColor, badgeString } = getUserBadge(user.role!);
 
   return (
     <>
       <Flex m={0} p={0} pb={10} direction={['column', 'row']}>
-        <Heading>{leagueName} {props.pageTitle} {calendarYear}</Heading>
+        <Heading>{leagueShortName} {calendarYear}</Heading>
         <Spacer />
 
         <Flex alignItems={'center'} direction={['column', 'row']} gap={2}>

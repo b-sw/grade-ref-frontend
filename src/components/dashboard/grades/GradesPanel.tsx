@@ -44,7 +44,7 @@ export const GradesPanel = (props: Props) => {
     const filteredMatches: Match[] = props.matches;
     setState({ matches: filteredMatches });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.filter, state.observers]);
+  }, [state.filter, state.observers, props.matches]);
 
   return (
     <>

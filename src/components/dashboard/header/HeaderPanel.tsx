@@ -38,19 +38,18 @@ export const HeaderPanel = (props: Props) => {
   const { query: leaguesQuery } = useLeagues();
 
   const leagueIdx: number = leaguesQuery.data!.findIndex((l: League) => l.id === leagueId)!;
-  const leagueName: string = leaguesQuery.data![leagueIdx].name;
+  const leagueShortName: string = leaguesQuery.data![leagueIdx].shortName;
 
   const { badgeColor, badgeString } = getUserBadge(user.role!);
 
   return (
     <>
       <Flex m={0} p={0} pb={10} direction={['column', 'row']}>
-        <Heading>{leagueName} {props.pageTitle} {calendarYear}</Heading>
+        <Heading>{leagueShortName} {calendarYear}</Heading>
         <Spacer />
 
         <Flex alignItems={'center'} direction={['column', 'row']} gap={2}>
           <Button
-            // mr={3}
             onClick={() => {
               navigate(`${Path.CALENDAR}/${leagueId}`);
             }}
@@ -60,7 +59,6 @@ export const HeaderPanel = (props: Props) => {
             Calendar
           </Button>
           <Button
-            // mr={3}
             onClick={() => {navigate(`${Path.DASHBOARD}/${leagueId}`)}}
             leftIcon={<MdDashboard />}
             colorScheme={props.pageTitle.includes(PageTitle.Dashboard) ? 'blue' : 'gray'}
@@ -68,7 +66,6 @@ export const HeaderPanel = (props: Props) => {
             Dashboard
           </Button>
           <Button
-            // mr={3}
             onClick={() => {navigate(Path.EXPLORER)}}
             leftIcon={<MdApps />}
           >

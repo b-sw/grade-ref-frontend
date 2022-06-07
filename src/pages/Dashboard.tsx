@@ -11,14 +11,16 @@ import {useLeagueUsers} from "../hooks/useLeagueUsers";
 import {Role} from "../shared/Role";
 import {useLeagueTeams} from "../hooks/useLeagueTeams";
 import {PageTitle} from "../shared/PageTitle";
+import {useLeagues} from "../hooks/useLeagues";
 
 export const Dashboard = () => {
   const { query: matchesQuery } = useUserMatches();
   const { query: teamsQuery } = useLeagueTeams();
   const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
   const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
+  const { query: leaguesQuery } = useLeagues();
 
-  const queries = [matchesQuery, refereesQuery, observersQuery, teamsQuery];
+  const queries = [matchesQuery, refereesQuery, observersQuery, teamsQuery, leaguesQuery];
 
   if (queries.some((query) => query.isLoading)) {
     return (<LoadingOverlay />);

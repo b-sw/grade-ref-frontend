@@ -16,7 +16,6 @@ export const MatchGradeSummaryHeader = (props: Props) => {
     <HStack
       p={3}
       mb={3}
-      // alignItems={'center'}
       w={'100%'}
     >
       <VStack alignItems={'baseline'} w={'10%'}>

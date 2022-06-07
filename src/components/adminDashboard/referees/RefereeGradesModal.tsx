@@ -65,7 +65,7 @@ export const RefereeGradesModal = (props: Props) => {
               <MatchGradeSummaryHeader matches={matchesQuery.data!} />
               <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
                 {matchesQuery.data.map((match) =>
-                  <MatchGradeListItem key={match.id} match={match} user={state.observers[match.observerId]} />
+                  <MatchGradeListItem key={match.id} readOnly={true} match={match} user={state.observers[match.observerId]} />
                 )}
               </Flex>
             </>
