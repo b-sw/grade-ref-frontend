@@ -6,8 +6,8 @@ import reportWebVitals from "./reportWebVitals";
 import * as serviceWorker from "./serviceWorker";
 
 // axios.defaults.baseURL = 'http://localhost:3000/';
-axios.defaults.baseURL = 'http://ersms-lb-1616120310.eu-central-1.elb.amazonaws.com:3000/';
-// axios.defaults.baseURL = 'https://graderef.bieda.it/';
+// axios.defaults.baseURL = 'http://ersms-lb-1616120310.eu-central-1.elb.amazonaws.com:3000/';
+axios.defaults.baseURL = 'https://graderef.bieda.it/';
 
 const container: HTMLElement = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
