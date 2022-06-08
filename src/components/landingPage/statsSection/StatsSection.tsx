@@ -36,6 +36,7 @@ export const StatsSection = () => {
       countriesCount: Math.round(factor * 2 * COUNTRIES),
       gradesCount: Math.round(factor * 2 * GRADES),
     } as State);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [percentage]);
 
   return (
