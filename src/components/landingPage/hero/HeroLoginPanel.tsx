@@ -4,9 +4,9 @@ import {
 } from '@chakra-ui/react';
 import GoogleLogin from 'react-google-login';
 import {useEffect} from "react";
-import {LoginFailureModal} from "../other/LoginFailureModal";
-import useAuth from "../../hooks/useAuth";
-import {Constants} from "../../shared/Constants";
+import {LoginFailureModal} from "../../other/LoginFailureModal";
+import useAuth from "../../../hooks/useAuth";
+import {Constants} from "../../../shared/Constants";
 
 export const HeroLoginPanel = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()

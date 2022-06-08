@@ -8,7 +8,7 @@ import { useCalendar } from "../../../hooks/useCalendar";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import {Match} from "../../../entities/Match";
 import {getMatchesByDate} from "../../../hooks/shared/matches";
-import { MOBILE_WINDOW_WIDTH } from "../../landingPage/Hero";
+import {useMobile} from "../../../hooks/useMobile";
 
 export enum SlideDirection {
   LEFT = -1,
@@ -34,7 +34,6 @@ interface State {
   days: Dayjs[];
   monthOffset: number;
   slideDirection: SlideDirection;
-  isMobile: boolean;
 }
 
 export const CalendarPanel = (props: Props) => {
@@ -44,14 +43,14 @@ export const CalendarPanel = (props: Props) => {
     days: [],
     monthOffset: 0,
     slideDirection: SlideDirection.RIGHT,
-    isMobile: window.innerWidth < MOBILE_WINDOW_WIDTH,
   } as State);
+
+  const { isMobile } = useMobile();
 
   const { getCalendarPageDays, getMonthName } = useCalendar();
 
   useEffect(() => {
     setSelectedDate(dayjs());
-    window.addEventListener('resize', () => setState({ isMobile: window.innerWidth < MOBILE_WINDOW_WIDTH }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -109,7 +108,7 @@ export const CalendarPanel = (props: Props) => {
                   setState({ slideDirection: SlideDirection.LEFT });
                 }}
               />
-              {!state.isMobile &&
+              {!isMobile &&
                 <Text fontWeight={'medium'} fontSize={'2xl'} textAlign={'center'} width={'30%'}>
                   {getMonthName(state.monthOffset)}
                 </Text>
@@ -123,7 +122,7 @@ export const CalendarPanel = (props: Props) => {
                 }}
               />
             </Center>
-            {state.isMobile &&
+            {isMobile &&
               <Center gap={4} borderRadius={10} w={'100%'} h={'100%'}>
                 <Text fontWeight={'medium'} fontSize={['xl', '2xl']} textAlign={'center'}>
                   {getMonthName(state.monthOffset)}
