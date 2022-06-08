@@ -1,17 +1,16 @@
 import {Box, Flex, Heading, SimpleGrid, Spacer, Text } from "@chakra-ui/react";
 import { Parallax } from 'react-scroll-parallax';
 import { useScrollPercentage } from "react-scroll-percentage";
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 import {useSetState} from "../../../hooks/useSetState";
+import { useCountUp } from "use-count-up";
 
 const LEAGUES = 13;
 const COUNTRIES = 3;
 const GRADES = 748;
 
 interface State {
-  leaguesCount: number;
-  countriesCount: number;
-  gradesCount: number;
+  countStarted: boolean;
 }
 
 export const StatsSection = () => {
@@ -19,23 +18,33 @@ export const StatsSection = () => {
     /* Optional options */
     threshold: 0,
   });
+  const [state, setState] = useSetState({ countStarted: false } as State);
 
-  const [state, setState] = useSetState({
-    leaguesCount: 0,
-    countriesCount: 0,
-    gradesCount: 0,
-  } as State);
+  const { value: leaguesCount } = useCountUp({
+    isCounting: state.countStarted,
+    start: 0,
+    end: LEAGUES,
+    duration: 3,
+  });
+
+  const { value: countriesCount } = useCountUp({
+    isCounting: state.countStarted,
+    start: 0,
+    end: COUNTRIES,
+    duration: 3,
+  });
+
+  const { value: gradesCount } = useCountUp({
+    isCounting: state.countStarted,
+    start: 0,
+    end: GRADES,
+    duration: 3,
+  });
 
   useEffect(() => {
-    let factor: number = percentage;
-    if (percentage > 0.5) {
-      factor = 0.5;
+    if (percentage > 0.25 && !state.countStarted) {
+      setState({ countStarted: true });
     }
-    setState({
-      leaguesCount: Math.round(factor * 2 * LEAGUES),
-      countriesCount: Math.round(factor * 2 * COUNTRIES),
-      gradesCount: Math.round(factor * 2 * GRADES),
-    } as State);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [percentage]);
 
@@ -60,7 +69,7 @@ export const StatsSection = () => {
         <SimpleGrid columns={[1, 3]} spacing={'100'}>
           <Parallax speed={-15}>
           <Box>
-            <Heading fontSize={'8xl'}>{state.leaguesCount}</Heading>
+            <Heading fontSize={'8xl'}>{leaguesCount}</Heading>
             <Text fontSize={'4xl'} fontWeight={'light'}>
               Leagues.
             </Text>
@@ -69,7 +78,7 @@ export const StatsSection = () => {
 
           <Parallax speed={-15}>
             <Box>
-              <Heading fontSize={'8xl'}>{state.countriesCount}</Heading>
+              <Heading fontSize={'8xl'}>{countriesCount}</Heading>
               <Text fontSize={'4xl'} fontWeight={'light'}>
                 Countries.
               </Text>
@@ -78,7 +87,7 @@ export const StatsSection = () => {
 
           <Parallax speed={-15}>
             <Box>
-              <Heading fontSize={'8xl'}>{state.gradesCount}</Heading>
+              <Heading fontSize={'8xl'}>{gradesCount}</Heading>
               <Text fontSize={'4xl'} fontWeight={'light'}>
                 Matches graded.
               </Text>
