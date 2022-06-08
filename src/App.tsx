@@ -18,39 +18,42 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import {AdminCalendar} from "./pages/admin/AdminCalendar";
 import {Calendar} from "./pages/Calendar";
 import {LandingPage} from "./pages/LandingPage";
+import { ParallaxProvider } from "react-scroll-parallax";
 
 const queryClient = new QueryClient();
 
 export const App = () => (
-  <ChakraProvider theme={theme}>
-    <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
-      <Router basename='/'>
-        <UnauthorizedHandler />
-        <Routes>
-          <Route element={<AnimatedTransition />}>
-            <Route path={'*'} element={<Navigate to={Path.LANDING_PAGE} />} />
+  <ParallaxProvider>
+    <ChakraProvider theme={theme}>
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
+        <Router basename='/'>
+          <UnauthorizedHandler />
+          <Routes>
+            <Route element={<AnimatedTransition />}>
+              <Route path={'*'} element={<Navigate to={Path.LANDING_PAGE} />} />
 
-            <Route path={Path.LANDING_PAGE} element={<LandingPage />} />
+              <Route path={Path.LANDING_PAGE} element={<LandingPage />} />
 
-            <Route element={<RequireAuthRouteOwner />}>
-              <Route path={Path.OWNER_DASHBOARD} element={<OwnerDashboard />} />
+              <Route element={<RequireAuthRouteOwner />}>
+                <Route path={Path.OWNER_DASHBOARD} element={<OwnerDashboard />} />
+              </Route>
+
+              <Route element={<RequireAuthRouteAdmin />}>
+                <Route path={Path.ADMIN_EXPLORER} element={<AdminExplorer />} />
+                <Route path={Path.ADMIN_DASHBOARD + '/:leagueId'} element={<AdminDashboard />} />
+                <Route path={Path.ADMIN_CALENDAR + '/:leagueId'} element={<AdminCalendar />} />
+              </Route>
+
+              <Route element={<RequireAuthRouteRefereeObserver />}>
+                <Route path={Path.EXPLORER} element={<Explorer />} />
+                <Route path={Path.DASHBOARD + '/:leagueId'} element={<Dashboard />} />
+                <Route path={Path.CALENDAR + '/:leagueId'} element={<Calendar />} />
+              </Route>
             </Route>
-
-            <Route element={<RequireAuthRouteAdmin />}>
-              <Route path={Path.ADMIN_EXPLORER} element={<AdminExplorer />} />
-              <Route path={Path.ADMIN_DASHBOARD + '/:leagueId'} element={<AdminDashboard />} />
-              <Route path={Path.ADMIN_CALENDAR + '/:leagueId'} element={<AdminCalendar />} />
-            </Route>
-
-            <Route element={<RequireAuthRouteRefereeObserver />}>
-              <Route path={Path.EXPLORER} element={<Explorer />} />
-              <Route path={Path.DASHBOARD + '/:leagueId'} element={<Dashboard />} />
-              <Route path={Path.CALENDAR + '/:leagueId'} element={<Calendar />} />
-            </Route>
-          </Route>
-        </Routes>
-      </Router>
-    </QueryClientProvider>
-  </ChakraProvider>
+          </Routes>
+        </Router>
+      </QueryClientProvider>
+    </ChakraProvider>
+  </ParallaxProvider>
 )

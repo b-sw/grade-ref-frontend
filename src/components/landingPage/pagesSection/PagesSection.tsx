@@ -1,6 +1,7 @@
 import { Parallax } from "react-parallax";
 import {useMobile} from "../../../hooks/useMobile";
 import {PagesCarousel} from "./PagesCarousel";
+import { Parallax as ScrollParallax } from 'react-scroll-parallax';
 
 export const PagesSection = () => {
   const { isMobile } = useMobile();
@@ -14,7 +15,9 @@ export const PagesSection = () => {
         disabled={isMobile}
         bgImageStyle={{ objectFit: 'cover' }}
       >
-        <PagesCarousel />
+        <ScrollParallax speed={-20}>
+          <PagesCarousel />
+        </ScrollParallax>
       </Parallax>
     </>
   );

@@ -31,13 +31,13 @@ export const PagesCarousel = () => {
     {
       heading: 'Reliability',
       shortText: 'Everything on time.',
-      text: 'Track progress live and ensure that everything is right.',
+      text: 'Be ahead of everyone by tracking the progress live and ensure that everything is right.',
       img: 'https://graderef.s3.eu-west-2.amazonaws.com/dashboardPage.png',
     },
     {
       heading: 'Scalability',
       shortText: 'Grow bigger with us.',
-      text: 'Manage all your leagues in one place. Create leagues, add officials and more.',
+      text: 'Manage all of your leagues in one place. Create leagues, add officials and more.',
       img: 'https://graderef.s3.eu-west-2.amazonaws.com/explorerPage.png',
     },
     {
@@ -53,6 +53,7 @@ export const PagesCarousel = () => {
       p={4}
       h={'100vh'}
       align={'center'}
+      direction={'row'}
       overflow={'hidden'}
     >
       <IconButton
@@ -61,8 +62,6 @@ export const PagesCarousel = () => {
         icon={<ArrowBackIcon />}
         onClick={() => slider?.slickPrev()}
       />
-
-      <Spacer />
 
       <Flex
         overflow={'hidden'}
