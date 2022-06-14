@@ -1,4 +1,4 @@
-import {Box, Flex, Heading, SimpleGrid, Spacer, Text } from "@chakra-ui/react";
+import {Box, Fade, Flex, Heading, SimpleGrid, Spacer, Text } from "@chakra-ui/react";
 import { Parallax } from 'react-scroll-parallax';
 import { useScrollPercentage } from "react-scroll-percentage";
 import React, {useEffect} from "react";
@@ -15,7 +15,6 @@ interface State {
 
 export const StatsSection = () => {
   const [ref, percentage] = useScrollPercentage({
-    /* Optional options */
     threshold: 0,
   });
   const [state, setState] = useSetState({ countStarted: false } as State);
@@ -69,7 +68,9 @@ export const StatsSection = () => {
         <SimpleGrid columns={[1, 3]} spacing={'100'}>
           <Parallax speed={-15}>
           <Box>
-            <Heading fontSize={'8xl'}>{leaguesCount}</Heading>
+            <Fade in={state.countStarted}>
+              <Heading fontSize={'8xl'}>{leaguesCount}</Heading>
+            </Fade>
             <Text fontSize={'4xl'} fontWeight={'light'}>
               Leagues.
             </Text>
@@ -78,7 +79,9 @@ export const StatsSection = () => {
 
           <Parallax speed={-15}>
             <Box>
-              <Heading fontSize={'8xl'}>{countriesCount}</Heading>
+              <Fade in={state.countStarted}>
+                <Heading fontSize={'8xl'}>{countriesCount}</Heading>
+              </Fade>
               <Text fontSize={'4xl'} fontWeight={'light'}>
                 Countries.
               </Text>
@@ -87,7 +90,9 @@ export const StatsSection = () => {
 
           <Parallax speed={-15}>
             <Box>
-              <Heading fontSize={'8xl'}>{gradesCount}</Heading>
+              <Fade in={state.countStarted}>
+                <Heading fontSize={'8xl'}>{gradesCount}</Heading>
+              </Fade>
               <Text fontSize={'4xl'} fontWeight={'light'}>
                 Matches graded.
               </Text>
