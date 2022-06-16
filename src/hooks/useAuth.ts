@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { Path } from '../shared/Path';
@@ -6,6 +6,8 @@ import { tokenExpired } from '../zustand/jwtExpiration';
 import useStore from '../zustand/store';
 import {uuid} from "../shared/uuid";
 import {Role} from "../shared/Role";
+import {toastError} from "./shared/toastError";
+import { useToast } from '@chakra-ui/react';
 
 export interface LoginResponse {
   id: uuid;
@@ -17,6 +19,7 @@ export interface LoginResponse {
 }
 
 export default function useAuth() {
+  const toast = useToast();
   const queryClient = useQueryClient();
   const loginToStore = useStore((state) => state.loginUser);
   const logoutFromStore = useStore((state) => state.logoutUser);
@@ -39,7 +42,8 @@ export default function useAuth() {
       loginToStore(response);
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.accessToken;
       navigate(Path.OWNER_DASHBOARD);
-    }
+    },
+    onError: (error: AxiosError, _variables, _context) => toastError(toast, error),
   });
 
   const isLoggedIn: boolean = !(

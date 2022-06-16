@@ -97,6 +97,7 @@ export const useUsers = (props?: Props) => {
         duration: 2000,
       });
     },
+    onError: (error: AxiosError, _variables, _context) => toastError(toast, error),
   });
 
   return { refereesQuery, observersQuery, adminsQuery, postMutation, updateMutation, deleteMutation }

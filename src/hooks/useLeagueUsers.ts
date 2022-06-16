@@ -71,6 +71,7 @@ export const useLeagueUsers = (role: Role, props?: Props) => {
         duration: 2000,
       });
     },
+    onError: (error: AxiosError, _variables, _context) => toastError(toast, error),
   });
 
   return { usersQuery, addMutation, removeMutation }

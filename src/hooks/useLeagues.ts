@@ -79,6 +79,7 @@ export const useLeagues = () => {
       });
       navigate(Path.ADMIN_EXPLORER);
     },
+    onError: (error: AxiosError, _variables, _context) => toastError(toast, error),
   });
 
   return { query, postMutation, updateMutation, deleteMutation }

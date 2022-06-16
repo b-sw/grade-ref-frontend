@@ -81,6 +81,7 @@ export const useLeagueTeams = (props?: Props) => {
         duration: 2000,
       });
     },
+    onError: (error: AxiosError, _variables, _context) => toastError(toast, error),
   });
 
   return { query, postMutation, updateMutation, deleteMutation }
