@@ -114,8 +114,8 @@ export const MatchesPanel = (props: Props) => {
                 <MatchListItem key={match.id} readOnly={props.readOnly || isPast(match)} match={match} />)}
           </Flex>
           :
-          <Tabs display='flex' flexDirection='column' isFitted variant='line' overflowY={'hidden'}>
-            <TabList>
+          <Tabs display='flex' flexDirection='column' isFitted variant='solid-rounded' overflowY={'hidden'} colorScheme='tabsButton'>
+            <TabList mx={5} mt={3} gap={5}>
               <Tab>Past</Tab>
               <Tab>Upcoming</Tab>
             </TabList>

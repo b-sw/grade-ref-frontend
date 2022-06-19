@@ -18,7 +18,7 @@ interface Props {
 export const MatchGradeListItem = (props: Props) => {
   const { isOpen: isEditModalOpen, onOpen: onEditModalOpen, onClose: onEditModalClose } = useDisclosure();
 
-  const enableEdit: boolean = !props.readOnly && (!isPast(props.match) || !props.match.refereeGrade) && !isFuture(props.match);
+  const enableEdit: boolean = (!isPast(props.match) || !props.match.refereeGrade) && !isFuture(props.match);
 
   return (
     <>
@@ -31,7 +31,15 @@ export const MatchGradeListItem = (props: Props) => {
       >
         {matchGradeItem(props.match, props.user)}
         <Spacer />
-        <IconButton onClick={onEditModalOpen} disabled={!enableEdit} variant={'ghost'} aria-label='Edit grade' icon={<EditIcon />} />
+        {!props.readOnly &&
+          <IconButton
+            onClick={onEditModalOpen}
+            disabled={!enableEdit}
+            variant={'ghost'}
+            aria-label='Edit grade'
+            icon={<EditIcon />}
+          />
+        }
       </Flex>
     </>
   );

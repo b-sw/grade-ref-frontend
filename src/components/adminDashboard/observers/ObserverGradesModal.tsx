@@ -14,13 +14,11 @@ import {useParams} from "react-router-dom";
 import {User} from "../../../entities/User";
 import {uuid} from "../../../shared/uuid";
 import {useUserMatches} from "../../../hooks/useUserMatches";
-import {MatchGradeListItem} from "../../shared/MatchGradeListItem";
 import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
 import {Role} from "../../../shared/Role";
-import {useEffect} from "react";
-import {useSetState} from "../../../hooks/useSetState";
-import {scrollbarStyle} from "../../dashboard/shared/styles";
-import {MatchGradeSummaryHeader} from "../../shared/MatchGradeSummaryHeader";
+import {GradesPanelBody} from "../../dashboard/grades/GradesPanel";
+import {useLeagueTeams} from "../../../hooks/useLeagueTeams";
+import {useGradesPanel} from "../../../hooks/useGradesPanel";
 
 interface Props {
   observer: User;
@@ -28,25 +26,19 @@ interface Props {
   onClose: () => void;
 }
 
-interface State {
-  referees: { [id: uuid]: User };
-}
-
 export const ObserverGradesModal = (props: Props) => {
   const { leagueId } = useParams<{ leagueId: uuid }>();
   const { query: matchesQuery } = useUserMatches({ userId: props.observer.id, leagueId: leagueId!, disableAutoRefetch: true });
   const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee, { disableAutoRefetch: true, leagueId: leagueId! });
+  const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer, { disableAutoRefetch: true, leagueId: leagueId! });
+  const { query: teamsQuery } = useLeagueTeams({ disableAutoRefetch: true, leagueId: leagueId! });
 
-  const [state, setState] = useSetState({ referees: {} } as State);
-
-  useEffect(() => {
-    if (refereesQuery.isSuccess) {
-      let mappedReferees: { [id: uuid]: User } = {};
-      refereesQuery.data!.forEach((referee) => mappedReferees[referee.id] = referee);
-      setState({ referees: mappedReferees } as State);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refereesQuery.isSuccess])
+  const { state, setState } = useGradesPanel({
+    matches: matchesQuery.data!,
+    teamsQuery: teamsQuery,
+    observersQuery: observersQuery,
+    refereesQuery: refereesQuery
+  });
 
   return (
     <Modal
@@ -60,18 +52,13 @@ export const ObserverGradesModal = (props: Props) => {
         <ModalHeader>{props.observer.firstName} {props.observer.lastName}'s grades</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          {matchesQuery.data && state.referees !== {} ?
-            <>
-              <MatchGradeSummaryHeader matches={matchesQuery.data!} />
-              <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
-                {matchesQuery.data.map((match) =>
-                  <MatchGradeListItem key={match.id} readOnly={true} match={match} user={state.referees[match.refereeId]} />
-                )}
-              </Flex>
-            </>
-            :
-            <Spinner />
-          }
+          <Flex direction={'column'} maxH={'70vh'}>
+            {matchesQuery.data && state.referees !== {} ?
+              <GradesPanelBody matches={matchesQuery.data!} state={state} setState={setState} readOnly={true} showReferee={true} />
+              :
+              <Spinner />
+            }
+          </Flex>
         </ModalBody>
         <ModalFooter>
           <Button onClick={props.onClose}>

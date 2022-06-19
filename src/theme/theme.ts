@@ -19,6 +19,9 @@ const colors = {
     100: '#E2E8F0',
     600: '#1A202C',
   },
+  tabsButton: {
+    600: '#3182CE',
+  }
 }
 
 const components = {
