@@ -23,8 +23,9 @@ export const MatchGradeSummaryHeader = (props: Props) => {
       mb={3}
       w={'100%'}
     >
-      <VStack alignItems={'baseline'} w={'10%'}>
-        <MdHistory size={isMobile ? '30' : '40'}/>
+      <VStack alignItems={'center'} w={'10%'}>
+        <MdHistory size={isMobile ? '20' : '30'}/>
+        <Text fontSize={'xs'}>Recent</Text>
       </VStack>
       {recentMatches.map((match, idx) => (
         <VStack alignItems={'baseline'} key={'recentMatch-' + idx} w={(90 / historyLength).toString() + '%'}>
