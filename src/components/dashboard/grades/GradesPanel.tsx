@@ -10,6 +10,8 @@ import {State, useGradesPanel} from "../../../hooks/useGradesPanel";
 import {useUserMatches} from "../../../hooks/useUserMatches";
 import {useLeagueTeams} from "../../../hooks/useLeagueTeams";
 import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
+import {GradeStatus} from "../../shared/gradeInfo";
+import {noRecords} from "../../shared/panelUtils";
 
 interface Props {
   matches: Match[];
@@ -64,6 +66,11 @@ interface GradesPanelBodyProps {
 export const GradesPanelBody = (props: GradesPanelBodyProps) => {
   const user = useStore((state) => state.user);
   const showReferee: boolean = props.showReferee || user.role === Role.Observer;
+
+  const getFilteredGrades = (status: GradeStatus): Match[] => {
+    return props.state.matches.filter((match) => match.gradeStatus.status === status);
+  }
+
   return (
     <>
       <MatchGradeSummaryHeader matches={props.matches} />
@@ -79,88 +86,82 @@ export const GradesPanelBody = (props: GradesPanelBodyProps) => {
         />
       </InputGroup>
 
-      <Tabs display='flex' flexDirection='column' isFitted variant='solid-rounded' overflowY={'hidden'} colorScheme='tabsButton'>
-        <TabList mx={5} mt={3} gap={5}>
+      <Tabs display='flex' flexDirection='column' isFitted variant='solid-rounded' overflowY={'hidden'} colorScheme='tabsButton' h={'100%'}>
+        <TabList mx={5} my={2} gap={5}>
           <Tab>All</Tab>
-          <Tab>Received</Tab>
-          <Tab>Overdue</Tab>
-          <Tab>Pending</Tab>
-          <Tab>Expected</Tab>
+          <Tab>{GradeStatus.Received}</Tab>
+          <Tab>{GradeStatus.Overdue}</Tab>
+          <Tab>{GradeStatus.Pending}</Tab>
+          <Tab>{GradeStatus.Expected}</Tab>
         </TabList>
-        <TabPanels overflowY={'scroll'} css={scrollbarStyle}>
-          <TabPanel>
-            <Flex direction={'column'} gap={2}>
-              {props.state.observers !== {} && props.state.matches.map((match) =>
+        <TabPanels overflowY={'scroll'} css={scrollbarStyle} h={'100%'}>
+          <TabPanel display='flex' flexDirection='column' gap={2} h={'100%'}>
+            {props.state.matches.length ?
+              props.state.matches.map((match) =>
                 <MatchGradeListItem
                   key={match.id}
                   readOnly={props.readOnly ?? user.role !== Role.Observer}
                   match={match}
                   user={showReferee ? props.state.referees[match.refereeId] : props.state.observers[match.observerId]}
-                />
-              )}
-            </Flex>
+                />)
+              :
+              noRecords()
+            }
           </TabPanel>
-          <TabPanel>
-            <Flex direction={'column'} gap={2}>
-              {props.state.observers !== {} && props.state.matches.map((match) =>
+          <TabPanel display='flex' flexDirection='column' gap={2} h={'100%'}>
+            {getFilteredGrades(GradeStatus.Received).length ?
+              getFilteredGrades(GradeStatus.Received).map((match) =>
                 <MatchGradeListItem
                   key={match.id}
                   readOnly={props.readOnly ?? user.role !== Role.Observer}
                   match={match}
                   user={showReferee ? props.state.referees[match.refereeId] : props.state.observers[match.observerId]}
-                />
-              )}
-            </Flex>
+                />)
+              :
+              noRecords()
+            }
           </TabPanel>
-          <TabPanel>
-            <Flex direction={'column'} gap={2}>
-              {props.state.observers !== {} && props.state.matches.map((match) =>
+          <TabPanel display='flex' flexDirection='column' gap={2} h={'100%'}>
+            {getFilteredGrades(GradeStatus.Overdue).length ?
+              getFilteredGrades(GradeStatus.Overdue).map((match) =>
                 <MatchGradeListItem
                   key={match.id}
                   readOnly={props.readOnly ?? user.role !== Role.Observer}
                   match={match}
                   user={showReferee ? props.state.referees[match.refereeId] : props.state.observers[match.observerId]}
-                />
-              )}
-            </Flex>
+                />)
+              :
+              noRecords()
+            }
           </TabPanel>
-          <TabPanel>
-            <Flex direction={'column'} gap={2}>
-              {props.state.observers !== {} && props.state.matches.map((match) =>
+          <TabPanel display='flex' flexDirection='column' gap={2} h={'100%'}>
+            {getFilteredGrades(GradeStatus.Pending).length ?
+              getFilteredGrades(GradeStatus.Pending).map((match) =>
                 <MatchGradeListItem
                   key={match.id}
                   readOnly={props.readOnly ?? user.role !== Role.Observer}
                   match={match}
                   user={showReferee ? props.state.referees[match.refereeId] : props.state.observers[match.observerId]}
-                />
-              )}
-            </Flex>
+                />)
+              :
+              noRecords()
+            }
           </TabPanel>
-          <TabPanel>
-            <Flex direction={'column'} gap={2}>
-              {props.state.observers !== {} && props.state.matches.map((match) =>
+          <TabPanel display='flex' flexDirection='column' gap={2} h={'100%'}>
+            {getFilteredGrades(GradeStatus.Expected).length ?
+              getFilteredGrades(GradeStatus.Expected).map((match) =>
                 <MatchGradeListItem
                   key={match.id}
                   readOnly={props.readOnly ?? user.role !== Role.Observer}
                   match={match}
                   user={showReferee ? props.state.referees[match.refereeId] : props.state.observers[match.observerId]}
-                />
-              )}
-            </Flex>
+                />)
+              :
+              noRecords()
+            }
           </TabPanel>
         </TabPanels>
       </Tabs>
-
-      {/*<Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>*/}
-      {/*  {props.state.observers !== {} && props.state.matches.map((match) =>*/}
-      {/*    <MatchGradeListItem*/}
-      {/*      key={match.id}*/}
-      {/*      readOnly={props.readOnly ?? user.role !== Role.Observer}*/}
-      {/*      match={match}*/}
-      {/*      user={showReferee ? props.state.referees[match.refereeId] : props.state.observers[match.observerId]}*/}
-      {/*    />*/}
-      {/*  )}*/}
-      {/*</Flex>*/}
     </>
   );
 }

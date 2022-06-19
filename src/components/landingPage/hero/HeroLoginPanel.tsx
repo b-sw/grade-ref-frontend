@@ -31,7 +31,6 @@ export const HeroLoginPanel = () => {
         <GoogleLogin
           clientId={Constants.GOOGLE_OAUTH_CLIENT_ID}
           onSuccess={(googleData: any) => loginMutation.mutate(googleData)}
-          onFailure={(something: any) => console.log(something)}
           cookiePolicy={'single_host_origin'}
           render={(renderProps: { onClick: () => void, disabled?: boolean }) => (
             <Button

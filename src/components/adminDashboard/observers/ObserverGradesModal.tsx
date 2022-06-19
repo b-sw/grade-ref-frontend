@@ -52,8 +52,8 @@ export const ObserverGradesModal = (props: Props) => {
         <ModalHeader>{props.observer.firstName} {props.observer.lastName}'s grades</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Flex direction={'column'} maxH={'70vh'}>
-            {matchesQuery.data && state.referees !== {} ?
+          <Flex direction={'column'} h={'70vh'}>
+            {matchesQuery.data ?
               <GradesPanelBody matches={matchesQuery.data!} state={state} setState={setState} readOnly={true} showReferee={true} />
               :
               <Spinner />

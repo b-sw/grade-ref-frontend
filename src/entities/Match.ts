@@ -1,5 +1,7 @@
 import {uuid} from "../shared/uuid";
 import Yup from "../shared/yup";
+import {GradeInfo} from "../components/shared/gradeInfo";
+import {MatchStatus} from "../components/shared/matchStatus";
 
 export const GRADE_ADMISSION_TIME_WINDOW = 4;
 export const MATCH_DURATION_TIME = 2;
@@ -17,6 +19,8 @@ export type Match = {
   refereeGradeDate: Date;
   refereeSmsId: uuid;
   observerSmsId: uuid;
+  gradeStatus: GradeInfo;
+  matchStatus: MatchStatus;
 }
 
 export const matchValidationSchema = Yup.object({

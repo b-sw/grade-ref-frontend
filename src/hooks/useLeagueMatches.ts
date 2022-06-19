@@ -7,6 +7,7 @@ import {Match} from "../entities/Match";
 import {uuid} from "../shared/uuid";
 import {getMatchesByDate} from "./shared/matches";
 import {toastError} from "./shared/toastError";
+import {enrichMatch} from "../components/shared/matchStatus";
 
 const MATCHES_QUERY_KEY = 'matches_qk';
 
@@ -23,20 +24,20 @@ export const useLeagueMatches = (props?: Props) => {
 
   const getMatches = async (): Promise<Match[]> => {
     const response = await axios.get(`leagues/${leagueId}/matches`);
-    return response.data;
+    return response.data.map((match: Match) => enrichMatch(match));
   }
 
-  const postMatch = async (match: Match) => {
+  const postMatch = async (match: Match): Promise<Match> => {
     const response = await axios.post(`leagues/${leagueId}/matches`, match);
-    return response.data;
+    return enrichMatch(response.data);
   }
 
-  const updateMatch = async (match: Match) => {
+  const updateMatch = async (match: Match): Promise<Match> => {
     const response = await axios.put(`leagues/${leagueId}/matches/${match.id}`, match);
-    return response.data;
+    return enrichMatch(response.data);
   }
 
-  const deleteMatch = async (matchId: uuid) => {
+  const deleteMatch = async (matchId: uuid): Promise<Match> => {
     const response = await axios.delete(`leagues/${leagueId}/matches/${matchId}`);
     return response.data;
   }

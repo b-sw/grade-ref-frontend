@@ -5,7 +5,6 @@ import {Constants} from "../../shared/Constants";
 import dayjs from "dayjs";
 import {CalendarIcon, EditIcon, WarningIcon} from "@chakra-ui/icons";
 import {BsClockFill} from "react-icons/bs";
-import {determineGradeStatus} from "./gradeStatus";
 import {Role} from "../../shared/Role";
 import { GradeEditModal } from "../dashboard/grades/GradeEditModal";
 
@@ -18,7 +17,7 @@ interface Props {
 export const MatchGradeListItem = (props: Props) => {
   const { isOpen: isEditModalOpen, onOpen: onEditModalOpen, onClose: onEditModalClose } = useDisclosure();
 
-  const enableEdit: boolean = (!isPast(props.match) || !props.match.refereeGrade) && !isFuture(props.match);
+  const enableEdit: boolean = (!isPastAdmissionWindow(props.match) || !props.match.refereeGrade) && !isUpcoming(props.match);
 
   return (
     <>
@@ -45,11 +44,11 @@ export const MatchGradeListItem = (props: Props) => {
   );
 }
 
-export const isPast = (match: Match): boolean => {
+export const isPastAdmissionWindow = (match: Match): boolean => {
   return dayjs(match.matchDate).add(GRADE_ADMISSION_TIME_WINDOW, 'hour').isBefore(dayjs());
 }
 
-export const isFuture = (match: Match): boolean => {
+export const isUpcoming = (match: Match): boolean => {
   return dayjs(match.matchDate).add(MATCH_DURATION_TIME, 'hour').isAfter(dayjs());
 }
 
@@ -60,7 +59,6 @@ export const matchGradeItem = (match: Match, user: User) => {
     gradeDate = dayjs(match.refereeGradeDate, Constants.DATETIME_FORMAT).format('DD-MM-YYYY');
     gradeTime = dayjs(match.refereeGradeDate, Constants.DATETIME_FORMAT).format('HH:mm');
   }
-  const { gradeStatus, gradeBadgeScheme, delay: gradeDelay } = determineGradeStatus(match);
   const { badgeColor, badgeString } = getUserBadge(user.role);
 
   return (
@@ -92,11 +90,11 @@ export const matchGradeItem = (match: Match, user: User) => {
           <VStack alignItems={'baseline'} w={['100$', '30%']}>
             <HStack>
               <Text>Status:</Text>
-              <Badge colorScheme={gradeBadgeScheme} fontSize={'xs'}>{gradeStatus}</Badge>
+              <Badge colorScheme={match.gradeStatus.badgeScheme} fontSize={'xs'}>{match.gradeStatus.status}</Badge>
             </HStack>
             <HStack>
               <Text>Grade:</Text>
-              <Badge variant={'outline'} colorScheme={gradeBadgeScheme} fontSize={'xs'}>{match.refereeGrade ?? 'N/A'}</Badge>
+              <Badge variant={'outline'} colorScheme={match.gradeStatus.badgeScheme} fontSize={'xs'}>{match.refereeGrade ?? 'N/A'}</Badge>
             </HStack>
           </VStack>
 
@@ -108,8 +106,8 @@ export const matchGradeItem = (match: Match, user: User) => {
             <HStack>
               <BsClockFill />
               <Text fontSize={'sm'}>{gradeTime}</Text>
-              {gradeDelay &&
-                <Tooltip label={'+' + gradeDelay}>
+              {match.gradeStatus.delay &&
+                <Tooltip label={'+' + match.gradeStatus.delay}>
                   <WarningIcon color={'red.600'}/>
                 </Tooltip>
               }

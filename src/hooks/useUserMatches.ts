@@ -6,6 +6,7 @@ import useStore from "../zustand/store";
 import { useParams } from "react-router-dom";
 import { Dayjs } from "dayjs";
 import {getMatchesByDate} from "./shared/matches";
+import {enrichMatch} from "../components/shared/matchStatus";
 
 interface Props {
   userId?: uuid;
@@ -23,7 +24,7 @@ export const useUserMatches = (props?: Props) => {
 
   const getMatches = async (): Promise<Match[]> => {
     const response = await axios.get(`users/${userId}/leagues/${leagueId}/matches`);
-    return response.data;
+    return response.data.map((match: Match) => enrichMatch(match));
   }
 
   const query = useQuery(

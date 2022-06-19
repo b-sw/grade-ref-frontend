@@ -18,8 +18,6 @@ import {scrollbarStyle} from "../../dashboard/shared/styles";
 import {Match} from "../../../entities/Match";
 import {MatchListItem} from "./MatchListItem";
 import {MatchCreateModal} from "./MatchCreateModal";
-import {Constants} from "../../../shared/Constants";
-import dayjs from 'dayjs';
 import {useSetState} from "../../../hooks/useSetState";
 import {matchFilter} from "../../shared/filters";
 import {useEffect} from "react";
@@ -30,7 +28,9 @@ import {Role} from "../../../shared/Role";
 import {uuid} from "../../../shared/uuid";
 import {User} from "../../../entities/User";
 import {Team} from "../../../entities/Team";
-import {isPast} from "../../shared/MatchGradeListItem";
+import {isPastAdmissionWindow} from "../../shared/MatchGradeListItem";
+import {MatchStatus} from "../../shared/matchStatus";
+import {noRecords} from "../../shared/panelUtils";
 
 interface State {
   matches: Match[];
@@ -67,6 +67,10 @@ export const MatchesPanel = (props: Props) => {
     setState({ matches: filteredMatches });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.filter, props.matches]);
+
+  const getFilteredMatches = (status: MatchStatus): Match[] => {
+    return state.matches.filter((match: Match) => match.matchStatus === status);
+  }
 
   return (
     <>
@@ -109,38 +113,36 @@ export const MatchesPanel = (props: Props) => {
         </InputGroup>
 
         {props.hideTabs ?
-          <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
-            {state.matches.map((match: Match) =>
-                <MatchListItem key={match.id} readOnly={props.readOnly || isPast(match)} match={match} />)}
+          <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle} h={'100%'}>
+            {state.matches.length ?
+              state.matches.map((match: Match) =>
+                <MatchListItem key={match.id} readOnly={props.readOnly || isPastAdmissionWindow(match)} match={match} />)
+              :
+              noRecords()
+            }
           </Flex>
           :
-          <Tabs display='flex' flexDirection='column' isFitted variant='solid-rounded' overflowY={'hidden'} colorScheme='tabsButton'>
-            <TabList mx={5} mt={3} gap={5}>
+          <Tabs display='flex' flexDirection='column' isFitted variant='solid-rounded' overflowY={'hidden'} colorScheme='tabsButton' h={'100%'}>
+            <TabList mx={5} my={2} gap={5}>
               <Tab>Past</Tab>
               <Tab>Upcoming</Tab>
             </TabList>
-            <TabPanels overflowY={'scroll'} css={scrollbarStyle}>
-              <TabPanel>
-                <Flex direction={'column'} gap={2}>
-                  {
-                    state.matches
-                      .filter((match: Match) =>
-                        dayjs(match.matchDate, Constants.DATETIME_FORMAT).toDate().getTime() < Date.now())
-                      .map((match: Match) =>
-                        <MatchListItem key={match.id} readOnly={props.readOnly || isPast(match)} match={match} />)
-                  }
-                </Flex>
+            <TabPanels overflowY={'scroll'} css={scrollbarStyle} h={'100%'}>
+              <TabPanel display={'flex'} flexDirection={'column'} gap={2} h={'100%'}>
+                {getFilteredMatches(MatchStatus.Past).length ?
+                  getFilteredMatches(MatchStatus.Past).map((match: Match) =>
+                    <MatchListItem key={match.id} readOnly={props.readOnly || isPastAdmissionWindow(match)} match={match} />)
+                  :
+                  noRecords()
+                }
               </TabPanel>
-              <TabPanel>
-                <Flex direction={'column'} gap={2}>
-                  {
-                    state.matches
-                      .filter((match: Match) =>
-                        dayjs(match.matchDate, Constants.DATETIME_FORMAT).toDate().getTime() >= Date.now())
-                      .map((match: Match) =>
-                        <MatchListItem key={match.id} readOnly={props.readOnly} match={match} />)
-                  }
-                </Flex>
+              <TabPanel display={'flex'} flexDirection={'column'} gap={2} h={'100%'}>
+                {getFilteredMatches(MatchStatus.Upcoming).length ?
+                  getFilteredMatches(MatchStatus.Past).map((match: Match) =>
+                    <MatchListItem key={match.id} readOnly={props.readOnly} match={match} />)
+                  :
+                  noRecords()
+                }
               </TabPanel>
             </TabPanels>
           </Tabs>

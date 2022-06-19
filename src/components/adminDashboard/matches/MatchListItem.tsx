@@ -13,7 +13,6 @@ import {MatchEditModal} from "./MatchEditModal";
 import { MdPeople } from 'react-icons/md';
 import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
 import {Role} from "../../../shared/Role";
-import {determineGradeStatus} from "../../shared/gradeStatus";
 import { WarningIcon } from '@chakra-ui/icons';
 
 export interface Props {
@@ -53,8 +52,6 @@ export const matchItem = (match: Match, teamsQuery: any, refereesQuery: any, obs
 
   const matchDate: string = dayjs(match.matchDate, Constants.DATETIME_FORMAT).format('DD-MM-YYYY');
   const matchTime: string = dayjs(match.matchDate, Constants.DATETIME_FORMAT).format('HH:mm');
-
-  const { gradeStatus, gradeBadgeScheme, delay: gradeDelay } = determineGradeStatus(match);
 
   return (
     <>
@@ -114,18 +111,18 @@ export const matchItem = (match: Match, teamsQuery: any, refereesQuery: any, obs
             </HStack>
             <HStack>
               <Text>Status:</Text>
-              <Badge colorScheme={gradeBadgeScheme} fontSize={'xs'}>{gradeStatus}</Badge>
+              <Badge colorScheme={match.gradeStatus.badgeScheme} fontSize={'xs'}>{match.gradeStatus.status}</Badge>
             </HStack>
             <HStack>
               <Text>Grade:</Text>
-              <Badge variant={'outline'} colorScheme={gradeBadgeScheme} fontSize={'xs'}>{match.refereeGrade ?? 'N/A'}</Badge>
+              <Badge variant={'outline'} colorScheme={match.gradeStatus.badgeScheme} fontSize={'xs'}>{match.refereeGrade ?? 'N/A'}</Badge>
             </HStack>
-            {gradeDelay &&
+            {match.gradeStatus.delay &&
               <HStack>
                 <Tooltip label='delay'>
                   <WarningIcon color={'red.600'}/>
                 </Tooltip>
-                <Text color={'red.600'}>+{gradeDelay}</Text>
+                <Text color={'red.600'}>+{match.gradeStatus.delay}</Text>
               </HStack>
             }
           </VStack>
