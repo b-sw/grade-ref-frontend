@@ -83,6 +83,7 @@ export const MatchesPanel = (props: Props) => {
         shadow={'md'}
         overflowY={'hidden'}
         flexGrow={1}
+        maxH={['70vh', '100%']}
       >
         <Flex mb={4}>
           <Text fontWeight={'bold'} fontSize={'2xl'}>
@@ -90,14 +91,14 @@ export const MatchesPanel = (props: Props) => {
           </Text>
           <Spacer />
           {!props.readOnly &&
-              <>
-                <Button variant={'ghost'} leftIcon={<AttachmentIcon />} onClick={() => {}} disabled={true}>
-                    Load
-                </Button>
-                <Button variant={'ghost'} leftIcon={<AddIcon />} onClick={onCreateModalOpen}>
-                    Add
-                </Button>
-              </>}
+            <>
+              <Button variant={'ghost'} leftIcon={<AttachmentIcon />} onClick={() => {}} disabled={true}>
+                  Load
+              </Button>
+              <Button variant={'ghost'} leftIcon={<AddIcon />} onClick={onCreateModalOpen}>
+                  Add
+              </Button>
+            </>}
         </Flex>
 
         <InputGroup>

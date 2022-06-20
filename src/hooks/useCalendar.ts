@@ -4,7 +4,7 @@ export const useCalendar = () => {
   const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'];
 
-  const pageDaysCount: number = 39;
+  const pageDaysCount: number = 42;
 
   /*
    * in dayjs week starts from sunday and is 0 indexed

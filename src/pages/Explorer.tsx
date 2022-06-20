@@ -16,7 +16,7 @@ export const Explorer = () => {
   }
 
   return (
-    <Flex p={4} m={0} h={['100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
+    <Flex p={[2, 4]} m={0} h={['100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
       <Flex mb={5}>
         <Spacer />
         <Button ml={3} onClick={() => logout()} leftIcon={<HiOutlineLogout />}>

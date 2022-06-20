@@ -43,7 +43,7 @@ export const AdminCalendar = () => {
   }
 
   return (
-    <Flex p={5} m={0} h={['auto', '100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
+    <Flex p={[2, 4]} m={0} h={['auto', '100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
       <AdminHeaderPanel pageTitle={PageTitle.Calendar} />
       <Flex flexGrow={1} gap={[2, 2, 4]} direction={['column', 'row']} overflow={'hidden'} m={-10} p={10}>
         <CalendarPanel matches={matchesQuery.data!} />

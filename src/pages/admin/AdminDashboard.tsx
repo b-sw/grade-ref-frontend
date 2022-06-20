@@ -32,15 +32,15 @@ export const AdminDashboard = () => {
 
   return (
     <>
-      <Flex p={5} m={0} h={['auto', '100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
+      <Flex p={[2, 4]} m={0} h={['auto', '100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
         <AdminHeaderPanel pageTitle={PageTitle.AdminDashboard} />
-        <SimpleGrid columns={[1, 1, 3]} flexGrow={1} overflowY={'hidden'} spacing={5} p={5} m={-5} pt={5}>
+        <SimpleGrid columns={[1, 1, 3]} overflowY={'hidden'} spacing={4} p={5} m={-5}>
           <MatchesPanel matches={matchesQuery.data!} />
-          <Flex direction={'column'} gap={5} overflowY={'hidden'}>
+          <Flex direction={'column'} gap={4} overflowY={'hidden'}>
             <RefereesPanel />
             <ObserversPanel />
           </Flex>
-          <Flex direction={'column'} gap={5} overflowY={'hidden'}>
+          <Flex direction={'column'} gap={4} overflowY={'hidden'}>
             <TeamsPanel />
             <AdminSettingsPanel />
           </Flex>

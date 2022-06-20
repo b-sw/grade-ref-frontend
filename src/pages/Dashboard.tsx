@@ -28,7 +28,7 @@ export const Dashboard = () => {
 
   return (
     <>
-      <Flex p={5} m={0} h={['auto', '100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
+      <Flex p={[2, 4]} m={0} h={['auto', '100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
         <HeaderPanel pageTitle={PageTitle.Dashboard}/>
         <SimpleGrid columns={[1, 1, 2]} flexGrow={1} overflowY={'hidden'} spacing={5} px={[5, 5, 5]} m={-5} py={5}>
           <MatchesPanel readOnly={true} matches={matchesQuery.data!} />

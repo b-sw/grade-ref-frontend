@@ -1,14 +1,13 @@
 import dayjs, { Dayjs } from "dayjs";
 import useStore from "../../../zustand/store";
 import {useSetState} from "../../../hooks/useSetState";
-import {Center, Flex, Grid, GridItem, IconButton, SimpleGrid, Spacer, Text, VStack } from "@chakra-ui/react";
+import {Flex, Grid, IconButton, SimpleGrid, SlideFade, Spacer, Text} from "@chakra-ui/react";
 import {CalendarTile} from "./CalendarTile";
 import { useEffect } from "react";
 import { useCalendar } from "../../../hooks/useCalendar";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import {Match} from "../../../entities/Match";
 import {getMatchesByDate} from "../../../hooks/shared/matches";
-import {useMobile} from "../../../hooks/useMobile";
 
 export enum SlideDirection {
   LEFT = -1,
@@ -45,8 +44,6 @@ export const CalendarPanel = (props: Props) => {
     slideDirection: SlideDirection.RIGHT,
   } as State);
 
-  const { isMobile } = useMobile();
-
   const { getCalendarPageDays, getMonthName } = useCalendar();
 
   useEffect(() => {
@@ -69,8 +66,48 @@ export const CalendarPanel = (props: Props) => {
       p={5}
       backgroundColor={'gray.300'}
       shadow={'md'}
-      overflowY={'hidden'}
     >
+      <Flex align={'center'} mb={2}>
+        <Spacer />
+
+        <IconButton
+          aria-label='left'
+          icon={<ArrowBackIcon />}
+          onClick={() => {
+            setState({ monthOffset: state.monthOffset - 1 });
+            setState({ slideDirection: SlideDirection.LEFT });
+          }}
+        />
+
+        <Flex direction={'column'} w={['50%', '20%']} align={'center'}>
+          <SlideFade
+            in={true}
+            key={state.monthOffset}
+            offsetX={20 * state.slideDirection}
+            offsetY={0}
+            style={{ width: '100%' }}
+          >
+            <Text fontWeight={'medium'} fontSize={'2xl'} textAlign={'center'}>
+              {getMonthName(state.monthOffset)}
+            </Text>
+          </SlideFade>
+          <Text>
+            {dayjs().add(state.monthOffset, 'month').year()}
+          </Text>
+        </Flex>
+
+        <IconButton
+          aria-label='left'
+          icon={<ArrowForwardIcon />}
+          onClick={() => {
+            setState({ monthOffset: state.monthOffset + 1 });
+            setState({ slideDirection: SlideDirection.RIGHT });
+          }}
+        />
+
+        <Spacer />
+      </Flex>
+
       <SimpleGrid columns={7} gap={2} mb={2}>
         {Object.values(DayShortNames).map((dayName) => (
           <Flex key={dayName}>
@@ -81,57 +118,31 @@ export const CalendarPanel = (props: Props) => {
         ))}
       </SimpleGrid>
 
-      <Grid
-        templateColumns={'repeat(7, 1fr)'}
-        templateRows={'repeat(6, 1fr)'}
-        gap={2}
-        flexGrow={1}
-        overflow={'hidden'}
+      <SlideFade
+        in={true}
+        key={state.monthOffset}
+        offsetX={75 * state.slideDirection}
+        offsetY={0}
+        style={{ height: '100%', overflow: 'hidden' }}
       >
-        {state.days.map((day) => (
-          <CalendarTile
-            key={day.toString()}
-            date={day}
-            matches={getMatchesByDate(day, props.matches)}
-            slideDirection={state.slideDirection}
-            monthOffset={state.monthOffset}
-          />
-        ))}
-        <GridItem colSpan={3} >
-          <VStack align={'center'} h={'100%'} w={'100%'}>
-            <Center gap={4} borderRadius={10} w={'100%'} h={'100%'}>
-              <IconButton
-                aria-label='left'
-                icon={<ArrowBackIcon />}
-                onClick={() => {
-                  setState({ monthOffset: state.monthOffset - 1 });
-                  setState({ slideDirection: SlideDirection.LEFT });
-                }}
-              />
-              {!isMobile &&
-                <Text fontWeight={'medium'} fontSize={'2xl'} textAlign={'center'} width={'30%'}>
-                  {getMonthName(state.monthOffset)}
-                </Text>
-              }
-              <IconButton
-                aria-label='left'
-                icon={<ArrowForwardIcon />}
-                onClick={() => {
-                  setState({ monthOffset: state.monthOffset + 1 });
-                  setState({ slideDirection: SlideDirection.RIGHT });
-                }}
-              />
-            </Center>
-            {isMobile &&
-              <Center gap={4} borderRadius={10} w={'100%'} h={'100%'}>
-                <Text fontWeight={'medium'} fontSize={['xl', '2xl']} textAlign={'center'}>
-                  {getMonthName(state.monthOffset)}
-                </Text>
-              </Center>
-            }
-          </VStack>
-        </GridItem>
-      </Grid>
+        <Grid
+          templateColumns={'repeat(7, 1fr)'}
+          templateRows={'repeat(6, 1fr)'}
+          gap={2}
+          flexGrow={1}
+          overflow={'hidden'}
+          h={'100%'}
+        >
+          {state.days.map((day) => (
+            <CalendarTile
+              key={day.toString()}
+              date={day}
+              matches={getMatchesByDate(day, props.matches)}
+              monthOffset={state.monthOffset}
+            />)
+          )}
+        </Grid>
+      </SlideFade>
     </Flex>
   );
 }

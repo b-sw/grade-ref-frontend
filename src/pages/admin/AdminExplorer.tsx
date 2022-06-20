@@ -24,7 +24,7 @@ export const AdminExplorer = () => {
   }
 
   return (
-    <Flex p={4} m={0} h={['100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
+    <Flex p={[2, 4]} m={0} h={['100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
       <LeagueCreateModal isOpen={isOpen} onClose={onClose} />
       <Flex mb={5}>
         <Spacer />

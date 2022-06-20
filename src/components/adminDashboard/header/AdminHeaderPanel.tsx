@@ -45,7 +45,7 @@ export const AdminHeaderPanel = (props: Props) => {
 
   return (
     <>
-      <Flex m={0} p={0} pb={10} direction={['column', 'row']}>
+      <Flex m={0} p={0} mb={2} direction={['column', 'row']}>
         <Heading>{leagueShortName} {calendarYear}</Heading>
         <Spacer />
 

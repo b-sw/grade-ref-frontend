@@ -21,7 +21,7 @@ export const OwnerHeaderPanel = () => {
 
   return (
     <>
-      <Flex m={0} p={0} pb={10}>
+      <Flex m={0} p={0} mb={2}>
         <Heading>GradeRef ⚽ - owner dashboard</Heading>
         <Spacer />
 

@@ -1,12 +1,10 @@
-import {Badge, Flex, SlideFade, Spacer, Text } from "@chakra-ui/react";
+import {Badge, Flex, Spacer, Text } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
-import { SlideDirection } from "./CalendarPanel";
 import useStore from "../../../zustand/store";
 import {Match} from "../../../entities/Match";
 
 export interface Props {
   date: Dayjs;
-  slideDirection: SlideDirection;
   monthOffset: number;
   matches: Match[];
 }
@@ -35,31 +33,32 @@ export const CalendarTile = (props: Props) => {
   }
 
   return (
-    <SlideFade in={true} offsetX={100 * props.slideDirection} offsetY={0}>
-      <Flex
-        direction={'column'}
-        align={'center'}
-        borderRadius={10}
-        backgroundColor={getTileColor()}
-        p={2}
-        gap={0}
-        minW={0}
-        h={'100%'}
-        cursor={'pointer'}
-        onClick={() => setSelectedDate(props.date)}
-        transitionDuration={'0.2s'}
-      >
-        <Spacer />
-        <Text fontWeight={'medium'} fontSize={'md'} opacity={isCurrentMonth ? 1 : 0.5}>
-          {props.date.format('DD')}
-        </Text>
-        {props.matches.length > 0 &&
-          <Badge variant={'solid'} colorScheme={'red'} opacity={isCurrentMonth ? 1 : 0.5}>
-            {props.matches.length}
-          </Badge>
-        }
-        <Spacer />
-      </Flex>
-    </SlideFade>
+    <Flex
+      direction={'column'}
+      align={'center'}
+      borderRadius={10}
+      backgroundColor={getTileColor()}
+      borderColor={'gray.400'}
+      p={2}
+      gap={0}
+      h={'100%'}
+      cursor={'pointer'}
+      onClick={() => setSelectedDate(props.date)}
+      _hover={{
+        borderWidth: '3px',
+      }}
+      transitionDuration={'background-color 0.2s'}
+    >
+      <Spacer />
+      <Text fontWeight={'medium'} fontSize={'md'} opacity={isCurrentMonth ? 1 : 0.5}>
+        {props.date.format('DD')}
+      </Text>
+      {props.matches.length > 0 &&
+        <Badge variant={'solid'} colorScheme={'red'} opacity={isCurrentMonth ? 1 : 0.5}>
+          {props.matches.length}
+        </Badge>
+      }
+      <Spacer />
+    </Flex>
   );
 }
