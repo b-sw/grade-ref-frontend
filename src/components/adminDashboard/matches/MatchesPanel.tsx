@@ -31,6 +31,7 @@ import {Team} from "../../../entities/Team";
 import {isPastAdmissionWindow} from "../../shared/MatchGradeListItem";
 import {MatchStatus} from "../../shared/matchStatus";
 import {noRecords} from "../../shared/panelUtils";
+import { MatchesUploadModal } from './MatchesUploadModal';
 
 interface State {
   matches: Match[];
@@ -45,6 +46,7 @@ interface Props {
 
 export const MatchesPanel = (props: Props) => {
   const { isOpen: isCreateModalOpen, onOpen: onCreateModalOpen, onClose: onCreateModalClose } = useDisclosure();
+  const { isOpen: isUploadModalOpen, onOpen: onUploadModalOpen, onClose: onUploadModalClose } = useDisclosure();
   const { query: teamsQuery } = useLeagueTeams();
   const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
   const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
@@ -75,6 +77,7 @@ export const MatchesPanel = (props: Props) => {
   return (
     <>
       {!props.readOnly && <MatchCreateModal isOpen={isCreateModalOpen} onClose={onCreateModalClose} />}
+      {!props.readOnly && <MatchesUploadModal isOpen={isUploadModalOpen} onClose={onUploadModalClose} />}
       <Flex
         direction={'column'}
         borderRadius={10}
@@ -92,7 +95,7 @@ export const MatchesPanel = (props: Props) => {
           <Spacer />
           {!props.readOnly &&
             <>
-              <Button variant={'ghost'} leftIcon={<AttachmentIcon />} onClick={() => {}} disabled={true}>
+              <Button variant={'ghost'} leftIcon={<AttachmentIcon />} onClick={onUploadModalOpen}>
                   Load
               </Button>
               <Button variant={'ghost'} leftIcon={<AddIcon />} onClick={onCreateModalOpen}>
