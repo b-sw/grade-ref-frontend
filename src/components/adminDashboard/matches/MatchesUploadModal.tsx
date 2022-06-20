@@ -58,7 +58,7 @@ export const MatchesUploadModal = (props: Props) => {
               borderWidth={2}
               borderStyle={'dashed'}
               borderColor={'gray.400'}
-              w={'70%'}
+              w={'100%'}
               _hover={{
                 borderColor: 'gray.500',
               }}

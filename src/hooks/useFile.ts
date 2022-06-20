@@ -16,9 +16,9 @@ export const useFile = () => {
   }
 
   const postMutation = useMutation(uploadFile, {
-    onSuccess: (something: any) => {
+    onSuccess: (matches: Match[]) => {
       toast({
-        title: `Successfully uploaded matches`,
+        title: `Successfully uploaded ${matches.length} matches`,
         status: 'success',
         position: 'bottom-right',
         duration: 2000,

@@ -142,7 +142,7 @@ export const MatchesPanel = (props: Props) => {
               </TabPanel>
               <TabPanel display={'flex'} flexDirection={'column'} gap={2} h={'100%'}>
                 {getFilteredMatches(MatchStatus.Upcoming).length ?
-                  getFilteredMatches(MatchStatus.Past).map((match: Match) =>
+                  getFilteredMatches(MatchStatus.Upcoming).map((match: Match) =>
                     <MatchListItem key={match.id} readOnly={props.readOnly} match={match} />)
                   :
                   noRecords()
