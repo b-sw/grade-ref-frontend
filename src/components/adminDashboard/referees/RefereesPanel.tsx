@@ -10,6 +10,7 @@ import {useSetState} from "../../../hooks/useSetState";
 import {userFilter} from "../../shared/filters";
 import { useEffect } from 'react';
 import { MdSearch } from 'react-icons/md';
+import {noRecords} from "../../shared/panelUtils";
 
 interface State {
   referees: User[],
@@ -42,7 +43,8 @@ export const RefereesPanel = () => {
         shadow={'md'}
         overflowY={'hidden'}
         flexGrow={1}
-        h={'50%'}
+        h={['auto', '50%']}
+        maxH={['90vh', '50%']}
       >
         <Flex mb={4}>
           <Text fontWeight={'bold'} fontSize={'2xl'}>
@@ -67,9 +69,12 @@ export const RefereesPanel = () => {
         </InputGroup>
 
         <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
-          {state.referees.map((referee: User) =>
-              <RefereeListItem key={referee.id} referee={referee} />
-          )}
+          {state.referees.length ?
+            state.referees.map((referee: User) =>
+              <RefereeListItem key={referee.id} referee={referee} />)
+            :
+            noRecords()
+          }
         </Flex>
       </Flex>
     </>

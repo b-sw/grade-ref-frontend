@@ -10,6 +10,7 @@ import { MdSearch } from 'react-icons/md';
 import {useSetState} from "../../../hooks/useSetState";
 import {userFilter} from "../../shared/filters";
 import { useEffect } from 'react';
+import {noRecords} from "../../shared/panelUtils";
 
 interface State {
   observers: User[],
@@ -42,7 +43,8 @@ export const ObserversPanel = () => {
         shadow={'md'}
         overflowY={'hidden'}
         flexGrow={1}
-        h={'50%'}
+        h={['auto', '50%']}
+        maxH={['90vh', '50%']}
       >
         <Flex mb={4}>
           <Text fontWeight={'bold'} fontSize={'2xl'}>
@@ -67,9 +69,12 @@ export const ObserversPanel = () => {
         </InputGroup>
 
         <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
-          {state.observers.map((observer: User) =>
-              <ObserverListItem key={observer.id} observer={observer} />
-          )}
+          {state.observers.length ?
+            state.observers.map((observer: User) =>
+              <ObserverListItem key={observer.id} observer={observer} />)
+            :
+            noRecords()
+          }
         </Flex>
       </Flex>
     </>

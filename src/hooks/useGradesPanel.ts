@@ -15,7 +15,7 @@ export interface State {
 }
 
 export interface Props {
-  matches: Match[];
+  matches: Match[] | undefined;
   teamsQuery: UseQueryResult<Team[]>;
   observersQuery: UseQueryResult<User[]>;
   refereesQuery: UseQueryResult<User[]>;
@@ -58,7 +58,7 @@ export const useGradesPanel = (props: Props) => {
 
   useEffect(() => {
     const filteredMatches: Match[] = props.matches ? matchFilter(props.matches, teams, referees, observers, state.filter) : [];
-    setState({ matches: filteredMatches });
+    setState({matches: filteredMatches});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.filter, state.observers, props.matches]);
 

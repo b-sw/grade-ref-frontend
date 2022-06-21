@@ -28,7 +28,7 @@ export const useUserMatches = (props?: Props) => {
   }
 
   const query = useQuery(
-    [USER_LEAGUE_MATCHES_QK, userId],
+    [USER_LEAGUE_MATCHES_QK, userId, leagueId],
     getMatches,
     { enabled: props ? props.disableAutoRefetch : true }
   );

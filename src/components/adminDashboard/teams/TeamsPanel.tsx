@@ -9,6 +9,7 @@ import {TeamCreateModal} from "./TeamCreateModal";
 import {useSetState} from "../../../hooks/useSetState";
 import {teamFilter} from "../../shared/filters";
 import { useEffect } from 'react';
+import {noRecords} from "../../shared/panelUtils";
 
 interface State {
   teams: Team[],
@@ -41,6 +42,7 @@ export const TeamsPanel = () => {
         shadow={'md'}
         overflowY={'hidden'}
         flexGrow={1}
+        maxH={['90vh', 'auto']}
       >
         <Flex mb={4}>
           <Text fontWeight={'bold'} fontSize={'2xl'}>
@@ -65,9 +67,12 @@ export const TeamsPanel = () => {
         </InputGroup>
 
         <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
-          {state.teams.map((team: Team) =>
-              <TeamListItem key={team.id} team={team} />
-          )}
+          {state.teams.length ?
+            state.teams.map((team: Team) =>
+              <TeamListItem key={team.id} team={team} />)
+            :
+            noRecords()
+          }
         </Flex>
       </Flex>
     </>

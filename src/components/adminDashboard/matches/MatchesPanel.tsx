@@ -86,7 +86,7 @@ export const MatchesPanel = (props: Props) => {
         shadow={'md'}
         overflowY={'hidden'}
         flexGrow={1}
-        maxH={['70vh', '100%']}
+        maxH={['90vh', '100%']}
       >
         <Flex mb={4}>
           <Text fontWeight={'bold'} fontSize={'2xl'}>
