@@ -9,7 +9,7 @@ import {getMatchesByDate} from "./shared/matches";
 import {toastError} from "./shared/toastError";
 import {enrichMatch} from "../components/shared/matchStatus";
 
-const MATCHES_QUERY_KEY = 'matches_qk';
+export const MATCHES_QUERY_KEY = 'matches_qk';
 
 export interface Props {
   disableAutoRefetch: boolean;

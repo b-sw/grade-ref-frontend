@@ -5,8 +5,8 @@ import { App } from "./App";
 import reportWebVitals from "./reportWebVitals";
 import * as serviceWorker from "./serviceWorker";
 
-// axios.defaults.baseURL = 'http://localhost:3000/';
-axios.defaults.baseURL = 'https://dureo552e4.execute-api.eu-west-1.amazonaws.com/dev/';
+axios.defaults.baseURL = 'http://localhost:3000/';
+// axios.defaults.baseURL = 'https://dureo552e4.execute-api.eu-west-1.amazonaws.com/dev/';
 // axios.defaults.baseURL = 'https://graderef.bieda.it/';
 
 const container: HTMLElement = document.getElementById('root') as HTMLElement;
