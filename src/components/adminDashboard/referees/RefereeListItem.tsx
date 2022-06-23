@@ -18,7 +18,7 @@ export const RefereeListItem = (props: Props) => {
       <RefereeRemoveModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} referee={props.referee} />
       <RefereeGradesModal isOpen={isGradesModalOpen} onClose={onGradesModalClose} referee={props.referee} />
       <Flex
-        p={5}
+        p={3}
         borderRadius={10}
         alignItems={'center'}
         backgroundColor={'gray.50'}

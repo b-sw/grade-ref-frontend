@@ -13,6 +13,7 @@ import {matchFilter} from "../../shared/filters";
 import {uuid} from "../../../shared/uuid";
 import {User} from "../../../entities/User";
 import {Team} from "../../../entities/Team";
+import {noRecords} from "../../shared/panelUtils";
 
 interface Props {
   isOpen: boolean;
@@ -65,7 +66,7 @@ export const MatchesUploadConfirmModal = (props: Props) => {
   }, [state.filter, uploadedMatchesQuery.data!]);
 
   return (
-    <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
+    <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered size={'4xl'}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>The following matches will be created: {uploadedMatchesQuery.data!.length}</ModalHeader>
@@ -85,8 +86,11 @@ export const MatchesUploadConfirmModal = (props: Props) => {
           </InputGroup>
 
           <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle} h={'70vh'}>
-            {state.matches.map((match: Match) =>
+            {state.matches.length ?
+              state.matches.map((match: Match) =>
               <MatchListItem key={match.id} readOnly={true} match={match} />)
+              :
+              noRecords()
             }
           </Flex>
         </ModalBody>

@@ -18,7 +18,7 @@ export const ObserverListItem = (props: Props) => {
       <ObserverRemoveModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} observer={props.observer} />
       <ObserverGradesModal observer={props.observer} isOpen={isGradesModalOpen} onClose={onGradesModalClose} />
       <Flex
-        p={5}
+        p={3}
         borderRadius={10}
         alignItems={'center'}
         backgroundColor={'gray.50'}

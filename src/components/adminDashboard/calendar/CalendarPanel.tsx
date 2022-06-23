@@ -60,7 +60,7 @@ export const CalendarPanel = (props: Props) => {
   return (
     <Flex
       direction={'column'}
-      w={['100%', '70%']}
+      w={['100%', '50%']}
       h={['60vh', '100%']}
       borderRadius={10}
       p={5}

@@ -50,7 +50,7 @@ export const MatchDeleteModal = (props: Props) => {
               alignItems={'center'}
               backgroundColor={'gray.50'}
             >
-              {matchItem(props.match, teamsQuery, refereesQuery, observersQuery)}
+              {matchItem(props.match, teamsQuery.data!, refereesQuery.data!, observersQuery.data!)}
             </Flex>
             <Text fontWeight='bold' mt='1rem'>
               You can't undo this action afterwards.

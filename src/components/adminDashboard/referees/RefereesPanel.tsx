@@ -44,6 +44,7 @@ export const RefereesPanel = () => {
         overflowY={'hidden'}
         flexGrow={1}
         h={['auto', '100%']}
+        w={['auto', '50%']}
         maxH={['90vh', '100%']}
       >
         <Flex mb={4}>

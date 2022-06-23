@@ -1,4 +1,4 @@
-import { Flex, VStack, Text, Avatar, HStack, Divider, Center, useDisclosure, Badge, Tooltip, Spacer } from '@chakra-ui/react';
+import { Flex, VStack, Text, Avatar, HStack, Divider, Center, useDisclosure, Badge, Tooltip, Spacer, IconButton } from '@chakra-ui/react';
 import {Match} from "../../../entities/Match";
 import {useLeagueTeams} from "../../../hooks/useLeagueTeams";
 import {Team} from "../../../entities/Team";
@@ -11,9 +11,10 @@ import {refereeItem} from "../referees/RefereeListItem";
 import {observerItem} from "../observers/ObserverListItem";
 import {MatchEditModal} from "./MatchEditModal";
 import { MdPeople } from 'react-icons/md';
-import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
-import {Role} from "../../../shared/Role";
+import { BsArrowRight } from 'react-icons/bs';
 import { WarningIcon } from '@chakra-ui/icons';
+import { GiSoccerField } from "react-icons/gi";
+import { motion } from 'framer-motion';
 
 export interface Props {
   match: Match;
@@ -22,8 +23,6 @@ export interface Props {
 
 export const MatchListItem = (props: Props) => {
   const { isOpen: isEditModalOpen, onOpen: onEditModalOpen, onClose: onEditModalClose } = useDisclosure();
-  const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
-  const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
   const { query: teamsQuery } = useLeagueTeams();
 
   return (
@@ -37,18 +36,88 @@ export const MatchListItem = (props: Props) => {
         cursor={props.readOnly ? 'default' : 'pointer'}
         onClick={props.readOnly ? () => {} : onEditModalOpen}
       >
-        {matchItem(props.match, teamsQuery, refereesQuery, observersQuery)}
+        {matchItem2(props.match, teamsQuery.data!)}
       </Flex>
     </>
   );
 }
 
-export const matchItem = (match: Match, teamsQuery: any, refereesQuery: any, observersQuery: any) => {
+export const matchItem2 = (match: Match, teams: Team[]) => {
+  const homeTeam: Team = teams.find((team: Team) => team.id === match.homeTeamId)!;
+  const awayTeam: Team = teams.find((team: Team) => team.id === match.awayTeamId)!;
+  const matchDate: string = dayjs(match.matchDate, Constants.DATETIME_FORMAT).format('DD-MM-YYYY');
+  const matchTime: string = dayjs(match.matchDate, Constants.DATETIME_FORMAT).format('HH:mm');
 
-  const homeTeam: Team = teamsQuery.data!.find((team: Team) => team.id === match.homeTeamId)!;
-  const awayTeam: Team = teamsQuery.data!.find((team: Team) => team.id === match.awayTeamId)!;
-  const referee: User = refereesQuery.data!.find((referee: User) => referee.id === match.refereeId)!;
-  const observer: User = observersQuery.data!.find((observer: User) => observer.id === match.observerId)!;
+  return (
+    <Flex direction={'row'} w={'100%'} alignItems={'center'}>
+      <Flex w={'50%'}>
+        <Flex w={'40%'}>
+          <Spacer />
+          <Text fontWeight={'medium'}>{homeTeam.name}</Text>
+        </Flex>
+
+        <Flex w={'20%'}>
+          <Spacer />
+
+          <Flex
+            direction={'column'}
+            borderRadius={5}
+            borderWidth={1}
+            px={1}
+            // borderStyle={'dashed'}
+            borderColor={'gray.300'}
+          >
+            <Spacer />
+            <Text fontWeight={'light'}>{matchTime}</Text>
+            <Spacer />
+          </Flex>
+
+          <Spacer />
+        </Flex>
+
+        <Flex w={'40%'}>
+          <Text fontWeight={'medium'}>{awayTeam.name}</Text>
+          <Spacer />
+        </Flex>
+      </Flex>
+
+      <Spacer />
+
+      <Spacer />
+
+      <Flex direction={'row'} w={'30%'} alignItems={'center'} >
+        <GiSoccerField />
+        <Text fontSize={'sm'} ml={1}>{match.stadium}</Text>
+      </Flex>
+
+      <Spacer />
+
+      <Flex direction={'row'} w={'15%'} alignItems={'center'}>
+        <CalendarIcon />
+        <Text fontSize={'sm'} ml={1}>{matchDate}</Text>
+      </Flex>
+
+      <Flex direction={'row'} w={'5%'}>
+        <IconButton
+          as={motion.div}
+          onClick={() => {}}
+          variant={'ghost'}
+          aria-label='match-details'
+          whileHover={{ left: 5 }}
+          icon={
+            <BsArrowRight />
+          }
+        />
+      </Flex>
+    </Flex>
+  )
+}
+
+export const matchItem = (match: Match, teams: Team[], referees: User[], observers: User[]) => {
+  const homeTeam: Team = teams.find((team: Team) => team.id === match.homeTeamId)!;
+  const awayTeam: Team = teams.find((team: Team) => team.id === match.awayTeamId)!;
+  const referee: User = referees.find((referee: User) => referee.id === match.refereeId)!;
+  const observer: User = observers.find((observer: User) => observer.id === match.observerId)!;
 
   const matchDate: string = dayjs(match.matchDate, Constants.DATETIME_FORMAT).format('DD-MM-YYYY');
   const matchTime: string = dayjs(match.matchDate, Constants.DATETIME_FORMAT).format('HH:mm');

@@ -43,6 +43,7 @@ export const ObserversPanel = () => {
         shadow={'md'}
         overflowY={'hidden'}
         flexGrow={1}
+        w={['auto', '50%']}
         h={['auto', '100%']}
         maxH={['90vh', '100%']}
       >

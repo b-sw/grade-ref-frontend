@@ -12,7 +12,6 @@ import {
   Text,
   Badge,
   useDisclosure,
-  IconButton,
 } from '@chakra-ui/react';
 import useStore from "../../../zustand/store";
 import useAuth from "../../../hooks/useAuth";
@@ -84,11 +83,12 @@ export const AdminHeaderPanel = (props: Props) => {
           >
             Teams
           </Button>
-          <IconButton
+          <Button
             onClick={onSettingsOpen}
-            icon={<SettingsIcon />}
-            aria-label={'Settings'}
-          />
+            leftIcon={<SettingsIcon />}
+          >
+            Settings
+          </Button>
           <Button
             onClick={() => {
               setCalendarYear(dayjs().year());
