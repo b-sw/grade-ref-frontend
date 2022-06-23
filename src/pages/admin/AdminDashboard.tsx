@@ -3,8 +3,6 @@ import {AdminHeaderPanel} from "../../components/adminDashboard/header/AdminHead
 import {MatchesPanel} from "../../components/adminDashboard/matches/MatchesPanel";
 import {RefereesPanel} from "../../components/adminDashboard/referees/RefereesPanel";
 import {ObserversPanel} from "../../components/adminDashboard/observers/ObserversPanel";
-import {TeamsPanel} from "../../components/adminDashboard/teams/TeamsPanel";
-import {AdminSettingsPanel} from "../../components/adminDashboard/settings/AdminSettingsPanel";
 import {useLeagueTeams} from "../../hooks/useLeagueTeams";
 import {useLeagueMatches} from "../../hooks/useLeagueMatches";
 import {LoadingOverlay} from "../LoadingOverlay";
@@ -36,14 +34,8 @@ export const AdminDashboard = () => {
         <AdminHeaderPanel pageTitle={PageTitle.AdminDashboard} />
         <SimpleGrid columns={[1, 1, 3]} flexGrow={1} overflowY={'hidden'} spacing={4} p={5} m={-5}>
           <MatchesPanel matches={matchesQuery.data!} />
-          <Flex direction={'column'} gap={4} overflowY={'hidden'}>
-            <RefereesPanel />
-            <ObserversPanel />
-          </Flex>
-          <Flex direction={'column'} gap={4} overflowY={'hidden'}>
-            <TeamsPanel />
-            <AdminSettingsPanel />
-          </Flex>
+          <RefereesPanel />
+          <ObserversPanel />
         </SimpleGrid>
       </Flex>
     </>

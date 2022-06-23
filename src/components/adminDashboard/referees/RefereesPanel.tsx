@@ -43,8 +43,8 @@ export const RefereesPanel = () => {
         shadow={'md'}
         overflowY={'hidden'}
         flexGrow={1}
-        h={['auto', '50%']}
-        maxH={['90vh', '50%']}
+        h={['auto', '100%']}
+        maxH={['90vh', '100%']}
       >
         <Flex mb={4}>
           <Text fontWeight={'bold'} fontSize={'2xl'}>

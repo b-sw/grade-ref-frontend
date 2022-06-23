@@ -11,12 +11,14 @@ import {
   Spacer,
   Text,
   Badge,
+  useDisclosure,
+  IconButton,
 } from '@chakra-ui/react';
 import useStore from "../../../zustand/store";
 import useAuth from "../../../hooks/useAuth";
 import {Path} from "../../../shared/Path";
 import {MdApps, MdDashboard} from 'react-icons/md';
-import {CalendarIcon} from '@chakra-ui/icons';
+import {CalendarIcon, SettingsIcon} from '@chakra-ui/icons';
 import {useNavigate, useParams} from 'react-router-dom';
 import {useLeagues} from "../../../hooks/useLeagues";
 import {uuid} from "../../../shared/uuid";
@@ -24,12 +26,18 @@ import {League} from "../../../entities/League";
 import {PageTitle} from "../../../shared/PageTitle";
 import {getUserBadge} from "../../shared/MatchGradeListItem";
 import dayjs from 'dayjs';
+import {AdminSettingsModal} from "../settings/AdminSettingsModal";
+import { RiTeamFill } from "react-icons/ri";
+import {TeamsModal} from "../teams/TeamsModal";
 
 interface Props {
   pageTitle: PageTitle;
 }
 
 export const AdminHeaderPanel = (props: Props) => {
+  const { isOpen: isSettingsOpen, onOpen: onSettingsOpen, onClose: onSettingsClose } = useDisclosure();
+  const { isOpen: isTeamsOpen, onOpen: onTeamsOpen, onClose: onTeamsClose } = useDisclosure();
+
   const user = useStore((state) => state.user);
   const calendarYear: number = useStore((state) => state.calendarYear);
   const setCalendarYear = useStore((state) => state.setCalendarYear);
@@ -45,6 +53,8 @@ export const AdminHeaderPanel = (props: Props) => {
 
   return (
     <>
+      <AdminSettingsModal isOpen={isSettingsOpen} onClose={onSettingsClose} />
+      <TeamsModal isOpen={isTeamsOpen} onClose={onTeamsClose} />
       <Flex m={0} p={0} mb={2} direction={['column', 'row']}>
         <Heading>{leagueShortName} {calendarYear}</Heading>
         <Spacer />
@@ -63,10 +73,22 @@ export const AdminHeaderPanel = (props: Props) => {
               navigate(`${Path.ADMIN_DASHBOARD}/${leagueId}`);
             }}
             leftIcon={<MdDashboard />}
-            colorScheme={props.pageTitle.includes(PageTitle.Dashboard) ? 'blue' : 'gray'}
+            colorScheme={props.pageTitle.includes(PageTitle.Dashboard) && !isTeamsOpen ? 'blue' : 'gray'}
           >
             Dashboard
           </Button>
+          <Button
+            onClick={onTeamsOpen}
+            leftIcon={<RiTeamFill />}
+            colorScheme={isTeamsOpen ? 'blue' : 'gray'}
+          >
+            Teams
+          </Button>
+          <IconButton
+            onClick={onSettingsOpen}
+            icon={<SettingsIcon />}
+            aria-label={'Settings'}
+          />
           <Button
             onClick={() => {
               setCalendarYear(dayjs().year());
