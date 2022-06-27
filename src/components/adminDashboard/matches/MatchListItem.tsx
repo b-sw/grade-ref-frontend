@@ -37,7 +37,7 @@ export const MatchListItem = (props: Props) => {
         alignItems={'center'}
         backgroundColor={'gray.50'}
         cursor={props.readOnly ? 'default' : 'pointer'}
-        onClick={props.readOnly ? () => {} : () => { navigate(`${Path.ADMIN_MATCH_DETAILS}/${leagueId}/match/${props.match.id}`); }}
+        onClick={props.readOnly ? () => {} : () => { navigate(`${Path.MATCH_DETAILS}/${leagueId}/match/${props.match.id}`); }}
         w={'100%'}
       >
         {matchItem2(props.match, teamsQuery.data!, navigate, leagueId!, props.readOnly)}
@@ -102,7 +102,7 @@ export const matchItem2 = (match: Match, teams: Team[], navigate: NavigateFuncti
         {!readOnly &&
           <IconButton
             as={motion.div}
-            onClick={() => { navigate(`${Path.ADMIN_MATCH_DETAILS}/${leagueId}/match/${match.id}`); }}
+            onClick={() => { navigate(`${Path.MATCH_DETAILS}/${leagueId}/match/${match.id}`); }}
             variant={'ghost'}
             aria-label='match-details'
             whileHover={{ left: 5 }}

@@ -1,24 +1,24 @@
 import {Flex, SimpleGrid,} from '@chakra-ui/react';
-import {AdminHeaderPanel} from "../../components/adminDashboard/header/AdminHeaderPanel";
-import {useLeagueTeams} from "../../hooks/useLeagueTeams";
-import {useLeagueMatches} from "../../hooks/useLeagueMatches";
-import {LoadingOverlay} from "../LoadingOverlay";
-import {useLeagues} from "../../hooks/useLeagues";
-import {useLeagueUsers} from "../../hooks/useLeagueUsers";
-import {Role} from "../../shared/Role";
-import {PageTitle} from "../../shared/PageTitle";
-import {uuid} from "../../shared/uuid";
-import {Match} from "../../entities/Match";
+import {AdminHeaderPanel} from "../components/adminDashboard/header/AdminHeaderPanel";
+import {useLeagueTeams} from "../hooks/useLeagueTeams";
+import {useLeagueMatches} from "../hooks/useLeagueMatches";
+import {LoadingOverlay} from "./LoadingOverlay";
+import {useLeagues} from "../hooks/useLeagues";
+import {useLeagueUsers} from "../hooks/useLeagueUsers";
+import {Role} from "../shared/Role";
+import {PageTitle} from "../shared/PageTitle";
+import {uuid} from "../shared/uuid";
+import {Match} from "../entities/Match";
 import {useEffect} from "react";
-import {useSetState} from "../../hooks/useSetState";
+import {useSetState} from "../hooks/useSetState";
 import { useParams } from 'react-router-dom';
-import {MatchOverviewPanel} from "../../components/shared/match/MatchOverviewPanel";
+import {MatchOverviewPanel} from "../components/shared/match/MatchOverviewPanel";
 
 interface State {
   match?: Match;
 }
 
-export const AdminMatchDetails = () => {
+export const MatchDetails = () => {
   const { usersQuery: leagueRefereesQuery } = useLeagueUsers(Role.Referee);
   const { usersQuery: leagueObserversQuery } = useLeagueUsers(Role.Observer);
   const { query: teamsQuery } = useLeagueTeams();
