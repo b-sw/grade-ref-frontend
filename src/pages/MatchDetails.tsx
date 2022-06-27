@@ -35,6 +35,7 @@ export const MatchDetails = () => {
         setState({ match });
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [matchesQuery.data]);
 
   const queries = [leagueRefereesQuery, leagueObserversQuery, teamsQuery, matchesQuery, leaguesQuery];
