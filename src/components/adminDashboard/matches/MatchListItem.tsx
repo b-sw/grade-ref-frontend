@@ -1,4 +1,4 @@
-import { Flex, VStack, Text, Avatar, HStack, Divider, Center, useDisclosure, Badge, Tooltip, Spacer, IconButton } from '@chakra-ui/react';
+import { Flex, VStack, Text, Avatar, HStack, Divider, Center, Badge, Tooltip, Spacer, IconButton } from '@chakra-ui/react';
 import {Match} from "../../../entities/Match";
 import {useLeagueTeams} from "../../../hooks/useLeagueTeams";
 import {Team} from "../../../entities/Team";
@@ -9,12 +9,14 @@ import { BsClockFill, BsFillHouseDoorFill, BsBookmarks } from 'react-icons/bs';
 import {Constants} from "../../../shared/Constants";
 import {refereeItem} from "../referees/RefereeListItem";
 import {observerItem} from "../observers/ObserverListItem";
-import {MatchEditModal} from "./MatchEditModal";
 import { MdPeople } from 'react-icons/md';
 import { BsArrowRight } from 'react-icons/bs';
 import { WarningIcon } from '@chakra-ui/icons';
 import { GiSoccerField } from "react-icons/gi";
 import { motion } from 'framer-motion';
+import {Path} from "../../../shared/Path";
+import {NavigateFunction, useNavigate, useParams } from 'react-router-dom';
+import {uuid} from "../../../shared/uuid";
 
 export interface Props {
   match: Match;
@@ -22,27 +24,29 @@ export interface Props {
 }
 
 export const MatchListItem = (props: Props) => {
-  const { isOpen: isEditModalOpen, onOpen: onEditModalOpen, onClose: onEditModalClose } = useDisclosure();
   const { query: teamsQuery } = useLeagueTeams();
+  const navigate: NavigateFunction = useNavigate();
+  const { leagueId } = useParams<{ leagueId: uuid }>();
 
   return (
     <>
-      {!props.readOnly && <MatchEditModal isOpen={isEditModalOpen} onClose={onEditModalClose} match={props.match} />}
+      {/*{!props.readOnly && <MatchEditModal isOpen={isEditModalOpen} onClose={onEditModalClose} match={props.match} />}*/}
       <Flex
         p={5}
         borderRadius={10}
         alignItems={'center'}
         backgroundColor={'gray.50'}
         cursor={props.readOnly ? 'default' : 'pointer'}
-        onClick={props.readOnly ? () => {} : onEditModalOpen}
+        onClick={props.readOnly ? () => {} : () => { navigate(`${Path.ADMIN_MATCH_DETAILS}/${leagueId}/match/${props.match.id}`); }}
+        w={'100%'}
       >
-        {matchItem2(props.match, teamsQuery.data!)}
+        {matchItem2(props.match, teamsQuery.data!, navigate, leagueId!, props.readOnly)}
       </Flex>
     </>
   );
 }
 
-export const matchItem2 = (match: Match, teams: Team[]) => {
+export const matchItem2 = (match: Match, teams: Team[], navigate: NavigateFunction, leagueId: uuid, readOnly?: boolean) => {
   const homeTeam: Team = teams.find((team: Team) => team.id === match.homeTeamId)!;
   const awayTeam: Team = teams.find((team: Team) => team.id === match.awayTeamId)!;
   const matchDate: string = dayjs(match.matchDate, Constants.DATETIME_FORMAT).format('DD-MM-YYYY');
@@ -64,7 +68,6 @@ export const matchItem2 = (match: Match, teams: Team[]) => {
             borderRadius={5}
             borderWidth={1}
             px={1}
-            // borderStyle={'dashed'}
             borderColor={'gray.300'}
           >
             <Spacer />
@@ -83,8 +86,6 @@ export const matchItem2 = (match: Match, teams: Team[]) => {
 
       <Spacer />
 
-      <Spacer />
-
       <Flex direction={'row'} w={'30%'} alignItems={'center'} >
         <GiSoccerField />
         <Text fontSize={'sm'} ml={1}>{match.stadium}</Text>
@@ -98,16 +99,18 @@ export const matchItem2 = (match: Match, teams: Team[]) => {
       </Flex>
 
       <Flex direction={'row'} w={'5%'}>
-        <IconButton
-          as={motion.div}
-          onClick={() => {}}
-          variant={'ghost'}
-          aria-label='match-details'
-          whileHover={{ left: 5 }}
-          icon={
-            <BsArrowRight />
-          }
-        />
+        {!readOnly &&
+          <IconButton
+            as={motion.div}
+            onClick={() => { navigate(`${Path.ADMIN_MATCH_DETAILS}/${leagueId}/match/${match.id}`); }}
+            variant={'ghost'}
+            aria-label='match-details'
+            whileHover={{ left: 5 }}
+            icon={
+              <BsArrowRight />
+            }
+          />
+        }
       </Flex>
     </Flex>
   )

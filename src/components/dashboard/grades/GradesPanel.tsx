@@ -1,7 +1,7 @@
 import { Flex, Input, InputGroup, InputLeftElement, Spacer, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
-import {MatchGradeSummaryHeader} from "../../shared/MatchGradeSummaryHeader";
+import {MatchGradeSummaryHeader} from "../../shared/match/MatchGradeSummaryHeader";
 import {scrollbarStyle} from "../shared/styles";
-import {MatchGradeListItem} from "../../shared/MatchGradeListItem";
+import {MatchGradeListItem} from "../../shared/match/MatchGradeListItem";
 import {Role} from "../../../shared/Role";
 import {Match} from "../../../entities/Match";
 import { MdSearch } from 'react-icons/md';
@@ -10,7 +10,7 @@ import {State, useGradesPanel} from "../../../hooks/useGradesPanel";
 import {useUserMatches} from "../../../hooks/useUserMatches";
 import {useLeagueTeams} from "../../../hooks/useLeagueTeams";
 import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
-import {GradeStatus} from "../../shared/gradeInfo";
+import {GradeStatus} from "../../shared/match/gradeInfo";
 import {noRecords} from "../../shared/panelUtils";
 
 interface Props {

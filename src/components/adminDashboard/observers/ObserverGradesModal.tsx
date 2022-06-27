@@ -45,7 +45,7 @@ export const ObserverGradesModal = (props: Props) => {
       isOpen={props.isOpen}
       onClose={props.onClose}
       isCentered
-      size={'2xl'}
+      size={'3xl'}
     >
       <ModalOverlay />
       <ModalContent>

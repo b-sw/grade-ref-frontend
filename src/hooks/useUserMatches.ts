@@ -6,7 +6,7 @@ import useStore from "../zustand/store";
 import { useParams } from "react-router-dom";
 import { Dayjs } from "dayjs";
 import {getMatchesByDate} from "./shared/matches";
-import {enrichMatch} from "../components/shared/matchStatus";
+import {enrichMatch} from "../components/shared/match/matchStatus";
 
 interface Props {
   userId?: uuid;

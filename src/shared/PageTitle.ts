@@ -4,4 +4,5 @@ export enum PageTitle {
   OwnerDashboard = 'owner dashboard',
   Dashboard = 'dashboard',
   Teams ='teams',
+  MatchDetails = 'match details',
 }

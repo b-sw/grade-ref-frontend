@@ -28,8 +28,7 @@ import {Role} from "../../../shared/Role";
 import {uuid} from "../../../shared/uuid";
 import {User} from "../../../entities/User";
 import {Team} from "../../../entities/Team";
-import {isPastAdmissionWindow} from "../../shared/MatchGradeListItem";
-import {MatchStatus} from "../../shared/matchStatus";
+import {MatchStatus} from "../../shared/match/matchStatus";
 import {noRecords} from "../../shared/panelUtils";
 import { MatchesUploadModal } from './MatchesUploadModal';
 
@@ -120,7 +119,7 @@ export const MatchesPanel = (props: Props) => {
           <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle} h={'100%'}>
             {state.matches.length ?
               state.matches.map((match: Match) =>
-                <MatchListItem key={match.id} readOnly={props.readOnly || isPastAdmissionWindow(match)} match={match} />)
+                <MatchListItem key={match.id} match={match} />)
               :
               noRecords()
             }
@@ -135,7 +134,7 @@ export const MatchesPanel = (props: Props) => {
               <TabPanel display={'flex'} flexDirection={'column'} gap={2} h={'100%'}>
                 {getFilteredMatches(MatchStatus.Past).length ?
                   getFilteredMatches(MatchStatus.Past).map((match: Match) =>
-                    <MatchListItem key={match.id} readOnly={props.readOnly || isPastAdmissionWindow(match)} match={match} />)
+                    <MatchListItem key={match.id} match={match} />)
                   :
                   noRecords()
                 }
@@ -143,7 +142,7 @@ export const MatchesPanel = (props: Props) => {
               <TabPanel display={'flex'} flexDirection={'column'} gap={2} h={'100%'}>
                 {getFilteredMatches(MatchStatus.Upcoming).length ?
                   getFilteredMatches(MatchStatus.Upcoming).map((match: Match) =>
-                    <MatchListItem key={match.id} readOnly={props.readOnly} match={match} />)
+                    <MatchListItem key={match.id} match={match} />)
                   :
                   noRecords()
                 }

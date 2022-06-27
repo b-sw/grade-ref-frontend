@@ -19,6 +19,7 @@ import {AdminCalendar} from "./pages/admin/AdminCalendar";
 import {Calendar} from "./pages/Calendar";
 import {LandingPage} from "./pages/LandingPage";
 import { ParallaxProvider } from "react-scroll-parallax";
+import {AdminMatchDetails} from "./pages/admin/AdminMatchDetails";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,7 @@ export const App = () => (
                 <Route path={Path.ADMIN_EXPLORER} element={<AdminExplorer />} />
                 <Route path={Path.ADMIN_DASHBOARD + '/:leagueId'} element={<AdminDashboard />} />
                 <Route path={Path.ADMIN_CALENDAR + '/:leagueId'} element={<AdminCalendar />} />
+                <Route path={Path.ADMIN_MATCH_DETAILS + '/:leagueId/match/:matchId'} element={<AdminMatchDetails />} />
               </Route>
 
               <Route element={<RequireAuthRouteRefereeObserver />}>

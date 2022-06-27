@@ -21,7 +21,7 @@ import {uuid} from "../../../shared/uuid";
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import {MdApps, MdDashboard } from 'react-icons/md';
-import {getUserBadge} from "../../shared/MatchGradeListItem";
+import {getUserBadge} from "../../shared/match/MatchGradeListItem";
 import {League} from "../../../entities/League";
 import {useLeagues} from "../../../hooks/useLeagues";
 

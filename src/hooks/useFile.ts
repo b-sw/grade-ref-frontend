@@ -5,7 +5,7 @@ import {Match} from "../entities/Match";
 import {toastError} from "./shared/toastError";
 import {uuid} from "../shared/uuid";
 import { useParams } from "react-router-dom";
-import {enrichMatch, enrichMatchDto} from "../components/shared/matchStatus";
+import {enrichMatch, enrichMatchDto} from "../components/shared/match/matchStatus";
 import {MATCHES_QUERY_KEY} from "./useLeagueMatches";
 
 const UPLOADED_MATCHES_QK = 'uploaded_matches_qk';

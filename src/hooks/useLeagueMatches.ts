@@ -7,7 +7,7 @@ import {Match} from "../entities/Match";
 import {uuid} from "../shared/uuid";
 import {getMatchesByDate} from "./shared/matches";
 import {toastError} from "./shared/toastError";
-import {enrichMatch} from "../components/shared/matchStatus";
+import {enrichMatch} from "../components/shared/match/matchStatus";
 
 export const MATCHES_QUERY_KEY = 'matches_qk';
 

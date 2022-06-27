@@ -23,7 +23,7 @@ import {useLeagues} from "../../../hooks/useLeagues";
 import {uuid} from "../../../shared/uuid";
 import {League} from "../../../entities/League";
 import {PageTitle} from "../../../shared/PageTitle";
-import {getUserBadge} from "../../shared/MatchGradeListItem";
+import {getUserBadge} from "../../shared/match/MatchGradeListItem";
 import dayjs from 'dayjs';
 import {AdminSettingsModal} from "../settings/AdminSettingsModal";
 import { RiTeamFill } from "react-icons/ri";
