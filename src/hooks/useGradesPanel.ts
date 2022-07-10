@@ -1,9 +1,9 @@
-import {uuid} from "../shared/uuid";
-import {User} from "../entities/User";
-import {Team} from "../entities/Team";
+import {uuid} from "utils/uuid";
+import {User} from "entities/User";
+import {Team} from "entities/Team";
 import {useSetState} from "./useSetState";
-import {Match} from "../entities/Match";
-import {matchFilter} from "../components/shared/filters";
+import {Match} from "entities/Match";
+import {matchFilter} from "components/shared/filters";
 import {useEffect} from "react";
 import { UseQueryResult } from "react-query";
 

@@ -1,39 +1,86 @@
 import { ArrowBackIcon } from "@chakra-ui/icons";
-import {Button, Flex, Link, Spacer, Text } from "@chakra-ui/react";
-import {Match} from "../../../entities/Match";
-import {MatchListItem} from "../../adminDashboard/matches/MatchListItem";
-import {Path} from "../../../shared/Path";
-import {uuid} from "../../../shared/uuid";
+import {Button, Flex, Link, Spacer, Text, useDisclosure } from "@chakra-ui/react";
+import {Match} from "entities/Match";
+import {Path} from "utils/Path";
+import {uuid} from "utils/uuid";
 import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
-import {scrollbarStyle} from "../../dashboard/shared/styles";
 import { motion } from 'framer-motion';
 import {useRef} from "react";
+import {Details} from "components/shared/match/sections/Details";
+import {Team} from "entities/Team";
+import {User} from "entities/User";
+import {MatchEditModal} from "components/adminDashboard/matches/MatchEditModal";
+import {Assignments} from "components/shared/match/sections/Assignments";
+import {Sanctions} from "components/shared/match/sections/Sanctions";
+import {Conclusions} from "components/shared/match/sections/Conclusions";
+import {useFouls} from "components/shared/match/sections/useFouls";
+import {LoadingOverlay} from "pages/LoadingOverlay";
+import {useLeagueTeams} from "hooks/useLeagueTeams";
+import {useFeatures} from "components/shared/match/sections/useFeatures";
+import {RefereeNote} from "components/shared/match/sections/RefereeNote";
+import {scrollbarStyle} from "components/dashboard/shared/styles";
+import {MatchListItem} from "components/adminDashboard/matches/MatchListItem";
 
 export const enum MatchData {
   Details = 'Match Details',
   Assignments = 'Assignments',
-  Fouls = 'Disciplinary sanctions',
-  Features = 'Conclusions',
+  DisciplinarySanctions = 'Disciplinary sanctions',
+  Conclusions = 'Conclusions',
+  RefereeNote = 'Referee note',
 }
 
 interface Props {
   match: Match;
-  readOnly?: boolean;
+  teams: Team[];
+  referees: User[];
+  observers: User[];
 }
 
 const PADDING = 4;
 
 export const MatchOverviewPanel = (props: Props) => {
+  const { isOpen: isEditModalOpen, /*onOpen: onEditModalOpen,*/ onClose: onEditModalClose } = useDisclosure();
+  const { query: foulsQuery } = useFouls({ matchId: props.match.id });
+  const { query: featuresQuery } = useFeatures({ matchId: props.match.id });
+  const { query: teamsQuery } = useLeagueTeams();
+
   const navigate: NavigateFunction = useNavigate();
   const { leagueId } = useParams<{ leagueId: uuid }>();
+
   const overviewRef: any = useRef();
   const detailsRef: any = useRef();
   const assignmentsRef: any = useRef();
   const foulsRef: any = useRef();
   const conclusionsRef: any = useRef();
+  const noteRef: any = useRef();
+
+  const homeTeam: Team = props.teams.find((team: Team) => team.id === props.match.homeTeamId)!;
+  const awayTeam: Team = props.teams.find((team: Team) => team.id === props.match.awayTeamId)!;
+  const referee: User = props.referees.find((referee: User) => referee.id === props.match.refereeId)!;
+  const observer: User = props.observers.find((observer: User) => observer.id === props.match.observerId)!;
+
+  const menuLink = (sectionName: MatchData, ref: any) => {
+    return (
+      <Link
+        onClick={() => {
+          overviewRef.current.scrollTo({
+            top: ref.current.offsetTop - overviewRef.current.offsetTop,
+            behavior: 'smooth',
+          });
+        }}
+      >
+        <Text fontSize={'md'}>{sectionName}</Text>
+      </Link>
+    );
+  }
+
+  if (foulsQuery.isLoading || featuresQuery.isLoading) {
+    return <LoadingOverlay />;
+  }
 
   return (
     <>
+      <MatchEditModal isOpen={isEditModalOpen} onClose={onEditModalClose} match={props.match} />
       <Flex
         overflow={'hidden'}
         gap={4}
@@ -55,6 +102,7 @@ export const MatchOverviewPanel = (props: Props) => {
           <Flex
             w={'100%'}
             alignItems={'center'}
+            gap={2}
           >
             <Button
               as={motion.div}
@@ -62,12 +110,15 @@ export const MatchOverviewPanel = (props: Props) => {
               variant={'ghost'}
               leftIcon={<ArrowBackIcon />}
               onClick={() => { navigate(`${Path.ADMIN_DASHBOARD}/${leagueId}`); }}
-              mr={PADDING}
             >
               Dashboard
             </Button>
+
             <Spacer />
+
             <MatchListItem key={props.match.id} readOnly={true} match={props.match} />
+
+            <Spacer />
           </Flex>
 
           <Flex
@@ -82,59 +133,19 @@ export const MatchOverviewPanel = (props: Props) => {
               direction={'column'}
               borderRadius={10}
               w={'20%'}
+              gap={2}
             >
-              <Text fontSize={'2xl'} fontWeight={'medium'}>Page sections</Text>
-              <Link
-                onClick={() => {
-                  overviewRef.current.scrollTo({
-                    top: detailsRef.current.offsetTop - overviewRef.current.offsetTop,
-                    behavior: 'smooth',
-                  });
-                }}
-              >
-                <Text fontSize={'xl'}>{MatchData.Details}</Text>
-              </Link>
-
-              <Link
-                onClick={() => {
-                  console.log('assignmentsRef', overviewRef.current);
-                  overviewRef.current.scrollTo({
-                    top: assignmentsRef.current.offsetTop - overviewRef.current.offsetTop,
-                    behavior: 'smooth',
-                  });
-                }}
-              >
-                <Text fontSize={'xl'} fontWeight={'default'}>{MatchData.Assignments}</Text>
-              </Link>
-
-              <Link
-                onClick={() => {
-                  overviewRef.current.scrollTo({
-                    top: foulsRef.current.offsetTop - overviewRef.current.offsetTop,
-                    behavior: 'smooth',
-                  });
-                }}
-              >
-                <Text fontSize={'xl'}>{MatchData.Fouls}</Text>
-              </Link>
-
-              <Link
-                onClick={() => {
-                  overviewRef.current.scrollTo({
-                    top: conclusionsRef.current.offsetTop - overviewRef.current.offsetTop,
-                    behavior: 'smooth',
-                  });
-                }}
-              >
-                <Text fontSize={'xl'}>{MatchData.Features}</Text>
-              </Link>
+              <Text fontSize={'xl'} fontWeight={'medium'}>Page sections</Text>
+              {menuLink(MatchData.Details, detailsRef)}
+              {menuLink(MatchData.Assignments, assignmentsRef)}
+              {menuLink(MatchData.DisciplinarySanctions, foulsRef)}
+              {menuLink(MatchData.Conclusions, conclusionsRef)}
+              {menuLink(MatchData.RefereeNote, noteRef)}
             </Flex>
 
             <Flex
               direction={'column'}
-              borderRadius={10}
               p={PADDING}
-              backgroundColor={'gray.200'}
               w={'80%'}
               overflowY={'hidden'}
             >
@@ -144,17 +155,30 @@ export const MatchOverviewPanel = (props: Props) => {
                 css={scrollbarStyle}
                 ref={overviewRef}
               >
-                <Flex minH={'500px'} ref={detailsRef}>
-                  <Text fontSize={'2xl'}>Match Details</Text>
+                <Flex ref={detailsRef}>
+                  <Details
+                    match={props.match}
+                    homeTeam={homeTeam}
+                    awayTeam={awayTeam}
+                    referee={referee}
+                    observer={observer}
+                  />
                 </Flex>
-                <Flex minH={'500px'} ref={assignmentsRef}>
-                  <Text fontSize={'2xl'}>Assignments</Text>
+
+                <Flex ref={assignmentsRef}>
+                  <Assignments match={props.match} referee={referee} observer={observer} />
                 </Flex>
-                <Flex minH={'500px'} ref={foulsRef}>
-                  <Text fontSize={'2xl'}>Disciplinary sanctions</Text>
+
+                <Flex ref={foulsRef}>
+                  <Sanctions match={props.match} fouls={foulsQuery.data!} teams={teamsQuery.data!} />
                 </Flex>
-                <Flex minH={'500px'} ref={conclusionsRef}>
-                  <Text fontSize={'2xl'}>Conclusions</Text>
+
+                <Flex ref={conclusionsRef}>
+                  <Conclusions match={props.match} features={featuresQuery.data!} />
+                </Flex>
+
+                <Flex ref={noteRef}>
+                  <RefereeNote match={props.match} />
                 </Flex>
               </Flex>
             </Flex>

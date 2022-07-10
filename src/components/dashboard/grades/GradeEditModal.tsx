@@ -10,8 +10,8 @@ import {
 } from '@chakra-ui/react';
 import {Form, Formik } from "formik";
 import { useEffect } from "react";
-import {gradeValidationSchema, Match} from "../../../entities/Match";
-import {useGrades} from "../../../hooks/useGrades";
+import {gradeValidationSchema, Match} from "entities/Match";
+import {useGrades} from "hooks/useGrades";
 import { NumberInputControl } from 'formik-chakra-ui';
 
 interface Props {

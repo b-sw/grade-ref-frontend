@@ -11,12 +11,12 @@ import {
   FormLabel,
 } from '@chakra-ui/react';
 import { useEffect } from 'react';
-import {Role} from "../../../shared/Role";
+import {Role} from "utils/Role";
 import { MultiValue, Select } from 'chakra-react-select';
-import { User } from '../../../entities/User';
-import {useSetState} from "../../../hooks/useSetState";
-import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
-import {useObservers} from "../../../hooks/useObservers";
+import { User } from 'entities/User';
+import {useSetState} from "hooks/useSetState";
+import {useLeagueUsers} from "hooks/useLeagueUsers";
+import {useObservers} from "hooks/useObservers";
 
 interface Props {
   isOpen: boolean;

@@ -9,8 +9,8 @@ import {
   Button,
   Text,
 } from '@chakra-ui/react';
-import {User} from "../../../entities/User";
-import {useUsers} from "../../../hooks/useUsers";
+import {User} from "entities/User";
+import {useUsers} from "hooks/useUsers";
 import {refereeItem} from "./RefereeListItem";
 
 export interface Props {

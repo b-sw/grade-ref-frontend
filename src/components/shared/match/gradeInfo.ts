@@ -1,5 +1,5 @@
 import dayjs, { Dayjs } from "dayjs";
-import {GRADE_ADMISSION_TIME_WINDOW, Match, MATCH_DURATION_TIME} from "../../../entities/Match";
+import {GRADE_ADMISSION_TIME_WINDOW, Match, MATCH_DURATION_TIME} from "entities/Match";
 
 export enum GradeStatus {
   Received = 'Received',

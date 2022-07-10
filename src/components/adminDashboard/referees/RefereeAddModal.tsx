@@ -11,12 +11,12 @@ import {
   ModalOverlay,
 } from '@chakra-ui/react';
 import {useEffect} from 'react';
-import {Role} from "../../../shared/Role";
+import {Role} from "utils/Role";
 import {MultiValue, Select} from "chakra-react-select";
-import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
-import {useSetState} from "../../../hooks/useSetState";
-import {User} from "../../../entities/User";
-import {useReferees} from "../../../hooks/useReferees";
+import {useLeagueUsers} from "hooks/useLeagueUsers";
+import {useSetState} from "hooks/useSetState";
+import {User} from "entities/User";
+import {useReferees} from "hooks/useReferees";
 
 interface Props {
   isOpen: boolean;

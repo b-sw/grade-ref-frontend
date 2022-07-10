@@ -2,7 +2,7 @@ import {Box, Fade, Flex, Heading, SimpleGrid, Spacer, Text } from "@chakra-ui/re
 import { Parallax } from 'react-scroll-parallax';
 import { useScrollPercentage } from "react-scroll-percentage";
 import React, {useEffect} from "react";
-import {useSetState} from "../../../hooks/useSetState";
+import {useSetState} from "hooks/useSetState";
 import { useCountUp } from "use-count-up";
 
 const LEAGUES = 13;

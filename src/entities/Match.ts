@@ -1,7 +1,7 @@
-import {uuid} from "../shared/uuid";
-import Yup from "../shared/yup";
-import {GradeInfo} from "../components/shared/match/gradeInfo";
-import {MatchStatus} from "../components/shared/match/matchStatus";
+import {uuid} from "utils/uuid";
+import Yup from "utils/yup";
+import {GradeInfo} from "components/shared/match/gradeInfo";
+import {MatchStatus} from "components/shared/match/matchStatus";
 
 export const GRADE_ADMISSION_TIME_WINDOW = 4;
 export const MATCH_DURATION_TIME = 2;
@@ -21,6 +21,9 @@ export type Match = {
   observerSmsId: uuid;
   gradeStatus: GradeInfo;
   matchStatus: MatchStatus;
+  overallGrade: string;
+  overallGradeDate: Date;
+  refereeNote: string;
 }
 
 export const matchValidationSchema = Yup.object({

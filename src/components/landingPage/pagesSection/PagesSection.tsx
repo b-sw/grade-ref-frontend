@@ -1,5 +1,5 @@
 import { Parallax } from "react-parallax";
-import {useMobile} from "../../../hooks/useMobile";
+import {useMobile} from "hooks/useMobile";
 import {PagesCarousel} from "./PagesCarousel";
 import { Parallax as ScrollParallax } from 'react-scroll-parallax';
 

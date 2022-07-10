@@ -11,14 +11,14 @@ import {
   Spinner
 } from "@chakra-ui/react";
 import {useParams} from "react-router-dom";
-import {User} from "../../../entities/User";
-import {uuid} from "../../../shared/uuid";
-import {useUserMatches} from "../../../hooks/useUserMatches";
-import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
-import {Role} from "../../../shared/Role";
+import {User} from "entities/User";
+import {uuid} from "utils/uuid";
+import {useUserMatches} from "hooks/useUserMatches";
+import {useLeagueUsers} from "hooks/useLeagueUsers";
+import {Role} from "utils/Role";
 import {GradesPanelBody} from "../../dashboard/grades/GradesPanel";
-import {useLeagueTeams} from "../../../hooks/useLeagueTeams";
-import {useGradesPanel} from "../../../hooks/useGradesPanel";
+import {useLeagueTeams} from "hooks/useLeagueTeams";
+import {useGradesPanel} from "hooks/useGradesPanel";
 
 interface Props {
   observer: User;

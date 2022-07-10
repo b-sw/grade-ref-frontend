@@ -1,18 +1,18 @@
 import { Flex } from "@chakra-ui/react";
-import {useLeagueTeams} from "../hooks/useLeagueTeams";
-import {useLeagueUsers} from "../hooks/useLeagueUsers";
-import {Role} from "../shared/Role";
+import {useLeagueTeams} from "hooks/useLeagueTeams";
+import {useLeagueUsers} from "hooks/useLeagueUsers";
+import {Role} from "utils/Role";
 import {LoadingOverlay} from "./LoadingOverlay";
-import {CalendarPanel} from "../components/adminDashboard/calendar/CalendarPanel";
-import { PageTitle } from "../shared/PageTitle";
-import {useLeagues} from "../hooks/useLeagues";
-import {MatchesPanel} from "../components/adminDashboard/matches/MatchesPanel";
-import {Match} from "../entities/Match";
+import {CalendarPanel} from "components/adminDashboard/calendar/CalendarPanel";
+import { PageTitle } from "utils/PageTitle";
+import {useLeagues} from "hooks/useLeagues";
+import {MatchesPanel} from "components/adminDashboard/matches/MatchesPanel";
+import {Match} from "entities/Match";
 import {useEffect, useState} from "react";
-import useStore from "../zustand/store";
+import { useStore } from "zustandStore/store";
 import dayjs, { Dayjs } from "dayjs";
-import {useUserMatches} from "../hooks/useUserMatches";
-import {HeaderPanel} from "../components/dashboard/header/HeaderPanel";
+import {useUserMatches} from "hooks/useUserMatches";
+import {HeaderPanel} from "components/dashboard/header/HeaderPanel";
 
 interface State {
   matches: Match[];

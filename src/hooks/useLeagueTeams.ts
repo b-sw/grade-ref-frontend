@@ -2,9 +2,9 @@ import { useToast } from "@chakra-ui/react";
 import axios, { AxiosError } from "axios";
 import {QueryClient, useMutation, useQuery, useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
-import {Team} from "../entities/Team";
-import {uuid} from "../shared/uuid";
-import {toastError} from "./shared/toastError";
+import {Team} from "entities/Team";
+import {uuid} from "utils/uuid";
+import {toastError} from "./utils/toastError";
 
 const TEAMS_QUERY_KEY: string = 'teams_qk'
 

@@ -7,7 +7,7 @@ import GoogleLogin from 'react-google-login';
 import {useEffect} from "react";
 import {LoginFailureModal} from "../../other/LoginFailureModal";
 import useAuth from "../../../hooks/useAuth";
-import {Constants} from "../../../shared/Constants";
+import {Constants} from "utils/Constants";
 import { Google } from 'react-bootstrap-icons';
 
 export const HeroLoginPanel = () => {

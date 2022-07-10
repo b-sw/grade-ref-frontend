@@ -3,10 +3,10 @@ import { AddIcon } from '@chakra-ui/icons';
 import {LeagueCreateModal} from "./LeagueCreateModal";
 import {scrollbarStyle} from "../../dashboard/shared/styles";
 import {LeagueListItem} from "./LeagueListItem";
-import {League} from "../../../entities/League";
-import {useLeagues} from "../../../hooks/useLeagues";
+import {League} from "entities/League";
+import {useLeagues} from "hooks/useLeagues";
 import { MdSearch } from 'react-icons/md';
-import {useSetState} from "../../../hooks/useSetState";
+import {useSetState} from "hooks/useSetState";
 import {leagueFilter} from "../../shared/filters";
 import {useEffect} from 'react';
 

@@ -1,6 +1,6 @@
 import {Box, Button, Modal, ModalHeader, ModalContent, ModalOverlay, useDisclosure, ModalCloseButton, ModalBody, ModalFooter } from '@chakra-ui/react';
 import {LeagueDeleteModal} from "./LeagueDeleteModal";
-import {uuid} from "../../../shared/uuid";
+import {uuid} from "utils/uuid";
 import { useParams } from 'react-router-dom';
 
 interface Props {

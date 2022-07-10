@@ -1,7 +1,7 @@
 import {Badge, Flex, Spacer, Text } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
-import useStore from "../../../zustand/store";
-import {Match} from "../../../entities/Match";
+import { useStore } from "zustandStore/store";
+import {Match} from "entities/Match";
 
 export interface Props {
   date: Dayjs;

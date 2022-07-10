@@ -6,6 +6,6 @@ export const Path = {
   ADMIN_CALENDAR: '/admin-calendar',
   ADMIN_DASHBOARD: '/admin-dashboard',
   ADMIN_EXPLORER: '/admin-explorer',
-  MATCH_DETAILS: '/match-details',
+  MATCH_PAGE: '/match-page',
   OWNER_DASHBOARD: '/owner-dashboard',
 }

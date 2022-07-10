@@ -1,18 +1,18 @@
 import { Modal, ModalHeader, ModalContent, ModalOverlay, ModalCloseButton, ModalBody, Flex, Button, ModalFooter, InputLeftElement, InputGroup, Input } from "@chakra-ui/react";
-import {useFile} from "../../../hooks/useFile";
-import {Match} from "../../../entities/Match";
-import {useSetState} from "../../../hooks/useSetState";
+import {useFile} from "hooks/useFile";
+import {Match} from "entities/Match";
+import {useSetState} from "hooks/useSetState";
 import {scrollbarStyle} from "../../dashboard/shared/styles";
 import {MatchListItem} from "./MatchListItem";
 import {useEffect} from "react";
 import { MdSearch } from "react-icons/md";
-import {useLeagueTeams} from "../../../hooks/useLeagueTeams";
-import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
-import {Role} from "../../../shared/Role";
+import {useLeagueTeams} from "hooks/useLeagueTeams";
+import {useLeagueUsers} from "hooks/useLeagueUsers";
+import {Role} from "utils/Role";
 import {matchFilter} from "../../shared/filters";
-import {uuid} from "../../../shared/uuid";
-import {User} from "../../../entities/User";
-import {Team} from "../../../entities/Team";
+import {uuid} from "utils/uuid";
+import {User} from "entities/User";
+import {Team} from "entities/Team";
 import {noRecords} from "../../shared/panelUtils";
 
 interface Props {

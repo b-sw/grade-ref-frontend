@@ -13,16 +13,16 @@ import {
   Badge,
   useDisclosure,
 } from '@chakra-ui/react';
-import useStore from "../../../zustand/store";
+import { useStore } from "zustandStore/store";
 import useAuth from "../../../hooks/useAuth";
-import {Path} from "../../../shared/Path";
+import {Path} from "utils/Path";
 import {MdApps, MdDashboard} from 'react-icons/md';
 import {CalendarIcon, SettingsIcon} from '@chakra-ui/icons';
 import {useNavigate, useParams} from 'react-router-dom';
-import {useLeagues} from "../../../hooks/useLeagues";
-import {uuid} from "../../../shared/uuid";
-import {League} from "../../../entities/League";
-import {PageTitle} from "../../../shared/PageTitle";
+import {useLeagues} from "hooks/useLeagues";
+import {uuid} from "utils/uuid";
+import {League} from "entities/League";
+import {PageTitle} from "utils/PageTitle";
 import {getUserBadge} from "../../shared/match/MatchGradeListItem";
 import dayjs from 'dayjs';
 import {AdminSettingsModal} from "../settings/AdminSettingsModal";

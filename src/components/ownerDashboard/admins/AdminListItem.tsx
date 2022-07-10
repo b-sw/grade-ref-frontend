@@ -1,7 +1,7 @@
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import { Flex, Spacer, IconButton, VStack, Text, useDisclosure, Avatar, HStack, Badge } from '@chakra-ui/react';
 import { MdAssignment } from 'react-icons/md';
-import {User} from "../../../entities/User";
+import {User} from "entities/User";
 import { AdminDeleteModal } from './AdminDeleteModal';
 import { AdminEditModal } from './AdminEditModal';
 

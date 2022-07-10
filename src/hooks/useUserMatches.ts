@@ -1,12 +1,12 @@
-import {uuid} from "../shared/uuid";
-import {Match} from "../entities/Match";
+import {uuid} from "utils/uuid";
+import {Match} from "entities/Match";
 import axios from "axios";
 import { useQuery } from "react-query";
-import useStore from "../zustand/store";
+import { useStore } from "zustandStore/store";
 import { useParams } from "react-router-dom";
 import { Dayjs } from "dayjs";
-import {getMatchesByDate} from "./shared/matches";
-import {enrichMatch} from "../components/shared/match/matchStatus";
+import {getMatchesByDate} from "./utils/matches";
+import {enrichMatch} from "components/shared/match/matchStatus";
 
 interface Props {
   userId?: uuid;

@@ -11,11 +11,11 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import {matchItem} from "./MatchListItem";
-import {Match} from "../../../entities/Match";
-import {useLeagueMatches} from "../../../hooks/useLeagueMatches";
-import {useLeagueTeams} from "../../../hooks/useLeagueTeams";
-import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
-import {Role} from "../../../shared/Role";
+import {Match} from "entities/Match";
+import {useLeagueMatches} from "hooks/useLeagueMatches";
+import {useLeagueTeams} from "hooks/useLeagueTeams";
+import {useLeagueUsers} from "hooks/useLeagueUsers";
+import {Role} from "utils/Role";
 
 export interface Props {
   isOpen: boolean;

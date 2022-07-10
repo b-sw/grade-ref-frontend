@@ -1,13 +1,13 @@
 import { useToast } from "@chakra-ui/react";
 import axios, { AxiosError } from "axios";
 import {QueryClient, useMutation, useQuery, useQueryClient } from "react-query";
-import {uuid} from "../shared/uuid";
-import {League} from "../entities/League";
-import {Path} from "../shared/Path";
+import {uuid} from "utils/uuid";
+import {League} from "entities/League";
+import {Path} from "utils/Path";
 import { useNavigate } from "react-router-dom";
-import useStore from "../zustand/store";
-import {Role} from "../shared/Role";
-import {toastError} from "./shared/toastError";
+import { useStore } from "zustandStore/store";
+import {Role} from "utils/Role";
+import {toastError} from "./utils/toastError";
 
 export const LEAGUES_QUERY_KEY: string = 'leagues_qk'
 

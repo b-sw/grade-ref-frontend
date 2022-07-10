@@ -3,7 +3,7 @@ import 'react-device-frameset/styles/marvel-devices.min.css'
 import {HeroLoginPanel} from "./HeroLoginPanel";
 import {Device} from "./Device";
 import { Parallax } from "react-parallax";
-import {useMobile} from "../../../hooks/useMobile";
+import {useMobile} from "hooks/useMobile";
 import { Parallax as ScrollParallax } from 'react-scroll-parallax';
 
 export const MOBILE_WINDOW_WIDTH = 768;

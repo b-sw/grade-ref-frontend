@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import {Match} from "../../../entities/Match";
-import {Constants} from "../../../shared/Constants";
+import {Match} from "entities/Match";
+import {Constants} from "utils/Constants";
 import {getGradeInfo} from "./gradeInfo";
 import { v4 as randomUuid } from 'uuid';
 

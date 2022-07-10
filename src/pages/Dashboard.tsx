@@ -2,16 +2,16 @@ import {
   Flex,
   SimpleGrid,
 } from '@chakra-ui/react';
-import {GradesPanel} from '../components/dashboard/grades/GradesPanel';
-import {HeaderPanel} from "../components/dashboard/header/HeaderPanel";
+import {GradesPanel} from 'components/dashboard/grades/GradesPanel';
+import {HeaderPanel} from "components/dashboard/header/HeaderPanel";
 import {LoadingOverlay} from "./LoadingOverlay";
-import {useUserMatches} from "../hooks/useUserMatches";
-import {MatchesPanel} from "../components/adminDashboard/matches/MatchesPanel";
-import {useLeagueUsers} from "../hooks/useLeagueUsers";
-import {Role} from "../shared/Role";
-import {useLeagueTeams} from "../hooks/useLeagueTeams";
-import {PageTitle} from "../shared/PageTitle";
-import {useLeagues} from "../hooks/useLeagues";
+import {useUserMatches} from "hooks/useUserMatches";
+import {MatchesPanel} from "components/adminDashboard/matches/MatchesPanel";
+import {useLeagueUsers} from "hooks/useLeagueUsers";
+import {Role} from "utils/Role";
+import {useLeagueTeams} from "hooks/useLeagueTeams";
+import {PageTitle} from "utils/PageTitle";
+import {useLeagues} from "hooks/useLeagues";
 
 export const Dashboard = () => {
   const { query: matchesQuery } = useUserMatches();

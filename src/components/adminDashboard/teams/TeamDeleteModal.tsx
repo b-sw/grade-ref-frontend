@@ -10,9 +10,9 @@ import {
   Text,
   Flex,
 } from '@chakra-ui/react';
-import {Team} from "../../../entities/Team";
+import {Team} from "entities/Team";
 import {teamItem} from "./TeamListItem";
-import {useLeagueTeams} from "../../../hooks/useLeagueTeams";
+import {useLeagueTeams} from "hooks/useLeagueTeams";
 
 export interface Props {
   isOpen: boolean;

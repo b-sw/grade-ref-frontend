@@ -1,24 +1,24 @@
 import {Flex, SimpleGrid,} from '@chakra-ui/react';
-import {AdminHeaderPanel} from "../components/adminDashboard/header/AdminHeaderPanel";
-import {useLeagueTeams} from "../hooks/useLeagueTeams";
-import {useLeagueMatches} from "../hooks/useLeagueMatches";
+import {AdminHeaderPanel} from "components/adminDashboard/header/AdminHeaderPanel";
+import {useLeagueTeams} from "hooks/useLeagueTeams";
+import {useLeagueMatches} from "hooks/useLeagueMatches";
 import {LoadingOverlay} from "./LoadingOverlay";
-import {useLeagues} from "../hooks/useLeagues";
-import {useLeagueUsers} from "../hooks/useLeagueUsers";
-import {Role} from "../shared/Role";
-import {PageTitle} from "../shared/PageTitle";
-import {uuid} from "../shared/uuid";
-import {Match} from "../entities/Match";
+import {useLeagues} from "hooks/useLeagues";
+import {useLeagueUsers} from "hooks/useLeagueUsers";
+import {Role} from "utils/Role";
+import {PageTitle} from "utils/PageTitle";
+import {uuid} from "utils/uuid";
+import {Match} from "entities/Match";
 import {useEffect} from "react";
-import {useSetState} from "../hooks/useSetState";
+import {useSetState} from "hooks/useSetState";
 import { useParams } from 'react-router-dom';
-import {MatchOverviewPanel} from "../components/shared/match/MatchOverviewPanel";
+import {MatchOverviewPanel} from "components/shared/match/MatchOverviewPanel";
 
 interface State {
   match?: Match;
 }
 
-export const MatchDetails = () => {
+export const MatchPage = () => {
   const { usersQuery: leagueRefereesQuery } = useLeagueUsers(Role.Referee);
   const { usersQuery: leagueObserversQuery } = useLeagueUsers(Role.Observer);
   const { query: teamsQuery } = useLeagueTeams();
@@ -48,7 +48,12 @@ export const MatchDetails = () => {
       <Flex p={[2, 4]} m={0} h={['auto', '100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
         <AdminHeaderPanel pageTitle={PageTitle.MatchDetails} />
         <SimpleGrid columns={[1, 1, 1]} flexGrow={1} overflowY={'hidden'} spacing={4} p={[4, 4, 4]} m={-4}>
-          <MatchOverviewPanel match={state.match} />
+          <MatchOverviewPanel
+            match={state.match}
+            teams={teamsQuery.data!}
+            referees={leagueRefereesQuery.data!}
+            observers={leagueObserversQuery.data!}
+          />
         </SimpleGrid>
       </Flex>
     </>

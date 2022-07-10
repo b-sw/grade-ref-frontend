@@ -1,14 +1,14 @@
 import {Button, Flex, Input, InputGroup, InputLeftElement, Spacer, Text, useDisclosure} from '@chakra-ui/react';
 import {AddIcon} from '@chakra-ui/icons';
 import {scrollbarStyle} from "../../dashboard/shared/styles";
-import {User} from "../../../entities/User";
+import {User} from "entities/User";
 import {RefereeListItem} from './RefereeListItem';
 import {RefereeCreateModal} from './RefereeCreateModal';
 import { MdSearch } from 'react-icons/md';
-import {useSetState} from "../../../hooks/useSetState";
+import {useSetState} from "hooks/useSetState";
 import {userFilter} from "../../shared/filters";
 import { useEffect } from 'react';
-import {useReferees} from "../../../hooks/useReferees";
+import {useReferees} from "hooks/useReferees";
 
 interface State {
   referees: User[],

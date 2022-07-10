@@ -10,10 +10,10 @@ import {
   ModalOverlay,
   Text,
 } from '@chakra-ui/react';
-import {User} from "../../../entities/User";
+import {User} from "entities/User";
 import {refereeItem} from "./RefereeListItem";
-import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
-import {Role} from "../../../shared/Role";
+import {useLeagueUsers} from "hooks/useLeagueUsers";
+import {Role} from "utils/Role";
 
 export interface Props {
   isOpen: boolean;

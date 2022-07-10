@@ -1,11 +1,11 @@
 import { useToast } from "@chakra-ui/react";
 import axios, { AxiosError } from "axios";
 import {QueryClient, useMutation, useQuery, useQueryClient } from "react-query";
-import {Match} from "../entities/Match";
-import {toastError} from "./shared/toastError";
-import {uuid} from "../shared/uuid";
+import {Match} from "entities/Match";
+import {toastError} from "./utils/toastError";
+import {uuid} from "utils/uuid";
 import { useParams } from "react-router-dom";
-import {enrichMatch, enrichMatchDto} from "../components/shared/match/matchStatus";
+import {enrichMatch, enrichMatchDto} from "components/shared/match/matchStatus";
 import {MATCHES_QUERY_KEY} from "./useLeagueMatches";
 
 const UPLOADED_MATCHES_QK = 'uploaded_matches_qk';

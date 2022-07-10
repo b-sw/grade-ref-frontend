@@ -1,12 +1,12 @@
 import {Button, Flex, Input, InputGroup, InputLeftElement, Spacer, Text, useDisclosure } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import {AdminCreateModal} from "./AdminCreateModal";
-import {useUsers} from "../../../hooks/useUsers";
+import {useUsers} from "hooks/useUsers";
 import {scrollbarStyle} from "../../dashboard/shared/styles";
-import {User} from "../../../entities/User";
+import {User} from "entities/User";
 import {AdminListItem} from "./AdminListItem";
 import { MdSearch } from 'react-icons/md';
-import {useSetState} from "../../../hooks/useSetState";
+import {useSetState} from "hooks/useSetState";
 import {useEffect} from "react";
 import {userFilter} from "../../shared/filters";
 

@@ -1,13 +1,13 @@
 import dayjs, { Dayjs } from "dayjs";
-import useStore from "../../../zustand/store";
-import {useSetState} from "../../../hooks/useSetState";
+import { useStore } from "zustandStore/store";
+import {useSetState} from "hooks/useSetState";
 import {Flex, Grid, IconButton, SimpleGrid, SlideFade, Spacer, Text} from "@chakra-ui/react";
 import {CalendarTile} from "./CalendarTile";
 import { useEffect } from "react";
-import { useCalendar } from "../../../hooks/useCalendar";
+import { useCalendar } from "hooks/useCalendar";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
-import {Match} from "../../../entities/Match";
-import {getMatchesByDate} from "../../../hooks/shared/matches";
+import {Match} from "entities/Match";
+import {getMatchesByDate} from "hooks/utils/matches";
 
 export enum SlideDirection {
   LEFT = -1,

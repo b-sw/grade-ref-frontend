@@ -1,10 +1,10 @@
 import { HStack, VStack, Text, Badge } from "@chakra-ui/react";
 import { MdHistory, MdInsertChart } from "react-icons/md";
-import {Match} from "../../../entities/Match";
+import {Match} from "entities/Match";
 import { CalendarIcon } from '@chakra-ui/icons';
-import {Constants} from "../../../shared/Constants";
+import {Constants} from "utils/Constants";
 import dayjs from "dayjs";
-import {useMobile} from "../../../hooks/useMobile";
+import {useMobile} from "hooks/useMobile";
 
 interface Props {
   matches: Match[],

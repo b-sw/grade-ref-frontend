@@ -1,8 +1,8 @@
-import {User} from "../../entities/User";
-import {Team} from "../../entities/Team";
-import {League} from "../../entities/League";
-import {Match} from "../../entities/Match";
-import {uuid} from "../../shared/uuid";
+import {User} from "entities/User";
+import {Team} from "entities/Team";
+import {League} from "entities/League";
+import {Match} from "entities/Match";
+import {uuid} from "utils/uuid";
 
 export const userFilter = (initialUsers: User[], filter: string): User[] => {
   filter = filter.toLowerCase();

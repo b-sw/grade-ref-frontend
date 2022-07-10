@@ -14,11 +14,11 @@ import {
   Input,
   Flex,
 } from '@chakra-ui/react';
-import {useLeagues} from "../../../hooks/useLeagues";
-import {useLeagueMatches} from "../../../hooks/useLeagueMatches";
-import {useSetState} from "../../../hooks/useSetState";
-import {League} from "../../../entities/League";
-import {uuid} from "../../../shared/uuid";
+import {useLeagues} from "hooks/useLeagues";
+import {useLeagueMatches} from "hooks/useLeagueMatches";
+import {useSetState} from "hooks/useSetState";
+import {League} from "entities/League";
+import {uuid} from "utils/uuid";
 import {leagueItem} from "../../adminExplorer/AdminLeagueCard";
 
 interface Props {

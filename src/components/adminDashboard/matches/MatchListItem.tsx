@@ -1,12 +1,12 @@
 import { Flex, VStack, Text, Avatar, HStack, Divider, Center, Badge, Tooltip, Spacer, IconButton } from '@chakra-ui/react';
-import {Match} from "../../../entities/Match";
-import {useLeagueTeams} from "../../../hooks/useLeagueTeams";
-import {Team} from "../../../entities/Team";
-import {User} from "../../../entities/User";
+import {Match} from "entities/Match";
+import {useLeagueTeams} from "hooks/useLeagueTeams";
+import {Team} from "entities/Team";
+import {User} from "entities/User";
 import dayjs from 'dayjs';
 import { CalendarIcon } from '@chakra-ui/icons';
 import { BsClockFill, BsFillHouseDoorFill, BsBookmarks } from 'react-icons/bs';
-import {Constants} from "../../../shared/Constants";
+import {Constants} from "utils/Constants";
 import {refereeItem} from "../referees/RefereeListItem";
 import {observerItem} from "../observers/ObserverListItem";
 import { MdPeople } from 'react-icons/md';
@@ -14,9 +14,9 @@ import { BsArrowRight } from 'react-icons/bs';
 import { WarningIcon } from '@chakra-ui/icons';
 import { GiSoccerField } from "react-icons/gi";
 import { motion } from 'framer-motion';
-import {Path} from "../../../shared/Path";
+import {Path} from "utils/Path";
 import {NavigateFunction, useNavigate, useParams } from 'react-router-dom';
-import {uuid} from "../../../shared/uuid";
+import {uuid} from "utils/uuid";
 
 export interface Props {
   match: Match;
@@ -37,7 +37,7 @@ export const MatchListItem = (props: Props) => {
         alignItems={'center'}
         backgroundColor={'gray.50'}
         cursor={props.readOnly ? 'default' : 'pointer'}
-        onClick={props.readOnly ? () => {} : () => { navigate(`${Path.MATCH_DETAILS}/${leagueId}/match/${props.match.id}`); }}
+        onClick={props.readOnly ? () => {} : () => { navigate(`${Path.MATCH_PAGE}/${leagueId}/match/${props.match.id}`); }}
         w={'100%'}
       >
         {matchItem2(props.match, teamsQuery.data!, navigate, leagueId!, props.readOnly)}
@@ -102,7 +102,7 @@ export const matchItem2 = (match: Match, teams: Team[], navigate: NavigateFuncti
         {!readOnly &&
           <IconButton
             as={motion.div}
-            onClick={() => { navigate(`${Path.MATCH_DETAILS}/${leagueId}/match/${match.id}`); }}
+            onClick={() => { navigate(`${Path.MATCH_PAGE}/${leagueId}/match/${match.id}`); }}
             variant={'ghost'}
             aria-label='match-details'
             whileHover={{ left: 5 }}

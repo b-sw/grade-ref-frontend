@@ -1,5 +1,5 @@
 import {useSetState} from "./useSetState";
-import {MOBILE_WINDOW_WIDTH} from "../components/landingPage/hero/Hero";
+import {MOBILE_WINDOW_WIDTH} from "components/landingPage/hero/Hero";
 import { useEffect } from "react";
 
 interface State {

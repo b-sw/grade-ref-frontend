@@ -4,12 +4,12 @@ import {Button, Flex, Input, InputGroup, InputLeftElement, Modal, ModalBody, Mod
   ModalOverlay, Spacer, Text, useDisclosure } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import {scrollbarStyle} from "../../dashboard/shared/styles";
-import {Team} from "../../../entities/Team";
+import {Team} from "entities/Team";
 import { MdSearch } from "react-icons/md";
 import {TeamListItem} from "./TeamListItem";
-import {useLeagueTeams} from "../../../hooks/useLeagueTeams";
+import {useLeagueTeams} from "hooks/useLeagueTeams";
 import {TeamCreateModal} from "./TeamCreateModal";
-import {useSetState} from "../../../hooks/useSetState";
+import {useSetState} from "hooks/useSetState";
 import {teamFilter} from "../../shared/filters";
 import { useEffect } from 'react';
 import {noRecords} from "../../shared/panelUtils";

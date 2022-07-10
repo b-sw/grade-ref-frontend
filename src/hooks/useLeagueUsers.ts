@@ -1,11 +1,11 @@
 import {useToast} from "@chakra-ui/react";
 import axios, { AxiosError } from "axios";
 import {QueryClient, useMutation, useQuery, useQueryClient} from "react-query";
-import {uuid} from "../shared/uuid";
-import {User} from "../entities/User";
-import {Role} from "../shared/Role";
+import {uuid} from "utils/uuid";
+import {User} from "entities/User";
+import {Role} from "utils/Role";
 import { useParams } from "react-router-dom";
-import {toastError} from "./shared/toastError";
+import {toastError} from "./utils/toastError";
 
 const REFEREES_QUERY_KEY = 'referees_qk';
 const OBSERVERS_QUERY_KEY = 'observers_qk'

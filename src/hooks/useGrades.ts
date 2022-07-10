@@ -1,12 +1,12 @@
 import axios, { AxiosError } from "axios";
 import {QueryClient, useMutation, useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
-import { Match } from "../entities/Match";
-import {uuid} from "../shared/uuid";
+import { Match } from "entities/Match";
+import {uuid} from "utils/uuid";
 import {USER_LEAGUE_MATCHES_QK} from "./useUserMatches";
-import useStore from "../zustand/store";
+import { useStore } from "zustandStore/store";
 import { useToast } from "@chakra-ui/react";
-import {toastError} from "./shared/toastError";
+import {toastError} from "./utils/toastError";
 
 export interface Props {
   matchId: uuid;

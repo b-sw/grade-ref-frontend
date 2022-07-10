@@ -1,13 +1,13 @@
 import axios, { AxiosError } from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import { Path } from '../shared/Path';
-import { tokenExpired } from '../zustand/jwtExpiration';
-import useStore from '../zustand/store';
-import {uuid} from "../shared/uuid";
-import {Role} from "../shared/Role";
-import {toastError} from "./shared/toastError";
+import { Path } from 'utils/Path';
+import { useStore } from 'zustandStore/store';
+import {uuid} from "utils/uuid";
+import {Role} from "utils/Role";
+import {toastError} from "./utils/toastError";
 import { useToast } from '@chakra-ui/react';
+import { tokenExpired } from 'zustandStore/jwtExpiration';
 
 export interface LoginResponse {
   id: uuid;

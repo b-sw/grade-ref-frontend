@@ -1,4 +1,4 @@
-import {LoginResponse} from "../hooks/useAuth";
+import {LoginResponse} from "hooks/useAuth";
 
 export const createAuthSlice = (set: any) => ({
   user: { id: null, email: null, accessToken: null, role: null, firstName: null, lastName: null },

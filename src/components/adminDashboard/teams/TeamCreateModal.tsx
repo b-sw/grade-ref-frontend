@@ -11,8 +11,8 @@ import {
 import { Form, Formik } from 'formik';
 import { InputControl } from 'formik-chakra-ui';
 import { useEffect } from 'react';
-import {useLeagueTeams} from "../../../hooks/useLeagueTeams";
-import {Team, teamValidationSchema} from "../../../entities/Team";
+import {useLeagueTeams} from "hooks/useLeagueTeams";
+import {Team, teamValidationSchema} from "entities/Team";
 
 interface Props {
   isOpen: boolean;

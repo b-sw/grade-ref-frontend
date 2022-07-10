@@ -1,6 +1,6 @@
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import { Flex, Spacer, IconButton, VStack, Text, useDisclosure, Avatar, HStack } from '@chakra-ui/react';
-import {Team} from "../../../entities/Team";
+import {Team} from "entities/Team";
 import {TeamDeleteModal} from "./TeamDeleteModal";
 import {TeamEditModal} from "./TeamEditModal";
 

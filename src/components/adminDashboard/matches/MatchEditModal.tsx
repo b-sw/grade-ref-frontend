@@ -12,16 +12,16 @@ import {
 import { Form, Formik } from 'formik';
 import { InputControl, SelectControl } from 'formik-chakra-ui';
 import { useEffect } from 'react';
-import {User} from "../../../entities/User";
-import {Match, matchValidationSchema} from "../../../entities/Match";
-import {uuid} from "../../../shared/uuid";
-import {useLeagueMatches} from "../../../hooks/useLeagueMatches";
-import {useLeagueTeams} from "../../../hooks/useLeagueTeams";
-import {Constants, FORMIK_DATETIME_FORMAT} from "../../../shared/Constants";
+import {User} from "entities/User";
+import {Match, matchValidationSchema} from "entities/Match";
+import {uuid} from "utils/uuid";
+import {useLeagueMatches} from "hooks/useLeagueMatches";
+import {useLeagueTeams} from "hooks/useLeagueTeams";
+import {Constants, FORMIK_DATETIME_FORMAT} from "utils/Constants";
 import dayjs from 'dayjs';
-import {Team} from "../../../entities/Team";
-import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
-import {Role} from "../../../shared/Role";
+import {Team} from "entities/Team";
+import {useLeagueUsers} from "hooks/useLeagueUsers";
+import {Role} from "utils/Role";
 import {MatchDeleteModal} from "./MatchDeleteModal";
 
 interface Props {

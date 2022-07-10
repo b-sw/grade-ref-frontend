@@ -1,10 +1,10 @@
-import {useLeagues} from "../hooks/useLeagues";
+import {useLeagues} from "hooks/useLeagues";
 import useAuth from "../hooks/useAuth";
 import {LoadingOverlay} from "./LoadingOverlay";
-import {League} from "../entities/League";
+import {League} from "entities/League";
 import {Button, Flex, Spacer } from "@chakra-ui/react";
 import { HiOutlineLogout } from "react-icons/hi";
-import { LeagueCard } from "../components/explorer/LeagueCard";
+import { LeagueCard } from "components/explorer/LeagueCard";
 
 export const Explorer = () => {
   const { query: leaguesQuery } = useLeagues();

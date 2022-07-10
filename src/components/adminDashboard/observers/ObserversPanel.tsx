@@ -2,12 +2,12 @@ import {Button, Flex, Input, InputGroup, InputLeftElement, Spacer, Text, useDisc
 import {AddIcon} from '@chakra-ui/icons';
 import {ObserverAddModal} from "./ObserverAddModal";
 import {scrollbarStyle} from "../../dashboard/shared/styles";
-import {User} from "../../../entities/User";
+import {User} from "entities/User";
 import {ObserverListItem} from "./ObserverListItem";
-import {useLeagueUsers} from "../../../hooks/useLeagueUsers";
-import {Role} from "../../../shared/Role";
+import {useLeagueUsers} from "hooks/useLeagueUsers";
+import {Role} from "utils/Role";
 import { MdSearch } from 'react-icons/md';
-import {useSetState} from "../../../hooks/useSetState";
+import {useSetState} from "hooks/useSetState";
 import {userFilter} from "../../shared/filters";
 import { useEffect } from 'react';
 import {noRecords} from "../../shared/panelUtils";

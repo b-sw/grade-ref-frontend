@@ -11,8 +11,8 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import {leagueItem} from "./LeagueListItem";
-import {League} from "../../../entities/League";
-import {useLeagues} from "../../../hooks/useLeagues";
+import {League} from "entities/League";
+import {useLeagues} from "hooks/useLeagues";
 
 export interface Props {
   isOpen: boolean;

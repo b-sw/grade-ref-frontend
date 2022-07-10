@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useQuery } from "react-query";
-import {User} from "../entities/User";
+import {User} from "entities/User";
 import { REFEREES_QUERY_KEY } from "./useUsers";
 
 export interface Props {

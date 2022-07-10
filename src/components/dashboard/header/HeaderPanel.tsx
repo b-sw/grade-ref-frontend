@@ -12,18 +12,18 @@ import {
   Badge,
   Text,
 } from '@chakra-ui/react';
-import useStore from "../../../zustand/store";
+import { useStore } from "zustandStore/store";
 import useAuth from "../../../hooks/useAuth";
 import { CalendarIcon } from '@chakra-ui/icons';
-import {Path} from "../../../shared/Path";
-import {PageTitle} from "../../../shared/PageTitle";
-import {uuid} from "../../../shared/uuid";
+import {Path} from "utils/Path";
+import {PageTitle} from "utils/PageTitle";
+import {uuid} from "utils/uuid";
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import {MdApps, MdDashboard } from 'react-icons/md';
 import {getUserBadge} from "../../shared/match/MatchGradeListItem";
-import {League} from "../../../entities/League";
-import {useLeagues} from "../../../hooks/useLeagues";
+import {League} from "entities/League";
+import {useLeagues} from "hooks/useLeagues";
 
 interface Props {
   pageTitle: string;

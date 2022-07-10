@@ -3,11 +3,11 @@ import axios, { AxiosError } from "axios";
 import { Dayjs } from "dayjs";
 import { QueryClient, useMutation, useQuery, useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
-import {Match} from "../entities/Match";
-import {uuid} from "../shared/uuid";
-import {getMatchesByDate} from "./shared/matches";
-import {toastError} from "./shared/toastError";
-import {enrichMatch} from "../components/shared/match/matchStatus";
+import {Match} from "entities/Match";
+import {uuid} from "utils/uuid";
+import {getMatchesByDate} from "./utils/matches";
+import {toastError} from "./utils/toastError";
+import {enrichMatch} from "components/shared/match/matchStatus";
 
 export const MATCHES_QUERY_KEY = 'matches_qk';
 

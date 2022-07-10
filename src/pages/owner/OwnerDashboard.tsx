@@ -2,14 +2,14 @@ import {
   Flex,
   SimpleGrid,
 } from '@chakra-ui/react';
-import {OwnerHeaderPanel} from "../../components/ownerDashboard/header/OwnerHeaderPanel";
-import {useUsers} from "../../hooks/useUsers";
+import {OwnerHeaderPanel} from "components/ownerDashboard/header/OwnerHeaderPanel";
+import {useUsers} from "hooks/useUsers";
 import {LoadingOverlay} from "../LoadingOverlay";
-import {OwnerRefereesPanel} from "../../components/ownerDashboard/referees/OwnerRefereesPanel";
-import {OwnerObserversPanel} from "../../components/ownerDashboard/observers/OwnerObserversPanel";
-import {OwnerAdminsPanel} from "../../components/ownerDashboard/admins/OwnerAdminsPanel";
-import {LeaguesPanel} from "../../components/ownerDashboard/leagues/LeaguesPanel";
-import {useLeagues} from "../../hooks/useLeagues";
+import {OwnerRefereesPanel} from "components/ownerDashboard/referees/OwnerRefereesPanel";
+import {OwnerObserversPanel} from "components/ownerDashboard/observers/OwnerObserversPanel";
+import {OwnerAdminsPanel} from "components/ownerDashboard/admins/OwnerAdminsPanel";
+import {LeaguesPanel} from "components/ownerDashboard/leagues/LeaguesPanel";
+import {useLeagues} from "hooks/useLeagues";
 
 export const OwnerDashboard = () => {
   const { adminsQuery, refereesQuery, observersQuery } = useUsers();

@@ -1,9 +1,9 @@
-import {Button, Flex, Text, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from "@chakra-ui/react";
+import {Button, Flex, Text, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure, useToast } from "@chakra-ui/react";
 import { useDropzone } from "react-dropzone";
 import { MdFileUpload } from 'react-icons/md';
-import {useSetState} from "../../../hooks/useSetState";
+import {useSetState} from "hooks/useSetState";
 import {useEffect} from "react";
-import {useFile} from "../../../hooks/useFile";
+import {useFile} from "hooks/useFile";
 import {MatchesUploadConfirmModal} from "./MatchesUploadConfirmModal";
 
 interface Props {
@@ -18,6 +18,7 @@ interface State {
 export const MatchesUploadModal = (props: Props) => {
   const { isOpen: isConfirmModalOpen, onOpen: onConfirmModalOpen, onClose: onConfirmModalClose } = useDisclosure();
   const { validateMutation } = useFile();
+  const toast = useToast();
 
   const [state, setState] = useSetState({
     files: []
@@ -45,10 +46,31 @@ export const MatchesUploadModal = (props: Props) => {
     validateMutation.mutate(formData);
   }
 
-  const { getRootProps, getInputProps } = useDropzone({
+  const { getRootProps, getInputProps, fileRejections } = useDropzone({
     onDrop: (files: File[]) => setState({ files: files }),
     disabled: validateMutation.isLoading,
+    accept: {
+      'text/csv': ['.csv'],
+    },
+    maxSize: 100000,
+    multiple: false,
+    maxFiles: 1,
   });
+
+  useEffect(() => {
+    if (fileRejections.length) {
+      fileRejections.forEach((fileRejection) => {
+        fileRejection.errors.forEach((error) => {
+          toast({
+            title: error.message,
+            status: 'error',
+            duration: 5000,
+          });
+        });
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fileRejections]);
 
   return (
     <>

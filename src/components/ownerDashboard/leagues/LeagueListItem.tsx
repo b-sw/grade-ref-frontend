@@ -2,7 +2,7 @@ import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import { Flex, Spacer, IconButton, VStack, Text, useDisclosure, Avatar, HStack } from '@chakra-ui/react';
 import { LeagueDeleteModal } from './LeagueDeleteModal';
 import { LeagueEditModal } from './LeagueEditModal';
-import {League} from "../../../entities/League";
+import {League} from "entities/League";
 
 export interface Props {
   league: League;

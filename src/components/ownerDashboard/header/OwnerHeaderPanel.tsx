@@ -11,7 +11,7 @@ import {
   Heading,
   Spacer,
 } from '@chakra-ui/react';
-import useStore from "../../../zustand/store";
+import { useStore } from "zustandStore/store";
 import useAuth from "../../../hooks/useAuth";
 import { MdDashboard, MdPeople } from 'react-icons/md';
 

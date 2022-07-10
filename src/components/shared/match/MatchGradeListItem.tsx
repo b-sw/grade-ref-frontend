@@ -1,11 +1,11 @@
-import {GRADE_ADMISSION_TIME_WINDOW, Match, MATCH_DURATION_TIME} from "../../../entities/Match";
-import {User} from "../../../entities/User";
+import {GRADE_ADMISSION_TIME_WINDOW, Match, MATCH_DURATION_TIME} from "entities/Match";
+import {User} from "entities/User";
 import {Avatar, Badge, Flex, HStack, IconButton, Spacer, Text, Tooltip, useDisclosure, VStack} from "@chakra-ui/react";
-import {Constants} from "../../../shared/Constants";
+import {Constants} from "utils/Constants";
 import dayjs from "dayjs";
 import {CalendarIcon, EditIcon, WarningIcon} from "@chakra-ui/icons";
 import {BsClockFill} from "react-icons/bs";
-import {Role} from "../../../shared/Role";
+import {Role} from "utils/Role";
 import { GradeEditModal } from "../../dashboard/grades/GradeEditModal";
 
 interface Props {
