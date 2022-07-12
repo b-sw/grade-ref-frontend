@@ -14,6 +14,7 @@ import {User} from "entities/User";
 import {refereeItem} from "./RefereeListItem";
 import {useLeagueUsers} from "hooks/useLeagueUsers";
 import {Role} from "utils/Role";
+import {useEffect} from "react";
 
 export interface Props {
   isOpen: boolean;
@@ -26,8 +27,14 @@ export const RefereeRemoveModal = (props: Props) => {
 
   const deleteReferee = () => {
     removeMutation.mutate(props.referee.id);
-    props.onClose();
   }
+
+  useEffect(() => {
+    if (removeMutation.isSuccess) {
+      props.onClose();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [removeMutation.isSuccess]);
 
   return (
     <>

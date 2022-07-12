@@ -16,6 +16,7 @@ interface Props {
 }
 
 export const Details = (props: Props) => {
+  // const user = useStore((state) => state.user);
   const getReadableDatetime = (date: Date, format: string): string => {
     return date ? dayjs(date, Constants.DATETIME_FORMAT).format(format) : 'N/A';
   }
@@ -27,7 +28,7 @@ export const Details = (props: Props) => {
 
   return (
     <Flex direction={'column'} w={'100%'} mb={5} gap={2}>
-      <Flex align={'center'} gap={2}>
+      <Flex align={'center'} gap={2} mr={5}>
         <BiDetail size={'25'}/>
         <Text fontSize={'2xl'} fontWeight={'medium'}>Match Details</Text>
         <Spacer />
@@ -144,7 +145,7 @@ export const Details = (props: Props) => {
               <Textarea
                 isReadOnly={true}
                 resize={'none'}
-                value={props.match.overallGrade ?? ''}
+                value={props.match.overallGrade ?? 'N/A'}
                 borderColor={'gray.400'}
                 focusBorderColor={'gray.400'}
                 backgroundColor={'gray.100'}

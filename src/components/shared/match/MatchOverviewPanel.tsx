@@ -1,4 +1,4 @@
-import { ArrowBackIcon } from "@chakra-ui/icons";
+import { ArrowBackIcon, DeleteIcon } from "@chakra-ui/icons";
 import {Button, Flex, Link, Spacer, Text, useDisclosure } from "@chakra-ui/react";
 import {Match} from "entities/Match";
 import {Path} from "utils/Path";
@@ -6,20 +6,23 @@ import {uuid} from "utils/uuid";
 import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
 import { motion } from 'framer-motion';
 import {useRef} from "react";
-import {Details} from "components/shared/match/sections/Details";
+import {Details} from "components/shared/match/sections/details/Details";
 import {Team} from "entities/Team";
 import {User} from "entities/User";
 import {MatchEditModal} from "components/adminDashboard/matches/MatchEditModal";
-import {Assignments} from "components/shared/match/sections/Assignments";
-import {Sanctions} from "components/shared/match/sections/Sanctions";
-import {Conclusions} from "components/shared/match/sections/Conclusions";
-import {useFouls} from "components/shared/match/sections/useFouls";
+import {Assignments} from "components/shared/match/sections/assignments/Assignments";
+import {Sanctions} from "components/shared/match/sections/sanctions/Sanctions";
+import {Conclusions} from "components/shared/match/sections/conclusions/Conclusions";
+import {useFouls} from "components/shared/match/sections/sanctions/useFouls";
 import {LoadingOverlay} from "pages/LoadingOverlay";
 import {useLeagueTeams} from "hooks/useLeagueTeams";
-import {useFeatures} from "components/shared/match/sections/useFeatures";
-import {RefereeNote} from "components/shared/match/sections/RefereeNote";
+import {useFeatures} from "components/shared/match/sections/conclusions/useFeatures";
+import {RefereeNote} from "components/shared/match/sections/note/RefereeNote";
 import {scrollbarStyle} from "components/dashboard/shared/styles";
 import {MatchListItem} from "components/adminDashboard/matches/MatchListItem";
+import {MatchDeleteModal} from "components/adminDashboard/matches/MatchDeleteModal";
+import {useStore} from "zustandStore/store";
+import {Role} from "utils/Role";
 
 export const enum MatchData {
   Details = 'Match Details',
@@ -39,10 +42,12 @@ interface Props {
 const PADDING = 4;
 
 export const MatchOverviewPanel = (props: Props) => {
-  const { isOpen: isEditModalOpen, /*onOpen: onEditModalOpen,*/ onClose: onEditModalClose } = useDisclosure();
+  const { isOpen: isEditDetailsModalOpen, /*onOpen: onEditDetailsModalOpen,*/ onClose: onEditDetailsModalClose } = useDisclosure();
+  const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
   const { query: foulsQuery } = useFouls({ matchId: props.match.id });
   const { query: featuresQuery } = useFeatures({ matchId: props.match.id });
   const { query: teamsQuery } = useLeagueTeams();
+  const user = useStore(state => state.user);
 
   const navigate: NavigateFunction = useNavigate();
   const { leagueId } = useParams<{ leagueId: uuid }>();
@@ -80,7 +85,8 @@ export const MatchOverviewPanel = (props: Props) => {
 
   return (
     <>
-      <MatchEditModal isOpen={isEditModalOpen} onClose={onEditModalClose} match={props.match} />
+      <MatchEditModal isOpen={isEditDetailsModalOpen} onClose={onEditDetailsModalClose} match={props.match} />
+      <MatchDeleteModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} match={props.match} />
       <Flex
         overflow={'hidden'}
         gap={4}
@@ -119,6 +125,14 @@ export const MatchOverviewPanel = (props: Props) => {
             <MatchListItem key={props.match.id} readOnly={true} match={props.match} />
 
             <Spacer />
+            <Button
+              variant={'ghost'}
+              leftIcon={<DeleteIcon />}
+              onClick={onDeleteModalOpen}
+              disabled={user.role !== Role.Admin}
+            >
+              Delete
+            </Button>
           </Flex>
 
           <Flex

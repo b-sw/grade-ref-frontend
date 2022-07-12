@@ -12,9 +12,11 @@ interface Props {
 }
 
 export const Assignments = (props: Props) => {
+  // const user = useStore((state) => state.user);
+
   return (
     <Flex direction={'column'} w={'100%'} mb={5} gap={2}>
-      <Flex align={'center'} gap={2}>
+      <Flex align={'center'} gap={2} mr={5}>
         <MdPeople size={'25'}/>
         <Text fontSize={'2xl'} fontWeight={'medium'}>{MatchData.Assignments}</Text>
         <Spacer />

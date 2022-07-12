@@ -41,12 +41,7 @@ export const RefereeGradesModal = (props: Props) => {
   });
 
   return (
-    <Modal
-      isOpen={props.isOpen}
-      onClose={props.onClose}
-      isCentered
-      size={'3xl'}
-    >
+    <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered size={'3xl'}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{props.referee.firstName} {props.referee.lastName}'s grades</ModalHeader>

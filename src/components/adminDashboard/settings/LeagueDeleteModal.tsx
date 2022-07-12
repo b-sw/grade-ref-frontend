@@ -20,6 +20,7 @@ import {useSetState} from "hooks/useSetState";
 import {League} from "entities/League";
 import {uuid} from "utils/uuid";
 import {leagueItem} from "../../adminExplorer/AdminLeagueCard";
+import {useEffect} from "react";
 
 interface Props {
   isOpen: boolean;
@@ -49,6 +50,13 @@ export const LeagueDeleteModal = (props: Props) => {
     }
     deleteMutation.mutate(props.leagueId);
   };
+
+  useEffect(() => {
+    if (deleteMutation.isSuccess) {
+      props.onClose();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deleteMutation.isSuccess]);
 
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>

@@ -13,6 +13,7 @@ import {
 import {Team} from "entities/Team";
 import {teamItem} from "./TeamListItem";
 import {useLeagueTeams} from "hooks/useLeagueTeams";
+import {useEffect} from "react";
 
 export interface Props {
   isOpen: boolean;
@@ -26,6 +27,13 @@ export const TeamDeleteModal = (props: Props) => {
   const deleteTeam = () => {
     deleteMutation.mutate(props.team.id);
   }
+
+  useEffect(() => {
+    if (deleteMutation.isSuccess) {
+      props.onClose();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deleteMutation.isSuccess]);
 
   return (
     <>

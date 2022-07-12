@@ -14,8 +14,10 @@ import {matchItem} from "./MatchListItem";
 import {Match} from "entities/Match";
 import {useLeagueMatches} from "hooks/useLeagueMatches";
 import {useLeagueTeams} from "hooks/useLeagueTeams";
-import {useLeagueUsers} from "hooks/useLeagueUsers";
-import {Role} from "utils/Role";
+import {Path} from "utils/Path";
+import {uuid} from "utils/uuid";
+import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
+import {useEffect} from "react";
 
 export interface Props {
   isOpen: boolean;
@@ -25,17 +27,26 @@ export interface Props {
 
 export const MatchDeleteModal = (props: Props) => {
   const { deleteMutation } = useLeagueMatches();
-  const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
-  const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
   const { query: teamsQuery } = useLeagueTeams();
+
+  const navigate: NavigateFunction = useNavigate();
+  const { leagueId } = useParams<{ leagueId: uuid }>();
 
   const deleteMatch = () => {
     deleteMutation.mutate(props.match.id);
   }
 
+  useEffect(() => {
+    if (deleteMutation.isSuccess) {
+      props.onClose();
+      navigate(`${Path.ADMIN_DASHBOARD}/${leagueId}`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deleteMutation.isSuccess]);
+
   return (
     <>
-      <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
+      <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered size={'3xl'} >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Delete match</ModalHeader>
@@ -50,7 +61,7 @@ export const MatchDeleteModal = (props: Props) => {
               alignItems={'center'}
               backgroundColor={'gray.50'}
             >
-              {matchItem(props.match, teamsQuery.data!, refereesQuery.data!, observersQuery.data!)}
+              {matchItem(props.match, teamsQuery.data!, navigate, leagueId!, true)}
             </Flex>
             <Text fontWeight='bold' mt='1rem'>
               You can't undo this action afterwards.

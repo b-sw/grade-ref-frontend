@@ -17,7 +17,7 @@ import {
   TriangleDownIcon,
   TriangleUpIcon
 } from "@chakra-ui/icons";
-import { useTable, useSortBy, Column } from "react-table";
+import { useTable, useSortBy, Column, usePagination } from "react-table";
 
 export type DataTableProps<Data extends object> = {
   data: Data[];
@@ -27,14 +27,17 @@ export type DataTableProps<Data extends object> = {
 export function DataTable<Data extends object>({
                                                  data,
                                                  columns
-                                               }: DataTableProps<Data>) {
+                                               }: DataTableProps<Data>,
+                                               readOnly?: boolean,
+                                               /*onDelete?: (id: string) => void,
+                                               onEdit?: (id: string) => void*/) {
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
     prepareRow
-  } = useTable({ columns, data }, useSortBy);
+  } = useTable({ columns, data }, useSortBy, usePagination);
 
   return (
     <Table {...getTableProps()}>
@@ -68,7 +71,7 @@ export function DataTable<Data extends object>({
         {rows.map((row) => {
           prepareRow(row);
           return (
-            <Tr {...row.getRowProps()}>
+            <Tr {...row.getRowProps()} role={'group'}>
               {row.cells.map((cell: any) => (
                 <Td
                   {...cell.getCellProps()}
@@ -77,23 +80,31 @@ export function DataTable<Data extends object>({
                   {cell.render("Cell")}
                 </Td>
               ))}
-              <Flex>
-                <Spacer />
-                <Td>
+              <Td>
+                <Flex _hover={{ child: { display: 'inherit'} }}>
+                  <Spacer />
                   <Flex gap={2}>
                     <IconButton
                       variant={'ghost'}
                       aria-label='edit'
                       icon={<EditIcon />}
+                      opacity={0}
+                      cursor={'default'}
+                      _groupHover={{ opacity: readOnly ? 0 : 1, cursor: readOnly ? 'default' : 'pointer' }}
+                      // onClick={onEdit}
                     />
                     <IconButton
                       variant={'ghost'}
                       aria-label='delete'
                       icon={<DeleteIcon />}
+                      opacity={0}
+                      cursor={'default'}
+                      _groupHover={{ opacity: readOnly ? 0 : 1, cursor: readOnly ? 'default' : 'pointer' }}
+                      // onClick={onDelete}
                     />
                   </Flex>
-                </Td>
-              </Flex>
+                </Flex>
+              </Td>
             </Tr>
           );
         })}
