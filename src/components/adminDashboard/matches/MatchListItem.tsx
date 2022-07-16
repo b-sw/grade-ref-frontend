@@ -24,7 +24,6 @@ export const MatchListItem = (props: Props) => {
 
   return (
     <>
-      {/*{!props.readOnly && <MatchEditModal isOpen={isEditModalOpen} onClose={onEditModalClose} match={props.match} />}*/}
       <Flex
         p={5}
         borderRadius={10}

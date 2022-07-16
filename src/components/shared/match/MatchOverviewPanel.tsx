@@ -9,7 +9,7 @@ import {useRef} from "react";
 import {Details} from "components/shared/match/sections/details/Details";
 import {Team} from "entities/Team";
 import {User} from "entities/User";
-import {MatchEditModal} from "components/adminDashboard/matches/MatchEditModal";
+import {DetailsEditModal} from "components/shared/match/sections/details/DetailsEditModal";
 import {Assignments} from "components/shared/match/sections/assignments/Assignments";
 import {Sanctions} from "components/shared/match/sections/sanctions/Sanctions";
 import {Conclusions} from "components/shared/match/sections/conclusions/Conclusions";
@@ -23,9 +23,11 @@ import {MatchListItem} from "components/adminDashboard/matches/MatchListItem";
 import {MatchDeleteModal} from "components/adminDashboard/matches/MatchDeleteModal";
 import {useStore} from "zustandStore/store";
 import {Role} from "utils/Role";
+import {Grade} from "components/shared/match/sections/grade/Grade";
 
 export const enum MatchData {
   Details = 'Match Details',
+  Grade = 'Match Grade',
   Assignments = 'Assignments',
   DisciplinarySanctions = 'Disciplinary sanctions',
   Conclusions = 'Conclusions',
@@ -54,6 +56,7 @@ export const MatchOverviewPanel = (props: Props) => {
 
   const overviewRef: any = useRef();
   const detailsRef: any = useRef();
+  const gradeRef: any = useRef();
   const assignmentsRef: any = useRef();
   const foulsRef: any = useRef();
   const conclusionsRef: any = useRef();
@@ -85,7 +88,7 @@ export const MatchOverviewPanel = (props: Props) => {
 
   return (
     <>
-      <MatchEditModal isOpen={isEditDetailsModalOpen} onClose={onEditDetailsModalClose} match={props.match} />
+      <DetailsEditModal isOpen={isEditDetailsModalOpen} handleClose={onEditDetailsModalClose} match={props.match} />
       <MatchDeleteModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} match={props.match} />
       <Flex
         overflow={'hidden'}
@@ -151,6 +154,7 @@ export const MatchOverviewPanel = (props: Props) => {
             >
               <Text fontSize={'xl'} fontWeight={'medium'}>Page sections</Text>
               {menuLink(MatchData.Details, detailsRef)}
+              {menuLink(MatchData.Grade, gradeRef)}
               {menuLink(MatchData.Assignments, assignmentsRef)}
               {menuLink(MatchData.DisciplinarySanctions, foulsRef)}
               {menuLink(MatchData.Conclusions, conclusionsRef)}
@@ -170,13 +174,11 @@ export const MatchOverviewPanel = (props: Props) => {
                 ref={overviewRef}
               >
                 <Flex ref={detailsRef}>
-                  <Details
-                    match={props.match}
-                    homeTeam={homeTeam}
-                    awayTeam={awayTeam}
-                    referee={referee}
-                    observer={observer}
-                  />
+                  <Details match={props.match} homeTeam={homeTeam} awayTeam={awayTeam}/>
+                </Flex>
+
+                <Flex ref={gradeRef}>
+                  <Grade match={props.match} />
                 </Flex>
 
                 <Flex ref={assignmentsRef}>
