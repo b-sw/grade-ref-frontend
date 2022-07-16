@@ -34,7 +34,7 @@ export const enum MatchData {
   RefereeNote = 'Referee note',
 }
 
-interface Props {
+interface MatchOverviewPanelProps {
   match: Match;
   teams: Team[];
   referees: User[];
@@ -43,11 +43,11 @@ interface Props {
 
 const PADDING = 4;
 
-export const MatchOverviewPanel = (props: Props) => {
+export const MatchOverviewPanel = ({ match, teams, referees, observers }: MatchOverviewPanelProps) => {
   const { isOpen: isEditDetailsModalOpen, /*onOpen: onEditDetailsModalOpen,*/ onClose: onEditDetailsModalClose } = useDisclosure();
   const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
-  const { query: foulsQuery } = useFouls({ matchId: props.match.id });
-  const { query: featuresQuery } = useFeatures({ matchId: props.match.id });
+  const { query: foulsQuery } = useFouls({ matchId: match.id });
+  const { query: featuresQuery } = useFeatures({ matchId: match.id });
   const { query: teamsQuery } = useLeagueTeams();
   const user = useStore(state => state.user);
 
@@ -62,10 +62,10 @@ export const MatchOverviewPanel = (props: Props) => {
   const conclusionsRef: any = useRef();
   const noteRef: any = useRef();
 
-  const homeTeam: Team = props.teams.find((team: Team) => team.id === props.match.homeTeamId)!;
-  const awayTeam: Team = props.teams.find((team: Team) => team.id === props.match.awayTeamId)!;
-  const referee: User = props.referees.find((referee: User) => referee.id === props.match.refereeId)!;
-  const observer: User = props.observers.find((observer: User) => observer.id === props.match.observerId)!;
+  const homeTeam: Team = teams.find((team: Team) => team.id === match.homeTeamId)!;
+  const awayTeam: Team = teams.find((team: Team) => team.id === match.awayTeamId)!;
+  const referee: User = referees.find((referee: User) => referee.id === match.refereeId)!;
+  const observer: User = observers.find((observer: User) => observer.id === match.observerId)!;
 
   const menuLink = (sectionName: MatchData, ref: any) => {
     return (
@@ -88,8 +88,8 @@ export const MatchOverviewPanel = (props: Props) => {
 
   return (
     <>
-      <DetailsEditModal isOpen={isEditDetailsModalOpen} handleClose={onEditDetailsModalClose} match={props.match} />
-      <MatchDeleteModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} match={props.match} />
+      <DetailsEditModal isOpen={isEditDetailsModalOpen} handleClose={onEditDetailsModalClose} match={match} />
+      <MatchDeleteModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} match={match} />
       <Flex
         overflow={'hidden'}
         gap={4}
@@ -125,7 +125,7 @@ export const MatchOverviewPanel = (props: Props) => {
 
             <Spacer />
 
-            <MatchListItem key={props.match.id} readOnly={true} match={props.match} />
+            <MatchListItem key={match.id} readOnly={true} match={match} />
 
             <Spacer />
             <Button
@@ -174,27 +174,27 @@ export const MatchOverviewPanel = (props: Props) => {
                 ref={overviewRef}
               >
                 <Flex ref={detailsRef}>
-                  <Details match={props.match} homeTeam={homeTeam} awayTeam={awayTeam}/>
+                  <Details match={match} homeTeam={homeTeam} awayTeam={awayTeam}/>
                 </Flex>
 
                 <Flex ref={gradeRef}>
-                  <Grade match={props.match} />
+                  <Grade match={match} />
                 </Flex>
 
                 <Flex ref={assignmentsRef}>
-                  <Assignments match={props.match} referee={referee} observer={observer} />
+                  <Assignments match={match} referee={referee} observer={observer} />
                 </Flex>
 
                 <Flex ref={foulsRef}>
-                  <Sanctions match={props.match} fouls={foulsQuery.data!} teams={teamsQuery.data!} />
+                  <Sanctions match={match} fouls={foulsQuery.data!} teams={teamsQuery.data!} />
                 </Flex>
 
                 <Flex ref={conclusionsRef}>
-                  <Conclusions match={props.match} features={featuresQuery.data!} />
+                  <Conclusions match={match} features={featuresQuery.data!} />
                 </Flex>
 
                 <Flex ref={noteRef}>
-                  <RefereeNote match={props.match} />
+                  <RefereeNote match={match} />
                 </Flex>
               </Flex>
             </Flex>

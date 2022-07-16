@@ -26,6 +26,7 @@ export const Details = ({ match, homeTeam, awayTeam }: DetailsProps) => {
   return (
     <>
       <DetailsEditModal isOpen={isEditOpen} handleClose={onEditClose} match={match} />
+
       <Flex direction={'column'} w={'100%'} mb={5} gap={2}>
         <Flex align={'center'} gap={2} mr={5}>
           <InfoIcon boxSize={25}/>

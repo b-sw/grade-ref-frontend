@@ -1,14 +1,3 @@
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
-  Button,
-} from '@chakra-ui/react';
-import { Form, Formik } from 'formik';
 import { InputControl, SelectControl } from 'formik-chakra-ui';
 import { useEffect } from 'react';
 import {Match} from "entities/Match";
@@ -17,9 +6,10 @@ import {useLeagueMatches} from "hooks/useLeagueMatches";
 import {useLeagueTeams} from "hooks/useLeagueTeams";
 import {Constants, FORMIK_DATETIME_FORMAT} from "utils/Constants";
 import dayjs from 'dayjs';
-import {Team} from "entities/Team";
-import {detailsValidationSchema} from "components/shared/match/sections/details/Details.validation";
+import {detailsValidationSchema} from "components/shared/match/sections/details/details.validation";
 import {LoadingOverlay} from "pages/LoadingOverlay";
+import {SelectOptions} from "components/shared/match/shared/SelectOptions";
+import {FormikModal} from "components/shared/match/shared/FormikModal";
 
 interface DetailsEditModalProps {
   isOpen: boolean;
@@ -27,7 +17,7 @@ interface DetailsEditModalProps {
   match: Match;
 }
 
-interface FormikValues {
+interface DetailsFormikValues {
   date: string;
   stadium: string;
   homeTeamId: uuid;
@@ -46,14 +36,14 @@ export const DetailsEditModal = ({ isOpen, handleClose, match }: DetailsEditModa
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updateMutation.isSuccess]);
 
-  const initialValues: FormikValues = {
+  const initialValues: DetailsFormikValues = {
     date: dayjs(match.matchDate).format(FORMIK_DATETIME_FORMAT),
     stadium: match.stadium,
     homeTeamId: match.homeTeamId,
     awayTeamId: match.awayTeamId,
   };
 
-  const handleEditMatch = (values: FormikValues) => {
+  const handleEditMatch = (values: DetailsFormikValues) => {
     const newMatchDate: Date = dayjs(values.date, Constants.DATETIME_FORMAT).toDate();
 
     updateMutation.mutate({
@@ -65,54 +55,36 @@ export const DetailsEditModal = ({ isOpen, handleClose, match }: DetailsEditModa
     } as Match);
   };
 
+  const modalBody: JSX.Element = (
+    <>
+      <InputControl name='date' label='Date' inputProps={{ type: 'datetime-local' }} />
+
+      <InputControl name='stadium' label='Stadium' />
+
+      <SelectControl name='homeTeamId' label='Home team'>
+        <SelectOptions data={teamsQuery.data} labelProps={['name']} />
+      </SelectControl>
+
+      <SelectControl name='awayTeamId' label='Away team'>
+        <SelectOptions data={teamsQuery.data} labelProps={['name']} />
+      </SelectControl>
+    </>
+  );
+
   if (teamsQuery.isLoading) {
     return <LoadingOverlay />;
   }
 
   return (
-    <>
-      <Modal isOpen={isOpen} onClose={handleClose} isCentered>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Edit match details</ModalHeader>
-          <ModalCloseButton />
-
-          <Formik initialValues={initialValues} onSubmit={handleEditMatch} validationSchema={detailsValidationSchema}>
-            {({ handleSubmit }) => (
-              <Form onSubmit={handleSubmit}>
-                <ModalBody>
-                  <InputControl name='date' label='Date' inputProps={{ type: 'datetime-local' }} />
-
-                  <InputControl name='stadium' label='Stadium' />
-
-                  <SelectControl name='homeTeamId' label='Home team' mt={3}>
-                    {(teamsQuery.data as Team[]).map((team) => (
-                        <option key={team.id} value={team.id}>
-                          {team.name}
-                        </option>
-                      ))}
-                  </SelectControl>
-
-                  <SelectControl name='awayTeamId' label='Away team' mt={3}>
-                    {(teamsQuery.data as Team[]).map((team) => (
-                        <option key={team.id} value={team.id}>
-                          {team.name}
-                        </option>
-                      ))}
-                  </SelectControl>
-                </ModalBody>
-
-                <ModalFooter>
-                  <Button type='submit' colorScheme='blue' mr={'3'} isLoading={updateMutation.isLoading}>
-                    Save
-                  </Button>
-                  <Button onClick={handleClose}>Cancel</Button>
-                </ModalFooter>
-              </Form>
-            )}
-          </Formik>
-        </ModalContent>
-      </Modal>
-    </>
+    <FormikModal
+      headingTitle={'Edit match details'}
+      body={modalBody}
+      isOpen={isOpen}
+      handleEdit={handleEditMatch}
+      isLoading={updateMutation.isLoading}
+      handleClose={handleClose}
+      initialValues={initialValues}
+      validationSchema={detailsValidationSchema}
+    />
   );
 };

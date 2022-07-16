@@ -33,7 +33,3 @@ export const matchValidationSchema = Yup.object({
   refereeId: Yup.string().required(),
   observerId: Yup.string().required(),
 });
-
-export const gradeValidationSchema = Yup.object({
-  grade: Yup.number().required().min(0).max(10),
-})

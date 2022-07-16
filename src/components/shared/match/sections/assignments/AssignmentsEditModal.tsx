@@ -1,151 +1,80 @@
-export interface AssignmentsEditModalProps {
+import {SelectControl} from 'formik-chakra-ui';
+import {useEffect} from 'react';
+import {Match} from "entities/Match";
+import {uuid} from "utils/uuid";
+import {useLeagueMatches} from "hooks/useLeagueMatches";
+import {LoadingOverlay} from "pages/LoadingOverlay";
+import {SelectOptions} from "components/shared/match/shared/SelectOptions";
+import {useLeagueUsers} from "hooks/useLeagueUsers";
+import {Role} from "utils/Role";
+import {assignmentsValidationSchema} from "components/shared/match/sections/assignments/assignments.validation";
+import {FormikModal} from "components/shared/match/shared/FormikModal";
 
+interface AssignmentsEditModalProps {
+  isOpen: boolean;
+  handleClose: () => void;
+  match: Match;
 }
 
-export const AssignmentsEditModal = ({}: AssignmentsEditModalProps) => {
-  return (
+interface AssignmentsFormikValues {
+  refereeId: uuid;
+  observerId: uuid;
+}
+
+export const AssignmentsEditModal = ({ isOpen, handleClose, match }: AssignmentsEditModalProps) => {
+  const { updateMutation } = useLeagueMatches();
+  const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
+  const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
+
+  useEffect(() => {
+    if (updateMutation.isSuccess) {
+      handleClose();
+      updateMutation.reset();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [updateMutation.isSuccess]);
+
+  const initialValues: AssignmentsFormikValues = {
+    refereeId: match.refereeId,
+    observerId: match.observerId,
+  };
+
+  const handleEditMatch = (values: AssignmentsFormikValues) => {
+    updateMutation.mutate({
+      ...match,
+      refereeId: values.refereeId,
+      observerId: values.observerId,
+    } as Match);
+  };
+
+  const modalBody: JSX.Element = (
     <>
+      <SelectControl name='refereeId' label='Referee'>
+        <SelectOptions data={refereesQuery.data} labelProps={['firstName', 'lastName']} />
+      </SelectControl>
+
+      <SelectControl name='observerId' label='Observer'>
+        <SelectOptions data={observersQuery.data} labelProps={['firstName', 'lastName']} />
+      </SelectControl>
     </>
   );
-}
 
-// <Flex direction={'column'} w={'100%'} mb={5} gap={2}>
-//   <Flex align={'center'} gap={2} mr={5}>
-//     <BiDetail size={'25'}/>
-//     <Text fontSize={'2xl'} fontWeight={'medium'}>Match Details</Text>
-//     <Spacer />
-//     <Button
-//       variant={'ghost'}
-//       leftIcon={<EditIcon />}
-//       onClick={onEditOpen}
-//     >
-//       Edit
-//     </Button>
-//   </Flex>
-//
-//   <Flex
-//     direction={'column'}
-//     w={'100%'}
-//     borderRadius={10}
-//     backgroundColor={'gray.200'}
-//     p={5}
-//   >
-//     <Flex direction={'column'} pr={[0, 20]} gap={2}>
-//       <Flex gap={5}>
-//         <Flex w={'50%'}>
-//           <Spacer />
-//           <Text fontSize={'xl'}>date</Text>
-//         </Flex>
-//         <Flex w={'50%'}>
-//           <Text fontSize={'xl'} fontWeight={'medium'}>{matchDate}</Text>
-//           <Spacer />
-//         </Flex>
-//       </Flex>
-//
-//       <Flex gap={5}>
-//         <Flex w={'50%'}>
-//           <Spacer />
-//           <Text fontSize={'xl'}>time</Text>
-//         </Flex>
-//         <Flex w={'50%'}>
-//           <Text fontSize={'xl'} fontWeight={'medium'}>{matchTime}</Text>
-//           <Spacer />
-//         </Flex>
-//       </Flex>
-//
-//       <Flex gap={5}>
-//         <Flex w={'50%'}>
-//           <Spacer />
-//           <Text fontSize={'xl'}>stadium</Text>
-//         </Flex>
-//         <Flex w={'50%'}>
-//           <Text fontSize={'xl'} fontWeight={'medium'}>{props.match.stadium}</Text>
-//           <Spacer />
-//         </Flex>
-//       </Flex>
-//
-//       <Flex gap={5}>
-//         <Flex w={'50%'}>
-//           <Spacer />
-//           <Text fontSize={'xl'}>home team</Text>
-//         </Flex>
-//         <Flex w={'50%'}>
-//           <Text fontSize={'xl'} fontWeight={'medium'}>{props.homeTeam.name}</Text>
-//           <Spacer />
-//         </Flex>
-//       </Flex>
-//
-//       <Flex gap={5} mb={5}>
-//         <Flex w={'50%'}>
-//           <Spacer />
-//           <Text fontSize={'xl'}>away team</Text>
-//         </Flex>
-//         <Flex w={'50%'}>
-//           <Text fontSize={'xl'} fontWeight={'medium'}>{props.awayTeam.name}</Text>
-//           <Spacer />
-//         </Flex>
-//       </Flex>
-//
-//       <Flex gap={5}>
-//         <Flex w={'50%'}>
-//           <Spacer />
-//           <Text fontSize={'xl'}>grade</Text>
-//         </Flex>
-//         <Flex w={'50%'} align={'center'}>
-//           <Badge variant={'outline'} colorScheme={props.match.gradeStatus.badgeScheme} fontSize={'md'} w={'auto'}>
-//             {props.match.refereeGrade ?? 'N/A'}
-//           </Badge>
-//           <Spacer />
-//         </Flex>
-//       </Flex>
-//
-//       <Flex gap={5}>
-//         <Flex w={'50%'}>
-//           <Spacer />
-//           <Text fontSize={'xl'}>grade date</Text>
-//         </Flex>
-//         <Flex w={'50%'} gap={2}>
-//           <Text fontSize={'xl'} fontWeight={'medium'}>{refereeGradeDate}</Text>
-//           {props.match.gradeStatus.delay &&
-//             <HStack>
-//               <Tooltip label='delay'>
-//                 <WarningIcon color={'red.600'}/>
-//               </Tooltip>
-//               <Text color={'red.600'}>+{props.match.gradeStatus.delay}</Text>
-//             </HStack>
-//           }
-//           <Spacer />
-//         </Flex>
-//       </Flex>
-//
-//       <Flex gap={5}>
-//         <Flex w={'50%'} align={'center'}>
-//           <Spacer />
-//           <Text fontSize={'xl'}>overall grade</Text>
-//         </Flex>
-//         <Flex w={'50%'}>
-//           <Textarea
-//             isReadOnly={true}
-//             resize={'none'}
-//             value={props.match.overallGrade ?? 'N/A'}
-//             borderColor={'gray.400'}
-//             focusBorderColor={'gray.400'}
-//             backgroundColor={'gray.100'}
-//             _hover={{}}
-//           />
-//         </Flex>
-//       </Flex>
-//
-//       <Flex gap={5}>
-//         <Flex w={'50%'}>
-//           <Spacer />
-//           <Text fontSize={'xl'}>overall grade date</Text>
-//         </Flex>
-//         <Flex w={'50%'}>
-//           <Text fontSize={'xl'} fontWeight={'medium'}>{overallGradeDate}</Text>
-//         </Flex>
-//       </Flex>
-//
-//     </Flex>
-//   </Flex>
-// </Flex>
+  const queriesAreLoading: boolean = [refereesQuery, observersQuery].some(query => query.isLoading);
+
+  if (queriesAreLoading) {
+    return <LoadingOverlay />;
+  }
+
+  return (
+    <FormikModal
+      headingTitle={'Edit assignments'}
+      body={modalBody}
+      isOpen={isOpen}
+      handleEdit={handleEditMatch}
+      isLoading={updateMutation.isLoading}
+      handleClose={handleClose}
+      initialValues={initialValues}
+      validationSchema={assignmentsValidationSchema}
+    />
+  );
+};

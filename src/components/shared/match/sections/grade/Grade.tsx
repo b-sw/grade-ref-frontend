@@ -7,6 +7,7 @@ import { BiDetail } from "react-icons/bi";
 import {DetailsEditModal} from "components/shared/match/sections/details/DetailsEditModal";
 import {TextField} from "components/shared/match/shared/TextField";
 import {Field} from "components/shared/match/shared/Field";
+import {GradeEditModal} from "components/shared/match/sections/grade/GradeEditModal";
 
 interface GradeProps {
   match: Match;
@@ -58,7 +59,7 @@ export const Grade = ({ match }: GradeProps) => {
 
   return (
     <>
-      <DetailsEditModal isOpen={isEditOpen} handleClose={onEditClose} match={match} />
+      <GradeEditModal isOpen={isEditOpen} handleClose={onEditClose} match={match} />
       <Flex direction={'column'} w={'100%'} mb={5} gap={2}>
         <Flex align={'center'} gap={2} mr={5}>
           <BiDetail size={'25'}/>
