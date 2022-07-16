@@ -1,19 +1,21 @@
 import {EditIcon, WarningIcon } from "@chakra-ui/icons";
-import {Badge, Button, Flex, HStack, Spacer, Text, Textarea, Tooltip, useDisclosure } from "@chakra-ui/react";
+import {Badge, Button, Flex, HStack, Icon, Spacer, Text, Textarea, Tooltip, useDisclosure } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import {Match} from "entities/Match";
 import {Constants} from "utils/Constants";
 import { BiDetail } from "react-icons/bi";
-import {DetailsEditModal} from "components/shared/match/sections/details/DetailsEditModal";
 import {TextField} from "components/shared/match/shared/TextField";
 import {Field} from "components/shared/match/shared/Field";
 import {GradeEditModal} from "components/shared/match/sections/grade/GradeEditModal";
+import {useStore} from "zustandStore/store";
+import {Role} from "utils/Role";
 
 interface GradeProps {
   match: Match;
 }
 
 export const Grade = ({ match }: GradeProps) => {
+  const user = useStore(state => state.user);
   const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
 
   const getReadableDatetime = (date: Date, format: string): string => {
@@ -49,7 +51,7 @@ export const Grade = ({ match }: GradeProps) => {
       {match.gradeStatus.delay &&
         <HStack>
           <Tooltip label='delay'>
-            <WarningIcon color={'red.600'}/>
+            <Icon as={WarningIcon} color={'red.600'}/>
           </Tooltip>
           <Text color={'red.600'}>+{match.gradeStatus.delay}</Text>
         </HStack>
@@ -57,18 +59,21 @@ export const Grade = ({ match }: GradeProps) => {
     </Flex>
   );
 
+  const userCanEdit: boolean = user.role === Role.Admin || user.role === Role.Observer;
+
   return (
     <>
-      <GradeEditModal isOpen={isEditOpen} handleClose={onEditClose} match={match} />
+      {userCanEdit && <GradeEditModal isOpen={isEditOpen} handleClose={onEditClose} match={match} />}
       <Flex direction={'column'} w={'100%'} mb={5} gap={2}>
         <Flex align={'center'} gap={2} mr={5}>
-          <BiDetail size={'25'}/>
+          <Icon as={BiDetail} />
           <Text fontSize={'2xl'} fontWeight={'medium'}>Grade details</Text>
           <Spacer />
           <Button
             variant={'ghost'}
-            leftIcon={<EditIcon />}
+            leftIcon={<Icon as={EditIcon} />}
             onClick={onEditOpen}
+            disabled={!userCanEdit}
           >
             Edit
           </Button>

@@ -1,4 +1,4 @@
-import {Button, Flex, Spacer, Text, Textarea } from "@chakra-ui/react"
+import {Button, Flex, Icon, Spacer, Text, Textarea } from "@chakra-ui/react"
 import {Match} from "entities/Match";
 import {MatchData} from "components/shared/match/MatchOverviewPanel";
 import { MdNote } from "react-icons/md";
@@ -13,21 +13,22 @@ interface Props {
 export const RefereeNote = (props: Props) => {
   const user = useStore((state) => state.user);
 
+  const userCanEdit: boolean = user.role === Role.Referee;
+
   return (
     <Flex direction={'column'} w={'100%'} mb={5} gap={2}>
       <Flex align={'center'} gap={2} mr={5}>
-        <MdNote size={'25'}/>
+        <Icon as={MdNote} />
         <Text fontSize={'2xl'} fontWeight={'medium'}>{MatchData.RefereeNote}</Text>
         <Spacer />
-        {user.role === Role.Referee &&
-          <Button
-            variant={'ghost'}
-            leftIcon={<EditIcon />}
-            onClick={() => {}}
-          >
-            Edit
-          </Button>
-        }
+        <Button
+          variant={'ghost'}
+          leftIcon={<Icon as={EditIcon} />}
+          onClick={() => {}}
+          disabled={!userCanEdit}
+        >
+          Edit
+        </Button>
       </Flex>
 
       <Flex

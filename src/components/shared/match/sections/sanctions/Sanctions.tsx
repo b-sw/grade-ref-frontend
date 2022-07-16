@@ -1,4 +1,4 @@
-import {Badge, Button, Flex, Spacer, Text} from "@chakra-ui/react"
+import {Badge, Button, Flex, Icon, Spacer, Text} from "@chakra-ui/react"
 import {MdWarning} from "react-icons/md"
 import {IoIosShirt} from "react-icons/io"
 import {Match} from "entities/Match";
@@ -54,21 +54,22 @@ export const Sanctions = (props: Props) => {
     },
   ];
 
+  const userCanEdit: boolean = user.role === Role.Admin || user.role === Role.Observer;
+
   return (
     <Flex direction={'column'} w={'100%'} mb={5} gap={2}>
       <Flex align={'center'} gap={2} mr={5}>
-        <MdWarning size={'25'}/>
+        <Icon as={MdWarning} />
         <Text fontSize={'2xl'} fontWeight={'medium'}>{MatchData.DisciplinarySanctions}</Text>
         <Spacer />
-        {user.role === Role.Observer &&
-          <Button
-            variant={'ghost'}
-            leftIcon={<AddIcon />}
-            onClick={() => {}}
-          >
-            Add
-          </Button>
-        }
+        <Button
+          variant={'ghost'}
+          leftIcon={<Icon as={AddIcon} />}
+          onClick={() => {}}
+          disabled={!userCanEdit}
+        >
+          Add
+        </Button>
       </Flex>
 
       <Flex

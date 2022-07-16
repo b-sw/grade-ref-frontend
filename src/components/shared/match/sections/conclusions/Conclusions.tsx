@@ -1,4 +1,4 @@
-import { Button, Flex, Spacer, Text } from "@chakra-ui/react";
+import { Button, Flex, Icon, Spacer, Text } from "@chakra-ui/react";
 import { MdGrade } from "react-icons/md";
 import {Match} from "entities/Match";
 import { AddIcon } from "@chakra-ui/icons";
@@ -29,21 +29,22 @@ export const Conclusions = (props: Props) => {
     },
   ];
 
+  const userCanEdit: boolean = user.role === Role.Admin || user.role === Role.Observer;
+
   return (
     <Flex direction={'column'} w={'100%'} mb={5} gap={2}>
       <Flex align={'center'} gap={2} mr={5}>
-        <MdGrade size={'25'}/>
+        <Icon as={MdGrade} />
         <Text fontSize={'2xl'} fontWeight={'medium'}>{MatchData.Conclusions}</Text>
         <Spacer />
-        {user.role === Role.Referee &&
-          <Button
-            variant={'ghost'}
-            leftIcon={<AddIcon />}
-            onClick={() => {}}
-          >
-            Add
-          </Button>
-        }
+        <Button
+          variant={'ghost'}
+          leftIcon={<Icon as={AddIcon} />}
+          onClick={() => {}}
+          disabled={!userCanEdit}
+        >
+          Add
+        </Button>
       </Flex>
 
       <Flex

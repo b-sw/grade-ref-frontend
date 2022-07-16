@@ -1,5 +1,5 @@
 import { ArrowBackIcon, DeleteIcon } from "@chakra-ui/icons";
-import {Button, Flex, Link, Spacer, Text, useDisclosure } from "@chakra-ui/react";
+import {Button, Flex, Icon, Link, Spacer, Text, useDisclosure } from "@chakra-ui/react";
 import {Match} from "entities/Match";
 import {Path} from "utils/Path";
 import {uuid} from "utils/uuid";
@@ -13,7 +13,7 @@ import {DetailsEditModal} from "components/shared/match/sections/details/Details
 import {Assignments} from "components/shared/match/sections/assignments/Assignments";
 import {Sanctions} from "components/shared/match/sections/sanctions/Sanctions";
 import {Conclusions} from "components/shared/match/sections/conclusions/Conclusions";
-import {useFouls} from "components/shared/match/sections/sanctions/useFouls";
+import {useFouls} from "components/shared/match/sections/sanctions/hooks/useFouls";
 import {LoadingOverlay} from "pages/LoadingOverlay";
 import {useLeagueTeams} from "hooks/useLeagueTeams";
 import {useFeatures} from "components/shared/match/sections/conclusions/useFeatures";
@@ -117,7 +117,7 @@ export const MatchOverviewPanel = ({ match, teams, referees, observers }: MatchO
               as={motion.div}
               whileHover={{ right: 5 }}
               variant={'ghost'}
-              leftIcon={<ArrowBackIcon />}
+              leftIcon={<Icon as={ArrowBackIcon} />}
               onClick={() => { navigate(`${Path.ADMIN_DASHBOARD}/${leagueId}`); }}
             >
               Dashboard
@@ -130,7 +130,7 @@ export const MatchOverviewPanel = ({ match, teams, referees, observers }: MatchO
             <Spacer />
             <Button
               variant={'ghost'}
-              leftIcon={<DeleteIcon />}
+              leftIcon={<Icon as={DeleteIcon} />}
               onClick={onDeleteModalOpen}
               disabled={user.role !== Role.Admin}
             >

@@ -3,7 +3,6 @@ import {AdminHeaderPanel} from "components/adminDashboard/header/AdminHeaderPane
 import {useLeagueTeams} from "hooks/useLeagueTeams";
 import {useLeagueMatches} from "hooks/useLeagueMatches";
 import {LoadingOverlay} from "./LoadingOverlay";
-import {useLeagues} from "hooks/useLeagues";
 import {useLeagueUsers} from "hooks/useLeagueUsers";
 import {Role} from "utils/Role";
 import {PageTitle} from "utils/PageTitle";
@@ -23,7 +22,6 @@ export const MatchPage = () => {
   const { usersQuery: leagueObserversQuery } = useLeagueUsers(Role.Observer);
   const { query: teamsQuery } = useLeagueTeams();
   const { query: matchesQuery } = useLeagueMatches();
-  const { query: leaguesQuery } = useLeagues();
 
   const { matchId } = useParams<{ matchId: uuid }>();
   const [state, setState] = useSetState({} as State);
@@ -38,7 +36,7 @@ export const MatchPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [matchesQuery.data]);
 
-  const queries = [leagueRefereesQuery, leagueObserversQuery, teamsQuery, matchesQuery, leaguesQuery];
+  const queries = [leagueRefereesQuery, leagueObserversQuery, teamsQuery, matchesQuery];
   if (queries.some((query) => query.isLoading) || !state.match) {
     return (<LoadingOverlay />);
   }
