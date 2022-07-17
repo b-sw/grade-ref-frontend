@@ -12,16 +12,15 @@ import { Form, Formik } from 'formik';
 import { InputControl, SelectControl } from 'formik-chakra-ui';
 import { useEffect } from 'react';
 import {uuid} from "utils/uuid";
-import {User} from "entities/User";
 import {useLeagueMatches} from "hooks/useLeagueMatches";
 import {useLeagueTeams} from "hooks/useLeagueTeams";
 import {Match, matchValidationSchema} from "entities/Match";
-import {Team} from "entities/Team";
 import {Constants, FORMIK_DATETIME_FORMAT} from "utils/Constants";
 import dayjs, { Dayjs } from 'dayjs';
 import {useLeagueUsers} from "hooks/useLeagueUsers";
 import {Role} from "utils/Role";
 import { useStore } from "zustandStore/store";
+import {SelectOptions} from "components/shared/match/shared/SelectOptions";
 
 interface Props {
   isOpen: boolean;
@@ -90,12 +89,7 @@ export const MatchCreateModal = (props: Props) => {
                   selectProps={{ placeholder: 'Choose home team' }}
                   mt={3}
                 >
-                  {teamsQuery.data &&
-                    (teamsQuery.data as Team[]).map((team) => (
-                      <option key={team.id} value={team.id}>
-                        {team.name}
-                      </option>
-                    ))}
+                  <SelectOptions data={teamsQuery.data} labelProps={['name']} />
                 </SelectControl>
 
                 <SelectControl
@@ -104,12 +98,7 @@ export const MatchCreateModal = (props: Props) => {
                   selectProps={{ placeholder: 'Choose away team' }}
                   mt={3}
                 >
-                  {teamsQuery.data &&
-                    (teamsQuery.data as Team[]).map((team) => (
-                      <option key={team.id} value={team.id}>
-                        {team.name}
-                      </option>
-                    ))}
+                  <SelectOptions data={teamsQuery.data} labelProps={['name']} />
                 </SelectControl>
 
                 <SelectControl
@@ -118,12 +107,7 @@ export const MatchCreateModal = (props: Props) => {
                   selectProps={{ placeholder: 'Assign referee' }}
                   mt={3}
                 >
-                  {refereesQuery.data &&
-                    (refereesQuery.data as User[]).map((referee) => (
-                      <option key={referee.id} value={referee.id}>
-                        {referee.firstName} {referee.lastName}
-                      </option>
-                    ))}
+                  <SelectOptions data={refereesQuery.data} labelProps={['firstName', 'lastName']} />
                 </SelectControl>
 
                 <SelectControl
@@ -132,12 +116,7 @@ export const MatchCreateModal = (props: Props) => {
                   selectProps={{ placeholder: 'Assign observer' }}
                   mt={3}
                 >
-                  {observersQuery.data &&
-                    (observersQuery.data as User[]).map((observer) => (
-                      <option key={observer.id} value={observer.id}>
-                        {observer.firstName} {observer.lastName}
-                      </option>
-                    ))}
+                  <SelectOptions data={observersQuery.data} labelProps={['firstName', 'lastName']} />
                 </SelectControl>
               </ModalBody>
 

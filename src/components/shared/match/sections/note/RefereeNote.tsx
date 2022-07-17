@@ -1,34 +1,33 @@
-import {Button, Flex, Spacer, Text, Textarea } from "@chakra-ui/react"
-import {Match} from "entities/Match";
-import {MatchData} from "components/shared/match/MatchOverviewPanel";
+import { Button, Flex, Icon, Spacer, Textarea } from "@chakra-ui/react"
+import { Match } from "entities/Match";
+import { MatchData } from "components/shared/match/MatchOverviewPanel";
 import { MdNote } from "react-icons/md";
 import { EditIcon } from "@chakra-ui/icons";
-import {useStore} from "zustandStore/store";
-import {Role} from "utils/Role";
+import { useStore } from "zustandStore/store";
+import { Role } from "utils/Role";
+import { SectionHeading } from "components/shared/match/shared/SectionHeading";
 
-interface Props {
+interface RefereeNoteProps {
   match: Match;
 }
 
-export const RefereeNote = (props: Props) => {
+export const RefereeNote = ({ match }: RefereeNoteProps) => {
   const user = useStore((state) => state.user);
+
+  const userCanEdit: boolean = user.role === Role.Referee;
 
   return (
     <Flex direction={'column'} w={'100%'} mb={5} gap={2}>
-      <Flex align={'center'} gap={2} mr={5}>
-        <MdNote size={'25'}/>
-        <Text fontSize={'2xl'} fontWeight={'medium'}>{MatchData.RefereeNote}</Text>
-        <Spacer />
-        {user.role === Role.Referee &&
-          <Button
-            variant={'ghost'}
-            leftIcon={<EditIcon />}
-            onClick={() => {}}
-          >
-            Edit
-          </Button>
-        }
-      </Flex>
+      <SectionHeading title={MatchData.RefereeNote} iconType={MdNote}>
+        <Button
+          variant={'ghost'}
+          leftIcon={<Icon as={EditIcon} />}
+          onClick={() => {}}
+          disabled={!userCanEdit}
+        >
+          Edit
+        </Button>
+      </SectionHeading>
 
       <Flex
         direction={'column'}
@@ -43,7 +42,7 @@ export const RefereeNote = (props: Props) => {
             w={['100%', '50%']}
             isReadOnly={true}
             resize={'none'}
-            value={props.match.refereeNote ?? 'N/A'}
+            value={match.refereeNote ?? 'N/A'}
             borderColor={'gray.400'}
             focusBorderColor={'gray.400'}
             backgroundColor={'gray.100'}

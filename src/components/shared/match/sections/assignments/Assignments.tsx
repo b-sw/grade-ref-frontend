@@ -1,61 +1,59 @@
-import { User } from "entities/User";
-import { Match } from "entities/Match";
-import { Button, Flex, Spacer, Text } from "@chakra-ui/react";
+import {User} from "entities/User";
+import {Match} from "entities/Match";
+import {Button, Flex, Icon, useDisclosure} from "@chakra-ui/react";
 import { MdPeople } from "react-icons/md";
 import { EditIcon } from "@chakra-ui/icons";
-import { MatchData } from "components/shared/match/MatchOverviewPanel";
+import {MatchData} from "components/shared/match/MatchOverviewPanel";
+import {AssignmentsEditModal} from "components/shared/match/sections/assignments/AssignmentsEditModal";
+import {TextField} from "components/shared/match/shared/TextField";
+import {Role} from "utils/Role";
+import dayjs from "dayjs";
+import {useStore} from "zustandStore/store";
+import { SectionHeading } from "components/shared/match/shared/SectionHeading";
 
-interface Props {
+interface AssignmentsProps {
   match: Match;
   referee: User;
   observer: User;
 }
 
-export const Assignments = (props: Props) => {
-  // const user = useStore((state) => state.user);
+export const Assignments = ({ match, referee, observer }: AssignmentsProps) => {
+  const user = useStore((state) => state.user);
+  const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
+
+  const matchHasStarted: boolean = dayjs(match.matchDate).isBefore(dayjs());
+  const userIsAdmin: boolean = user.role === Role.Admin;
+  const userCanEdit: boolean = userIsAdmin && !matchHasStarted;
 
   return (
-    <Flex direction={"column"} w={"100%"} mb={5} gap={2}>
-      <Flex align={"center"} gap={2} mr={5}>
-        <MdPeople size={"25"} />
-        <Text fontSize={"2xl"} fontWeight={"medium"}>
-          {MatchData.Assignments}
-        </Text>
-        <Spacer />
-        <Button variant={"ghost"} leftIcon={<EditIcon />} onClick={() => {}}>
-          Edit
-        </Button>
-      </Flex>
+    <>
+      {userCanEdit && <AssignmentsEditModal isOpen={isEditOpen} handleClose={onEditClose} match={match} />}
 
-      <Flex direction={"column"} w={"100%"} borderRadius={10} backgroundColor={"gray.200"} p={5}>
-        <Flex direction={"column"} pr={[0, 20]} gap={2}>
-          <Flex gap={5}>
-            <Flex w={"50%"}>
-              <Spacer />
-              <Text fontSize={"xl"}>referee</Text>
-            </Flex>
-            <Flex w={"50%"}>
-              <Text fontSize={"xl"} fontWeight={"medium"}>
-                {props.referee.firstName} {props.referee.lastName}
-              </Text>
-              <Spacer />
-            </Flex>
-          </Flex>
+      <Flex direction={'column'} w={'100%'} mb={5} gap={2}>
+        <SectionHeading title={MatchData.Assignments} iconType={MdPeople}>
+          <Button
+            variant={'ghost'}
+            leftIcon={<Icon as={EditIcon} />}
+            onClick={onEditOpen}
+            disabled={!userCanEdit}
+          >
+            Edit
+          </Button>
+        </SectionHeading>
 
-          <Flex gap={5}>
-            <Flex w={"50%"}>
-              <Spacer />
-              <Text fontSize={"xl"}>observer</Text>
-            </Flex>
-            <Flex w={"50%"}>
-              <Text fontSize={"xl"} fontWeight={"medium"}>
-                {props.observer.firstName} {props.observer.lastName}
-              </Text>
-              <Spacer />
-            </Flex>
+        <Flex
+          direction={'column'}
+          w={'100%'}
+          borderRadius={10}
+          backgroundColor={'gray.200'}
+          p={5}
+        >
+          <Flex direction={'column'} pr={[0, 20]} gap={2}>
+            <TextField name={'referee'} text={[referee.firstName, referee.lastName].join(' ')} />
+            <TextField name={'observer'} text={[observer.firstName, observer.lastName].join(' ')} />
           </Flex>
         </Flex>
       </Flex>
-    </Flex>
+    </>
   );
-};
+}

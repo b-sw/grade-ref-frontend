@@ -1,10 +1,11 @@
-import { Flex, IconButton, Spinner, Text } from '@chakra-ui/react';
+import { Flex, Spinner, Text, useToast } from '@chakra-ui/react';
 import { ReportDto, ReportType, useReports } from 'hooks/useReports';
 import { useSetState } from 'hooks/useSetState';
 import { useDropzone } from 'react-dropzone';
 import { MdFileUpload } from 'react-icons/md';
+import { useEffect } from "react";
 
-interface Props {
+interface UploadFileZoneProps {
   reportType: ReportType;
 }
 
@@ -13,8 +14,9 @@ interface State {
   isLoading: boolean;
 }
 
-export const UploadFileZone = (props: Props) => {
+export const UploadFileZone = ({ reportType }: UploadFileZoneProps) => {
   const { postMutation } = useReports();
+  const toast = useToast();
 
   const [state, setState] = useSetState({
     files: [],
@@ -35,13 +37,28 @@ export const UploadFileZone = (props: Props) => {
     maxFiles: 1,
   });
 
+  useEffect(() => {
+    if (fileRejections.length) {
+      fileRejections.forEach((fileRejection) => {
+        fileRejection.errors.forEach((error) => {
+          toast({
+            title: error.message,
+            status: 'error',
+            duration: 5000,
+          });
+        });
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fileRejections]);
+
   const uploadFile = (file: any) => {
     const formData = new FormData();
     formData.append('report', file);
 
     const reportDto: ReportDto = {
       fileFormData: formData,
-      type: props.reportType,
+      type: reportType,
     };
 
     postMutation.mutate(reportDto);

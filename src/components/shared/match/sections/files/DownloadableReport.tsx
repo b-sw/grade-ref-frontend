@@ -1,15 +1,14 @@
 import { CloseIcon } from '@chakra-ui/icons';
 import { Flex, IconButton, Link, Spacer, Text } from '@chakra-ui/react';
 import axios from 'axios';
-import { Match } from 'entities/Match';
 import { ReportType, useReports } from 'hooks/useReports';
 import { useSetState } from 'hooks/useSetState';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { MdFileDownload } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
 import { uuid } from 'utils/uuid';
 
-interface Props {
+interface DownloadableReportProps {
   reportType: ReportType;
   hasWritePermissions: boolean;
 }
@@ -19,11 +18,11 @@ interface State {
   fileName: string;
 }
 
-export const DownloadableReport = (props: Props) => {
+export const DownloadableReport = ({ reportType, hasWritePermissions }: DownloadableReportProps) => {
   const [state, setState] = useSetState({
     url: '',
     fileName: '',
-  });
+  } as State);
   const { leagueId } = useParams<{ leagueId: uuid }>();
   const { matchId } = useParams<{ matchId: uuid }>();
 
@@ -31,14 +30,15 @@ export const DownloadableReport = (props: Props) => {
 
   useEffect(() => {
     getFile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const deleteReport = () => {
-    deleteMutation.mutate(props.reportType);
+    deleteMutation.mutate(reportType);
   };
 
   const getFile = async () => {
-    const response = await axios.get(`leagues/${leagueId}/matches/${matchId}/reports/${props.reportType}`, {
+    const response = await axios.get(`leagues/${leagueId}/matches/${matchId}/reports/${reportType}`, {
       responseType: 'blob',
     });
 
@@ -64,7 +64,7 @@ export const DownloadableReport = (props: Props) => {
       align={'center'}
       position={'relative'}
     >
-      {props.hasWritePermissions && (
+      {hasWritePermissions && (
         <IconButton
           onClick={deleteReport}
           size={'sm'}

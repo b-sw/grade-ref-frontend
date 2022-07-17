@@ -1,7 +1,6 @@
-import {Badge, Button, Flex, Spacer, Text} from "@chakra-ui/react"
+import {Badge, Button, Flex, Icon, Spacer} from "@chakra-ui/react"
 import {MdWarning} from "react-icons/md"
 import {IoIosShirt} from "react-icons/io"
-import {Match} from "entities/Match";
 import {Column} from "react-table";
 import * as React from "react";
 import {DataTable} from "components/shared/match/sections/DataTable";
@@ -14,17 +13,18 @@ import {timeItem} from "components/adminDashboard/matches/MatchListItem";
 import {useStore} from "zustandStore/store";
 import {Role} from "utils/Role";
 import {noRecords} from "components/shared/panelUtils";
+import { SectionHeading } from "components/shared/match/shared/SectionHeading";
 
-interface Props {
-  match: Match;
+interface SanctionsProps {
   fouls: Foul[];
   teams: Team[];
 }
 
-export const Sanctions = (props: Props) => {
+export const Sanctions = ({ fouls, teams }: SanctionsProps) => {
   let mappedTeams: { [id: uuid]: Team } = {};
-  props.teams.forEach((team) => mappedTeams[team.id] = team);
   const user = useStore((state) => state.user);
+
+  teams.forEach((team) => mappedTeams[team.id] = team);
 
   const cols: Column<Foul>[] = [
     {
@@ -54,22 +54,20 @@ export const Sanctions = (props: Props) => {
     },
   ];
 
+  const userCanEdit: boolean = user.role === Role.Admin || user.role === Role.Observer;
+
   return (
     <Flex direction={'column'} w={'100%'} mb={5} gap={2}>
-      <Flex align={'center'} gap={2} mr={5}>
-        <MdWarning size={'25'}/>
-        <Text fontSize={'2xl'} fontWeight={'medium'}>{MatchData.DisciplinarySanctions}</Text>
-        <Spacer />
-        {user.role === Role.Observer &&
-          <Button
-            variant={'ghost'}
-            leftIcon={<AddIcon />}
-            onClick={() => {}}
-          >
-            Add
-          </Button>
-        }
-      </Flex>
+       <SectionHeading title={MatchData.DisciplinarySanctions} iconType={MdWarning}>
+        <Button
+          variant={'ghost'}
+          leftIcon={<Icon as={AddIcon} />}
+          onClick={() => {}}
+          disabled={!userCanEdit}
+        >
+          Add
+        </Button>
+       </SectionHeading>
 
       <Flex
         direction={'column'}
@@ -78,8 +76,8 @@ export const Sanctions = (props: Props) => {
         backgroundColor={'gray.200'}
         p={5}
       >
-        <DataTable columns={cols} data={props.fouls} />
-        {!props.fouls.length && noRecords()}
+        <DataTable columns={cols} data={fouls} />
+        {!fouls.length && noRecords()}
       </Flex>
     </Flex>
   );

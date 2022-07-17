@@ -1,5 +1,5 @@
 import { ArrowBackIcon, DeleteIcon } from '@chakra-ui/icons';
-import { Button, Flex, Link, Spacer, Text, useDisclosure } from '@chakra-ui/react';
+import { Button, Flex, Icon, Link, Spacer, Text, useDisclosure } from '@chakra-ui/react';
 import { Match } from 'entities/Match';
 import { Path } from 'utils/Path';
 import { uuid } from 'utils/uuid';
@@ -9,11 +9,9 @@ import { useRef } from 'react';
 import { Details } from 'components/shared/match/sections/details/Details';
 import { Team } from 'entities/Team';
 import { User } from 'entities/User';
-import { MatchEditModal } from 'components/adminDashboard/matches/MatchEditModal';
 import { Assignments } from 'components/shared/match/sections/assignments/Assignments';
 import { Sanctions } from 'components/shared/match/sections/sanctions/Sanctions';
 import { Conclusions } from 'components/shared/match/sections/conclusions/Conclusions';
-import { useFouls } from 'components/shared/match/sections/sanctions/useFouls';
 import { LoadingOverlay } from 'pages/LoadingOverlay';
 import { useLeagueTeams } from 'hooks/useLeagueTeams';
 import { useFeatures } from 'components/shared/match/sections/conclusions/useFeatures';
@@ -23,10 +21,13 @@ import { MatchListItem } from 'components/adminDashboard/matches/MatchListItem';
 import { MatchDeleteModal } from 'components/adminDashboard/matches/MatchDeleteModal';
 import { useStore } from 'zustandStore/store';
 import { Role } from 'utils/Role';
-import { Files } from './sections/files/Reports';
+import { Reports } from './sections/files/Reports';
+import { useFouls } from "components/shared/match/sections/sanctions/hooks/useFouls";
+import { Grade } from "components/shared/match/sections/grade/Grade";
 
 export const enum MatchData {
   Details = 'Match Details',
+  Grade = 'Match Grade',
   Assignments = 'Assignments',
   DisciplinarySanctions = 'Disciplinary sanctions',
   Conclusions = 'Conclusions',
@@ -34,7 +35,7 @@ export const enum MatchData {
   Reports = 'Reports',
 }
 
-interface Props {
+interface MatchOverviewPanelProps {
   match: Match;
   teams: Team[];
   referees: User[];
@@ -43,12 +44,10 @@ interface Props {
 
 const PADDING = 4;
 
-export const MatchOverviewPanel = (props: Props) => {
-  const { isOpen: isEditDetailsModalOpen, /*onOpen: onEditDetailsModalOpen,*/ onClose: onEditDetailsModalClose } =
-    useDisclosure();
+export const MatchOverviewPanel = ({ match, teams, referees, observers }: MatchOverviewPanelProps) => {
   const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
-  const { query: foulsQuery } = useFouls({ matchId: props.match.id });
-  const { query: featuresQuery } = useFeatures({ matchId: props.match.id });
+  const { query: foulsQuery } = useFouls({ matchId: match.id });
+  const { query: featuresQuery } = useFeatures({ matchId: match.id });
   const { query: teamsQuery } = useLeagueTeams();
   const user = useStore((state) => state.user);
 
@@ -57,15 +56,17 @@ export const MatchOverviewPanel = (props: Props) => {
 
   const overviewRef: any = useRef();
   const detailsRef: any = useRef();
+  const gradeRef: any = useRef();
   const assignmentsRef: any = useRef();
   const foulsRef: any = useRef();
   const conclusionsRef: any = useRef();
   const noteRef: any = useRef();
+  const reportsRef: any = useRef();
 
-  const homeTeam: Team = props.teams.find((team: Team) => team.id === props.match.homeTeamId)!;
-  const awayTeam: Team = props.teams.find((team: Team) => team.id === props.match.awayTeamId)!;
-  const referee: User = props.referees.find((referee: User) => referee.id === props.match.refereeId)!;
-  const observer: User = props.observers.find((observer: User) => observer.id === props.match.observerId)!;
+  const homeTeam: Team = teams.find((team: Team) => team.id === match.homeTeamId)!;
+  const awayTeam: Team = teams.find((team: Team) => team.id === match.awayTeamId)!;
+  const referee: User = referees.find((referee: User) => referee.id === match.refereeId)!;
+  const observer: User = observers.find((observer: User) => observer.id === match.observerId)!;
 
   const menuLink = (sectionName: MatchData, ref: any) => {
     return (
@@ -88,9 +89,11 @@ export const MatchOverviewPanel = (props: Props) => {
 
   return (
     <>
-      <MatchEditModal isOpen={isEditDetailsModalOpen} onClose={onEditDetailsModalClose} match={props.match} />
-      <MatchDeleteModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} match={props.match} />
-      <Flex overflow={'hidden'} gap={4}>
+      <MatchDeleteModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} match={match} />
+      <Flex
+        overflow={'hidden'}
+        gap={4}
+      >
         <Spacer />
 
         <Flex
@@ -110,7 +113,7 @@ export const MatchOverviewPanel = (props: Props) => {
               as={motion.div}
               whileHover={{ right: 5 }}
               variant={'ghost'}
-              leftIcon={<ArrowBackIcon />}
+              leftIcon={<Icon as={ArrowBackIcon} />}
               onClick={() => {
                 navigate(`${Path.ADMIN_DASHBOARD}/${leagueId}`);
               }}
@@ -120,12 +123,12 @@ export const MatchOverviewPanel = (props: Props) => {
 
             <Spacer />
 
-            <MatchListItem key={props.match.id} readOnly={true} match={props.match} />
+            <MatchListItem key={match.id} readOnly={true} match={match} />
 
             <Spacer />
             <Button
               variant={'ghost'}
-              leftIcon={<DeleteIcon />}
+              leftIcon={<Icon as={DeleteIcon} />}
               onClick={onDeleteModalOpen}
               disabled={user.role !== Role.Admin}
             >
@@ -139,42 +142,42 @@ export const MatchOverviewPanel = (props: Props) => {
                 Page sections
               </Text>
               {menuLink(MatchData.Details, detailsRef)}
+              {menuLink(MatchData.Grade, gradeRef)}
               {menuLink(MatchData.Assignments, assignmentsRef)}
               {menuLink(MatchData.DisciplinarySanctions, foulsRef)}
               {menuLink(MatchData.Conclusions, conclusionsRef)}
               {menuLink(MatchData.RefereeNote, noteRef)}
+              {menuLink(MatchData.Reports, reportsRef)}
             </Flex>
 
             <Flex direction={'column'} p={PADDING} w={'80%'} overflowY={'hidden'}>
               <Flex direction={'column'} overflowY={'scroll'} css={scrollbarStyle} ref={overviewRef}>
                 <Flex ref={detailsRef}>
-                  <Details
-                    match={props.match}
-                    homeTeam={homeTeam}
-                    awayTeam={awayTeam}
-                    referee={referee}
-                    observer={observer}
-                  />
+                  <Details match={match} homeTeam={homeTeam} awayTeam={awayTeam}/>
+                </Flex>
+
+                <Flex ref={gradeRef}>
+                  <Grade match={match} />
                 </Flex>
 
                 <Flex ref={assignmentsRef}>
-                  <Assignments match={props.match} referee={referee} observer={observer} />
+                  <Assignments match={match} referee={referee} observer={observer} />
                 </Flex>
 
                 <Flex ref={foulsRef}>
-                  <Sanctions match={props.match} fouls={foulsQuery.data!} teams={teamsQuery.data!} />
+                  <Sanctions fouls={foulsQuery.data!} teams={teamsQuery.data!} />
                 </Flex>
 
                 <Flex ref={conclusionsRef}>
-                  <Conclusions match={props.match} features={featuresQuery.data!} />
+                  <Conclusions features={featuresQuery.data!} />
                 </Flex>
 
                 <Flex ref={noteRef}>
-                  <RefereeNote match={props.match} />
+                  <RefereeNote match={match} />
                 </Flex>
 
-                <Flex ref={null}>
-                  <Files match={props.match} />
+                <Flex ref={reportsRef}>
+                  <Reports match={match} />
                 </Flex>
               </Flex>
             </Flex>

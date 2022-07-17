@@ -8,18 +8,18 @@ import { useStore } from "zustandStore/store";
 import { useToast } from "@chakra-ui/react";
 import {toastError} from "./utils/toastError";
 
-export interface Props {
+export interface UseGradesProps {
   matchId: uuid;
 }
 
-export const useGrades = (props: Props) => {
+export const useGrades = ({ matchId }: UseGradesProps) => {
   const user = useStore((state) => state.user);
   const { leagueId } = useParams<{ leagueId: uuid }>();
   const queryClient: QueryClient = useQueryClient();
   const toast = useToast();
 
   const updateGrade = async (match: Match): Promise<Match> => {
-    const response = await axios.put(`leagues/${leagueId}/matches/${props.matchId}/grade`, match);
+    const response = await axios.put(`leagues/${leagueId}/matches/${matchId}/grade`, match);
     return response.data;
   }
 

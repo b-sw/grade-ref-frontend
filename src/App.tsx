@@ -20,6 +20,7 @@ import {Calendar} from "pages/Calendar";
 import {LandingPage} from "pages/LandingPage";
 import { ParallaxProvider } from "react-scroll-parallax";
 import {MatchPage} from "pages/MatchPage";
+import {RequireAuthRoute} from "components/other/RequireAuthRoute";
 
 const queryClient = new QueryClient();
 
@@ -44,13 +45,18 @@ export const App = () => (
                 <Route path={Path.ADMIN_EXPLORER} element={<AdminExplorer />} />
                 <Route path={Path.ADMIN_DASHBOARD + '/:leagueId'} element={<AdminDashboard />} />
                 <Route path={Path.ADMIN_CALENDAR + '/:leagueId'} element={<AdminCalendar />} />
-                <Route path={Path.MATCH_PAGE + '/:leagueId/match/:matchId'} element={<MatchPage />} />
               </Route>
 
               <Route element={<RequireAuthRouteRefereeObserver />}>
                 <Route path={Path.EXPLORER} element={<Explorer />} />
                 <Route path={Path.DASHBOARD + '/:leagueId'} element={<Dashboard />} />
                 <Route path={Path.CALENDAR + '/:leagueId'} element={<Calendar />} />
+              </Route>
+
+              {/* TODO: Consider AuthRoute for LeagueUser. Currently a user won't access dashboard of another league
+                    because of failures when loading that league's related queries but this is not a clean solution. */}
+              <Route element={<RequireAuthRoute />}>
+                <Route path={Path.MATCH_PAGE + '/:leagueId/match/:matchId'} element={<MatchPage />} />
               </Route>
             </Route>
           </Routes>

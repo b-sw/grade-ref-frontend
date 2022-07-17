@@ -1,11 +1,10 @@
-import { toast, useToast } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import { Match } from 'entities/Match';
 import { useMutation, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { uuid } from 'utils/uuid';
 import { MATCHES_QUERY_KEY } from './useLeagueMatches';
-import { USER_LEAGUE_MATCHES_QK } from './useUserMatches';
 
 export enum ReportType {
   Observer = 'Observer',
@@ -36,7 +35,7 @@ export const useReports = () => {
   };
 
   const postMutation = useMutation(uploadReport, {
-    onSuccess(match: Match) {
+    onSuccess(_match: Match) {
       queryClient.invalidateQueries([MATCHES_QUERY_KEY]);
       toast({
         title: 'Successfully updated a grade',

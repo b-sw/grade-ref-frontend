@@ -58,5 +58,5 @@ export default function useAuth() {
   const isLoggedInAsReferee: boolean = isLoggedIn && user!.role === Role.Referee;
   const isLoggedInAsObserver: boolean = isLoggedIn && user!.role === Role.Observer;
 
-  return { loginMutation, isLoggedInAsAdmin, isLoggedInAsOwner, isLoggedInAsReferee, isLoggedInAsObserver, logout };
+  return { loginMutation, isLoggedIn, isLoggedInAsAdmin, isLoggedInAsOwner, isLoggedInAsReferee, isLoggedInAsObserver, logout };
 }

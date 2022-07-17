@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import {CalendarIcon, EditIcon, WarningIcon} from "@chakra-ui/icons";
 import {BsClockFill} from "react-icons/bs";
 import {Role} from "utils/Role";
-import { GradeEditModal } from "../../dashboard/grades/GradeEditModal";
+import {GradeEditModal} from "components/shared/match/sections/grade/GradeEditModal";
 
 interface Props {
   match: Match;
@@ -21,7 +21,7 @@ export const MatchGradeListItem = (props: Props) => {
 
   return (
     <>
-      {!props.readOnly && <GradeEditModal isOpen={isEditModalOpen} onClose={onEditModalClose} match={props.match} />}
+      {!props.readOnly && <GradeEditModal isOpen={isEditModalOpen} handleClose={onEditModalClose} match={props.match} />}
       <Flex
         p={5}
         borderRadius={10}
