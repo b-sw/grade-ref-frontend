@@ -15,15 +15,15 @@ export const Files = (props: Props) => {
       <Flex align={'center'} gap={2} mr={5}>
         <MdNote size={'25'} />
         <Text fontSize={'2xl'} fontWeight={'medium'}>
-          {MatchData.Assignments}
+          {MatchData.Reports}
         </Text>
         <Spacer />
       </Flex>
 
       <Flex direction={'row'} gap={4} w={'100%'} borderRadius={10} backgroundColor={'gray.200'} p={5}>
-        <ReportListItem isUploaded={props.match.observerReportKey != null} type={ReportType.OBSERVER} />
-        <ReportListItem isUploaded={props.match.mentorReportKey != null} type={ReportType.MENTOR} />
-        <ReportListItem isUploaded={props.match.tvReportKey != null} type={ReportType.TV} />
+        <ReportListItem isUploaded={props.match.observerReportKey != null} reportType={ReportType.Observer} />
+        <ReportListItem isUploaded={props.match.mentorReportKey != null} reportType={ReportType.Mentor} />
+        <ReportListItem isUploaded={props.match.tvReportKey != null} reportType={ReportType.Tv} />
       </Flex>
     </Flex>
   );

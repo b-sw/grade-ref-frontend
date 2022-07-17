@@ -1,4 +1,5 @@
-import { Flex, Text } from '@chakra-ui/react';
+import { Flex, Spacer, Text } from '@chakra-ui/react';
+import { AiOutlineFileUnknown } from 'react-icons/ai';
 
 export const EmptyReportListItem = () => {
   return (
@@ -14,7 +15,10 @@ export const EmptyReportListItem = () => {
       align={'center'}
       position={'relative'}
     >
-      <Text>Empty</Text>
+      <Spacer />
+      <AiOutlineFileUnknown opacity={0.6} size={'40'} />
+      <Text opacity={0.6}>Empty</Text>
+      <Spacer />
     </Flex>
   );
 };

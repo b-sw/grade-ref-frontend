@@ -1,37 +1,37 @@
-import { ArrowBackIcon, DeleteIcon } from "@chakra-ui/icons";
-import { Button, Flex, Link, Spacer, Text, useDisclosure } from "@chakra-ui/react";
-import { Match } from "entities/Match";
-import { Path } from "utils/Path";
-import { uuid } from "utils/uuid";
-import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
-import { motion } from "framer-motion";
-import { useRef } from "react";
-import { Details } from "components/shared/match/sections/details/Details";
-import { Team } from "entities/Team";
-import { User } from "entities/User";
-import { MatchEditModal } from "components/adminDashboard/matches/MatchEditModal";
-import { Assignments } from "components/shared/match/sections/assignments/Assignments";
-import { Sanctions } from "components/shared/match/sections/sanctions/Sanctions";
-import { Conclusions } from "components/shared/match/sections/conclusions/Conclusions";
-import { useFouls } from "components/shared/match/sections/sanctions/useFouls";
-import { LoadingOverlay } from "pages/LoadingOverlay";
-import { useLeagueTeams } from "hooks/useLeagueTeams";
-import { useFeatures } from "components/shared/match/sections/conclusions/useFeatures";
-import { RefereeNote } from "components/shared/match/sections/note/RefereeNote";
-import { scrollbarStyle } from "components/dashboard/shared/styles";
-import { MatchListItem } from "components/adminDashboard/matches/MatchListItem";
-import { MatchDeleteModal } from "components/adminDashboard/matches/MatchDeleteModal";
-import { useStore } from "zustandStore/store";
-import { Role } from "utils/Role";
-import { Files } from "./sections/files/Files";
+import { ArrowBackIcon, DeleteIcon } from '@chakra-ui/icons';
+import { Button, Flex, Link, Spacer, Text, useDisclosure } from '@chakra-ui/react';
+import { Match } from 'entities/Match';
+import { Path } from 'utils/Path';
+import { uuid } from 'utils/uuid';
+import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { useRef } from 'react';
+import { Details } from 'components/shared/match/sections/details/Details';
+import { Team } from 'entities/Team';
+import { User } from 'entities/User';
+import { MatchEditModal } from 'components/adminDashboard/matches/MatchEditModal';
+import { Assignments } from 'components/shared/match/sections/assignments/Assignments';
+import { Sanctions } from 'components/shared/match/sections/sanctions/Sanctions';
+import { Conclusions } from 'components/shared/match/sections/conclusions/Conclusions';
+import { useFouls } from 'components/shared/match/sections/sanctions/useFouls';
+import { LoadingOverlay } from 'pages/LoadingOverlay';
+import { useLeagueTeams } from 'hooks/useLeagueTeams';
+import { useFeatures } from 'components/shared/match/sections/conclusions/useFeatures';
+import { RefereeNote } from 'components/shared/match/sections/note/RefereeNote';
+import { scrollbarStyle } from 'components/dashboard/shared/styles';
+import { MatchListItem } from 'components/adminDashboard/matches/MatchListItem';
+import { MatchDeleteModal } from 'components/adminDashboard/matches/MatchDeleteModal';
+import { useStore } from 'zustandStore/store';
+import { Role } from 'utils/Role';
+import { Files } from './sections/files/Reports';
 
 export const enum MatchData {
-  Details = "Match Details",
-  Assignments = "Assignments",
-  DisciplinarySanctions = "Disciplinary sanctions",
-  Conclusions = "Conclusions",
-  RefereeNote = "Referee note",
-  Files = "Files",
+  Details = 'Match Details',
+  Assignments = 'Assignments',
+  DisciplinarySanctions = 'Disciplinary sanctions',
+  Conclusions = 'Conclusions',
+  RefereeNote = 'Referee note',
+  Reports = 'Reports',
 }
 
 interface Props {
@@ -73,11 +73,11 @@ export const MatchOverviewPanel = (props: Props) => {
         onClick={() => {
           overviewRef.current.scrollTo({
             top: ref.current.offsetTop - overviewRef.current.offsetTop,
-            behavior: "smooth",
+            behavior: 'smooth',
           });
         }}
       >
-        <Text fontSize={"md"}>{sectionName}</Text>
+        <Text fontSize={'md'}>{sectionName}</Text>
       </Link>
     );
   };
@@ -90,26 +90,26 @@ export const MatchOverviewPanel = (props: Props) => {
     <>
       <MatchEditModal isOpen={isEditDetailsModalOpen} onClose={onEditDetailsModalClose} match={props.match} />
       <MatchDeleteModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} match={props.match} />
-      <Flex overflow={"hidden"} gap={4}>
+      <Flex overflow={'hidden'} gap={4}>
         <Spacer />
 
         <Flex
-          direction={"column"}
+          direction={'column'}
           borderRadius={10}
           p={PADDING}
-          backgroundColor={"gray.300"}
-          shadow={"md"}
-          overflowY={"hidden"}
-          alignItems={"center"}
+          backgroundColor={'gray.300'}
+          shadow={'md'}
+          overflowY={'hidden'}
+          alignItems={'center'}
           flexGrow={1}
-          maxH={["90vh", "100%"]}
+          maxH={['90vh', '100%']}
           gap={PADDING}
         >
-          <Flex w={"100%"} alignItems={"center"} gap={2}>
+          <Flex w={'100%'} alignItems={'center'} gap={2}>
             <Button
               as={motion.div}
               whileHover={{ right: 5 }}
-              variant={"ghost"}
+              variant={'ghost'}
               leftIcon={<ArrowBackIcon />}
               onClick={() => {
                 navigate(`${Path.ADMIN_DASHBOARD}/${leagueId}`);
@@ -124,7 +124,7 @@ export const MatchOverviewPanel = (props: Props) => {
 
             <Spacer />
             <Button
-              variant={"ghost"}
+              variant={'ghost'}
               leftIcon={<DeleteIcon />}
               onClick={onDeleteModalOpen}
               disabled={user.role !== Role.Admin}
@@ -133,9 +133,9 @@ export const MatchOverviewPanel = (props: Props) => {
             </Button>
           </Flex>
 
-          <Flex gap={PADDING} overflowY={"hidden"} flexGrow={1} w={"100%"} h={["auto", "100%"]} maxH={["90vh", "100%"]}>
-            <Flex direction={"column"} borderRadius={10} w={"20%"} gap={2}>
-              <Text fontSize={"xl"} fontWeight={"medium"}>
+          <Flex gap={PADDING} overflowY={'hidden'} flexGrow={1} w={'100%'} h={['auto', '100%']} maxH={['90vh', '100%']}>
+            <Flex direction={'column'} borderRadius={10} w={'20%'} gap={2}>
+              <Text fontSize={'xl'} fontWeight={'medium'}>
                 Page sections
               </Text>
               {menuLink(MatchData.Details, detailsRef)}
@@ -145,8 +145,8 @@ export const MatchOverviewPanel = (props: Props) => {
               {menuLink(MatchData.RefereeNote, noteRef)}
             </Flex>
 
-            <Flex direction={"column"} p={PADDING} w={"80%"} overflowY={"hidden"}>
-              <Flex direction={"column"} overflowY={"scroll"} css={scrollbarStyle} ref={overviewRef}>
+            <Flex direction={'column'} p={PADDING} w={'80%'} overflowY={'hidden'}>
+              <Flex direction={'column'} overflowY={'scroll'} css={scrollbarStyle} ref={overviewRef}>
                 <Flex ref={detailsRef}>
                   <Details
                     match={props.match}

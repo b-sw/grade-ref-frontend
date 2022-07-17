@@ -1,14 +1,15 @@
-import { Flex, Text } from "@chakra-ui/react";
-import { ReportType } from "hooks/useReports";
-import { Role } from "utils/Role";
-import { useStore } from "zustandStore/store";
-import { UploadFileZone } from "./UploadReportZone";
-import { UploadedReportListItem } from "./UploadedReportListItem";
-import { EmptyReportListItem } from "./EmptyReportListItem";
-import { useState } from "react";
+import { Flex, Text } from '@chakra-ui/react';
+import { ReportType } from 'hooks/useReports';
+import { ActionType, GRADE_FILES_PERMISSIONS, Role } from 'utils/Role';
+import { useStore } from 'zustandStore/store';
+import { UploadFileZone } from './UploadReportZone';
+import { DownloadableReport } from './DownloadableReport';
+import { EmptyReportListItem } from './EmptyReportListItem';
+import { useState } from 'react';
+import { UploadedReportListItem } from './UploadedReportListItem';
 
 interface Props {
-  type: ReportType;
+  reportType: ReportType;
   isUploaded: boolean;
 }
 
@@ -16,35 +17,73 @@ export const ReportListItem = (props: Props) => {
   const user = useStore((state) => state.user);
   //const role = role;
 
-  const [role] = useState(Role.Referee);
+  const [role] = useState(Role.Observer);
 
-  const hasRoleToDownload = () => {
-    switch (props.type) {
-      case ReportType.OBSERVER:
-        return true;
-      case ReportType.MENTOR:
-        return role === Role.Referee || role === Role.Admin;
-      case ReportType.TV:
-        return role === Role.Referee || role === Role.Admin;
-    }
-  };
+  const hasReadPermissions = GRADE_FILES_PERMISSIONS[role][ActionType.Read].has(props.reportType);
+  const hasWritePermissions = GRADE_FILES_PERMISSIONS[role][ActionType.Write].has(props.reportType);
 
-  const hasRoleToUpload = () => {
-    switch (props.type) {
-      case ReportType.OBSERVER:
-        return role === Role.Observer;
-      case ReportType.MENTOR:
-      case ReportType.TV:
-        return role === Role.Referee;
+  if (hasWritePermissions) {
+    if (!props.isUploaded) {
+      return (
+        <Flex direction={'column'} w={'100%'}>
+          <Text>{props.reportType}</Text>
+          <UploadFileZone reportType={props.reportType} />
+        </Flex>
+      );
     }
-  };
+
+    if (props.isUploaded) {
+      return (
+        <Flex direction={'column'} w={'100%'}>
+          <Text>{props.reportType}</Text>
+          <DownloadableReport reportType={props.reportType} />
+        </Flex>
+      );
+    }
+  }
+
+  if (hasReadPermissions) {
+    if (props.isUploaded) {
+      return (
+        <Flex direction={'column'} w={'100%'}>
+          <Text>{props.reportType}</Text>
+          <DownloadableReport reportType={props.reportType} />
+        </Flex>
+      );
+    }
+
+    if (!props.isUploaded) {
+      return (
+        <Flex direction={'column'} w={'100%'}>
+          <Text>{props.reportType}</Text>
+          <EmptyReportListItem />
+        </Flex>
+      );
+    }
+  }
+
+  if (!hasReadPermissions) {
+    if (props.isUploaded) {
+      return (
+        <Flex direction={'column'} w={'100%'}>
+          <Text>{props.reportType}</Text>
+          <UploadedReportListItem />
+        </Flex>
+      );
+    } else {
+      return (
+        <Flex direction={'column'} w={'100%'}>
+          <Text>{props.reportType}</Text>
+          <EmptyReportListItem />
+        </Flex>
+      );
+    }
+  }
 
   return (
-    <Flex direction={"column"} w={"100%"}>
-      <Text>{props.type}</Text>
-      {props.isUploaded && <UploadedReportListItem type={props.type} />}
-      {!props.isUploaded && hasRoleToUpload() && <UploadFileZone type={props.type} />}
-      {!props.isUploaded && !hasRoleToUpload() && <EmptyReportListItem />}
-    </Flex>
+    <>
+      <Text>Read:{hasReadPermissions.toString()}</Text>
+      <Text>Write:{hasWritePermissions.toString()}</Text>
+    </>
   );
 };

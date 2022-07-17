@@ -1,11 +1,11 @@
-import { Flex, IconButton, Spinner, Text } from "@chakra-ui/react";
-import { ReportDto, ReportType, useReports } from "hooks/useReports";
-import { useSetState } from "hooks/useSetState";
-import { useDropzone } from "react-dropzone";
-import { MdFileUpload } from "react-icons/md";
+import { Flex, IconButton, Spinner, Text } from '@chakra-ui/react';
+import { ReportDto, ReportType, useReports } from 'hooks/useReports';
+import { useSetState } from 'hooks/useSetState';
+import { useDropzone } from 'react-dropzone';
+import { MdFileUpload } from 'react-icons/md';
 
 interface Props {
-  type: ReportType;
+  reportType: ReportType;
 }
 
 interface State {
@@ -28,7 +28,7 @@ export const UploadFileZone = (props: Props) => {
     },
     disabled: postMutation.isLoading,
     accept: {
-      "application/pdf": [".pdf"],
+      'application/pdf': ['.pdf'],
     },
     maxSize: 100000,
     multiple: false,
@@ -37,11 +37,11 @@ export const UploadFileZone = (props: Props) => {
 
   const uploadFile = (file: any) => {
     const formData = new FormData();
-    formData.append("report", file);
+    formData.append('report', file);
 
     const reportDto: ReportDto = {
       fileFormData: formData,
-      type: props.type,
+      type: props.reportType,
     };
 
     postMutation.mutate(reportDto);
@@ -50,28 +50,28 @@ export const UploadFileZone = (props: Props) => {
 
   return (
     <Flex
-      direction={"column"}
-      backgroundColor={"gray.100"}
+      direction={'column'}
+      backgroundColor={'gray.100'}
       p={5}
-      align={"center"}
+      align={'center'}
       borderRadius={10}
       borderWidth={2}
-      borderStyle={"dashed"}
-      borderColor={"gray.400"}
-      w={"100%"}
-      h={"100%"}
+      borderStyle={'dashed'}
+      borderColor={'gray.400'}
+      w={'100%'}
+      h={'100%'}
       _hover={{
-        borderColor: postMutation.isLoading ? "gray.400" : "gray.500",
+        borderColor: postMutation.isLoading ? 'gray.400' : 'gray.500',
       }}
-      cursor={postMutation.isLoading ? "default" : "pointer"}
-      {...getRootProps({ className: "dropzone" })}
+      cursor={postMutation.isLoading ? 'default' : 'pointer'}
+      {...getRootProps({ className: 'dropzone' })}
     >
       <input {...getInputProps()} />
       {state.isLoading && <Spinner />}
-      {!state.isLoading && <MdFileUpload size={"40"} opacity={0.6} />}
+      {!state.isLoading && <MdFileUpload size={'40'} opacity={0.6} />}
 
-      <Text opacity={0.6} color={state.files.length ? "green.600" : "gray.800"}>
-        {state.files.length ? state.files[0].name : "Choose or drop a file here."}
+      <Text opacity={0.6} color={state.files.length ? 'green.600' : 'gray.800'}>
+        {state.files.length ? state.files[0].name : 'Choose or drop a file here.'}
       </Text>
     </Flex>
   );

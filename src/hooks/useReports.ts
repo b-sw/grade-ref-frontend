@@ -8,9 +8,9 @@ import { MATCHES_QUERY_KEY } from './useLeagueMatches';
 import { USER_LEAGUE_MATCHES_QK } from './useUserMatches';
 
 export enum ReportType {
-  OBSERVER = 'Observer',
-  MENTOR = 'Mentor',
-  TV = 'Tv',
+  Observer = 'Observer',
+  Mentor = 'Mentor',
+  Tv = 'Tv',
 }
 
 export interface ReportDto {
