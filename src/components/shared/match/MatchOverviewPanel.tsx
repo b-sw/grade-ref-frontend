@@ -1,29 +1,29 @@
-import { ArrowBackIcon, DeleteIcon } from "@chakra-ui/icons";
-import {Button, Flex, Icon, Link, Spacer, Text, useDisclosure } from "@chakra-ui/react";
-import {Match} from "entities/Match";
-import {Path} from "utils/Path";
-import {uuid} from "utils/uuid";
-import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
+import { ArrowBackIcon, DeleteIcon } from '@chakra-ui/icons';
+import { Button, Flex, Icon, Link, Spacer, Text, useDisclosure } from '@chakra-ui/react';
+import { Match } from 'entities/Match';
+import { Path } from 'utils/Path';
+import { uuid } from 'utils/uuid';
+import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import {useRef} from "react";
-import {Details} from "components/shared/match/sections/details/Details";
-import {Team} from "entities/Team";
-import {User} from "entities/User";
-import {DetailsEditModal} from "components/shared/match/sections/details/DetailsEditModal";
-import {Assignments} from "components/shared/match/sections/assignments/Assignments";
-import {Sanctions} from "components/shared/match/sections/sanctions/Sanctions";
-import {Conclusions} from "components/shared/match/sections/conclusions/Conclusions";
-import {useFouls} from "components/shared/match/sections/sanctions/hooks/useFouls";
-import {LoadingOverlay} from "pages/LoadingOverlay";
-import {useLeagueTeams} from "hooks/useLeagueTeams";
-import {useFeatures} from "components/shared/match/sections/conclusions/useFeatures";
-import {RefereeNote} from "components/shared/match/sections/note/RefereeNote";
-import {scrollbarStyle} from "components/dashboard/shared/styles";
-import {MatchListItem} from "components/adminDashboard/matches/MatchListItem";
-import {MatchDeleteModal} from "components/adminDashboard/matches/MatchDeleteModal";
-import {useStore} from "zustandStore/store";
-import {Role} from "utils/Role";
-import {Grade} from "components/shared/match/sections/grade/Grade";
+import { useRef } from 'react';
+import { Details } from 'components/shared/match/sections/details/Details';
+import { Team } from 'entities/Team';
+import { User } from 'entities/User';
+import { MatchEditModal } from 'components/adminDashboard/matches/MatchEditModal';
+import { Assignments } from 'components/shared/match/sections/assignments/Assignments';
+import { Sanctions } from 'components/shared/match/sections/sanctions/Sanctions';
+import { Conclusions } from 'components/shared/match/sections/conclusions/Conclusions';
+import { useFouls } from 'components/shared/match/sections/sanctions/useFouls';
+import { LoadingOverlay } from 'pages/LoadingOverlay';
+import { useLeagueTeams } from 'hooks/useLeagueTeams';
+import { useFeatures } from 'components/shared/match/sections/conclusions/useFeatures';
+import { RefereeNote } from 'components/shared/match/sections/note/RefereeNote';
+import { scrollbarStyle } from 'components/dashboard/shared/styles';
+import { MatchListItem } from 'components/adminDashboard/matches/MatchListItem';
+import { MatchDeleteModal } from 'components/adminDashboard/matches/MatchDeleteModal';
+import { useStore } from 'zustandStore/store';
+import { Role } from 'utils/Role';
+import { Files } from './sections/files/Reports';
 
 export const enum MatchData {
   Details = 'Match Details',
@@ -32,6 +32,7 @@ export const enum MatchData {
   DisciplinarySanctions = 'Disciplinary sanctions',
   Conclusions = 'Conclusions',
   RefereeNote = 'Referee note',
+  Reports = 'Reports',
 }
 
 interface MatchOverviewPanelProps {
@@ -49,7 +50,7 @@ export const MatchOverviewPanel = ({ match, teams, referees, observers }: MatchO
   const { query: foulsQuery } = useFouls({ matchId: match.id });
   const { query: featuresQuery } = useFeatures({ matchId: match.id });
   const { query: teamsQuery } = useLeagueTeams();
-  const user = useStore(state => state.user);
+  const user = useStore((state) => state.user);
 
   const navigate: NavigateFunction = useNavigate();
   const { leagueId } = useParams<{ leagueId: uuid }>();
@@ -80,7 +81,7 @@ export const MatchOverviewPanel = ({ match, teams, referees, observers }: MatchO
         <Text fontSize={'md'}>{sectionName}</Text>
       </Link>
     );
-  }
+  };
 
   if (foulsQuery.isLoading || featuresQuery.isLoading) {
     return <LoadingOverlay />;
@@ -108,17 +109,15 @@ export const MatchOverviewPanel = ({ match, teams, referees, observers }: MatchO
           maxH={['90vh', '100%']}
           gap={PADDING}
         >
-          <Flex
-            w={'100%'}
-            alignItems={'center'}
-            gap={2}
-          >
+          <Flex w={'100%'} alignItems={'center'} gap={2}>
             <Button
               as={motion.div}
               whileHover={{ right: 5 }}
               variant={'ghost'}
               leftIcon={<Icon as={ArrowBackIcon} />}
-              onClick={() => { navigate(`${Path.ADMIN_DASHBOARD}/${leagueId}`); }}
+              onClick={() => {
+                navigate(`${Path.ADMIN_DASHBOARD}/${leagueId}`);
+              }}
             >
               Dashboard
             </Button>
@@ -138,21 +137,11 @@ export const MatchOverviewPanel = ({ match, teams, referees, observers }: MatchO
             </Button>
           </Flex>
 
-          <Flex
-            gap={PADDING}
-            overflowY={'hidden'}
-            flexGrow={1}
-            w={'100%'}
-            h={['auto', '100%']}
-            maxH={['90vh', '100%']}
-          >
-            <Flex
-              direction={'column'}
-              borderRadius={10}
-              w={'20%'}
-              gap={2}
-            >
-              <Text fontSize={'xl'} fontWeight={'medium'}>Page sections</Text>
+          <Flex gap={PADDING} overflowY={'hidden'} flexGrow={1} w={'100%'} h={['auto', '100%']} maxH={['90vh', '100%']}>
+            <Flex direction={'column'} borderRadius={10} w={'20%'} gap={2}>
+              <Text fontSize={'xl'} fontWeight={'medium'}>
+                Page sections
+              </Text>
               {menuLink(MatchData.Details, detailsRef)}
               {menuLink(MatchData.Grade, gradeRef)}
               {menuLink(MatchData.Assignments, assignmentsRef)}
@@ -161,18 +150,8 @@ export const MatchOverviewPanel = ({ match, teams, referees, observers }: MatchO
               {menuLink(MatchData.RefereeNote, noteRef)}
             </Flex>
 
-            <Flex
-              direction={'column'}
-              p={PADDING}
-              w={'80%'}
-              overflowY={'hidden'}
-            >
-              <Flex
-                direction={'column'}
-                overflowY={'scroll'}
-                css={scrollbarStyle}
-                ref={overviewRef}
-              >
+            <Flex direction={'column'} p={PADDING} w={'80%'} overflowY={'hidden'}>
+              <Flex direction={'column'} overflowY={'scroll'} css={scrollbarStyle} ref={overviewRef}>
                 <Flex ref={detailsRef}>
                   <Details match={match} homeTeam={homeTeam} awayTeam={awayTeam}/>
                 </Flex>
@@ -196,6 +175,10 @@ export const MatchOverviewPanel = ({ match, teams, referees, observers }: MatchO
                 <Flex ref={noteRef}>
                   <RefereeNote match={match} />
                 </Flex>
+
+                <Flex ref={null}>
+                  <Files match={props.match} />
+                </Flex>
               </Flex>
             </Flex>
           </Flex>
@@ -205,4 +188,4 @@ export const MatchOverviewPanel = ({ match, teams, referees, observers }: MatchO
       </Flex>
     </>
   );
-}
+};
