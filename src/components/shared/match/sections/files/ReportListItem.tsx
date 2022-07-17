@@ -15,12 +15,9 @@ interface Props {
 
 export const ReportListItem = (props: Props) => {
   const user = useStore((state) => state.user);
-  //const role = role;
 
-  const [role] = useState(Role.Referee);
-
-  const hasReadPermissions = GRADE_FILES_PERMISSIONS[role][ActionType.Read].has(props.reportType);
-  const hasWritePermissions = GRADE_FILES_PERMISSIONS[role][ActionType.Write].has(props.reportType);
+  const hasReadPermissions = GRADE_FILES_PERMISSIONS[user.role! as Role][ActionType.Read].has(props.reportType);
+  const hasWritePermissions = GRADE_FILES_PERMISSIONS[user.role! as Role][ActionType.Write].has(props.reportType);
 
   if (hasWritePermissions) {
     if (!props.isUploaded) {
@@ -79,11 +76,4 @@ export const ReportListItem = (props: Props) => {
       );
     }
   }
-
-  return (
-    <>
-      <Text>Read:{hasReadPermissions.toString()}</Text>
-      <Text>Write:{hasWritePermissions.toString()}</Text>
-    </>
-  );
 };
