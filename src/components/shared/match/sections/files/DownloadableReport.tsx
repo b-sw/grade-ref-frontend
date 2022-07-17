@@ -1,7 +1,9 @@
 import { CloseIcon } from '@chakra-ui/icons';
 import { Flex, IconButton, Link, Spacer, Text } from '@chakra-ui/react';
 import axios from 'axios';
+import { Match } from 'entities/Match';
 import { ReportType, useReports } from 'hooks/useReports';
+import { useSetState } from 'hooks/useSetState';
 import { useEffect, useState } from 'react';
 import { MdFileDownload } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
@@ -12,8 +14,16 @@ interface Props {
   hasWritePermissions: boolean;
 }
 
+interface State {
+  url: string;
+  fileName: string;
+}
+
 export const DownloadableReport = (props: Props) => {
-  const [url, setUrl] = useState('');
+  const [state, setState] = useSetState({
+    url: '',
+    fileName: '',
+  });
   const { leagueId } = useParams<{ leagueId: uuid }>();
   const { matchId } = useParams<{ matchId: uuid }>();
 
@@ -32,12 +42,13 @@ export const DownloadableReport = (props: Props) => {
       responseType: 'blob',
     });
 
-    console.log(response.data);
+    const header = response.headers['content-disposition'];
+    const fileName = header.split('/').at(-1)?.slice(0, -1);
 
     const blob = new Blob([response.data], { type: 'application/pdf' });
     const urlTemp = URL.createObjectURL(blob);
 
-    setUrl(urlTemp);
+    setState({ url: urlTemp, fileName });
   };
 
   return (
@@ -69,8 +80,8 @@ export const DownloadableReport = (props: Props) => {
       <Spacer />
       <IconButton
         as={Link}
-        href={url}
-        download
+        href={state.url}
+        download={state.fileName}
         aria-label="Download"
         icon={<MdFileDownload size={'40'} />}
         opacity={0.6}

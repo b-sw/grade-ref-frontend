@@ -5,7 +5,6 @@ import { useStore } from 'zustandStore/store';
 import { UploadFileZone } from './UploadReportZone';
 import { DownloadableReport } from './DownloadableReport';
 import { EmptyReportListItem } from './EmptyReportListItem';
-import { useState } from 'react';
 import { UploadedReportListItem } from './UploadedReportListItem';
 
 interface Props {
@@ -76,4 +75,6 @@ export const ReportListItem = (props: Props) => {
       );
     }
   }
+
+  return null;
 };
