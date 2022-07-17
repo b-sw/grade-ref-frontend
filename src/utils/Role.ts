@@ -12,7 +12,7 @@ export enum ActionType {
   Write,
 }
 
-export const GRADE_FILES_PERMISSIONS: Record<Role, Record<ActionType, Set<ReportType>>> = {
+export const GradeFilePermissions: Record<Role, Record<ActionType, Set<ReportType>>> = {
   [Role.Owner]: {
     [ActionType.Read]: new Set([ReportType.Observer, ReportType.Tv, ReportType.Mentor]),
     [ActionType.Write]: new Set(),

@@ -1,6 +1,6 @@
 import { Flex, Text } from '@chakra-ui/react';
 import { ReportType } from 'hooks/useReports';
-import { ActionType, GRADE_FILES_PERMISSIONS, Role } from 'utils/Role';
+import { ActionType, GradeFilePermissions, Role } from 'utils/Role';
 import { useStore } from 'zustandStore/store';
 import { UploadFileZone } from './UploadReportZone';
 import { DownloadableReport } from './DownloadableReport';
@@ -15,8 +15,8 @@ interface Props {
 export const ReportListItem = (props: Props) => {
   const user = useStore((state) => state.user);
 
-  const hasReadPermissions = GRADE_FILES_PERMISSIONS[user.role! as Role][ActionType.Read].has(props.reportType);
-  const hasWritePermissions = GRADE_FILES_PERMISSIONS[user.role! as Role][ActionType.Write].has(props.reportType);
+  const hasReadPermissions = GradeFilePermissions[user.role! as Role][ActionType.Read].has(props.reportType);
+  const hasWritePermissions = GradeFilePermissions[user.role! as Role][ActionType.Write].has(props.reportType);
 
   if (hasWritePermissions) {
     if (!props.isUploaded) {

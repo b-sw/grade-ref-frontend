@@ -1,5 +1,5 @@
-import { Flex, Spacer, Text } from '@chakra-ui/react';
-import { AiOutlineFile, AiOutlineFileDone } from 'react-icons/ai';
+import { Flex, Icon, Spacer, Text } from '@chakra-ui/react';
+import { AiOutlineFileDone } from 'react-icons/ai';
 
 export const UploadedReportListItem = () => {
   return (
@@ -16,7 +16,7 @@ export const UploadedReportListItem = () => {
       position={'relative'}
     >
       <Spacer />
-      <AiOutlineFileDone opacity={0.6} size={'40'} color={'black'} />
+      <Icon as={AiOutlineFileDone} opacity={0.6} size={'40'} color={'black'} />
       <Text opacity={0.8}>Uploaded</Text>
       <Spacer />
     </Flex>

@@ -1,13 +1,15 @@
 import { EditIcon, InfoIcon } from "@chakra-ui/icons";
-import {Button, Flex, Icon, Spacer, Text, useDisclosure } from "@chakra-ui/react";
+import { Button, Flex, Icon, useDisclosure } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import {Match} from "entities/Match";
-import {Team} from "entities/Team";
-import {Constants} from "utils/Constants";
-import {DetailsEditModal} from "components/shared/match/sections/details/DetailsEditModal";
-import {TextField} from "components/shared/match/shared/TextField";
-import {Role} from "utils/Role";
-import {useStore} from "zustandStore/store";
+import { Match } from "entities/Match";
+import { Team } from "entities/Team";
+import { Constants } from "utils/Constants";
+import { DetailsEditModal } from "components/shared/match/sections/details/DetailsEditModal";
+import { TextField } from "components/shared/match/shared/TextField";
+import { Role } from "utils/Role";
+import { useStore } from "zustandStore/store";
+import { SectionHeading } from "components/shared/match/shared/SectionHeading";
+import { MatchData } from "components/shared/match/MatchOverviewPanel";
 
 interface DetailsProps {
   match: Match;
@@ -34,10 +36,7 @@ export const Details = ({ match, homeTeam, awayTeam }: DetailsProps) => {
       {userCanEdit && <DetailsEditModal isOpen={isEditOpen} handleClose={onEditClose} match={match} />}
 
       <Flex direction={'column'} w={'100%'} mb={5} gap={2}>
-        <Flex align={'center'} gap={2} mr={5}>
-          <Icon as={InfoIcon} />
-          <Text fontSize={'2xl'} fontWeight={'medium'}>Match details</Text>
-          <Spacer />
+        <SectionHeading title={MatchData.Details} icon={<InfoIcon boxSize={25} />}>
           <Button
             variant={'ghost'}
             leftIcon={<Icon as={EditIcon} />}
@@ -46,7 +45,7 @@ export const Details = ({ match, homeTeam, awayTeam }: DetailsProps) => {
           >
             Edit
           </Button>
-        </Flex>
+        </SectionHeading>
 
         <Flex
           direction={'column'}

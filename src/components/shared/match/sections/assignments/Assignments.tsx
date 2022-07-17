@@ -1,6 +1,6 @@
 import {User} from "entities/User";
 import {Match} from "entities/Match";
-import {Button, Flex, Icon, Spacer, Text, useDisclosure} from "@chakra-ui/react";
+import {Button, Flex, Icon, useDisclosure} from "@chakra-ui/react";
 import { MdPeople } from "react-icons/md";
 import { EditIcon } from "@chakra-ui/icons";
 import {MatchData} from "components/shared/match/MatchOverviewPanel";
@@ -9,14 +9,15 @@ import {TextField} from "components/shared/match/shared/TextField";
 import {Role} from "utils/Role";
 import dayjs from "dayjs";
 import {useStore} from "zustandStore/store";
+import { SectionHeading } from "components/shared/match/shared/SectionHeading";
 
-interface Props {
+interface AssignmentsProps {
   match: Match;
   referee: User;
   observer: User;
 }
 
-export const Assignments = ({ match, referee, observer }: Props) => {
+export const Assignments = ({ match, referee, observer }: AssignmentsProps) => {
   const user = useStore((state) => state.user);
   const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
 
@@ -29,10 +30,7 @@ export const Assignments = ({ match, referee, observer }: Props) => {
       {userCanEdit && <AssignmentsEditModal isOpen={isEditOpen} handleClose={onEditClose} match={match} />}
 
       <Flex direction={'column'} w={'100%'} mb={5} gap={2}>
-        <Flex align={'center'} gap={2} mr={5}>
-          <Icon as={MdPeople} />
-          <Text fontSize={'2xl'} fontWeight={'medium'}>{MatchData.Assignments}</Text>
-          <Spacer />
+        <SectionHeading title={MatchData.Assignments} iconType={MdPeople}>
           <Button
             variant={'ghost'}
             leftIcon={<Icon as={EditIcon} />}
@@ -41,7 +39,7 @@ export const Assignments = ({ match, referee, observer }: Props) => {
           >
             Edit
           </Button>
-        </Flex>
+        </SectionHeading>
 
         <Flex
           direction={'column'}

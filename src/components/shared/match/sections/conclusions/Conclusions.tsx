@@ -1,6 +1,5 @@
-import { Button, Flex, Icon, Spacer, Text } from "@chakra-ui/react";
+import { Button, Flex, Icon, Text } from "@chakra-ui/react";
 import { MdGrade } from "react-icons/md";
-import {Match} from "entities/Match";
 import { AddIcon } from "@chakra-ui/icons";
 import {DataTable} from "components/shared/match/sections/DataTable";
 import {Feature, FeatureType} from "entities/Feature";
@@ -9,13 +8,13 @@ import {MatchData} from "components/shared/match/MatchOverviewPanel";
 import {Role} from "utils/Role";
 import {noRecords} from "components/shared/panelUtils";
 import {useStore} from "zustandStore/store";
+import { SectionHeading } from "components/shared/match/shared/SectionHeading";
 
-interface Props {
-  match: Match;
+interface ConclusionsProps {
   features: Feature[];
 }
 
-export const Conclusions = (props: Props) => {
+export const Conclusions = ({ features }: ConclusionsProps) => {
   const user = useStore((state) => state.user);
 
   const cols: Column<Feature>[] = [
@@ -33,10 +32,7 @@ export const Conclusions = (props: Props) => {
 
   return (
     <Flex direction={'column'} w={'100%'} mb={5} gap={2}>
-      <Flex align={'center'} gap={2} mr={5}>
-        <Icon as={MdGrade} />
-        <Text fontSize={'2xl'} fontWeight={'medium'}>{MatchData.Conclusions}</Text>
-        <Spacer />
+      <SectionHeading title={MatchData.Conclusions} iconType={MdGrade}>
         <Button
           variant={'ghost'}
           leftIcon={<Icon as={AddIcon} />}
@@ -45,7 +41,7 @@ export const Conclusions = (props: Props) => {
         >
           Add
         </Button>
-      </Flex>
+      </SectionHeading>
 
       <Flex
         direction={'column'}
@@ -54,8 +50,8 @@ export const Conclusions = (props: Props) => {
         backgroundColor={'gray.200'}
         p={5}
       >
-        <DataTable columns={cols} data={props.features} />
-        {!props.features.length && noRecords()}
+        <DataTable columns={cols} data={features} />
+        {!features.length && noRecords()}
       </Flex>
     </Flex>
   );

@@ -1,14 +1,16 @@
-import {EditIcon, WarningIcon } from "@chakra-ui/icons";
-import {Badge, Button, Flex, HStack, Icon, Spacer, Text, Textarea, Tooltip, useDisclosure } from "@chakra-ui/react";
+import { EditIcon, WarningIcon } from "@chakra-ui/icons";
+import { Badge, Button, Flex, HStack, Icon, Text, Textarea, Tooltip, useDisclosure } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import {Match} from "entities/Match";
-import {Constants} from "utils/Constants";
+import { Match } from "entities/Match";
+import { Constants } from "utils/Constants";
 import { BiDetail } from "react-icons/bi";
-import {TextField} from "components/shared/match/shared/TextField";
-import {Field} from "components/shared/match/shared/Field";
-import {GradeEditModal} from "components/shared/match/sections/grade/GradeEditModal";
-import {useStore} from "zustandStore/store";
-import {Role} from "utils/Role";
+import { TextField } from "components/shared/match/shared/TextField";
+import { Field } from "components/shared/match/shared/Field";
+import { GradeEditModal } from "components/shared/match/sections/grade/GradeEditModal";
+import { useStore } from "zustandStore/store";
+import { Role } from "utils/Role";
+import { SectionHeading } from "components/shared/match/shared/SectionHeading";
+import { MatchData } from "components/shared/match/MatchOverviewPanel";
 
 interface GradeProps {
   match: Match;
@@ -65,10 +67,7 @@ export const Grade = ({ match }: GradeProps) => {
     <>
       {userCanEdit && <GradeEditModal isOpen={isEditOpen} handleClose={onEditClose} match={match} />}
       <Flex direction={'column'} w={'100%'} mb={5} gap={2}>
-        <Flex align={'center'} gap={2} mr={5}>
-          <Icon as={BiDetail} />
-          <Text fontSize={'2xl'} fontWeight={'medium'}>Grade details</Text>
-          <Spacer />
+        <SectionHeading title={MatchData.Grade} iconType={BiDetail}>
           <Button
             variant={'ghost'}
             leftIcon={<Icon as={EditIcon} />}
@@ -77,7 +76,7 @@ export const Grade = ({ match }: GradeProps) => {
           >
             Edit
           </Button>
-        </Flex>
+        </SectionHeading>
 
         <Flex
           direction={'column'}

@@ -28,6 +28,7 @@ import dayjs from 'dayjs';
 import {AdminSettingsModal} from "../settings/AdminSettingsModal";
 import { RiTeamFill } from "react-icons/ri";
 import {TeamsModal} from "../teams/TeamsModal";
+import { LoadingOverlay } from "pages/LoadingOverlay";
 
 interface Props {
   pageTitle: PageTitle;
@@ -44,6 +45,10 @@ export const AdminHeaderPanel = (props: Props) => {
   const navigate = useNavigate();
   const { query: leaguesQuery } = useLeagues();
   const { leagueId } = useParams<{ leagueId: uuid }>();
+
+  if (leaguesQuery.isLoading) {
+    return <LoadingOverlay />;
+  }
 
   const leagueIdx: number = leaguesQuery.data!.findIndex((l: League) => l.id === leagueId)!;
   const leagueShortName: string = leaguesQuery.data![leagueIdx].shortName;

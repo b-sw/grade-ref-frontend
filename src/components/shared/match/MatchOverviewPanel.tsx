@@ -9,11 +9,9 @@ import { useRef } from 'react';
 import { Details } from 'components/shared/match/sections/details/Details';
 import { Team } from 'entities/Team';
 import { User } from 'entities/User';
-import { MatchEditModal } from 'components/adminDashboard/matches/MatchEditModal';
 import { Assignments } from 'components/shared/match/sections/assignments/Assignments';
 import { Sanctions } from 'components/shared/match/sections/sanctions/Sanctions';
 import { Conclusions } from 'components/shared/match/sections/conclusions/Conclusions';
-import { useFouls } from 'components/shared/match/sections/sanctions/useFouls';
 import { LoadingOverlay } from 'pages/LoadingOverlay';
 import { useLeagueTeams } from 'hooks/useLeagueTeams';
 import { useFeatures } from 'components/shared/match/sections/conclusions/useFeatures';
@@ -23,7 +21,9 @@ import { MatchListItem } from 'components/adminDashboard/matches/MatchListItem';
 import { MatchDeleteModal } from 'components/adminDashboard/matches/MatchDeleteModal';
 import { useStore } from 'zustandStore/store';
 import { Role } from 'utils/Role';
-import { Files } from './sections/files/Reports';
+import { Reports } from './sections/files/Reports';
+import { useFouls } from "components/shared/match/sections/sanctions/hooks/useFouls";
+import { Grade } from "components/shared/match/sections/grade/Grade";
 
 export const enum MatchData {
   Details = 'Match Details',
@@ -45,7 +45,6 @@ interface MatchOverviewPanelProps {
 const PADDING = 4;
 
 export const MatchOverviewPanel = ({ match, teams, referees, observers }: MatchOverviewPanelProps) => {
-  const { isOpen: isEditDetailsModalOpen, /*onOpen: onEditDetailsModalOpen,*/ onClose: onEditDetailsModalClose } = useDisclosure();
   const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
   const { query: foulsQuery } = useFouls({ matchId: match.id });
   const { query: featuresQuery } = useFeatures({ matchId: match.id });
@@ -62,6 +61,7 @@ export const MatchOverviewPanel = ({ match, teams, referees, observers }: MatchO
   const foulsRef: any = useRef();
   const conclusionsRef: any = useRef();
   const noteRef: any = useRef();
+  const reportsRef: any = useRef();
 
   const homeTeam: Team = teams.find((team: Team) => team.id === match.homeTeamId)!;
   const awayTeam: Team = teams.find((team: Team) => team.id === match.awayTeamId)!;
@@ -89,7 +89,6 @@ export const MatchOverviewPanel = ({ match, teams, referees, observers }: MatchO
 
   return (
     <>
-      <DetailsEditModal isOpen={isEditDetailsModalOpen} handleClose={onEditDetailsModalClose} match={match} />
       <MatchDeleteModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} match={match} />
       <Flex
         overflow={'hidden'}
@@ -148,6 +147,7 @@ export const MatchOverviewPanel = ({ match, teams, referees, observers }: MatchO
               {menuLink(MatchData.DisciplinarySanctions, foulsRef)}
               {menuLink(MatchData.Conclusions, conclusionsRef)}
               {menuLink(MatchData.RefereeNote, noteRef)}
+              {menuLink(MatchData.Reports, reportsRef)}
             </Flex>
 
             <Flex direction={'column'} p={PADDING} w={'80%'} overflowY={'hidden'}>
@@ -165,19 +165,19 @@ export const MatchOverviewPanel = ({ match, teams, referees, observers }: MatchO
                 </Flex>
 
                 <Flex ref={foulsRef}>
-                  <Sanctions match={match} fouls={foulsQuery.data!} teams={teamsQuery.data!} />
+                  <Sanctions fouls={foulsQuery.data!} teams={teamsQuery.data!} />
                 </Flex>
 
                 <Flex ref={conclusionsRef}>
-                  <Conclusions match={match} features={featuresQuery.data!} />
+                  <Conclusions features={featuresQuery.data!} />
                 </Flex>
 
                 <Flex ref={noteRef}>
                   <RefereeNote match={match} />
                 </Flex>
 
-                <Flex ref={null}>
-                  <Files match={props.match} />
+                <Flex ref={reportsRef}>
+                  <Reports match={match} />
                 </Flex>
               </Flex>
             </Flex>
