@@ -17,7 +17,7 @@ export const ReportListItem = (props: Props) => {
   const user = useStore((state) => state.user);
   //const role = role;
 
-  const [role] = useState(Role.Observer);
+  const [role] = useState(Role.Referee);
 
   const hasReadPermissions = GRADE_FILES_PERMISSIONS[role][ActionType.Read].has(props.reportType);
   const hasWritePermissions = GRADE_FILES_PERMISSIONS[role][ActionType.Write].has(props.reportType);
@@ -36,7 +36,7 @@ export const ReportListItem = (props: Props) => {
       return (
         <Flex direction={'column'} w={'100%'}>
           <Text>{props.reportType}</Text>
-          <DownloadableReport reportType={props.reportType} />
+          <DownloadableReport reportType={props.reportType} hasWritePermissions={hasWritePermissions} />
         </Flex>
       );
     }
@@ -47,7 +47,7 @@ export const ReportListItem = (props: Props) => {
       return (
         <Flex direction={'column'} w={'100%'}>
           <Text>{props.reportType}</Text>
-          <DownloadableReport reportType={props.reportType} />
+          <DownloadableReport reportType={props.reportType} hasWritePermissions={hasWritePermissions} />
         </Flex>
       );
     }

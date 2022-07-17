@@ -9,6 +9,7 @@ import { uuid } from 'utils/uuid';
 
 interface Props {
   reportType: ReportType;
+  hasWritePermissions: boolean;
 }
 
 export const DownloadableReport = (props: Props) => {
@@ -52,16 +53,19 @@ export const DownloadableReport = (props: Props) => {
       align={'center'}
       position={'relative'}
     >
-      <IconButton
-        onClick={deleteReport}
-        size={'sm'}
-        aria-label="Delete"
-        icon={<CloseIcon />}
-        position={'absolute'}
-        top={2}
-        right={2}
-        isLoading={deleteMutation.isLoading}
-      />
+      {props.hasWritePermissions && (
+        <IconButton
+          onClick={deleteReport}
+          size={'sm'}
+          aria-label="Delete"
+          icon={<CloseIcon />}
+          position={'absolute'}
+          top={2}
+          right={2}
+          isLoading={deleteMutation.isLoading}
+        />
+      )}
+
       <Spacer />
       <IconButton
         as={Link}
