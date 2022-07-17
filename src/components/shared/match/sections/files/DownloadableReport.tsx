@@ -44,7 +44,6 @@ export const DownloadableReport = (props: Props) => {
 
     const header = response.headers['content-disposition'];
     const fileName = header.split('/').at(-1)?.slice(0, -1).replace(/:/g, '.');
-    console.log(fileName);
 
     const blob = new Blob([response.data], { type: 'application/pdf' });
     const urlTemp = URL.createObjectURL(blob);
