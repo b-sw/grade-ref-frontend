@@ -15,13 +15,11 @@ interface DownloadableReportProps {
 
 interface State {
   url: string;
-  fileName: string;
 }
 
 export const DownloadableReport = ({ reportType, hasWritePermissions }: DownloadableReportProps) => {
   const [state, setState] = useSetState({
     url: '',
-    fileName: '',
   } as State);
   const { leagueId } = useParams<{ leagueId: uuid }>();
   const { matchId } = useParams<{ matchId: uuid }>();
@@ -38,17 +36,8 @@ export const DownloadableReport = ({ reportType, hasWritePermissions }: Download
   };
 
   const getFile = async () => {
-    const response = await axios.get(`leagues/${leagueId}/matches/${matchId}/reports/${reportType}`, {
-      responseType: 'blob',
-    });
-
-    const header = response.headers['content-disposition'];
-    const fileName = header.split('/').at(-1)?.slice(0, -1).replace(/:/g, '.');
-
-    const blob = new Blob([response.data], { type: 'application/pdf' });
-    const urlTemp = URL.createObjectURL(blob);
-
-    setState({ url: urlTemp, fileName });
+    const response = await axios.get(`leagues/${leagueId}/matches/${matchId}/reports/${reportType}`);
+    setState({ url: response.data });
   };
 
   return (
@@ -81,7 +70,7 @@ export const DownloadableReport = ({ reportType, hasWritePermissions }: Download
       <IconButton
         as={Link}
         href={state.url}
-        download={state.fileName}
+        download
         aria-label="Download"
         icon={<MdFileDownload size={'40'} />}
         opacity={0.6}
