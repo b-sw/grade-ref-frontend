@@ -4,11 +4,11 @@ import {Match} from "entities/Match";
 import {uuid} from "utils/uuid";
 import {useLeagueMatches} from "hooks/useLeagueMatches";
 import {LoadingOverlay} from "pages/LoadingOverlay";
-import {SelectOptions} from "components/shared/match/shared/SelectOptions";
+import {SelectOptions} from "components/shared/match/components/SelectOptions";
 import {useLeagueUsers} from "hooks/useLeagueUsers";
 import {Role} from "utils/Role";
 import {assignmentsValidationSchema} from "components/shared/match/sections/assignments/assignments.validation";
-import {FormikModal} from "components/shared/match/shared/FormikModal";
+import {FormikModal} from "components/shared/match/components/FormikModal";
 
 interface AssignmentsEditModalProps {
   isOpen: boolean;

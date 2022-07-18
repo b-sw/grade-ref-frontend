@@ -1,11 +1,12 @@
-import { Flex, Spinner, Text, useToast } from '@chakra-ui/react';
+import { Icon, Spinner, useToast } from '@chakra-ui/react';
 import { ReportDto, ReportType, useReports } from 'hooks/useReports';
 import { useSetState } from 'hooks/useSetState';
 import { useDropzone } from 'react-dropzone';
 import { MdFileUpload } from 'react-icons/md';
 import { useEffect } from "react";
+import { Dropzone } from "components/shared/match/components/Dropzone";
 
-interface UploadFileZoneProps {
+interface UploadReportZoneProps {
   reportType: ReportType;
 }
 
@@ -14,7 +15,7 @@ interface State {
   isLoading: boolean;
 }
 
-export const UploadFileZone = ({ reportType }: UploadFileZoneProps) => {
+export const UploadReportZone = ({ reportType }: UploadReportZoneProps) => {
   const { postMutation } = useReports();
   const toast = useToast();
 
@@ -65,31 +66,23 @@ export const UploadFileZone = ({ reportType }: UploadFileZoneProps) => {
     setState({ isLoading: true });
   };
 
-  return (
-    <Flex
-      direction={'column'}
-      backgroundColor={'gray.100'}
-      p={5}
-      align={'center'}
-      borderRadius={10}
-      borderWidth={2}
-      borderStyle={'dashed'}
-      borderColor={'gray.400'}
-      w={'100%'}
-      h={'100%'}
-      _hover={{
-        borderColor: postMutation.isLoading ? 'gray.400' : 'gray.500',
-      }}
-      cursor={postMutation.isLoading ? 'default' : 'pointer'}
-      {...getRootProps({ className: 'dropzone' })}
-    >
-      <input {...getInputProps()} />
-      {state.isLoading && <Spinner />}
-      {!state.isLoading && <MdFileUpload size={'40'} opacity={0.6} />}
+  const dropzoneText = state.files.length ? state.files[0].name : 'Choose or drop a file here.';
+  const borderStyle = 'dashed';
+  const _hover = { borderColor: postMutation.isLoading ? 'gray.400' : 'gray.500' };
+  const cursor = postMutation.isLoading ? 'default' : 'pointer';
+  const rootProps = {...getRootProps({ className: 'dropzone' })};
 
-      <Text opacity={0.6} color={state.files.length ? 'green.600' : 'gray.800'}>
-        {state.files.length ? state.files[0].name : 'Choose or drop a file here.'}
-      </Text>
-    </Flex>
+  return (
+    <Dropzone
+      text={dropzoneText}
+      flexProps={{borderStyle, _hover, cursor, ...rootProps}}
+    >
+      <>
+        <input {...getInputProps()} />
+        {state.isLoading && <Spinner />}
+
+        {!state.isLoading && <Icon as={MdFileUpload} boxSize={35} opacity={0.6} />}
+      </>
+    </Dropzone>
   );
 };

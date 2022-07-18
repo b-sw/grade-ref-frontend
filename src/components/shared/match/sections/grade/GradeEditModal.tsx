@@ -1,5 +1,5 @@
 import {GRADE_ADMISSION_TIME_WINDOW, Match} from "entities/Match";
-import {FormikModal} from "components/shared/match/shared/FormikModal";
+import {FormikModal} from "components/shared/match/components/FormikModal";
 import {useEffect} from "react";
 import {InputControl, NumberInputControl} from "formik-chakra-ui";
 import {GradeStatus} from "components/shared/match/gradeInfo";

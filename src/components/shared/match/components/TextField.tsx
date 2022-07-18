@@ -1,5 +1,5 @@
 import { Text } from "@chakra-ui/react";
-import {Field} from "components/shared/match/shared/Field";
+import {Field} from "components/shared/match/components/Field";
 
 export interface TextFieldProps {
   name: string;

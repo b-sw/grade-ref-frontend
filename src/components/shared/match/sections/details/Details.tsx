@@ -5,10 +5,10 @@ import { Match } from "entities/Match";
 import { Team } from "entities/Team";
 import { Constants } from "utils/Constants";
 import { DetailsEditModal } from "components/shared/match/sections/details/DetailsEditModal";
-import { TextField } from "components/shared/match/shared/TextField";
+import { TextField } from "components/shared/match/components/TextField";
 import { Role } from "utils/Role";
 import { useStore } from "zustandStore/store";
-import { SectionHeading } from "components/shared/match/shared/SectionHeading";
+import { SectionHeading } from "components/shared/match/components/SectionHeading";
 import { MatchData } from "components/shared/match/MatchOverviewPanel";
 
 interface DetailsProps {

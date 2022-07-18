@@ -21,7 +21,7 @@ import { MatchListItem } from 'components/adminDashboard/matches/MatchListItem';
 import { MatchDeleteModal } from 'components/adminDashboard/matches/MatchDeleteModal';
 import { useStore } from 'zustandStore/store';
 import { Role } from 'utils/Role';
-import { Reports } from './sections/files/Reports';
+import { Files } from 'components/shared/match/sections/files/Files';
 import { useFouls } from "components/shared/match/sections/sanctions/hooks/useFouls";
 import { Grade } from "components/shared/match/sections/grade/Grade";
 
@@ -137,7 +137,7 @@ export const MatchOverviewPanel = ({ match, teams, referees, observers }: MatchO
           </Flex>
 
           <Flex gap={PADDING} overflowY={'hidden'} flexGrow={1} w={'100%'} h={['auto', '100%']} maxH={['90vh', '100%']}>
-            <Flex direction={'column'} borderRadius={10} w={'20%'} gap={2}>
+            <Flex direction={'column'} borderRadius={10} w={'15%'} gap={2}>
               <Text fontSize={'xl'} fontWeight={'medium'}>
                 Page sections
               </Text>
@@ -150,7 +150,7 @@ export const MatchOverviewPanel = ({ match, teams, referees, observers }: MatchO
               {menuLink(MatchData.Reports, reportsRef)}
             </Flex>
 
-            <Flex direction={'column'} p={PADDING} w={'80%'} overflowY={'hidden'}>
+            <Flex direction={'column'} p={PADDING} w={'85%'} overflowY={'hidden'}>
               <Flex direction={'column'} overflowY={'scroll'} css={scrollbarStyle} ref={overviewRef}>
                 <Flex ref={detailsRef}>
                   <Details match={match} homeTeam={homeTeam} awayTeam={awayTeam}/>
@@ -177,7 +177,7 @@ export const MatchOverviewPanel = ({ match, teams, referees, observers }: MatchO
                 </Flex>
 
                 <Flex ref={reportsRef}>
-                  <Reports match={match} />
+                  <Files match={match} />
                 </Flex>
               </Flex>
             </Flex>

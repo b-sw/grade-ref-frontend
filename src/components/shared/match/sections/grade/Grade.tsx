@@ -4,12 +4,12 @@ import dayjs from "dayjs";
 import { Match } from "entities/Match";
 import { Constants } from "utils/Constants";
 import { BiDetail } from "react-icons/bi";
-import { TextField } from "components/shared/match/shared/TextField";
-import { Field } from "components/shared/match/shared/Field";
+import { TextField } from "components/shared/match/components/TextField";
+import { Field } from "components/shared/match/components/Field";
 import { GradeEditModal } from "components/shared/match/sections/grade/GradeEditModal";
 import { useStore } from "zustandStore/store";
 import { Role } from "utils/Role";
-import { SectionHeading } from "components/shared/match/shared/SectionHeading";
+import { SectionHeading } from "components/shared/match/components/SectionHeading";
 import { MatchData } from "components/shared/match/MatchOverviewPanel";
 
 interface GradeProps {
@@ -67,7 +67,7 @@ export const Grade = ({ match }: GradeProps) => {
     <>
       {userCanEdit && <GradeEditModal isOpen={isEditOpen} handleClose={onEditClose} match={match} />}
       <Flex direction={'column'} w={'100%'} mb={5} gap={2}>
-        <SectionHeading title={MatchData.Grade} iconType={BiDetail}>
+        <SectionHeading title={MatchData.Grade} icon={<Icon as={BiDetail} boxSize={25} />}>
           <Button
             variant={'ghost'}
             leftIcon={<Icon as={EditIcon} />}

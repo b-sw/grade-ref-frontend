@@ -20,7 +20,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import {useLeagueUsers} from "hooks/useLeagueUsers";
 import {Role} from "utils/Role";
 import { useStore } from "zustandStore/store";
-import {SelectOptions} from "components/shared/match/shared/SelectOptions";
+import {SelectOptions} from "components/shared/match/components/SelectOptions";
 
 interface Props {
   isOpen: boolean;

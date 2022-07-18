@@ -5,11 +5,11 @@ import { MdPeople } from "react-icons/md";
 import { EditIcon } from "@chakra-ui/icons";
 import {MatchData} from "components/shared/match/MatchOverviewPanel";
 import {AssignmentsEditModal} from "components/shared/match/sections/assignments/AssignmentsEditModal";
-import {TextField} from "components/shared/match/shared/TextField";
+import {TextField} from "components/shared/match/components/TextField";
 import {Role} from "utils/Role";
 import dayjs from "dayjs";
 import {useStore} from "zustandStore/store";
-import { SectionHeading } from "components/shared/match/shared/SectionHeading";
+import { SectionHeading } from "components/shared/match/components/SectionHeading";
 
 interface AssignmentsProps {
   match: Match;
@@ -30,7 +30,7 @@ export const Assignments = ({ match, referee, observer }: AssignmentsProps) => {
       {userCanEdit && <AssignmentsEditModal isOpen={isEditOpen} handleClose={onEditClose} match={match} />}
 
       <Flex direction={'column'} w={'100%'} mb={5} gap={2}>
-        <SectionHeading title={MatchData.Assignments} iconType={MdPeople}>
+        <SectionHeading title={MatchData.Assignments} icon={<Icon as={MdPeople} boxSize={'25'} />}>
           <Button
             variant={'ghost'}
             leftIcon={<Icon as={EditIcon} />}

@@ -8,7 +8,7 @@ import {MatchData} from "components/shared/match/MatchOverviewPanel";
 import {Role} from "utils/Role";
 import {noRecords} from "components/shared/panelUtils";
 import {useStore} from "zustandStore/store";
-import { SectionHeading } from "components/shared/match/shared/SectionHeading";
+import { SectionHeading } from "components/shared/match/components/SectionHeading";
 
 interface ConclusionsProps {
   features: Feature[];
@@ -32,7 +32,7 @@ export const Conclusions = ({ features }: ConclusionsProps) => {
 
   return (
     <Flex direction={'column'} w={'100%'} mb={5} gap={2}>
-      <SectionHeading title={MatchData.Conclusions} iconType={MdGrade}>
+      <SectionHeading title={MatchData.Conclusions} icon={<Icon as={MdGrade} boxSize={25} />}>
         <Button
           variant={'ghost'}
           leftIcon={<Icon as={AddIcon} />}

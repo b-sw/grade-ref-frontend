@@ -13,7 +13,7 @@ import {timeItem} from "components/adminDashboard/matches/MatchListItem";
 import {useStore} from "zustandStore/store";
 import {Role} from "utils/Role";
 import {noRecords} from "components/shared/panelUtils";
-import { SectionHeading } from "components/shared/match/shared/SectionHeading";
+import { SectionHeading } from "components/shared/match/components/SectionHeading";
 
 interface SanctionsProps {
   fouls: Foul[];
@@ -58,7 +58,7 @@ export const Sanctions = ({ fouls, teams }: SanctionsProps) => {
 
   return (
     <Flex direction={'column'} w={'100%'} mb={5} gap={2}>
-       <SectionHeading title={MatchData.DisciplinarySanctions} iconType={MdWarning}>
+       <SectionHeading title={MatchData.DisciplinarySanctions} icon={<Icon as={MdWarning} boxSize={25}/>}>
         <Button
           variant={'ghost'}
           leftIcon={<Icon as={AddIcon} />}

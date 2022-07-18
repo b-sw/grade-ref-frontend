@@ -8,8 +8,8 @@ import {Constants, FORMIK_DATETIME_FORMAT} from "utils/Constants";
 import dayjs from 'dayjs';
 import {detailsValidationSchema} from "components/shared/match/sections/details/details.validation";
 import {LoadingOverlay} from "pages/LoadingOverlay";
-import {SelectOptions} from "components/shared/match/shared/SelectOptions";
-import {FormikModal} from "components/shared/match/shared/FormikModal";
+import {SelectOptions} from "components/shared/match/components/SelectOptions";
+import {FormikModal} from "components/shared/match/components/FormikModal";
 
 interface DetailsEditModalProps {
   isOpen: boolean;

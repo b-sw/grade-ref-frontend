@@ -5,7 +5,7 @@ import { MdNote } from "react-icons/md";
 import { EditIcon } from "@chakra-ui/icons";
 import { useStore } from "zustandStore/store";
 import { Role } from "utils/Role";
-import { SectionHeading } from "components/shared/match/shared/SectionHeading";
+import { SectionHeading } from "components/shared/match/components/SectionHeading";
 
 interface RefereeNoteProps {
   match: Match;
@@ -18,7 +18,7 @@ export const RefereeNote = ({ match }: RefereeNoteProps) => {
 
   return (
     <Flex direction={'column'} w={'100%'} mb={5} gap={2}>
-      <SectionHeading title={MatchData.RefereeNote} iconType={MdNote}>
+      <SectionHeading title={MatchData.RefereeNote} icon={<Icon as={MdNote} boxSize={25}/>}>
         <Button
           variant={'ghost'}
           leftIcon={<Icon as={EditIcon} />}

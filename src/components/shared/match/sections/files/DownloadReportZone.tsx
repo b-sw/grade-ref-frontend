@@ -1,5 +1,5 @@
 import { CloseIcon } from '@chakra-ui/icons';
-import { Flex, IconButton, Link, Spacer, Text } from '@chakra-ui/react';
+import { IconButton, Link } from '@chakra-ui/react';
 import axios from 'axios';
 import { ReportType, useReports } from 'hooks/useReports';
 import { useSetState } from 'hooks/useSetState';
@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { MdFileDownload } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
 import { uuid } from 'utils/uuid';
+import { Dropzone } from "components/shared/match/components/Dropzone";
 
 interface DownloadableReportProps {
   reportType: ReportType;
@@ -17,7 +18,7 @@ interface State {
   url: string;
 }
 
-export const DownloadableReport = ({ reportType, hasWritePermissions }: DownloadableReportProps) => {
+export const DownloadReportZone = ({ reportType, hasWritePermissions }: DownloadableReportProps) => {
   const [state, setState] = useSetState({
     url: '',
   } as State);
@@ -41,42 +42,32 @@ export const DownloadableReport = ({ reportType, hasWritePermissions }: Download
   };
 
   return (
-    <Flex
-      w={'100%'}
-      direction={'column'}
-      backgroundColor={'gray.100'}
-      p={5}
-      borderRadius={10}
-      borderWidth={2}
-      borderColor={'gray.400'}
-      h={'100%'}
-      align={'center'}
-      position={'relative'}
+    <Dropzone
+      text={'Download'}
     >
-      {hasWritePermissions && (
-        <IconButton
-          onClick={deleteReport}
-          size={'sm'}
-          aria-label="Delete"
-          icon={<CloseIcon />}
-          position={'absolute'}
-          top={2}
-          right={2}
-          isLoading={deleteMutation.isLoading}
-        />
-      )}
+      <>
+        {hasWritePermissions && (
+          <IconButton
+            onClick={deleteReport}
+            size={'sm'}
+            aria-label="Delete"
+            icon={<CloseIcon />}
+            position={'absolute'}
+            top={2}
+            right={2}
+            isLoading={deleteMutation.isLoading}
+          />
+        )}
 
-      <Spacer />
-      <IconButton
-        as={Link}
-        href={state.url}
-        download
-        aria-label="Download"
-        icon={<MdFileDownload size={'40'} />}
-        opacity={0.6}
-      />
-      <Text>Download</Text>
-      <Spacer />
-    </Flex>
+        <IconButton
+          as={Link}
+          href={state.url}
+          download
+          aria-label="Download"
+          icon={<MdFileDownload size={'40'} />}
+          opacity={0.6}
+        />
+      </>
+    </Dropzone>
   );
 };
