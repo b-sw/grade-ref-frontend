@@ -1,8 +1,6 @@
 import { CloseIcon } from '@chakra-ui/icons';
 import { Flex, IconButton, Link, Spacer, Text } from '@chakra-ui/react';
 import axios from 'axios';
-import { transcode } from 'buffer';
-import { Match } from 'entities/Match';
 import { ReportType, useReports } from 'hooks/useReports';
 import { useSetState } from 'hooks/useSetState';
 import { useEffect } from 'react';
@@ -17,13 +15,11 @@ interface DownloadableReportProps {
 
 interface State {
   url: string;
-  fileName: string;
 }
 
 export const DownloadableReport = ({ reportType, hasWritePermissions }: DownloadableReportProps) => {
   const [state, setState] = useSetState({
     url: '',
-    fileName: '',
   } as State);
   const { leagueId } = useParams<{ leagueId: uuid }>();
   const { matchId } = useParams<{ matchId: uuid }>();
