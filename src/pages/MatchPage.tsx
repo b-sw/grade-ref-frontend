@@ -1,5 +1,5 @@
 import {Flex, SimpleGrid,} from '@chakra-ui/react';
-import {AdminHeaderPanel} from "components/adminDashboard/header/AdminHeaderPanel";
+import {AdminHeaderPanel} from "components/admin/header/AdminHeaderPanel";
 import {useLeagueTeams} from "hooks/useLeagueTeams";
 import {useLeagueMatches} from "hooks/useLeagueMatches";
 import {LoadingOverlay} from "./LoadingOverlay";
@@ -11,7 +11,7 @@ import {Match} from "entities/Match";
 import {useEffect} from "react";
 import {useSetState} from "hooks/useSetState";
 import { useParams } from 'react-router-dom';
-import {MatchOverviewPanel} from "components/shared/match/MatchOverviewPanel";
+import {MatchSectionsPanel} from "components/matchPage/MatchSectionsPanel";
 
 interface State {
   match?: Match;
@@ -46,7 +46,7 @@ export const MatchPage = () => {
       <Flex p={[2, 4]} m={0} h={['auto', '100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
         <AdminHeaderPanel pageTitle={PageTitle.MatchDetails} />
         <SimpleGrid columns={[1, 1, 1]} flexGrow={1} overflowY={'hidden'} spacing={4} p={[4, 4, 4]} m={-4}>
-          <MatchOverviewPanel
+          <MatchSectionsPanel
             match={state.match}
             teams={teamsQuery.data!}
             referees={leagueRefereesQuery.data!}

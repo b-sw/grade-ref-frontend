@@ -6,7 +6,7 @@ import {GradesPanel} from 'components/dashboard/grades/GradesPanel';
 import {HeaderPanel} from "components/dashboard/header/HeaderPanel";
 import {LoadingOverlay} from "./LoadingOverlay";
 import {useUserMatches} from "hooks/useUserMatches";
-import {MatchesPanel} from "components/adminDashboard/matches/MatchesPanel";
+import {MatchesPanel} from "components/dashboard/matches/MatchesPanel";
 import {useLeagueUsers} from "hooks/useLeagueUsers";
 import {Role} from "utils/Role";
 import {useLeagueTeams} from "hooks/useLeagueTeams";

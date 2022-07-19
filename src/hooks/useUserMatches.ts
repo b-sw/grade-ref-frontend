@@ -6,7 +6,7 @@ import { useStore } from "zustandStore/store";
 import { useParams } from "react-router-dom";
 import { Dayjs } from "dayjs";
 import {getMatchesByDate} from "./utils/matches";
-import {enrichMatch} from "components/shared/match/matchStatus";
+import {enrichMatch} from "entities/utils/matchStatus";
 import { toastError } from 'hooks/utils/toastError';
 import { useToast } from "@chakra-ui/react";
 

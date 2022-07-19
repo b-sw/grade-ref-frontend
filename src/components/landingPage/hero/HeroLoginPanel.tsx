@@ -5,7 +5,7 @@ import {
 } from '@chakra-ui/react';
 import GoogleLogin from 'react-google-login';
 import {useEffect} from "react";
-import {LoginFailureModal} from "../../other/LoginFailureModal";
+import {LoginFailureModal} from "components/auth/LoginFailureModal";
 import useAuth from "../../../hooks/useAuth";
 import {Constants} from "utils/Constants";
 import { Google } from 'react-bootstrap-icons';

@@ -1,8 +1,8 @@
 import {Flex, SimpleGrid,} from '@chakra-ui/react';
-import {AdminHeaderPanel} from "components/adminDashboard/header/AdminHeaderPanel";
-import {MatchesPanel} from "components/adminDashboard/matches/MatchesPanel";
-import {RefereesPanel} from "components/adminDashboard/referees/RefereesPanel";
-import {ObserversPanel} from "components/adminDashboard/observers/ObserversPanel";
+import {AdminHeaderPanel} from "components/admin/header/AdminHeaderPanel";
+import {MatchesPanel} from "components/dashboard/matches/MatchesPanel";
+import {RefereesPanel} from "components/admin/referees/RefereesPanel";
+import {ObserversPanel} from "components/admin/observers/ObserversPanel";
 import {useLeagueTeams} from "hooks/useLeagueTeams";
 import {useLeagueMatches} from "hooks/useLeagueMatches";
 import {LoadingOverlay} from "../LoadingOverlay";

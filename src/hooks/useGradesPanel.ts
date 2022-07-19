@@ -3,7 +3,7 @@ import {User} from "entities/User";
 import {Team} from "entities/Team";
 import {useSetState} from "./useSetState";
 import {Match} from "entities/Match";
-import {matchFilter} from "components/shared/filters";
+import {matchFilter} from "components/utils/filters";
 import {useEffect} from "react";
 import { UseQueryResult } from "react-query";
 

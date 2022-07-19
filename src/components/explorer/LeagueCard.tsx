@@ -5,7 +5,7 @@ import {League} from "entities/League";
 import {useLeagueTeams} from "hooks/useLeagueTeams";
 import {useLeagueUsers} from "hooks/useLeagueUsers";
 import {Role} from "utils/Role";
-import {leagueItem} from "../adminExplorer/AdminLeagueCard";
+import {leagueItem} from "components/admin/explorer/AdminLeagueCard";
 import {useUserMatches} from "hooks/useUserMatches";
 import { useStore } from "zustandStore/store";
 

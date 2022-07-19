@@ -9,9 +9,9 @@ import { PlusSquareIcon } from '@chakra-ui/icons';
 import { HiOutlineLogout } from 'react-icons/hi';
 import {useLeagues} from "hooks/useLeagues";
 import {League} from "entities/League";
-import {AdminLeagueCard} from "components/adminExplorer/AdminLeagueCard";
+import {AdminLeagueCard} from "components/admin/explorer/AdminLeagueCard";
 import {LoadingOverlay} from "../LoadingOverlay";
-import {LeagueCreateModal} from "components/ownerDashboard/leagues/LeagueCreateModal";
+import {LeagueCreateModal} from "components/owner/leagues/LeagueCreateModal";
 
 export const AdminExplorer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();

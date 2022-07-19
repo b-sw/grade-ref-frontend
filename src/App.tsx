@@ -2,16 +2,16 @@ import * as React from "react"
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { HashRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
 import { ChakraProvider } from "@chakra-ui/react"
-import {UnauthorizedHandler} from "components/other/UnauthorizedHandler";
-import {AnimatedTransition} from "components/other/AnimatedTransition";
+import {UnauthorizedHandler} from "components/auth/UnauthorizedHandler";
+import {AnimatedTransition} from "components/auth/effects/AnimatedTransition";
 import {Path} from "utils/Path";
-import {RequireAuthRouteRefereeObserver} from "components/other/RequireAuthRouteRefereeObserver";
+import {RequireAuthRouteRefereeObserver} from "components/auth/RequireAuthRouteRefereeObserver";
 import {Dashboard} from "pages/Dashboard";
 import {AdminDashboard} from "pages/admin/AdminDashboard";
-import {RequireAuthRouteAdmin} from "components/other/RequireAuthRouteAdmin";
+import {RequireAuthRouteAdmin} from "components/auth/RequireAuthRouteAdmin";
 import theme from "./theme/theme";
 import { AdminExplorer } from "pages/admin/AdminExplorer";
-import {RequireAuthRouteOwner} from "components/other/RequireAuthRouteOwner";
+import {RequireAuthRouteOwner} from "components/auth/RequireAuthRouteOwner";
 import {OwnerDashboard} from "pages/owner/OwnerDashboard";
 import {Explorer} from "pages/Explorer";
 import { ReactQueryDevtools } from 'react-query/devtools';
@@ -20,7 +20,7 @@ import {Calendar} from "pages/Calendar";
 import {LandingPage} from "pages/LandingPage";
 import { ParallaxProvider } from "react-scroll-parallax";
 import {MatchPage} from "pages/MatchPage";
-import {RequireAuthRoute} from "components/other/RequireAuthRoute";
+import {RequireAuthRoute} from "components/auth/RequireAuthRoute";
 
 const queryClient = new QueryClient();
 
