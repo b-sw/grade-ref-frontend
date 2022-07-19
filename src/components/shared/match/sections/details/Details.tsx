@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import { Match } from "entities/Match";
 import { Team } from "entities/Team";
 import { Constants } from "utils/Constants";
-import { DetailsEditModal } from "components/shared/match/sections/details/DetailsEditModal";
+import { DetailsEditModal } from "components/shared/match/sections/details/modals/DetailsEditModal";
 import { TextField } from "components/shared/match/components/TextField";
 import { Role } from "utils/Role";
 import { useStore } from "zustandStore/store";

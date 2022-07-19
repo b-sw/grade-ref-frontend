@@ -21,6 +21,7 @@ import {useLeagueUsers} from "hooks/useLeagueUsers";
 import {Role} from "utils/Role";
 import { useStore } from "zustandStore/store";
 import {SelectOptions} from "components/shared/match/components/SelectOptions";
+import { LoadingOverlay } from 'pages/LoadingOverlay';
 
 interface Props {
   isOpen: boolean;
@@ -29,6 +30,7 @@ interface Props {
 
 interface FormikValues {
   date: string;
+  stadium: string;
   homeTeamId: uuid;
   awayTeamId: uuid;
   refereeId: uuid;
@@ -52,6 +54,7 @@ export const MatchCreateModal = (props: Props) => {
 
   const initialValues: FormikValues = {
     date: dayjs(selectedDate).format(FORMIK_DATETIME_FORMAT),
+    stadium: '',
     homeTeamId: '',
     awayTeamId: '',
     refereeId: '',
@@ -62,13 +65,17 @@ export const MatchCreateModal = (props: Props) => {
     const matchDate: Date = dayjs(values.date, Constants.DATETIME_FORMAT).toDate();
     postMutation.mutate({
       matchDate: matchDate,
-      stadium: 'some stadium',
+      stadium: values.stadium,
       homeTeamId: values.homeTeamId,
       awayTeamId: values.awayTeamId,
       refereeId: values.refereeId,
       observerId: values.observerId,
     } as Match);
   };
+
+  if ([teamsQuery, refereesQuery, observersQuery].some((query) => query.isLoading)) {
+    return <LoadingOverlay />;
+  }
 
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
@@ -83,13 +90,15 @@ export const MatchCreateModal = (props: Props) => {
               <ModalBody>
                 <InputControl name='date' label='Date' inputProps={{ type: 'datetime-local' }} />
 
+                <InputControl name='stadium' label='Stadium' inputProps={{ placeholder: 'stadium'}}/>
+
                 <SelectControl
                   name='homeTeamId'
                   label='Home team'
                   selectProps={{ placeholder: 'Choose home team' }}
                   mt={3}
                 >
-                  <SelectOptions data={teamsQuery.data} labelProps={['name']} />
+                  <SelectOptions data={teamsQuery.data!} labelProps={['name']} />
                 </SelectControl>
 
                 <SelectControl
@@ -98,7 +107,7 @@ export const MatchCreateModal = (props: Props) => {
                   selectProps={{ placeholder: 'Choose away team' }}
                   mt={3}
                 >
-                  <SelectOptions data={teamsQuery.data} labelProps={['name']} />
+                  <SelectOptions data={teamsQuery.data!} labelProps={['name']} />
                 </SelectControl>
 
                 <SelectControl
@@ -107,7 +116,7 @@ export const MatchCreateModal = (props: Props) => {
                   selectProps={{ placeholder: 'Assign referee' }}
                   mt={3}
                 >
-                  <SelectOptions data={refereesQuery.data} labelProps={['firstName', 'lastName']} />
+                  <SelectOptions data={refereesQuery.data!} labelProps={['firstName', 'lastName']} />
                 </SelectControl>
 
                 <SelectControl
@@ -116,7 +125,7 @@ export const MatchCreateModal = (props: Props) => {
                   selectProps={{ placeholder: 'Assign observer' }}
                   mt={3}
                 >
-                  <SelectOptions data={observersQuery.data} labelProps={['firstName', 'lastName']} />
+                  <SelectOptions data={observersQuery.data!} labelProps={['firstName', 'lastName']} />
                 </SelectControl>
               </ModalBody>
 

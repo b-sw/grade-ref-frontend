@@ -4,12 +4,14 @@ import {Button, Flex, Icon, useDisclosure} from "@chakra-ui/react";
 import { MdPeople } from "react-icons/md";
 import { EditIcon } from "@chakra-ui/icons";
 import {MatchData} from "components/shared/match/MatchOverviewPanel";
-import {AssignmentsEditModal} from "components/shared/match/sections/assignments/AssignmentsEditModal";
+import {AssignmentEditModal} from "components/shared/match/sections/assignments/modals/AssignmentEditModal";
 import {TextField} from "components/shared/match/components/TextField";
 import {Role} from "utils/Role";
 import dayjs from "dayjs";
 import {useStore} from "zustandStore/store";
 import { SectionHeading } from "components/shared/match/components/SectionHeading";
+import { Section } from 'components/shared/match/components/Section';
+import { SectionBody } from 'components/shared/match/components/SectionBody';
 
 interface AssignmentsProps {
   match: Match;
@@ -27,9 +29,9 @@ export const Assignments = ({ match, referee, observer }: AssignmentsProps) => {
 
   return (
     <>
-      {userCanEdit && <AssignmentsEditModal isOpen={isEditOpen} handleClose={onEditClose} match={match} />}
+      {userCanEdit && <AssignmentEditModal isOpen={isEditOpen} handleClose={onEditClose} match={match} />}
 
-      <Flex direction={'column'} w={'100%'} mb={5} gap={2}>
+      <Section>
         <SectionHeading title={MatchData.Assignments} icon={<Icon as={MdPeople} boxSize={'25'} />}>
           <Button
             variant={'ghost'}
@@ -41,19 +43,13 @@ export const Assignments = ({ match, referee, observer }: AssignmentsProps) => {
           </Button>
         </SectionHeading>
 
-        <Flex
-          direction={'column'}
-          w={'100%'}
-          borderRadius={10}
-          backgroundColor={'gray.200'}
-          p={5}
-        >
+        <SectionBody>
           <Flex direction={'column'} pr={[0, 20]} gap={2}>
             <TextField name={'referee'} text={[referee.firstName, referee.lastName].join(' ')} />
             <TextField name={'observer'} text={[observer.firstName, observer.lastName].join(' ')} />
           </Flex>
-        </Flex>
-      </Flex>
+        </SectionBody>
+      </Section>
     </>
   );
 }

@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import {CalendarIcon, EditIcon, WarningIcon} from "@chakra-ui/icons";
 import {BsClockFill} from "react-icons/bs";
 import {Role} from "utils/Role";
-import {GradeEditModal} from "components/shared/match/sections/grade/GradeEditModal";
+import {GradeEditModal} from "components/shared/match/sections/grade/modals/GradeEditModal";
 
 interface Props {
   match: Match;

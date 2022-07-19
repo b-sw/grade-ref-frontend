@@ -14,7 +14,7 @@ import { Sanctions } from 'components/shared/match/sections/sanctions/Sanctions'
 import { Conclusions } from 'components/shared/match/sections/conclusions/Conclusions';
 import { LoadingOverlay } from 'pages/LoadingOverlay';
 import { useLeagueTeams } from 'hooks/useLeagueTeams';
-import { useFeatures } from 'components/shared/match/sections/conclusions/useFeatures';
+import { useFeatures } from 'components/shared/match/sections/conclusions/hooks/useFeatures';
 import { RefereeNote } from 'components/shared/match/sections/note/RefereeNote';
 import { scrollbarStyle } from 'components/dashboard/shared/styles';
 import { MatchListItem } from 'components/adminDashboard/matches/MatchListItem';
@@ -63,10 +63,10 @@ export const MatchOverviewPanel = ({ match, teams, referees, observers }: MatchO
   const noteRef: any = useRef();
   const reportsRef: any = useRef();
 
-  const homeTeam: Team = teams.find((team: Team) => team.id === match.homeTeamId)!;
-  const awayTeam: Team = teams.find((team: Team) => team.id === match.awayTeamId)!;
-  const referee: User = referees.find((referee: User) => referee.id === match.refereeId)!;
-  const observer: User = observers.find((observer: User) => observer.id === match.observerId)!;
+  const homeTeam = teams.find((team: Team) => team.id === match.homeTeamId)!;
+  const awayTeam = teams.find((team: Team) => team.id === match.awayTeamId)!;
+  const referee = referees.find((referee: User) => referee.id === match.refereeId)!;
+  const observer = observers.find((observer: User) => observer.id === match.observerId)!;
 
   const menuLink = (sectionName: MatchData, ref: any) => {
     return (
@@ -165,11 +165,11 @@ export const MatchOverviewPanel = ({ match, teams, referees, observers }: MatchO
                 </Flex>
 
                 <Flex ref={foulsRef}>
-                  <Sanctions fouls={foulsQuery.data!} teams={teamsQuery.data!} />
+                  <Sanctions fouls={foulsQuery.data!} teams={teamsQuery.data!} match={match} />
                 </Flex>
 
                 <Flex ref={conclusionsRef}>
-                  <Conclusions features={featuresQuery.data!} />
+                  <Conclusions features={featuresQuery.data!} match={match} />
                 </Flex>
 
                 <Flex ref={noteRef}>

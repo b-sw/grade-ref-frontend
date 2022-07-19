@@ -6,11 +6,13 @@ import { Constants } from "utils/Constants";
 import { BiDetail } from "react-icons/bi";
 import { TextField } from "components/shared/match/components/TextField";
 import { Field } from "components/shared/match/components/Field";
-import { GradeEditModal } from "components/shared/match/sections/grade/GradeEditModal";
+import { GradeEditModal } from "components/shared/match/sections/grade/modals/GradeEditModal";
 import { useStore } from "zustandStore/store";
 import { Role } from "utils/Role";
 import { SectionHeading } from "components/shared/match/components/SectionHeading";
 import { MatchData } from "components/shared/match/MatchOverviewPanel";
+import { Section } from 'components/shared/match/components/Section';
+import { SectionBody } from 'components/shared/match/components/SectionBody';
 
 interface GradeProps {
   match: Match;
@@ -66,7 +68,7 @@ export const Grade = ({ match }: GradeProps) => {
   return (
     <>
       {userCanEdit && <GradeEditModal isOpen={isEditOpen} handleClose={onEditClose} match={match} />}
-      <Flex direction={'column'} w={'100%'} mb={5} gap={2}>
+      <Section>
         <SectionHeading title={MatchData.Grade} icon={<Icon as={BiDetail} boxSize={25} />}>
           <Button
             variant={'ghost'}
@@ -78,13 +80,7 @@ export const Grade = ({ match }: GradeProps) => {
           </Button>
         </SectionHeading>
 
-        <Flex
-          direction={'column'}
-          w={'100%'}
-          borderRadius={10}
-          backgroundColor={'gray.200'}
-          p={5}
-        >
+        <SectionBody>
           <Flex direction={'column'} pr={[0, 20]} gap={2}>
 
             <Field name={'grade'} element={gradeBadge} />
@@ -93,8 +89,8 @@ export const Grade = ({ match }: GradeProps) => {
             <TextField name={'overall grade date'} text={overallGradeDate} />
 
           </Flex>
-        </Flex>
-      </Flex>
+        </SectionBody>
+      </Section>
     </>
   );
 }

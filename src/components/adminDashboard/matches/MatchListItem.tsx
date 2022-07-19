@@ -40,10 +40,10 @@ export const MatchListItem = (props: Props) => {
 }
 
 export const matchItem = (match: Match, teams: Team[], navigate: NavigateFunction, leagueId: uuid, readOnly?: boolean) => {
-  const homeTeam: Team = teams.find((team: Team) => team.id === match.homeTeamId)!;
-  const awayTeam: Team = teams.find((team: Team) => team.id === match.awayTeamId)!;
-  const matchDate: string = dayjs(match.matchDate, Constants.DATETIME_FORMAT).format('DD-MM-YYYY');
-  const matchTime: string = dayjs(match.matchDate, Constants.DATETIME_FORMAT).format('HH:mm');
+  const homeTeam = teams.find((team: Team) => team.id === match.homeTeamId)!;
+  const awayTeam = teams.find((team: Team) => team.id === match.awayTeamId)!;
+  const matchDate = dayjs(match.matchDate, Constants.DATETIME_FORMAT).format('DD-MM-YYYY');
+  const matchTime = dayjs(match.matchDate, Constants.DATETIME_FORMAT).format('HH:mm');
 
   return (
     <Flex direction={'row'} w={'100%'} alignItems={'center'}>

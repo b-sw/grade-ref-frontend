@@ -1,4 +1,4 @@
-import {Badge, Button, Flex, Icon, Spacer} from "@chakra-ui/react"
+import {Badge, Button, Flex, Icon, Spacer, useDisclosure} from "@chakra-ui/react"
 import {MdWarning} from "react-icons/md"
 import {IoIosShirt} from "react-icons/io"
 import {Column} from "react-table";
@@ -14,13 +14,19 @@ import {useStore} from "zustandStore/store";
 import {Role} from "utils/Role";
 import {noRecords} from "components/shared/panelUtils";
 import { SectionHeading } from "components/shared/match/components/SectionHeading";
+import { SanctionAddModal } from 'components/shared/match/sections/sanctions/modals/SanctionAddModal';
+import { Match } from 'entities/Match';
+import { SectionBody } from 'components/shared/match/components/SectionBody';
+import { Section } from 'components/shared/match/components/Section';
 
 interface SanctionsProps {
   fouls: Foul[];
   teams: Team[];
+  match: Match;
 }
 
-export const Sanctions = ({ fouls, teams }: SanctionsProps) => {
+export const Sanctions = ({ fouls, teams, match }: SanctionsProps) => {
+  const { isOpen: isAddOpen, onOpen: onAddOpen, onClose: onAddClose } = useDisclosure();
   let mappedTeams: { [id: uuid]: Team } = {};
   const user = useStore((state) => state.user);
 
@@ -54,31 +60,31 @@ export const Sanctions = ({ fouls, teams }: SanctionsProps) => {
     },
   ];
 
-  const userCanEdit: boolean = user.role === Role.Admin || user.role === Role.Observer;
+  const userCanEdit: boolean = user.role === Role.Observer;
 
   return (
-    <Flex direction={'column'} w={'100%'} mb={5} gap={2}>
-       <SectionHeading title={MatchData.DisciplinarySanctions} icon={<Icon as={MdWarning} boxSize={25}/>}>
-        <Button
-          variant={'ghost'}
-          leftIcon={<Icon as={AddIcon} />}
-          onClick={() => {}}
-          disabled={!userCanEdit}
-        >
-          Add
-        </Button>
-       </SectionHeading>
+    <>
+      {userCanEdit && <SanctionAddModal isOpen={isAddOpen} handleClose={onAddClose} match={match} />}
 
-      <Flex
-        direction={'column'}
-        w={'100%'}
-        borderRadius={10}
-        backgroundColor={'gray.200'}
-        p={5}
-      >
-        <DataTable columns={cols} data={fouls} />
-        {!fouls.length && noRecords()}
-      </Flex>
-    </Flex>
+      <Section>
+        <SectionHeading title={MatchData.DisciplinarySanctions} icon={<Icon as={MdWarning} boxSize={25}/>}>
+          <Button
+            variant={'ghost'}
+            leftIcon={<Icon as={AddIcon} />}
+            onClick={onAddOpen}
+            disabled={!userCanEdit}
+          >
+            Add
+          </Button>
+        </SectionHeading>
+
+        <SectionBody>
+          <>
+            <DataTable columns={cols} data={fouls} />
+            {!fouls.length && noRecords()}
+          </>
+        </SectionBody>
+      </Section>
+    </>
   );
 }

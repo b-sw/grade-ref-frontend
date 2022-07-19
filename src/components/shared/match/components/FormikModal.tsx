@@ -16,7 +16,7 @@ export interface FormikModalProps<T> {
   body: JSX.Element;
   isOpen: boolean;
   isLoading: boolean;
-  handleEdit: (values: T) => void;
+  handleSubmit: (values: T) => void;
   handleClose: () => void;
   initialValues: T;
   validationSchema: any;
@@ -24,7 +24,7 @@ export interface FormikModalProps<T> {
 
 export const FormikModal = <T,>(
   {
-    headingTitle, body, isOpen, isLoading, handleEdit, handleClose, initialValues, validationSchema }: FormikModalProps<T>
+    headingTitle, body, isOpen, isLoading, handleSubmit, handleClose, initialValues, validationSchema }: FormikModalProps<T>
 ) => {
   return (
     <Modal isOpen={isOpen} onClose={handleClose} isCentered>
@@ -33,7 +33,7 @@ export const FormikModal = <T,>(
         <ModalHeader>{headingTitle}</ModalHeader>
         <ModalCloseButton />
 
-        <Formik initialValues={initialValues} onSubmit={handleEdit} validationSchema={validationSchema}>
+        <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={validationSchema}>
           {({ handleSubmit }) => (
             <Form onSubmit={handleSubmit}>
               <ModalBody>

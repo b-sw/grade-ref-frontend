@@ -10,18 +10,18 @@ import {Role} from "utils/Role";
 import {assignmentsValidationSchema} from "components/shared/match/sections/assignments/assignments.validation";
 import {FormikModal} from "components/shared/match/components/FormikModal";
 
-interface AssignmentsEditModalProps {
+interface AssignmentEditModalProps {
   isOpen: boolean;
   handleClose: () => void;
   match: Match;
 }
 
-interface AssignmentsFormikValues {
+interface AssignmentFormikValues {
   refereeId: uuid;
   observerId: uuid;
 }
 
-export const AssignmentsEditModal = ({ isOpen, handleClose, match }: AssignmentsEditModalProps) => {
+export const AssignmentEditModal = ({ isOpen, handleClose, match }: AssignmentEditModalProps) => {
   const { updateMutation } = useLeagueMatches();
   const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
   const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
@@ -34,12 +34,12 @@ export const AssignmentsEditModal = ({ isOpen, handleClose, match }: Assignments
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updateMutation.isSuccess]);
 
-  const initialValues: AssignmentsFormikValues = {
+  const initialValues: AssignmentFormikValues = {
     refereeId: match.refereeId,
     observerId: match.observerId,
   };
 
-  const handleEditMatch = (values: AssignmentsFormikValues) => {
+  const handleEditMatch = (values: AssignmentFormikValues) => {
     updateMutation.mutate({
       ...match,
       refereeId: values.refereeId,
@@ -50,11 +50,11 @@ export const AssignmentsEditModal = ({ isOpen, handleClose, match }: Assignments
   const modalBody: JSX.Element = (
     <>
       <SelectControl name='refereeId' label='Referee'>
-        <SelectOptions data={refereesQuery.data} labelProps={['firstName', 'lastName']} />
+        <SelectOptions data={refereesQuery.data!} labelProps={['firstName', 'lastName']} />
       </SelectControl>
 
       <SelectControl name='observerId' label='Observer'>
-        <SelectOptions data={observersQuery.data} labelProps={['firstName', 'lastName']} />
+        <SelectOptions data={observersQuery.data!} labelProps={['firstName', 'lastName']} />
       </SelectControl>
     </>
   );
@@ -70,7 +70,7 @@ export const AssignmentsEditModal = ({ isOpen, handleClose, match }: Assignments
       headingTitle={'Edit assignments'}
       body={modalBody}
       isOpen={isOpen}
-      handleEdit={handleEditMatch}
+      handleSubmit={handleEditMatch}
       isLoading={updateMutation.isLoading}
       handleClose={handleClose}
       initialValues={initialValues}

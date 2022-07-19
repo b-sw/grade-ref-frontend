@@ -62,11 +62,11 @@ export const DetailsEditModal = ({ isOpen, handleClose, match }: DetailsEditModa
       <InputControl name='stadium' label='Stadium' />
 
       <SelectControl name='homeTeamId' label='Home team'>
-        <SelectOptions data={teamsQuery.data} labelProps={['name']} />
+        <SelectOptions data={teamsQuery.data!} labelProps={['name']} />
       </SelectControl>
 
       <SelectControl name='awayTeamId' label='Away team'>
-        <SelectOptions data={teamsQuery.data} labelProps={['name']} />
+        <SelectOptions data={teamsQuery.data!} labelProps={['name']} />
       </SelectControl>
     </>
   );
@@ -80,7 +80,7 @@ export const DetailsEditModal = ({ isOpen, handleClose, match }: DetailsEditModa
       headingTitle={'Edit match details'}
       body={modalBody}
       isOpen={isOpen}
-      handleEdit={handleEditMatch}
+      handleSubmit={handleEditMatch}
       isLoading={updateMutation.isLoading}
       handleClose={handleClose}
       initialValues={initialValues}

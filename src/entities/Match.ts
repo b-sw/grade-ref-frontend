@@ -31,6 +31,7 @@ export type Match = {
 
 export const matchValidationSchema = Yup.object({
   date: Yup.string().required(),
+  stadium: Yup.string().required().min(5).max(50),
   homeTeamId: Yup.string().required(),
   awayTeamId: Yup.string().required(),
   refereeId: Yup.string().required(),
