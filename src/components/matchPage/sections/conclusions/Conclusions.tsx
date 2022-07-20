@@ -11,7 +11,7 @@ import {useStore} from "zustandStore/store";
 import { SectionHeading } from "components/matchPage/components/SectionHeading";
 import { SectionBody } from 'components/matchPage/components/SectionBody';
 import { Section } from 'components/matchPage/components/Section';
-import { ConclusionAddModal } from 'components/matchPage/sections/conclusions/modals/ConclusionAddModal';
+import { ConclusionAddModal } from 'components/matchPage/sections/conclusions/ConclusionAddModal';
 import { Match } from 'entities/Match';
 
 interface ConclusionsProps {

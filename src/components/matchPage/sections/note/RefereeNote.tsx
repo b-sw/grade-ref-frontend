@@ -8,7 +8,7 @@ import { Role } from "utils/Role";
 import { SectionHeading } from "components/matchPage/components/SectionHeading";
 import { SectionBody } from 'components/matchPage/components/SectionBody';
 import { Section } from 'components/matchPage/components/Section';
-import { RefereeNoteEditModal } from 'components/matchPage/sections/note/modals/RefereeNoteEditModal';
+import { RefereeNoteEditModal } from 'components/matchPage/sections/note/RefereeNoteEditModal';
 
 interface RefereeNoteProps {
   match: Match;

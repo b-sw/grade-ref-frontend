@@ -14,7 +14,7 @@ import {useStore} from "zustandStore/store";
 import {Role} from "utils/Role";
 import {NoRecords} from "components/utils/NoRecords";
 import { SectionHeading } from "components/matchPage/components/SectionHeading";
-import { SanctionAddModal } from 'components/matchPage/sections/sanctions/modals/SanctionAddModal';
+import { SanctionAddModal } from 'components/matchPage/sections/sanctions/SanctionAddModal';
 import { Match } from 'entities/Match';
 import { SectionBody } from 'components/matchPage/components/SectionBody';
 import { Section } from 'components/matchPage/components/Section';

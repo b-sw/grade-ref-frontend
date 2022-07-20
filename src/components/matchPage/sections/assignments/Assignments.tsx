@@ -4,7 +4,7 @@ import {Button, Flex, Icon, useDisclosure} from "@chakra-ui/react";
 import { MdPeople } from "react-icons/md";
 import { EditIcon } from "@chakra-ui/icons";
 import {MatchData} from "components/matchPage/MatchSectionsPanel";
-import {AssignmentEditModal} from "components/matchPage/sections/assignments/modals/AssignmentEditModal";
+import {AssignmentEditModal} from "components/matchPage/sections/assignments/AssignmentEditModal";
 import {TextField} from "components/matchPage/components/TextField";
 import {Role} from "utils/Role";
 import dayjs from "dayjs";

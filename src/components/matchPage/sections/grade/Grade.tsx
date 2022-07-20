@@ -6,7 +6,7 @@ import { Constants } from "utils/Constants";
 import { BiDetail } from "react-icons/bi";
 import { TextField } from "components/matchPage/components/TextField";
 import { Field } from "components/matchPage/components/Field";
-import { GradeEditModal } from "components/matchPage/sections/grade/modals/GradeEditModal";
+import { GradeEditModal } from "components/matchPage/sections/grade/GradeEditModal";
 import { useStore } from "zustandStore/store";
 import { Role } from "utils/Role";
 import { SectionHeading } from "components/matchPage/components/SectionHeading";

@@ -1,6 +1,6 @@
 import { Match } from "entities/Match";
 import { FormikModal } from "components/matchPage/components/FormikModal";
-import { useFouls } from "components/matchPage/sections/sanctions/hooks/useFouls";
+import { useFouls } from "components/matchPage/sections/sanctions/useFouls";
 import { useEffect } from "react";
 import { uuid } from 'utils/uuid';
 import { Card, Foul } from 'entities/Foul';

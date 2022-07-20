@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { InputControl, SelectControl } from "formik-chakra-ui";
 import { SelectOptionsConstant } from 'components/matchPage/components/SelectOptions';
 import { Feature, FeatureType } from 'entities/Feature';
-import { useFeatures } from 'components/matchPage/sections/conclusions/hooks/useFeatures';
+import { useFeatures } from 'components/matchPage/sections/conclusions/useFeatures';
 import { conclusionsValidationSchema } from 'components/matchPage/sections/conclusions/conclusions.validation';
 
 interface ConclusionAddModalProps {

@@ -14,7 +14,7 @@ import { Sanctions } from 'components/matchPage/sections/sanctions/Sanctions';
 import { Conclusions } from 'components/matchPage/sections/conclusions/Conclusions';
 import { LoadingOverlay } from 'pages/LoadingOverlay';
 import { useLeagueTeams } from 'hooks/useLeagueTeams';
-import { useFeatures } from 'components/matchPage/sections/conclusions/hooks/useFeatures';
+import { useFeatures } from 'components/matchPage/sections/conclusions/useFeatures';
 import { RefereeNote } from 'components/matchPage/sections/note/RefereeNote';
 import { scrollbarStyle } from 'components/dashboard/styles/styles';
 import { MatchListItem } from 'components/dashboard/matches/MatchListItem';
@@ -22,7 +22,7 @@ import { MatchDeleteModal } from 'components/admin/matches/MatchDeleteModal';
 import { useStore } from 'zustandStore/store';
 import { Role } from 'utils/Role';
 import { Files } from 'components/matchPage/sections/files/Files';
-import { useFouls } from "components/matchPage/sections/sanctions/hooks/useFouls";
+import { useFouls } from "components/matchPage/sections/sanctions/useFouls";
 import { Grade } from "components/matchPage/sections/grade/Grade";
 
 export const enum MatchData {
