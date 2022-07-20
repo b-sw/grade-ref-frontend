@@ -4,7 +4,7 @@ import {User} from "entities/User";
 import { OBSERVERS_QUERY_KEY } from "./useUsers";
 
 export interface Props {
-  disableAutoRefetch: boolean;
+  enableAutoRefetch: boolean;
 }
 
 export const useObservers = (props?: Props) => {
@@ -16,7 +16,7 @@ export const useObservers = (props?: Props) => {
   const observersQuery = useQuery(
     OBSERVERS_QUERY_KEY,
     getObservers,
-    { enabled: props ? !props.disableAutoRefetch : true },
+    { enabled: props ? props.enableAutoRefetch : false },
   );
 
   return { observersQuery }

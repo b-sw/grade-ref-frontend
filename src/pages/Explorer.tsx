@@ -7,7 +7,7 @@ import { HiOutlineLogout } from "react-icons/hi";
 import { LeagueCard } from "components/explorer/LeagueCard";
 
 export const Explorer = () => {
-  const { query: leaguesQuery } = useLeagues();
+  const { query: leaguesQuery } = useLeagues({ enableAutoRefetch: true });
   const { logout } = useAuth();
   const queries = [leaguesQuery];
 

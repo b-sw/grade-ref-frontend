@@ -11,7 +11,11 @@ import {toastError} from "./utils/toastError";
 
 export const LEAGUES_QUERY_KEY: string = 'leagues_qk'
 
-export const useLeagues = () => {
+interface UseLeaguesProps {
+  enableAutoRefetch: boolean;
+}
+
+export const useLeagues = (props?: UseLeaguesProps) => {
   const user = useStore((state) => state.user);
   const navigate = useNavigate();
   const toast = useToast();
@@ -40,7 +44,11 @@ export const useLeagues = () => {
     return response.data;
   }
 
-  const query = useQuery(queryKey, getLeagues);
+  const query = useQuery(
+    queryKey,
+    getLeagues,
+    { enabled: props ? props.enableAutoRefetch : false },
+  );
 
   const postMutation = useMutation(postLeague, {
     onSuccess: (league: League) => {

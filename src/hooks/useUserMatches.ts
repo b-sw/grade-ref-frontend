@@ -12,8 +12,8 @@ import { useToast } from "@chakra-ui/react";
 
 interface Props {
   userId?: uuid;
-  leagueId: uuid;
-  disableAutoRefetch: boolean;
+  leagueId?: uuid;
+  enableAutoRefetch?: boolean;
 }
 
 export const USER_LEAGUE_MATCHES_QK = 'user_league_matches_qk';
@@ -26,9 +26,10 @@ export const useUserMatches = (props?: Props) => {
   const userId: uuid = props ? props.userId ?? user.id! : user.id!;
   let { leagueId } = useParams<{ leagueId: uuid }>();
 
-  leagueId = props ? props.leagueId : leagueId;
+  leagueId = props ? props.leagueId ?? leagueId : leagueId;
 
   const getMatches = async (): Promise<Match[]> => {
+    console.log('getting matches', props?.enableAutoRefetch === true);
     const response = await axios.get(`users/${userId}/leagues/${leagueId}/matches`);
     return response.data.map((match: Match) => enrichMatch(match));
   }
@@ -41,7 +42,7 @@ export const useUserMatches = (props?: Props) => {
   const query = useQuery(
     [USER_LEAGUE_MATCHES_QK, userId, leagueId],
     getMatches,
-    { enabled: props ? props.disableAutoRefetch : true }
+    { enabled: props ? !!props.enableAutoRefetch : false },
   );
 
   interface NoteUpdateParams {

@@ -19,7 +19,7 @@ export const RefereeNote = ({ match }: RefereeNoteProps) => {
 
   const user = useStore((state) => state.user);
 
-  const userCanEdit: boolean = user.role === Role.Referee || user.role === Role.Admin;
+  const userCanEdit: boolean = user.role === Role.Referee;
 
   return (
     <>

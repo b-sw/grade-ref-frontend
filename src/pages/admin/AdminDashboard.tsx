@@ -14,13 +14,13 @@ import {useObservers} from "hooks/useObservers";
 import {PageTitle} from "utils/PageTitle";
 
 export const AdminDashboard = () => {
-  const { refereesQuery: allRefereesQuery } = useReferees();
-  const { observersQuery: allObserversQuery } = useObservers();
-  const { usersQuery: leagueRefereesQuery } = useLeagueUsers(Role.Referee);
-  const { usersQuery: leagueObserversQuery } = useLeagueUsers(Role.Observer);
-  const { query: teamsQuery } = useLeagueTeams();
-  const { query: matchesQuery } = useLeagueMatches();
-  const { query: leaguesQuery } = useLeagues();
+  const { refereesQuery: allRefereesQuery } = useReferees({ enableAutoRefetch: true });
+  const { observersQuery: allObserversQuery } = useObservers({ enableAutoRefetch: true });
+  const { usersQuery: leagueRefereesQuery } = useLeagueUsers(Role.Referee, { enableAutoRefetch: true });
+  const { usersQuery: leagueObserversQuery } = useLeagueUsers(Role.Observer, { enableAutoRefetch: true });
+  const { query: teamsQuery } = useLeagueTeams({ enableAutoRefetch: true });
+  const { query: matchesQuery } = useLeagueMatches({ enableAutoRefetch: true });
+  const { query: leaguesQuery } = useLeagues({ enableAutoRefetch: true });
 
   const queries = [leagueRefereesQuery, leagueObserversQuery, teamsQuery, matchesQuery, leaguesQuery, allRefereesQuery, allObserversQuery];
 

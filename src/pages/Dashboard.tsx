@@ -14,11 +14,11 @@ import {PageTitle} from "utils/PageTitle";
 import {useLeagues} from "hooks/useLeagues";
 
 export const Dashboard = () => {
-  const { query: matchesQuery } = useUserMatches();
-  const { query: teamsQuery } = useLeagueTeams();
-  const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
-  const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
-  const { query: leaguesQuery } = useLeagues();
+  const { query: matchesQuery } = useUserMatches({ enableAutoRefetch: true });
+  const { query: teamsQuery } = useLeagueTeams({ enableAutoRefetch: true });
+  const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee, { enableAutoRefetch: true });
+  const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer, { enableAutoRefetch: true });
+  const { query: leaguesQuery } = useLeagues({ enableAutoRefetch: true });
 
   const queries = [matchesQuery, refereesQuery, observersQuery, teamsQuery, leaguesQuery];
 

@@ -13,7 +13,7 @@ export const OBSERVERS_QUERY_KEY = 'observers_qk';
 export const ADMINS_QUERY_KEY = 'admins_qk';
 
 export interface Props {
-  disableAutoRefetch: boolean;
+  enableAutoRefetch: boolean;
 }
 
 const queryKeys: { [id: string] : any } = {};
@@ -52,7 +52,7 @@ export const useUsers = (props?: Props) => {
   const adminsQuery = useQuery(
     ADMINS_QUERY_KEY,
     getAdmins,
-    { enabled: props ? !props.disableAutoRefetch : true },
+    { enabled: props ? props.enableAutoRefetch : false },
   );
 
   const postMutation = useMutation(postUser, {

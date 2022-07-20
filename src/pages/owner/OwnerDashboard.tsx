@@ -12,8 +12,8 @@ import {LeaguesPanel} from "components/owner/leagues/LeaguesPanel";
 import {useLeagues} from "hooks/useLeagues";
 
 export const OwnerDashboard = () => {
-  const { adminsQuery, refereesQuery, observersQuery } = useUsers();
-  const { query: leaguesQuery } = useLeagues();
+  const { adminsQuery, refereesQuery, observersQuery } = useUsers({ enableAutoRefetch: true });
+  const { query: leaguesQuery } = useLeagues({ enableAutoRefetch: true });
   const queries = [adminsQuery, refereesQuery, observersQuery, leaguesQuery];
 
   if (queries.some((query) => query.isLoading)) {

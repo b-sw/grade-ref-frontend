@@ -18,10 +18,10 @@ interface State {
 }
 
 export const MatchPage = () => {
-  const { usersQuery: leagueRefereesQuery } = useLeagueUsers(Role.Referee);
-  const { usersQuery: leagueObserversQuery } = useLeagueUsers(Role.Observer);
-  const { query: teamsQuery } = useLeagueTeams();
-  const { query: matchesQuery } = useLeagueMatches();
+  const { usersQuery: leagueRefereesQuery } = useLeagueUsers(Role.Referee, { enableAutoRefetch: true });
+  const { usersQuery: leagueObserversQuery } = useLeagueUsers(Role.Observer, { enableAutoRefetch: true });
+  const { query: teamsQuery } = useLeagueTeams({ enableAutoRefetch: true });
+  const { query: matchesQuery } = useLeagueMatches({ enableAutoRefetch: true });
 
   const { matchId } = useParams<{ matchId: uuid }>();
   const [state, setState] = useSetState({} as State);

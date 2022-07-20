@@ -20,8 +20,8 @@ interface Props {
 export const GradesPanel = (props: Props) => {
   const { query: matchesQuery } = useUserMatches();
   const { query: teamsQuery } = useLeagueTeams();
-  const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
   const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
+  const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
 
   const { state, setState } = useGradesPanel({
     matches: props.matches,

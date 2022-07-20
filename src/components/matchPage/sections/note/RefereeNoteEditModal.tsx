@@ -1,8 +1,6 @@
 import { Match } from 'entities/Match';
 import { FormikModal } from 'components/matchPage/components/FormikModal';
 import { useUserMatches } from 'hooks/useUserMatches';
-import { uuid } from 'utils/uuid';
-import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { InputControl } from 'formik-chakra-ui';
 import { noteValidationSchema } from 'components/matchPage/sections/note/note.validation';
@@ -18,8 +16,7 @@ interface RefereeNoteFormikValues {
 }
 
 export const RefereeNoteEditModal = ({ isOpen, handleClose, match }: RefereeNoteEditModalProps) => {
-  const { leagueId } = useParams<{ leagueId: uuid }>();
-  const { updateRefereeNoteMutation: updateMutation } = useUserMatches({ leagueId: leagueId!, disableAutoRefetch: true });
+  const { updateRefereeNoteMutation: updateMutation } = useUserMatches();
 
   useEffect(() => {
     if (updateMutation.isSuccess) {

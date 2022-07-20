@@ -4,14 +4,21 @@ import { MdAssessment } from 'react-icons/md';
 import {User} from "entities/User";
 import { RefereeRemoveModal } from 'components/admin/referees/RefereeRemoveModal';
 import {RefereeGradesModal} from "components/admin/referees/RefereeGradesModal";
+import { useUserMatches } from 'hooks/useUserMatches';
 
 export interface Props {
   referee: User;
 }
 
 export const RefereeListItem = (props: Props) => {
+  const { query: matchesQuery } = useUserMatches({ userId: props.referee.id });
   const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
   const { isOpen: isGradesModalOpen, onOpen: onGradesModalOpen, onClose: onGradesModalClose } = useDisclosure();
+
+  const handleOpenGradesModal = async () => {
+    await matchesQuery.refetch();
+    onGradesModalOpen();
+  }
 
   return (
     <>
@@ -25,7 +32,13 @@ export const RefereeListItem = (props: Props) => {
       >
         {refereeItem(props.referee)}
         <Spacer />
-        <IconButton onClick={onGradesModalOpen} variant={'ghost'} aria-label='See grades' icon={<MdAssessment />} />
+        <IconButton
+          onClick={handleOpenGradesModal}
+          variant={'ghost'}
+          aria-label='See grades'
+          icon={<MdAssessment />}
+          isLoading={matchesQuery.isLoading}
+        />
         <IconButton onClick={onDeleteModalOpen} variant={'ghost'} aria-label='Delete referee' icon={<DeleteIcon />} />
       </Flex>
     </>

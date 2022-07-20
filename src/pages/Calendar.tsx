@@ -19,11 +19,11 @@ interface State {
 }
 
 export const Calendar = () => {
-  const { query: matchesQuery } = useUserMatches();
-  const { query: teamsQuery } = useLeagueTeams();
-  const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
-  const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
-  const { query: leaguesQuery } = useLeagues();
+  const { query: matchesQuery } = useUserMatches({ enableAutoRefetch: true });
+  const { query: teamsQuery } = useLeagueTeams({ enableAutoRefetch: true });
+  const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee, { enableAutoRefetch: true });
+  const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer, { enableAutoRefetch: true });
+  const { query: leaguesQuery } = useLeagues({ enableAutoRefetch: true });
 
   const selectedDate: Dayjs = useStore((state) => state.selectedDate);
   const [state, setState] = useState<State>({

@@ -4,14 +4,21 @@ import { MdAssignment } from 'react-icons/md';
 import {User} from "entities/User";
 import { ObserverRemoveModal } from 'components/admin/observers/ObserverRemoveModal';
 import {ObserverGradesModal} from "components/admin/observers/ObserverGradesModal";
+import { useUserMatches } from 'hooks/useUserMatches';
 
 export interface Props {
   observer: User;
 }
 
 export const ObserverListItem = (props: Props) => {
+  const { query: matchesQuery } = useUserMatches({ userId: props.observer.id });
   const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
   const { isOpen: isGradesModalOpen, onOpen: onGradesModalOpen, onClose: onGradesModalClose } = useDisclosure();
+
+  const handleOpenGradesModal = async () => {
+    await matchesQuery.refetch();
+    onGradesModalOpen();
+  }
 
   return (
     <>
@@ -25,7 +32,13 @@ export const ObserverListItem = (props: Props) => {
       >
         {observerItem(props.observer)}
         <Spacer />
-        <IconButton onClick={onGradesModalOpen} variant={'ghost'} aria-label='See grades' icon={<MdAssignment />} />
+        <IconButton
+          onClick={handleOpenGradesModal}
+          variant={'ghost'}
+          aria-label='See grades'
+          icon={<MdAssignment />}
+          isLoading={matchesQuery.isLoading}
+        />
         <IconButton onClick={onDeleteModalOpen} variant={'ghost'} aria-label='Delete observer' icon={<DeleteIcon />} />
       </Flex>
     </>

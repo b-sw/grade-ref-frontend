@@ -4,7 +4,7 @@ import {User} from "entities/User";
 import { REFEREES_QUERY_KEY } from "./useUsers";
 
 export interface Props {
-  disableAutoRefetch: boolean;
+  enableAutoRefetch: boolean;
 }
 
 export const useReferees = (props?: Props) => {
@@ -16,7 +16,7 @@ export const useReferees = (props?: Props) => {
   const refereesQuery = useQuery(
     REFEREES_QUERY_KEY,
     getReferees,
-    { enabled: props ? !props.disableAutoRefetch : true },
+    { enabled: props ? props.enableAutoRefetch : false },
   );
 
   return { refereesQuery };

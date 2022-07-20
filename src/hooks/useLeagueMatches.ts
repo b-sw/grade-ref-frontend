@@ -12,15 +12,15 @@ import {enrichMatch} from "entities/utils/matchStatus";
 export const MATCHES_QUERY_KEY = 'matches_qk';
 
 export interface Props {
-  disableAutoRefetch: boolean;
-  leagueId: uuid;
+  enableAutoRefetch?: boolean;
+  leagueId?: uuid;
 }
 
 export const useLeagueMatches = (props?: Props) => {
   const toast = useToast();
   const queryClient: QueryClient = useQueryClient();
   let { leagueId } = useParams<{ leagueId: uuid }>();
-  leagueId = props ? props.leagueId : leagueId;
+  leagueId = props ? props.leagueId ?? leagueId : leagueId;
 
   const getMatches = async (): Promise<Match[]> => {
     const response = await axios.get(`leagues/${leagueId}/matches`);
@@ -45,7 +45,7 @@ export const useLeagueMatches = (props?: Props) => {
   const query = useQuery(
     [MATCHES_QUERY_KEY, leagueId],
     getMatches,
-    { enabled: props ? !props.disableAutoRefetch : true },
+    { enabled: props ? !!props.enableAutoRefetch : false },
   );
 
   const postMutation = useMutation(postMatch, {

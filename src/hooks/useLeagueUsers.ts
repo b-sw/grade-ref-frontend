@@ -11,15 +11,15 @@ const REFEREES_QUERY_KEY = 'referees_qk';
 const OBSERVERS_QUERY_KEY = 'observers_qk'
 
 export interface Props {
-  disableAutoRefetch: boolean;
-  leagueId: uuid;
+  enableAutoRefetch?: boolean;
+  leagueId?: uuid;
 }
 
 export const useLeagueUsers = (role: Role, props?: Props) => {
   const toast = useToast();
   const queryClient: QueryClient = useQueryClient();
   let { leagueId } = useParams<{ leagueId: uuid }>();
-  leagueId = props ? props.leagueId : leagueId;
+  leagueId = props ? props.leagueId ?? leagueId : leagueId;
 
   const usersTypes: string = role === Role.Referee ? 'referees' : 'observers';
 
@@ -41,7 +41,7 @@ export const useLeagueUsers = (role: Role, props?: Props) => {
   const usersQuery = useQuery(
     [role === Role.Referee ? REFEREES_QUERY_KEY : OBSERVERS_QUERY_KEY, leagueId],
     getAssignedUsers,
-    { enabled: props ? !props.disableAutoRefetch : true },
+    { enabled: props ? !!props.enableAutoRefetch : false },
   );
 
   const addMutation = useMutation(assignUserToLeague, {

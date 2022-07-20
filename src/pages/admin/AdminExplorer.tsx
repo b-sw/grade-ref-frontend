@@ -15,7 +15,7 @@ import {LeagueCreateModal} from "components/owner/leagues/LeagueCreateModal";
 
 export const AdminExplorer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { query: leaguesQuery } = useLeagues();
+  const { query: leaguesQuery } = useLeagues({ enableAutoRefetch: true });
   const { logout } = useAuth();
   const queries = [leaguesQuery];
 

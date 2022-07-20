@@ -16,19 +16,19 @@ interface Props {
 export const AdminLeagueCard = (props: Props) => {
   const navigate = useNavigate();
   const { usersQuery: refereesQuery } =
-    useLeagueUsers(Role.Referee, { disableAutoRefetch: true, leagueId: props.league.id });
+    useLeagueUsers(Role.Referee, { leagueId: props.league.id });
   const { usersQuery: observersQuery } =
-    useLeagueUsers(Role.Observer, { disableAutoRefetch: true, leagueId: props.league.id });
-  const { query: teamsQuery } = useLeagueTeams({ disableAutoRefetch: true, leagueId: props.league.id });
-  const { query: matchesQuery } = useLeagueMatches({ disableAutoRefetch: true, leagueId: props.league.id });
-  const { refereesQuery: allRefereesQuery } = useReferees({ disableAutoRefetch: true });
-  const { observersQuery: allObserversQuery } = useObservers({ disableAutoRefetch: true });
+    useLeagueUsers(Role.Observer, { leagueId: props.league.id });
+  const { query: teamsQuery } = useLeagueTeams({ leagueId: props.league.id });
+  const { query: matchesQuery } = useLeagueMatches({ leagueId: props.league.id });
+  const { refereesQuery: allRefereesQuery } = useReferees({ enableAutoRefetch: true });
+  const { observersQuery: allObserversQuery } = useObservers({ enableAutoRefetch: true });
 
   const loadingQueries = [refereesQuery, observersQuery, teamsQuery, matchesQuery];
-  const queries = [allRefereesQuery, allObserversQuery, ...loadingQueries];
+  const allQueries = [allRefereesQuery, allObserversQuery, ...loadingQueries];
 
   const navigateToDashboard = async (league: League) => {
-    await Promise.all(queries.map(async (query): Promise<any> => {
+    await Promise.all(allQueries.map(async (query): Promise<any> => {
       await query.refetch();
     }));
     navigate(`${Path.ADMIN_DASHBOARD}/${league.id}`);

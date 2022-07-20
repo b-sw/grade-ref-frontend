@@ -10,9 +10,7 @@ import {
   ModalOverlay,
   Spinner
 } from "@chakra-ui/react";
-import {useParams} from "react-router-dom";
 import {User} from "entities/User";
-import {uuid} from "utils/uuid";
 import {useUserMatches} from "hooks/useUserMatches";
 import {useLeagueUsers} from "hooks/useLeagueUsers";
 import {Role} from "utils/Role";
@@ -27,11 +25,10 @@ interface Props {
 }
 
 export const RefereeGradesModal = (props: Props) => {
-  const { leagueId } = useParams<{ leagueId: uuid }>();
-  const { query: matchesQuery } = useUserMatches({ userId: props.referee.id, leagueId: leagueId!, disableAutoRefetch: true });
-  const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee, { disableAutoRefetch: true, leagueId: leagueId! });
-  const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer, { disableAutoRefetch: true, leagueId: leagueId! });
-  const { query: teamsQuery } = useLeagueTeams({ disableAutoRefetch: true, leagueId: leagueId! });
+  const { query: matchesQuery } = useUserMatches({ userId: props.referee.id });
+  const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
+  const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
+  const { query: teamsQuery } = useLeagueTeams();
 
   const { state, setState } = useGradesPanel({
     matches: matchesQuery.data!,
