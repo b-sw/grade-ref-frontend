@@ -7,10 +7,19 @@ import { useToast } from "@chakra-ui/react";
 import {toastError} from "./utils/toastError";
 import { MATCH_QUERY_KEY } from 'hooks/useLeagueMatch';
 import { enrichMatch } from 'entities/utils/matchStatus';
+import { useStore } from 'zustandStore/store';
+import { USER_LEAGUE_MATCHES_QK } from 'hooks/useUserMatches';
 
-export const useGrades = () => {
+interface UseGradesProps {
+  matchId: uuid;
+}
+
+export const useGrades = (props?: UseGradesProps) => {
+  const user = useStore((state) => state.user);
   const { leagueId } = useParams<{ leagueId: uuid }>();
-  const { matchId } = useParams<{ matchId: uuid }>();
+  let { matchId } = useParams<{ matchId: uuid }>();
+
+  matchId = props ? props.matchId ?? matchId : matchId;
 
   const queryClient: QueryClient = useQueryClient();
   const toast = useToast();
@@ -28,6 +37,10 @@ export const useGrades = () => {
   const updateGradeMutation = useMutation(updateGrade, {
     onSuccess(match: Match) {
       queryClient.setQueryData([MATCH_QUERY_KEY, match.id], (_: any) => enrichMatch(match));
+      queryClient.setQueryData(
+        [USER_LEAGUE_MATCHES_QK, user.id, leagueId],
+        (old: any) => [...old.filter((m: Match) => m.id !== match.id), enrichMatch(match)]
+    );
       toast({
         title: 'Successfully updated a grade',
         status: 'success',

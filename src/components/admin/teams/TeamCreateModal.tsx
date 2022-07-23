@@ -38,7 +38,7 @@ export const TeamCreateModal = (props: Props) => {
     name: '',
   };
 
-  const editTeam = (values: FormikValues) => {
+  const createTeam = (values: FormikValues) => {
     postMutation.mutate({ name: values.name } as Team);
   };
 
@@ -49,7 +49,7 @@ export const TeamCreateModal = (props: Props) => {
         <ModalHeader>Add team</ModalHeader>
         <ModalCloseButton />
 
-        <Formik initialValues={initialValues} onSubmit={editTeam} validationSchema={teamValidationSchema}>
+        <Formik initialValues={initialValues} onSubmit={createTeam} validationSchema={teamValidationSchema}>
           {({ handleSubmit }) => (
             <Form onSubmit={handleSubmit}>
               <ModalBody>

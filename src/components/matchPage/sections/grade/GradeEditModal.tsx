@@ -16,7 +16,7 @@ interface GradeFormikValues {
 }
 
 export const GradeEditModal = ({ isOpen, handleClose, match }: GradeEditModalProps) => {
-  const { updateGradeMutation: updateMutation } = useGrades();
+  const { updateGradeMutation: updateMutation } = useGrades({ matchId: match.id });
 
   useEffect(() => {
     if (updateMutation.isSuccess) {
@@ -32,6 +32,7 @@ export const GradeEditModal = ({ isOpen, handleClose, match }: GradeEditModalPro
 
   const handleEditGrade = (values: GradeFormikValues) => {
     updateMutation.mutate({
+      ...match,
       refereeGrade: values.refereeGrade,
     } as Match);
   };

@@ -2,7 +2,6 @@ import {SelectControl} from 'formik-chakra-ui';
 import {useEffect} from 'react';
 import {Match} from "entities/Match";
 import {uuid} from "utils/uuid";
-import {useLeagueMatches} from "hooks/useLeagueMatches";
 import {LoadingOverlay} from "pages/LoadingOverlay";
 import {SelectOptions} from "components/matchPage/components/SelectOptions";
 import {useLeagueUsers} from "hooks/useLeagueUsers";
@@ -42,7 +41,7 @@ export const AssignmentEditModal = ({ isOpen, handleClose, match }: AssignmentEd
 
   const handleEditMatch = (values: AssignmentFormikValues) => {
     updateMutation.mutate({
-      ...match,
+      id: match.id,
       refereeId: values.refereeId,
       observerId: values.observerId,
     } as Match);

@@ -1,6 +1,5 @@
 import { Match } from 'entities/Match';
 import { FormikModal } from 'components/matchPage/components/FormikModal';
-import { useUserMatches } from 'hooks/useUserMatches';
 import { useEffect } from 'react';
 import { InputControl } from 'formik-chakra-ui';
 import { noteValidationSchema } from 'components/matchPage/sections/note/note.validation';
@@ -28,7 +27,7 @@ export const RefereeNoteEditModal = ({ isOpen, handleClose, match }: RefereeNote
   }, [updateMutation.isSuccess]);
 
   const initialValues: RefereeNoteFormikValues = {
-    refereeNote: '',
+    refereeNote: match.refereeNote ?? 'N/A',
   }
 
   const handleUpdateRefereeNote = (values: RefereeNoteFormikValues) => {

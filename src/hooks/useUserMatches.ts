@@ -14,7 +14,7 @@ interface Props {
   enableAutoRefetch?: boolean;
 }
 
-const USER_LEAGUE_MATCHES_QK = 'user_league_matches_qk';
+export const USER_LEAGUE_MATCHES_QK = 'user_league_matches_qk';
 
 export const useUserMatches = (props?: Props) => {
   const user = useStore((state) => state.user);

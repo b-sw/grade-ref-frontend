@@ -35,7 +35,7 @@ export function DataTable<T extends object & { id: uuid }>({
                                                  columns,
                                                  readOnly,
                                                  deleteMutation,
-                                                 onEdit,
+                                                 /* onEdit,*/
                                                }: DataTableProps<T>) {
   const {
     getTableProps,
@@ -96,7 +96,7 @@ export function DataTable<T extends object & { id: uuid }>({
                       icon={<EditIcon />}
                       opacity={0}
                       cursor={'default'}
-                      _groupHover={{ opacity: readOnly ? 0 : 1, cursor: readOnly ? 'default' : 'pointer' }}
+                      // _groupHover={{ opacity: readOnly ? 0 : 1, cursor: readOnly ? 'default' : 'pointer' }}
                       // onClick={onEdit}
                     />
                     <IconButton

@@ -12,9 +12,7 @@ import { User } from 'entities/User';
 import { Assignments } from 'components/matchPage/sections/assignments/Assignments';
 import { Sanctions } from 'components/matchPage/sections/sanctions/Sanctions';
 import { Conclusions } from 'components/matchPage/sections/conclusions/Conclusions';
-import { LoadingOverlay } from 'pages/LoadingOverlay';
 import { useLeagueTeams } from 'hooks/useLeagueTeams';
-import { useMatchFeatures } from 'components/matchPage/sections/conclusions/useMatchFeatures';
 import { RefereeNote } from 'components/matchPage/sections/note/RefereeNote';
 import { scrollbarStyle } from 'components/dashboard/styles/styles';
 import { MatchListItem } from 'components/dashboard/matches/MatchListItem';
@@ -22,7 +20,6 @@ import { MatchDeleteModal } from 'components/admin/matches/MatchDeleteModal';
 import { useStore } from 'zustandStore/store';
 import { Role } from 'utils/Role';
 import { Files } from 'components/matchPage/sections/files/Files';
-import { useMatchFouls } from "components/matchPage/sections/sanctions/useMatchFouls";
 import { Grade } from "components/matchPage/sections/grade/Grade";
 import { OverallGrade } from 'components/matchPage/sections/overallGrade/OverallGrade';
 
@@ -84,6 +81,8 @@ export const MatchSectionsPanel = ({ match, teams, referees, observers }: MatchO
     );
   };
 
+  const userIsAdmin = user.role === Role.Admin;
+
   return (
     <>
       <MatchDeleteModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} match={match} />
@@ -112,7 +111,8 @@ export const MatchSectionsPanel = ({ match, teams, referees, observers }: MatchO
               variant={'ghost'}
               leftIcon={<Icon as={ArrowBackIcon} />}
               onClick={() => {
-                navigate(`${Path.ADMIN_DASHBOARD}/${leagueId}`);
+                const dashboardPath = userIsAdmin ? Path.ADMIN_DASHBOARD : Path.DASHBOARD;
+                navigate(`${dashboardPath}/${leagueId}`);
               }}
             >
               Dashboard
