@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { InputControl, SelectControl } from "formik-chakra-ui";
 import { SelectOptionsConstant } from 'components/matchPage/components/SelectOptions';
 import { Feature, FeatureType } from 'entities/Feature';
-import { useFeatures } from 'components/matchPage/sections/conclusions/useFeatures';
+import { useMatchFeatures } from 'components/matchPage/sections/conclusions/useMatchFeatures';
 import { conclusionsValidationSchema } from 'components/matchPage/sections/conclusions/conclusions.validation';
 
 interface ConclusionAddModalProps {
@@ -19,7 +19,7 @@ interface ConclusionFormikValues {
 }
 
 export const ConclusionAddModal = ({ isOpen, handleClose, match }: ConclusionAddModalProps) => {
-  const { postMutation } = useFeatures({ matchId: match.id });
+  const { postMutation } = useMatchFeatures();
 
   useEffect(() => {
     if (postMutation.isSuccess) {
@@ -27,7 +27,7 @@ export const ConclusionAddModal = ({ isOpen, handleClose, match }: ConclusionAdd
       postMutation.reset();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [postMutation.isSuccess]);
 
   const initialValues: ConclusionFormikValues = {
     type: FeatureType.Positive,

@@ -3,7 +3,7 @@ import {MdWarning} from "react-icons/md"
 import {IoIosShirt} from "react-icons/io"
 import {Column} from "react-table";
 import * as React from "react";
-import {DataTable} from "components/matchPage/sections/DataTable";
+import {DataTable} from "components/matchPage/components/DataTable";
 import {Card, Foul} from "entities/Foul";
 import {Team} from "entities/Team";
 import {uuid} from "utils/uuid";
@@ -18,15 +18,16 @@ import { SanctionAddModal } from 'components/matchPage/sections/sanctions/Sancti
 import { Match } from 'entities/Match';
 import { SectionBody } from 'components/matchPage/components/SectionBody';
 import { Section } from 'components/matchPage/components/Section';
+import { useMatchFouls } from 'components/matchPage/sections/sanctions/useMatchFouls';
 
 interface SanctionsProps {
-  fouls: Foul[];
   teams: Team[];
   match: Match;
 }
 
-export const Sanctions = ({ fouls, teams, match }: SanctionsProps) => {
+export const Sanctions = ({ teams, match }: SanctionsProps) => {
   const { isOpen: isAddOpen, onOpen: onAddOpen, onClose: onAddClose } = useDisclosure();
+  const { query: foulsQuery, deleteMutation } = useMatchFouls();
   let mappedTeams: { [id: uuid]: Team } = {};
   const user = useStore((state) => state.user);
 
@@ -80,8 +81,8 @@ export const Sanctions = ({ fouls, teams, match }: SanctionsProps) => {
 
         <SectionBody>
           <>
-            <DataTable columns={cols} data={fouls} />
-            {!fouls.length && NoRecords()}
+            <DataTable columns={cols} data={foulsQuery.data!} readOnly={!userCanEdit} deleteMutation={deleteMutation} />
+            {!foulsQuery.data!.length && NoRecords()}
           </>
         </SectionBody>
       </Section>

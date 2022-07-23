@@ -18,19 +18,25 @@ import {
   TriangleUpIcon
 } from "@chakra-ui/icons";
 import { useTable, useSortBy, Column, usePagination } from "react-table";
+import { uuid } from 'utils/uuid';
+import { AxiosError } from "axios";
+import { UseMutationResult } from "react-query";
 
-export type DataTableProps<Data extends object> = {
-  data: Data[];
-  columns: Column<Data>[];
+export type DataTableProps<T extends object> = {
+  data: T[];
+  columns: Column<T>[];
+  readOnly?: boolean;
+  deleteMutation: UseMutationResult<T, AxiosError<unknown, any>, string, unknown>;
+  onEdit?: (id: uuid) => void,
 };
 
-export function DataTable<Data extends object>({
+export function DataTable<T extends object & { id: uuid }>({
                                                  data,
-                                                 columns
-                                               }: DataTableProps<Data>,
-                                               readOnly?: boolean,
-                                               /*onDelete?: (id: string) => void,
-                                               onEdit?: (id: string) => void*/) {
+                                                 columns,
+                                                 readOnly,
+                                                 deleteMutation,
+                                                 onEdit,
+                                               }: DataTableProps<T>) {
   const {
     getTableProps,
     getTableBodyProps,
@@ -100,7 +106,8 @@ export function DataTable<Data extends object>({
                       opacity={0}
                       cursor={'default'}
                       _groupHover={{ opacity: readOnly ? 0 : 1, cursor: readOnly ? 'default' : 'pointer' }}
-                      // onClick={onDelete}
+                      onClick={(_) => { deleteMutation.mutate(row.original.id) }}
+                      isLoading={deleteMutation.isLoading && deleteMutation.variables === row.original.id}
                     />
                   </Flex>
                 </Flex>

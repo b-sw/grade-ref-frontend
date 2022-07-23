@@ -1,6 +1,6 @@
 import { Match } from "entities/Match";
 import { FormikModal } from "components/matchPage/components/FormikModal";
-import { useFouls } from "components/matchPage/sections/sanctions/useFouls";
+import { useMatchFouls } from "components/matchPage/sections/sanctions/useMatchFouls";
 import { useEffect } from "react";
 import { uuid } from 'utils/uuid';
 import { Card, Foul } from 'entities/Foul';
@@ -27,7 +27,7 @@ interface SanctionFormikValues {
 
 export const SanctionAddModal = ({ isOpen, handleClose, match }: SanctionAddModalProps) => {
   const { query: teamsQuery } = useLeagueTeams();
-  const { postMutation } = useFouls({ matchId: match.id });
+  const { postMutation } = useMatchFouls();
 
   useEffect(() => {
     if (postMutation.isSuccess) {
@@ -35,7 +35,7 @@ export const SanctionAddModal = ({ isOpen, handleClose, match }: SanctionAddModa
       postMutation.reset();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [postMutation.isSuccess]);
 
   const initialValues: SanctionFormikValues = {
     minute: 0,

@@ -10,6 +10,7 @@ import {detailsValidationSchema} from "components/matchPage/sections/details/det
 import {LoadingOverlay} from "pages/LoadingOverlay";
 import {SelectOptions} from "components/matchPage/components/SelectOptions";
 import {FormikModal} from "components/matchPage/components/FormikModal";
+import { useLeagueMatch } from 'hooks/useLeagueMatch';
 
 interface DetailsEditModalProps {
   isOpen: boolean;
@@ -25,7 +26,7 @@ interface DetailsFormikValues {
 }
 
 export const DetailsEditModal = ({ isOpen, handleClose, match }: DetailsEditModalProps) => {
-  const { updateMutation } = useLeagueMatches();
+  const { updateMatchMutation: updateMutation } = useLeagueMatch();
   const { query: teamsQuery } = useLeagueTeams();
 
   useEffect(() => {

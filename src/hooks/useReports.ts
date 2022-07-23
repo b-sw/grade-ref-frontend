@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { uuid } from 'utils/uuid';
 import { MATCHES_QUERY_KEY } from './useLeagueMatches';
+import { MATCH_QUERY_KEY } from 'hooks/useLeagueMatch';
 
 export enum ReportType {
   Observer = 'Observer',
@@ -37,8 +38,9 @@ export const useReports = () => {
   const postMutation = useMutation(uploadReport, {
     onSuccess(_match: Match) {
       queryClient.invalidateQueries([MATCHES_QUERY_KEY]);
+      queryClient.invalidateQueries([MATCH_QUERY_KEY]);
       toast({
-        title: 'Successfully updated a grade',
+        title: 'Successfully uploaded a report',
         status: 'success',
         position: 'bottom-right',
         duration: 2000,
@@ -49,6 +51,7 @@ export const useReports = () => {
   const deleteMutation = useMutation(deleteReport, {
     onSuccess(match: Match) {
       queryClient.invalidateQueries([MATCHES_QUERY_KEY]);
+      queryClient.invalidateQueries([MATCH_QUERY_KEY]);
       toast({
         title: 'Successfully deleted a report',
         status: 'success',

@@ -14,7 +14,7 @@ import { Sanctions } from 'components/matchPage/sections/sanctions/Sanctions';
 import { Conclusions } from 'components/matchPage/sections/conclusions/Conclusions';
 import { LoadingOverlay } from 'pages/LoadingOverlay';
 import { useLeagueTeams } from 'hooks/useLeagueTeams';
-import { useFeatures } from 'components/matchPage/sections/conclusions/useFeatures';
+import { useMatchFeatures } from 'components/matchPage/sections/conclusions/useMatchFeatures';
 import { RefereeNote } from 'components/matchPage/sections/note/RefereeNote';
 import { scrollbarStyle } from 'components/dashboard/styles/styles';
 import { MatchListItem } from 'components/dashboard/matches/MatchListItem';
@@ -22,12 +22,14 @@ import { MatchDeleteModal } from 'components/admin/matches/MatchDeleteModal';
 import { useStore } from 'zustandStore/store';
 import { Role } from 'utils/Role';
 import { Files } from 'components/matchPage/sections/files/Files';
-import { useFouls } from "components/matchPage/sections/sanctions/useFouls";
+import { useMatchFouls } from "components/matchPage/sections/sanctions/useMatchFouls";
 import { Grade } from "components/matchPage/sections/grade/Grade";
+import { OverallGrade } from 'components/matchPage/sections/overallGrade/OverallGrade';
 
 export const enum MatchData {
   Details = 'Match Details',
-  Grade = 'Match Grade',
+  Grade = 'Grade',
+  OverallGrade = 'Overall grade',
   Assignments = 'Assignments',
   DisciplinarySanctions = 'Disciplinary sanctions',
   Conclusions = 'Conclusions',
@@ -46,8 +48,6 @@ const PADDING = 4;
 
 export const MatchSectionsPanel = ({ match, teams, referees, observers }: MatchOverviewPanelProps) => {
   const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
-  const { query: foulsQuery } = useFouls({ matchId: match.id });
-  const { query: featuresQuery } = useFeatures({ matchId: match.id });
   const { query: teamsQuery } = useLeagueTeams();
   const user = useStore((state) => state.user);
 
@@ -57,6 +57,7 @@ export const MatchSectionsPanel = ({ match, teams, referees, observers }: MatchO
   const overviewRef: any = useRef();
   const detailsRef: any = useRef();
   const gradeRef: any = useRef();
+  const overallGradeRef: any = useRef();
   const assignmentsRef: any = useRef();
   const foulsRef: any = useRef();
   const conclusionsRef: any = useRef();
@@ -82,10 +83,6 @@ export const MatchSectionsPanel = ({ match, teams, referees, observers }: MatchO
       </Link>
     );
   };
-
-  if (foulsQuery.isLoading || featuresQuery.isLoading) {
-    return <LoadingOverlay />;
-  }
 
   return (
     <>
@@ -143,6 +140,7 @@ export const MatchSectionsPanel = ({ match, teams, referees, observers }: MatchO
               </Text>
               {menuLink(MatchData.Details, detailsRef)}
               {menuLink(MatchData.Grade, gradeRef)}
+              {menuLink(MatchData.OverallGrade, overallGradeRef)}
               {menuLink(MatchData.Assignments, assignmentsRef)}
               {menuLink(MatchData.DisciplinarySanctions, foulsRef)}
               {menuLink(MatchData.Conclusions, conclusionsRef)}
@@ -160,16 +158,20 @@ export const MatchSectionsPanel = ({ match, teams, referees, observers }: MatchO
                   <Grade match={match} />
                 </Flex>
 
+                <Flex ref={overallGradeRef}>
+                  <OverallGrade match={match} />
+                </Flex>
+
                 <Flex ref={assignmentsRef}>
                   <Assignments match={match} referee={referee} observer={observer} />
                 </Flex>
 
                 <Flex ref={foulsRef}>
-                  <Sanctions fouls={foulsQuery.data!} teams={teamsQuery.data!} match={match} />
+                  <Sanctions teams={teamsQuery.data!} match={match} />
                 </Flex>
 
                 <Flex ref={conclusionsRef}>
-                  <Conclusions features={featuresQuery.data!} match={match} />
+                  <Conclusions match={match} />
                 </Flex>
 
                 <Flex ref={noteRef}>

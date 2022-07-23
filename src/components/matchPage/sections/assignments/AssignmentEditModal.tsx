@@ -9,6 +9,7 @@ import {useLeagueUsers} from "hooks/useLeagueUsers";
 import {Role} from "utils/Role";
 import {assignmentsValidationSchema} from "components/matchPage/sections/assignments/assignments.validation";
 import {FormikModal} from "components/matchPage/components/FormikModal";
+import { useLeagueMatch } from 'hooks/useLeagueMatch';
 
 interface AssignmentEditModalProps {
   isOpen: boolean;
@@ -22,7 +23,7 @@ interface AssignmentFormikValues {
 }
 
 export const AssignmentEditModal = ({ isOpen, handleClose, match }: AssignmentEditModalProps) => {
-  const { updateMutation } = useLeagueMatches();
+  const { updateMatchMutation: updateMutation } = useLeagueMatch();
   const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
   const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
 

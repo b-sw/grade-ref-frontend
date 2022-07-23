@@ -32,11 +32,6 @@ export const useLeagueMatches = (props?: Props) => {
     return enrichMatch(response.data);
   }
 
-  const updateMatch = async (match: Match): Promise<Match> => {
-    const response = await axios.put(`leagues/${leagueId}/matches/${match.id}`, match);
-    return enrichMatch(response.data);
-  }
-
   const deleteMatch = async (matchId: uuid): Promise<Match> => {
     const response = await axios.delete(`leagues/${leagueId}/matches/${matchId}`);
     return response.data;
@@ -53,19 +48,6 @@ export const useLeagueMatches = (props?: Props) => {
       queryClient.setQueryData([MATCHES_QUERY_KEY, leagueId], (old: any) => [...old, match]);
       toast({
         title: 'Successfully added a match',
-        status: 'success',
-        position: 'bottom-right',
-        duration: 2000,
-      });
-    },
-    onError: (error: AxiosError, _variables, _context) => toastError(toast, error),
-  });
-
-  const updateMutation = useMutation(updateMatch, {
-    onSuccess: (match: Match) => {
-      queryClient.setQueryData([MATCHES_QUERY_KEY, leagueId], (old: any) => [...old.filter((m: Match) => m.id !== match.id), match]);
-      toast({
-        title: 'Successfully updated a match',
         status: 'success',
         position: 'bottom-right',
         duration: 2000,
@@ -91,5 +73,5 @@ export const useLeagueMatches = (props?: Props) => {
     return getMatchesByDate(date, query.data);
   }
 
-  return { query, postMutation, updateMutation, deleteMutation, getByDate };
+  return { query, postMutation, deleteMutation, getByDate };
 }

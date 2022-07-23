@@ -1,22 +1,23 @@
 import {Match} from "entities/Match";
 import {FormikModal} from "components/matchPage/components/FormikModal";
 import {useEffect} from "react";
-import {NumberInputControl} from "formik-chakra-ui";
+import {InputControl, NumberInputControl} from "formik-chakra-ui";
 import {gradeValidationSchema} from "components/matchPage/sections/grade/grade.validation";
 import {useGrades} from "hooks/useGrades";
+import { overallGradeValidationSchema } from 'components/matchPage/sections/overallGrade/overall-grade.validation';
 
-interface GradeEditModalProps {
+interface OverallGradeEditModalProps {
   isOpen: boolean;
   handleClose: () => void;
   match: Match;
 }
 
 interface GradeFormikValues {
-  refereeGrade: number;
+  overallGrade: string;
 }
 
-export const GradeEditModal = ({ isOpen, handleClose, match }: GradeEditModalProps) => {
-  const { updateGradeMutation: updateMutation } = useGrades();
+export const OverallGradeEditModal = ({ isOpen, handleClose, match }: OverallGradeEditModalProps) => {
+  const { updateOverallGradeMutation: updateMutation } = useGrades();
 
   useEffect(() => {
     if (updateMutation.isSuccess) {
@@ -27,31 +28,31 @@ export const GradeEditModal = ({ isOpen, handleClose, match }: GradeEditModalPro
   }, [updateMutation.isSuccess]);
 
   const initialValues: GradeFormikValues = {
-    refereeGrade: match.refereeGrade ?? 0,
+    overallGrade: match.overallGrade ?? '',
   };
 
   const handleEditGrade = (values: GradeFormikValues) => {
     updateMutation.mutate({
-      refereeGrade: values.refereeGrade,
+      overallGrade: values.overallGrade,
     } as Match);
   };
 
   const modalBody: JSX.Element = (
     <>
-      <NumberInputControl name='refereeGrade' label='Referee grade' />
+      <InputControl name='overallGrade' label='Overall grade' />
     </>
   );
 
   return (
     <FormikModal
-      headingTitle={'Edit match grade'}
+      headingTitle={'Edit match overall grade'}
       body={modalBody}
       isOpen={isOpen}
       handleSubmit={handleEditGrade}
       isLoading={updateMutation.isLoading}
       handleClose={handleClose}
       initialValues={initialValues}
-      validationSchema={gradeValidationSchema}
+      validationSchema={overallGradeValidationSchema}
     />
   );
 }

@@ -4,6 +4,7 @@ import { useUserMatches } from 'hooks/useUserMatches';
 import { useEffect } from 'react';
 import { InputControl } from 'formik-chakra-ui';
 import { noteValidationSchema } from 'components/matchPage/sections/note/note.validation';
+import { useLeagueMatch } from 'hooks/useLeagueMatch';
 
 interface RefereeNoteEditModalProps {
   isOpen: boolean;
@@ -16,7 +17,7 @@ interface RefereeNoteFormikValues {
 }
 
 export const RefereeNoteEditModal = ({ isOpen, handleClose, match }: RefereeNoteEditModalProps) => {
-  const { updateRefereeNoteMutation: updateMutation } = useUserMatches();
+  const { updateRefereeNoteMutation: updateMutation } = useLeagueMatch();
 
   useEffect(() => {
     if (updateMutation.isSuccess) {
@@ -24,7 +25,7 @@ export const RefereeNoteEditModal = ({ isOpen, handleClose, match }: RefereeNote
       updateMutation.reset();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [updateMutation.isSuccess]);
 
   const initialValues: RefereeNoteFormikValues = {
     refereeNote: '',
