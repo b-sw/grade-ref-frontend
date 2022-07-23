@@ -12,7 +12,7 @@ import {useEffect, useState} from "react";
 import { useStore } from "zustandStore/store";
 import dayjs, { Dayjs } from "dayjs";
 import {useUserMatches} from "hooks/useUserMatches";
-import {HeaderPanel} from "components/dashboard/header/HeaderPanel";
+import {HeaderPanel} from "components/header/HeaderPanel";
 
 interface State {
   matches: Match[];
@@ -43,7 +43,7 @@ export const Calendar = () => {
   }
 
   return (
-    <Flex p={5} m={0} h={['auto', '100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
+    <Flex p={[2, 4]} h={['auto', '100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
       <HeaderPanel pageTitle={PageTitle.Calendar} />
       <Flex flexGrow={1} gap={[2, 2, 4]} direction={['column', 'row']} overflow={'hidden'} m={-10} p={10}>
         <CalendarPanel matches={matchesQuery.data!} readOnly={true} />

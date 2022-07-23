@@ -13,17 +13,17 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { useStore } from "zustandStore/store";
-import useAuth from "../../../hooks/useAuth";
+import useAuth from "hooks/useAuth";
 import { CalendarIcon } from '@chakra-ui/icons';
-import {Path} from "utils/Path";
-import {PageTitle} from "utils/PageTitle";
-import {uuid} from "utils/uuid";
+import { Path } from "utils/Path";
+import { PageTitle } from "utils/PageTitle";
+import { uuid } from "utils/uuid";
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import {MdApps, MdDashboard } from 'react-icons/md';
-import {getUserBadge} from "components/dashboard/grades/GradeListItem";
-import {League} from "entities/League";
-import {useLeagues} from "hooks/useLeagues";
+import { MdApps, MdDashboard, MdList } from 'react-icons/md';
+import { getUserBadge } from "components/dashboard/grades/GradeListItem";
+import { League } from "entities/League";
+import { useLeagues } from "hooks/useLeagues";
 
 interface Props {
   pageTitle: string;
@@ -51,6 +51,16 @@ export const HeaderPanel = (props: Props) => {
         <Flex alignItems={'center'} direction={['column', 'row']} gap={2}>
           <Button
             onClick={() => {
+              navigate(`${Path.CONCLUSIONS}/${leagueId}`);
+            }}
+            leftIcon={<MdList />}
+            colorScheme={props.pageTitle.includes(PageTitle.Conclusions) ? 'blue' : 'gray'}
+          >
+            Conclusions
+          </Button>
+
+          <Button
+            onClick={() => {
               navigate(`${Path.CALENDAR}/${leagueId}`);
             }}
             leftIcon={<CalendarIcon />}
@@ -58,6 +68,7 @@ export const HeaderPanel = (props: Props) => {
           >
             Calendar
           </Button>
+
           <Button
             onClick={() => {navigate(`${Path.DASHBOARD}/${leagueId}`)}}
             leftIcon={<MdDashboard />}
@@ -65,6 +76,7 @@ export const HeaderPanel = (props: Props) => {
           >
             Dashboard
           </Button>
+
           <Button
             onClick={() => {navigate(Path.EXPLORER)}}
             leftIcon={<MdApps />}
@@ -107,7 +119,6 @@ export const HeaderPanel = (props: Props) => {
 
               <MenuDivider />
 
-              <MenuItem>Account Settings</MenuItem>
               <MenuItem onClick={() => logout()}>Logout</MenuItem>
             </MenuList>
           </Menu>

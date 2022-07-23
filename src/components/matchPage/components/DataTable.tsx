@@ -26,7 +26,7 @@ export type DataTableProps<T extends object> = {
   data: T[];
   columns: Column<T>[];
   readOnly?: boolean;
-  deleteMutation: UseMutationResult<T, AxiosError<unknown, any>, string, unknown>;
+  deleteMutation?: UseMutationResult<T, AxiosError<unknown, any>, string, unknown>;
   onEdit?: (id: uuid) => void,
 };
 
@@ -106,8 +106,8 @@ export function DataTable<T extends object & { id: uuid }>({
                       opacity={0}
                       cursor={'default'}
                       _groupHover={{ opacity: readOnly ? 0 : 1, cursor: readOnly ? 'default' : 'pointer' }}
-                      onClick={(_) => { deleteMutation.mutate(row.original.id) }}
-                      isLoading={deleteMutation.isLoading && deleteMutation.variables === row.original.id}
+                      onClick={(_) => { deleteMutation?.mutate(row.original.id) }}
+                      isLoading={deleteMutation?.isLoading && deleteMutation.variables === row.original.id}
                     />
                   </Flex>
                 </Flex>

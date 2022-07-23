@@ -11,7 +11,7 @@ import { useLeagues } from 'hooks/useLeagues';
 import { useMatchFeatures } from 'components/matchPage/sections/conclusions/useMatchFeatures';
 import { useMatchFouls } from 'components/matchPage/sections/sanctions/useMatchFouls';
 import { useStore } from 'zustandStore/store';
-import { HeaderPanel } from 'components/dashboard/header/HeaderPanel';
+import { HeaderPanel } from 'components/header/HeaderPanel';
 
 export const MatchPage = () => {
   const user = useStore((state) => state.user);

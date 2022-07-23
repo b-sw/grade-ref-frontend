@@ -41,7 +41,7 @@ export const AssignmentEditModal = ({ isOpen, handleClose, match }: AssignmentEd
 
   const handleEditMatch = (values: AssignmentFormikValues) => {
     updateMutation.mutate({
-      id: match.id,
+      ...match,
       refereeId: values.refereeId,
       observerId: values.observerId,
     } as Match);

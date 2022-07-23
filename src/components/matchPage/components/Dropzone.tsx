@@ -4,7 +4,7 @@ interface DropzoneProps {
   text: string;
   textColor?: string;
   opacity?: number;
-  children?: JSX.Element | false;
+  children?: (JSX.Element | false)[] | (JSX.Element | false);
   flexProps?: FlexProps;
 }
 
