@@ -18,6 +18,8 @@ import {Path} from "utils/Path";
 import {uuid} from "utils/uuid";
 import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
 import {useEffect} from "react";
+import { useStore } from 'zustandStore/store';
+import { Role } from 'utils/Role';
 
 export interface Props {
   isOpen: boolean;
@@ -26,6 +28,7 @@ export interface Props {
 }
 
 export const MatchDeleteModal = (props: Props) => {
+  const user = useStore((state) => state.user);
   const { deleteMutation } = useLeagueMatches();
   const { query: teamsQuery } = useLeagueTeams();
 
@@ -36,10 +39,13 @@ export const MatchDeleteModal = (props: Props) => {
     deleteMutation.mutate(props.match.id);
   }
 
+  const userIsAdmin = user.role === Role.Admin;
+
   useEffect(() => {
     if (deleteMutation.isSuccess) {
       props.onClose();
-      navigate(`${Path.ADMIN_DASHBOARD}/${leagueId}`);
+      const dashboardPath = userIsAdmin ? Path.ADMIN_DASHBOARD : Path.DASHBOARD;
+      navigate(`${dashboardPath}/${leagueId}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deleteMutation.isSuccess]);

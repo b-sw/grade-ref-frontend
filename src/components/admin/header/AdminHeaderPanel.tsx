@@ -43,7 +43,7 @@ export const AdminHeaderPanel = (props: Props) => {
   const setCalendarYear = useStore((state) => state.setCalendarYear);
   const { logout } = useAuth();
   const navigate = useNavigate();
-  const { query: leaguesQuery } = useLeagues();
+  const { query: leaguesQuery } = useLeagues({ enableAutoRefetch: true});
   const { leagueId } = useParams<{ leagueId: uuid }>();
 
   if (leaguesQuery.isLoading) {

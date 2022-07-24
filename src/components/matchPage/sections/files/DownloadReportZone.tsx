@@ -45,29 +45,28 @@ export const DownloadReportZone = ({ reportType, hasWritePermissions }: Download
     <Dropzone
       text={'Download'}
     >
-      <>
-        {hasWritePermissions && (
-          <IconButton
-            onClick={deleteReport}
-            size={'sm'}
-            aria-label="Delete"
-            icon={<CloseIcon />}
-            position={'absolute'}
-            top={2}
-            right={2}
-            isLoading={deleteMutation.isLoading}
-          />
-        )}
-
+      {/* todo: Fix positioning */}
+      {hasWritePermissions && (
         <IconButton
-          as={Link}
-          href={state.url}
-          download
-          aria-label="Download"
-          icon={<MdFileDownload size={'40'} />}
-          opacity={0.6}
+          onClick={deleteReport}
+          size={'sm'}
+          aria-label="Delete"
+          icon={<CloseIcon />}
+          position={'absolute'}
+          top={2}
+          right={2}
+          isLoading={deleteMutation.isLoading}
         />
-      </>
+      )}
+
+      <IconButton
+        as={Link}
+        href={state.url}
+        download
+        aria-label="Download"
+        icon={<MdFileDownload size={'40'} />}
+        opacity={0.6}
+      />
     </Dropzone>
   );
 };

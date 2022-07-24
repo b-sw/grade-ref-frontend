@@ -21,6 +21,7 @@ import {LandingPage} from "pages/LandingPage";
 import { ParallaxProvider } from "react-scroll-parallax";
 import {MatchPage} from "pages/MatchPage";
 import {RequireAuthRoute} from "components/auth/RequireAuthRoute";
+import { Conclusions } from 'pages/Conclusions';
 
 const queryClient = new QueryClient();
 
@@ -51,6 +52,7 @@ export const App = () => (
                 <Route path={Path.EXPLORER} element={<Explorer />} />
                 <Route path={Path.DASHBOARD + '/:leagueId'} element={<Dashboard />} />
                 <Route path={Path.CALENDAR + '/:leagueId'} element={<Calendar />} />
+                <Route path={Path.CONCLUSIONS + '/:leagueId'} element={<Conclusions />} />
               </Route>
 
               {/* TODO: Consider AuthRoute for LeagueUser. Currently a user won't access dashboard of another league

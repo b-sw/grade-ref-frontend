@@ -1,10 +1,9 @@
 import { EditIcon, WarningIcon } from "@chakra-ui/icons";
-import { Badge, Button, Flex, HStack, Icon, Text, Textarea, Tooltip, useDisclosure } from "@chakra-ui/react";
+import { Badge, Button, Flex, HStack, Icon, Text, Tooltip, useDisclosure } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { Match } from "entities/Match";
+import { GRADE_ADMISSION_TIME_WINDOW, Match } from "entities/Match";
 import { Constants } from "utils/Constants";
-import { BiDetail } from "react-icons/bi";
-import { TextField } from "components/matchPage/components/TextField";
+import { BiBarChartSquare } from "react-icons/bi";
 import { Field } from "components/matchPage/components/Field";
 import { GradeEditModal } from "components/matchPage/sections/grade/GradeEditModal";
 import { useStore } from "zustandStore/store";
@@ -13,6 +12,7 @@ import { SectionHeading } from "components/matchPage/components/SectionHeading";
 import { MatchData } from "components/matchPage/MatchSectionsPanel";
 import { Section } from 'components/matchPage/components/Section';
 import { SectionBody } from 'components/matchPage/components/SectionBody';
+import { GradeStatus } from 'entities/utils/gradeInfo';
 
 interface GradeProps {
   match: Match;
@@ -27,7 +27,6 @@ export const Grade = ({ match }: GradeProps) => {
   }
 
   const refereeGradeDate: string = getReadableDatetime(match.refereeGradeDate, 'DD-MM-YYYY HH:mm');
-  const overallGradeDate: string = getReadableDatetime(match.overallGradeDate, 'DD-MM-YYYY HH:mm');
 
   const gradeBadge: JSX.Element = (
     <Flex align={'center'}>
@@ -35,18 +34,6 @@ export const Grade = ({ match }: GradeProps) => {
         {match.refereeGrade ?? 'N/A'}
       </Badge>
     </Flex>
-  );
-
-  const gradeTextArea: JSX.Element = (
-    <Textarea
-      isReadOnly={true}
-      resize={'none'}
-      value={match.overallGrade ?? 'N/A'}
-      borderColor={'gray.400'}
-      focusBorderColor={'gray.400'}
-      backgroundColor={'gray.100'}
-      _hover={{}}
-    />
   );
 
   const gradeDate: JSX.Element = (
@@ -63,13 +50,17 @@ export const Grade = ({ match }: GradeProps) => {
     </Flex>
   );
 
-  const userCanEdit: boolean = user.role === Role.Admin || user.role === Role.Observer;
+  const userIsAdminOrObserver: boolean = user.role === Role.Admin || user.role === Role.Observer;
+  const gradeIsPastDue: boolean = dayjs(match.matchDate).add(GRADE_ADMISSION_TIME_WINDOW, 'hour').isBefore(dayjs());
+  const gradeIsReceived: boolean = match.gradeStatus.status === GradeStatus.Received;
+
+  const userCanEdit: boolean = userIsAdminOrObserver && (!gradeIsPastDue || !gradeIsReceived);
 
   return (
     <>
       {userCanEdit && <GradeEditModal isOpen={isEditOpen} handleClose={onEditClose} match={match} />}
       <Section>
-        <SectionHeading title={MatchData.Grade} icon={<Icon as={BiDetail} boxSize={25} />}>
+        <SectionHeading title={MatchData.Grade} icon={<Icon as={BiBarChartSquare} boxSize={25} />}>
           <Button
             variant={'ghost'}
             leftIcon={<Icon as={EditIcon} />}
@@ -85,8 +76,6 @@ export const Grade = ({ match }: GradeProps) => {
 
             <Field name={'grade'} element={gradeBadge} />
             <Field name={'grade date'} element={gradeDate} />
-            <Field name={'overall grade'} element={gradeTextArea} />
-            <TextField name={'overall grade date'} text={overallGradeDate} />
 
           </Flex>
         </SectionBody>

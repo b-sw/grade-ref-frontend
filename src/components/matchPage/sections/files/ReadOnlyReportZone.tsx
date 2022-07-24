@@ -7,7 +7,7 @@ interface ReadOnlyReportZoneProps {
   iconType: IconType;
 }
 
-export const ReadOnlyReportZone = ({ text, iconType}: ReadOnlyReportZoneProps) => {
+export const ReadOnlyReportZone = ({ text, iconType }: ReadOnlyReportZoneProps) => {
   return (
     <Dropzone
       text={text}
