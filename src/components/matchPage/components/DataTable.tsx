@@ -18,7 +18,7 @@ import {
   TriangleDownIcon,
   TriangleUpIcon
 } from "@chakra-ui/icons";
-import { useTable, useSortBy, Column, usePagination } from "react-table";
+import { useTable, useSortBy, Column, usePagination, Row } from "react-table";
 import { uuid } from 'utils/uuid';
 import { AxiosError } from "axios";
 import { UseMutationResult } from "react-query";
@@ -35,7 +35,6 @@ export type DataTableProps<T extends object> = {
   columns: Column<T>[];
   readOnly?: boolean;
   deleteMutation?: UseMutationResult<T, AxiosError<unknown, any>, uuid, unknown>;
-  // EditModal?: React.ComponentType<{ isOpen: boolean, handleClose: () => void, value: T }>;
   EditModal?: ({ isOpen, handleClose, initialValue }: EditModalProps<T>) => JSX.Element;
 };
 
@@ -56,6 +55,23 @@ export function DataTable<T extends object & { id: uuid }>({
   const handleClose = () => {
     setState({ selected: null });
     onEditModalClose();
+  }
+
+  const handleEdit = (row: Row<T>) => {
+    if (readOnly) {
+      return;
+    }
+    setState({ selected: row.original });
+    onEditModalOpen();
+  }
+
+  const handleDelete = (row: Row<T>) => {
+    if (readOnly) {
+      return;
+    }
+    if (deleteMutation) {
+      deleteMutation.mutate(row.original.id);
+    }
   }
 
   const {
@@ -123,10 +139,7 @@ export function DataTable<T extends object & { id: uuid }>({
                         opacity={0}
                         cursor={'default'}
                         _groupHover={{ opacity: readOnly ? 0 : 1, cursor: readOnly ? 'default' : 'pointer' }}
-                        onClick={() => {
-                          setState({ selected: row.original });
-                          onEditModalOpen();
-                        }}
+                        onClick={() => { handleEdit(row); }}
                       />
                       <IconButton
                         variant={'ghost'}
@@ -135,7 +148,7 @@ export function DataTable<T extends object & { id: uuid }>({
                         opacity={0}
                         cursor={'default'}
                         _groupHover={{ opacity: readOnly ? 0 : 1, cursor: readOnly ? 'default' : 'pointer' }}
-                        onClick={(_) => { deleteMutation?.mutate(row.original.id) }}
+                        onClick={(_) => { handleDelete(row); }}
                         isLoading={deleteMutation?.isLoading && deleteMutation.variables === row.original.id}
                       />
                     </Flex>
