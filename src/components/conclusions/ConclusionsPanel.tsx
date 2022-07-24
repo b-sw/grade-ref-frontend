@@ -2,9 +2,9 @@ import { Flex, Spacer, Text } from "@chakra-ui/react";
 import { useUserFeatures } from 'hooks/useUserFeatures';
 import { DataTable } from 'components/matchPage/components/DataTable';
 import { NoRecords } from 'components/utils/NoRecords';
-import { SectionBody } from 'components/matchPage/components/SectionBody';
 import { Feature, FeatureType } from 'entities/Feature';
 import { Column } from "react-table";
+import { scrollbarStyle } from 'components/dashboard/styles/styles';
 
 export const ConclusionsPanel = () => {
   const { query: featuresQuery } = useUserFeatures();
@@ -40,16 +40,24 @@ export const ConclusionsPanel = () => {
         maxH={['90vh', '100%']}
         gap={4}
       >
-        <SectionBody>
-          <>
-            <DataTable
-              columns={cols}
-              data={featuresQuery.data!}
-              readOnly={true}
-            />
-            {!featuresQuery.data!.length && NoRecords()}
-          </>
-        </SectionBody>
+        <Flex
+          direction={'column'}
+          w={'100%'}
+          h={'100%'}
+          borderRadius={10}
+          backgroundColor={'gray.200'}
+          p={5}
+          overflowY={'scroll'}
+          css={scrollbarStyle}
+        >
+          <DataTable
+            columns={cols}
+            data={featuresQuery.data!}
+            readOnly={true}
+          />
+          {!featuresQuery.data!.length && NoRecords()}
+        </Flex>
+
       </Flex>
 
       <Spacer />
