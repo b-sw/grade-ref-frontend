@@ -7,39 +7,44 @@ import axios, { AxiosError } from "axios";
 import {toastError} from "hooks/utils/toastError";
 
 interface Props {
-  matchId: uuid;
+  enableAutoRefetch?: boolean;
 }
 
 const FOULS_QUERY_KEY: string = 'fouls_qk';
 
-export const useFouls = (props: Props) => {
+export const useMatchFouls = (props?: Props) => {
   const { leagueId } = useParams<{ leagueId: uuid }>();
+  let { matchId } = useParams<{ matchId: uuid }>();
   const queryClient: QueryClient = useQueryClient();
   const toast = useToast();
 
-  const queryKey = [FOULS_QUERY_KEY, props.matchId];
+  const queryKey = [FOULS_QUERY_KEY, matchId];
 
   const getFouls = async (): Promise<Foul[]> => {
-    const response = await axios.get(`leagues/${leagueId}/matches/${props.matchId}/fouls`);
+    const response = await axios.get(`leagues/${leagueId}/matches/${matchId}/fouls`);
     return response.data;
   }
 
   const postFoul = async (foul: Foul): Promise<Foul> => {
-    const response = await axios.post(`leagues/${leagueId}/matches/${props.matchId}/fouls`, foul);
+    const response = await axios.post(`leagues/${leagueId}/matches/${matchId}/fouls`, foul);
     return response.data;
   }
 
   const updateFoul = async (foul: Foul): Promise<Foul> => {
-    const response = await axios.put(`leagues/${leagueId}/matches/${props.matchId}/fouls/${foul.id}`, foul);
+    const response = await axios.put(`leagues/${leagueId}/matches/${matchId}/fouls/${foul.id}`, foul);
     return response.data;
   }
 
   const deleteFoul = async (foulId: uuid): Promise<Foul> => {
-    const response = await axios.delete(`leagues/${leagueId}/matches/${props.matchId}/fouls/${foulId}`);
+    const response = await axios.delete(`leagues/${leagueId}/matches/${matchId}/fouls/${foulId}`);
     return response.data;
   }
 
-  const query = useQuery(queryKey, getFouls);
+  const query = useQuery(
+    queryKey,
+    getFouls,
+    { enabled: props ? !!props.enableAutoRefetch : false },
+  );
 
   const postMutation = useMutation(postFoul, {
     onSuccess: (foul: Foul) => {

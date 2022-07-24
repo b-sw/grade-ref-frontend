@@ -5,11 +5,12 @@ import { useMutation, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { uuid } from 'utils/uuid';
 import { MATCHES_QUERY_KEY } from './useLeagueMatches';
+import { MATCH_QUERY_KEY } from 'hooks/useLeagueMatch';
 
 export enum ReportType {
   Observer = 'Observer',
   Mentor = 'Mentor',
-  Tv = 'Tv',
+  Tv = 'Television',
 }
 
 export interface ReportDto {
@@ -24,7 +25,6 @@ export const useReports = () => {
   const { matchId } = useParams<{ matchId: uuid }>();
 
   const uploadReport = async (dto: ReportDto): Promise<Match> => {
-    console.log(dto);
     const response = await axios.post(`leagues/${leagueId}/matches/${matchId}/reports/${dto.type}`, dto.fileFormData);
     return response.data;
   };
@@ -37,8 +37,9 @@ export const useReports = () => {
   const postMutation = useMutation(uploadReport, {
     onSuccess(_match: Match) {
       queryClient.invalidateQueries([MATCHES_QUERY_KEY]);
+      queryClient.invalidateQueries([MATCH_QUERY_KEY]);
       toast({
-        title: 'Successfully updated a grade',
+        title: 'Successfully uploaded a report',
         status: 'success',
         position: 'bottom-right',
         duration: 2000,
@@ -47,15 +48,15 @@ export const useReports = () => {
   });
 
   const deleteMutation = useMutation(deleteReport, {
-    onSuccess(match: Match) {
+    onSuccess(_match: Match) {
       queryClient.invalidateQueries([MATCHES_QUERY_KEY]);
+      queryClient.invalidateQueries([MATCH_QUERY_KEY]);
       toast({
         title: 'Successfully deleted a report',
         status: 'success',
         position: 'bottom-right',
         duration: 2000,
       });
-      console.log(match);
     },
   });
 

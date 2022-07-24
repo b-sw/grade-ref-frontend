@@ -14,7 +14,6 @@ import {
   useDisclosure
 } from '@chakra-ui/react';
 import {AddIcon, AttachmentIcon} from '@chakra-ui/icons';
-import {scrollbarStyle} from "components/dashboard/styles/styles";
 import {Match} from "entities/Match";
 import {MatchListItem} from "components/dashboard/matches/MatchListItem";
 import {MatchCreateModal} from "components/admin/matches/MatchCreateModal";
@@ -116,7 +115,7 @@ export const MatchesPanel = (props: Props) => {
         </InputGroup>
 
         {props.hideTabs ?
-          <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle} h={'100%'}>
+          <Flex direction={'column'} gap={2} overflowY={'scroll'} h={'100%'}>
             {state.matches.length ?
               state.matches.map((match: Match) =>
                 <MatchListItem key={match.id} match={match} />)
@@ -130,7 +129,7 @@ export const MatchesPanel = (props: Props) => {
               <Tab>Past</Tab>
               <Tab>Upcoming</Tab>
             </TabList>
-            <TabPanels overflowY={'scroll'} css={scrollbarStyle} h={'100%'}>
+            <TabPanels overflowY={'scroll'} h={'100%'}>
               <TabPanel display={'flex'} flexDirection={'column'} gap={2} h={'100%'}>
                 {getFilteredMatches(MatchStatus.Past).length ?
                   getFilteredMatches(MatchStatus.Past).map((match: Match) =>

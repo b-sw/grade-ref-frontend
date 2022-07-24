@@ -1,13 +1,9 @@
-import {GRADE_ADMISSION_TIME_WINDOW, Match} from "entities/Match";
+import {Match} from "entities/Match";
 import {FormikModal} from "components/matchPage/components/FormikModal";
 import {useEffect} from "react";
-import {InputControl, NumberInputControl} from "formik-chakra-ui";
-import {GradeStatus} from "entities/utils/gradeInfo";
+import {NumberInputControl} from "formik-chakra-ui";
 import {gradeValidationSchema} from "components/matchPage/sections/grade/grade.validation";
 import {useGrades} from "hooks/useGrades";
-import {useStore} from "zustandStore/store";
-import {Role} from "utils/Role";
-import dayjs from "dayjs";
 
 interface GradeEditModalProps {
   isOpen: boolean;
@@ -17,12 +13,10 @@ interface GradeEditModalProps {
 
 interface GradeFormikValues {
   refereeGrade: number;
-  overallGrade: string;
 }
 
 export const GradeEditModal = ({ isOpen, handleClose, match }: GradeEditModalProps) => {
-  const user = useStore(state => state.user);
-  const { updateMutation } = useGrades({ matchId: match.id });
+  const { updateGradeMutation: updateMutation } = useGrades({ matchId: match.id });
 
   useEffect(() => {
     if (updateMutation.isSuccess) {
@@ -34,27 +28,18 @@ export const GradeEditModal = ({ isOpen, handleClose, match }: GradeEditModalPro
 
   const initialValues: GradeFormikValues = {
     refereeGrade: match.refereeGrade ?? 0,
-    overallGrade: match.overallGrade ?? '',
   };
 
-  const handleEditMatch = (values: GradeFormikValues) => {
+  const handleEditGrade = (values: GradeFormikValues) => {
     updateMutation.mutate({
       ...match,
       refereeGrade: values.refereeGrade,
-      overallGrade: values.overallGrade,
     } as Match);
   };
 
-  const userIsAdmin: boolean = user.role === Role.Admin;
-  const gradeIsPastDue: boolean = dayjs(match.matchDate).add(GRADE_ADMISSION_TIME_WINDOW, 'hour').isBefore(dayjs());
-  const gradeIsReceived: boolean = match.gradeStatus.status === GradeStatus.Received;
-
-  const isGradeDisabled: boolean = !userIsAdmin && gradeIsReceived && gradeIsPastDue;
-
   const modalBody: JSX.Element = (
     <>
-      <NumberInputControl name='refereeGrade' label='Referee grade' isDisabled={isGradeDisabled} />
-      <InputControl name='overallGrade' label='OverallGrade' />
+      <NumberInputControl name='refereeGrade' label='Referee grade' />
     </>
   );
 
@@ -63,7 +48,7 @@ export const GradeEditModal = ({ isOpen, handleClose, match }: GradeEditModalPro
       headingTitle={'Edit match grade'}
       body={modalBody}
       isOpen={isOpen}
-      handleSubmit={handleEditMatch}
+      handleSubmit={handleEditGrade}
       isLoading={updateMutation.isLoading}
       handleClose={handleClose}
       initialValues={initialValues}

@@ -12,6 +12,7 @@ export const SectionBody = ({ children }: SectionBodyProps) => {
       borderRadius={10}
       backgroundColor={'gray.200'}
       p={5}
+      overflow={'hidden'}
     >
       {children}
     </Flex>

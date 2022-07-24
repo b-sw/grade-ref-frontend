@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Spacer, Textarea, useDisclosure } from "@chakra-ui/react"
+import { Button, Flex, Icon, Spacer, useDisclosure } from "@chakra-ui/react"
 import { Match } from "entities/Match";
 import { MatchData } from "components/matchPage/MatchSectionsPanel";
 import { MdNote } from "react-icons/md";
@@ -9,6 +9,7 @@ import { SectionHeading } from "components/matchPage/components/SectionHeading";
 import { SectionBody } from 'components/matchPage/components/SectionBody';
 import { Section } from 'components/matchPage/components/Section';
 import { RefereeNoteEditModal } from 'components/matchPage/sections/note/RefereeNoteEditModal';
+import { AutoResizeTextFlex } from 'components/matchPage/components/AutoResizeTextFlex';
 
 interface RefereeNoteProps {
   match: Match;
@@ -39,16 +40,7 @@ export const RefereeNote = ({ match }: RefereeNoteProps) => {
         <SectionBody>
           <Flex>
             <Spacer />
-            <Textarea
-              w={['100%', '50%']}
-              isReadOnly={true}
-              resize={'none'}
-              value={match.refereeNote ?? 'N/A'}
-              borderColor={'gray.400'}
-              focusBorderColor={'gray.400'}
-              backgroundColor={'gray.100'}
-              _hover={{}}
-            />
+            <AutoResizeTextFlex text={match.refereeNote || 'N/A'} />
             <Spacer />
           </Flex>
         </SectionBody>

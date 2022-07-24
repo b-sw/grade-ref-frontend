@@ -6,6 +6,7 @@ import { Input } from "./input";
 import { Modal } from './modal';
 import { Select } from './select';
 import {NumberInput} from "./numberInput";
+import { Textarea } from 'theme/textarea';
 
 // 2. Add your color mode config
 const config = {
@@ -29,6 +30,7 @@ const components = {
   NumberInput,
   Modal,
   Select,
+  Textarea,
 }
 
 // 3. extend the theme

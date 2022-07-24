@@ -4,13 +4,16 @@ import { useEffect } from "react";
 import { InputControl, SelectControl } from "formik-chakra-ui";
 import { SelectOptionsConstant } from 'components/matchPage/components/SelectOptions';
 import { Feature, FeatureType } from 'entities/Feature';
-import { useFeatures } from 'components/matchPage/sections/conclusions/useFeatures';
 import { conclusionsValidationSchema } from 'components/matchPage/sections/conclusions/conclusions.validation';
+import { AxiosError } from "axios";
+import { UseMutationResult } from "react-query";
 
-interface ConclusionAddModalProps {
+interface ConclusionModalProps {
   isOpen: boolean;
   handleClose: () => void;
   match: Match;
+  mutation: UseMutationResult<Feature, AxiosError<unknown, any>, Feature, unknown>;
+  feature?: Feature;
 }
 
 interface ConclusionFormikValues {
@@ -18,27 +21,27 @@ interface ConclusionFormikValues {
   description: string;
 }
 
-export const ConclusionAddModal = ({ isOpen, handleClose, match }: ConclusionAddModalProps) => {
-  const { postMutation } = useFeatures({ matchId: match.id });
+export const ConclusionModal = ({ isOpen, handleClose, match, mutation, feature }: ConclusionModalProps) => {
 
   useEffect(() => {
-    if (postMutation.isSuccess) {
+    if (mutation.isSuccess) {
       handleClose();
-      postMutation.reset();
+      mutation.reset();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [mutation.isSuccess]);
 
   const initialValues: ConclusionFormikValues = {
-    type: FeatureType.Positive,
-    description: '',
+    type: feature ? feature.type : FeatureType.Positive,
+    description: feature ? feature.description : '',
   }
 
-  const handleCreateFeature = (values: ConclusionFormikValues) => {
-    postMutation.mutate({
+  const handleMutateFeature = (values: ConclusionFormikValues) => {
+    mutation.mutate({
       ...values,
       refereeId: match.refereeId,
       matchId: match.id,
+      id: feature?.id,
     } as Feature);
   };
 
@@ -54,11 +57,11 @@ export const ConclusionAddModal = ({ isOpen, handleClose, match }: ConclusionAdd
 
   return (
     <FormikModal
-      headingTitle={'Add conclusion'}
+      headingTitle={feature ? 'Edit' : 'Add' + ' conclusion'}
       body={modalBody}
       isOpen={isOpen}
-      handleSubmit={handleCreateFeature}
-      isLoading={postMutation.isLoading}
+      handleSubmit={handleMutateFeature}
+      isLoading={mutation.isLoading}
       handleClose={handleClose}
       initialValues={initialValues}
       validationSchema={conclusionsValidationSchema}

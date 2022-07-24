@@ -45,8 +45,8 @@ export const Assignments = ({ match, referee, observer }: AssignmentsProps) => {
 
         <SectionBody>
           <Flex direction={'column'} pr={[0, 20]} gap={2}>
-            <TextField name={'referee'} text={[referee.firstName, referee.lastName].join(' ')} />
-            <TextField name={'observer'} text={[observer.firstName, observer.lastName].join(' ')} />
+            <TextField name={'Referee:'} text={[referee.firstName, referee.lastName].join(' ')} />
+            <TextField name={'Observer:'} text={[observer.firstName, observer.lastName].join(' ')} />
           </Flex>
         </SectionBody>
       </Section>

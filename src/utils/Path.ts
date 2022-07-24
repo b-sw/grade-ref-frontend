@@ -8,4 +8,5 @@ export const Path = {
   ADMIN_EXPLORER: '/admin-explorer',
   MATCH_PAGE: '/match-page',
   OWNER_DASHBOARD: '/owner-dashboard',
+  CONCLUSIONS: '/conclusions',
 }

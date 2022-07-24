@@ -7,39 +7,44 @@ import {toastError} from "hooks/utils/toastError";
 import {Feature} from "entities/Feature";
 
 interface Props {
-  matchId: uuid;
+  enableAutoRefetch?: boolean;
 }
 
 const FEATURES_QUERY_KEY: string = 'features_qk';
 
-export const useFeatures = (props: Props) => {
+export const useMatchFeatures = (props?: Props) => {
   const { leagueId } = useParams<{ leagueId: uuid }>();
+  const { matchId } = useParams<{ matchId: uuid }>();
   const queryClient: QueryClient = useQueryClient();
   const toast = useToast();
 
-  const queryKey = [FEATURES_QUERY_KEY, props.matchId];
+  const queryKey = [FEATURES_QUERY_KEY, matchId];
 
   const getFeatures = async (): Promise<Feature[]> => {
-    const response = await axios.get(`leagues/${leagueId}/matches/${props.matchId}/features`);
+    const response = await axios.get(`leagues/${leagueId}/matches/${matchId}/features`);
     return response.data;
   }
 
   const postFeature = async (feature: Feature): Promise<Feature> => {
-    const response = await axios.post(`leagues/${leagueId}/matches/${props.matchId}/features`, feature);
+    const response = await axios.post(`leagues/${leagueId}/matches/${matchId}/features`, feature);
     return response.data;
   }
 
   const updateFeature = async (feature: Feature): Promise<Feature> => {
-    const response = await axios.put(`leagues/${leagueId}/matches/${props.matchId}/features/${feature.id}`, feature);
+    const response = await axios.put(`leagues/${leagueId}/matches/${matchId}/features/${feature.id}`, feature);
     return response.data;
   }
 
   const deleteFeature = async (featureId: uuid): Promise<Feature> => {
-    const response = await axios.delete(`leagues/${leagueId}/matches/${props.matchId}/features/${featureId}`);
+    const response = await axios.delete(`leagues/${leagueId}/matches/${matchId}/features/${featureId}`);
     return response.data;
   }
 
-  const query = useQuery(queryKey, getFeatures);
+  const query = useQuery(
+    queryKey,
+    getFeatures,
+    { enabled: props ? !!props.enableAutoRefetch : false }
+  );
 
   const postMutation = useMutation(postFeature, {
     onSuccess: (feature: Feature) => {

@@ -77,12 +77,10 @@ export const UploadReportZone = ({ reportType }: UploadReportZoneProps) => {
       text={dropzoneText}
       flexProps={{borderStyle, _hover, cursor, ...rootProps}}
     >
-      <>
-        <input {...getInputProps()} />
-        {state.isLoading && <Spinner />}
+      <input {...getInputProps()} />
+      {state.isLoading && <Spinner />}
 
-        {!state.isLoading && <Icon as={MdFileUpload} boxSize={35} opacity={0.6} />}
-      </>
+      {!state.isLoading && <Icon as={MdFileUpload} boxSize={35} opacity={0.6} />}
     </Dropzone>
   );
 };

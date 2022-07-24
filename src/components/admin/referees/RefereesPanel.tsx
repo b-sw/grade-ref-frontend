@@ -1,6 +1,5 @@
 import {Button, Flex, InputLeftElement, InputGroup, Spacer, Text, useDisclosure, Input} from '@chakra-ui/react';
 import {AddIcon} from '@chakra-ui/icons';
-import {scrollbarStyle} from "components/dashboard/styles/styles";
 import {User} from "entities/User";
 import {RefereeListItem} from 'components/admin/referees/RefereeListItem';
 import {RefereeAddModal} from 'components/admin/referees/RefereeAddModal';
@@ -69,7 +68,7 @@ export const RefereesPanel = () => {
           />
         </InputGroup>
 
-        <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
+        <Flex direction={'column'} gap={2} overflowY={'scroll'}>
           {state.referees.length ?
             state.referees.map((referee: User) =>
               <RefereeListItem key={referee.id} referee={referee} />)

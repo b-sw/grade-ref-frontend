@@ -32,7 +32,7 @@ export const Report = ({ reportType, isUploaded }: ReportProps) => {
 
   return (
     <Flex direction={'column'} w={'100%'}>
-      <Text fontSize={'xl'} fontWeight={'medium'}>{reportType}</Text>
+      <Text fontSize={'xl'} fontWeight={'medium'}>{reportType} report:</Text>
       {report}
     </Flex>
   );

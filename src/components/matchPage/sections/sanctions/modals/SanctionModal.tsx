@@ -1,6 +1,5 @@
 import { Match } from "entities/Match";
 import { FormikModal } from "components/matchPage/components/FormikModal";
-import { useFouls } from "components/matchPage/sections/sanctions/useFouls";
 import { useEffect } from "react";
 import { uuid } from 'utils/uuid';
 import { Card, Foul } from 'entities/Foul';
@@ -9,11 +8,15 @@ import { InputControl, NumberInputControl, SelectControl } from "formik-chakra-u
 import { SelectOptions, SelectOptionsConstant } from 'components/matchPage/components/SelectOptions';
 import { useLeagueTeams } from 'hooks/useLeagueTeams';
 import { Team } from 'entities/Team';
+import { AxiosError } from "axios";
+import { UseMutationResult } from "react-query";
 
-interface SanctionAddModalProps {
+interface SanctionsModalProps {
   isOpen: boolean;
   handleClose: () => void;
   match: Match;
+  mutation: UseMutationResult<Foul, AxiosError<unknown, any>, Foul, unknown>;
+  foul?: Foul;
 }
 
 interface SanctionFormikValues {
@@ -25,31 +28,31 @@ interface SanctionFormikValues {
   teamId: uuid;
 }
 
-export const SanctionAddModal = ({ isOpen, handleClose, match }: SanctionAddModalProps) => {
+export const SanctionModal = ({ isOpen, handleClose, match, mutation, foul }: SanctionsModalProps) => {
   const { query: teamsQuery } = useLeagueTeams();
-  const { postMutation } = useFouls({ matchId: match.id });
 
   useEffect(() => {
-    if (postMutation.isSuccess) {
+    if (mutation.isSuccess) {
       handleClose();
-      postMutation.reset();
+      mutation.reset();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mutation.isSuccess]);
 
   const initialValues: SanctionFormikValues = {
-    minute: 0,
-    card: Card.Red,
-    playerNumber: 0,
-    description: '',
-    valid: true,
-    teamId: match.homeTeamId,
+    minute: foul ? foul.minute : 0,
+    card: foul ? foul.card : Card.Red,
+    playerNumber: foul ? foul.playerNumber : 0,
+    description: foul ? foul.description : '',
+    valid: foul ? foul.valid : true,
+    teamId: foul ? foul.teamId : match.homeTeamId,
   }
 
-  const handleCreateFoul = (values: SanctionFormikValues) => {
-    postMutation.mutate({
+  const handleMutate = (values: SanctionFormikValues) => {
+    mutation.mutate({
       ...values,
       matchId: match.id,
+      id: foul?.id,
     } as Foul);
   };
 
@@ -80,11 +83,11 @@ export const SanctionAddModal = ({ isOpen, handleClose, match }: SanctionAddModa
 
   return (
     <FormikModal
-      headingTitle={'Add disciplinary sanction'}
+      headingTitle={foul ? 'Edit' : 'Add' + ' disciplinary sanction'}
       body={modalBody}
       isOpen={isOpen}
-      handleSubmit={handleCreateFoul}
-      isLoading={postMutation.isLoading}
+      handleSubmit={handleMutate}
+      isLoading={mutation.isLoading}
       handleClose={handleClose}
       initialValues={initialValues}
       validationSchema={sanctionsValidationSchema}

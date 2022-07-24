@@ -4,7 +4,7 @@ interface DropzoneProps {
   text: string;
   textColor?: string;
   opacity?: number;
-  children?: JSX.Element | false;
+  children?: (JSX.Element | false)[] | (JSX.Element | false);
   flexProps?: FlexProps;
 }
 
@@ -21,6 +21,7 @@ export const Dropzone = ({ text, textColor, opacity, children, flexProps}: Dropz
       borderWidth={2}
       borderColor={'gray.400'}
       {...flexProps}
+      position={'relative'}
     >
       <Spacer />
 
