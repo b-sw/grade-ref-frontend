@@ -1,7 +1,6 @@
 import {Button, Flex, InputLeftElement, InputGroup, Spacer, Text, useDisclosure, Input } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import {LeagueCreateModal} from "components/owner/leagues/LeagueCreateModal";
-import {scrollbarStyle} from "components/dashboard/styles/styles";
 import {LeagueListItem} from "components/owner/leagues/LeagueListItem";
 import {League} from "entities/League";
 import {useLeagues} from "hooks/useLeagues";
@@ -65,7 +64,7 @@ export const LeaguesPanel = () => {
           />
         </InputGroup>
 
-        <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
+        <Flex direction={'column'} gap={2} overflowY={'scroll'}>
           {state.leagues.map((league: League) =>
               <LeagueListItem key={league.id} league={league} />
           )}

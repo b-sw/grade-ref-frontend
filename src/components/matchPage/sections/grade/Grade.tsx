@@ -30,7 +30,7 @@ export const Grade = ({ match }: GradeProps) => {
 
   const gradeBadge: JSX.Element = (
     <Flex align={'center'}>
-      <Badge variant={'outline'} colorScheme={match.gradeStatus.badgeScheme} fontSize={'md'} w={'auto'}>
+      <Badge variant={'outline'} colorScheme={match.gradeStatus.badgeScheme} fontSize={'xl'} w={'auto'}>
         {match.refereeGrade ?? 'N/A'}
       </Badge>
     </Flex>
@@ -74,8 +74,8 @@ export const Grade = ({ match }: GradeProps) => {
         <SectionBody>
           <Flex direction={'column'} pr={[0, 20]} gap={2}>
 
-            <Field name={'grade'} element={gradeBadge} />
-            <Field name={'grade date'} element={gradeDate} />
+            <Field name={'Grade:'} element={gradeBadge} />
+            <Field name={'Grade date:'} element={gradeDate} />
 
           </Flex>
         </SectionBody>

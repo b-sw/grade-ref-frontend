@@ -55,11 +55,11 @@ export const Details = ({ match, homeTeam, awayTeam }: DetailsProps) => {
           p={5}
         >
           <Flex direction={'column'} pr={[0, 20]} gap={2}>
-            <TextField name={'date'} text={matchDate} />
-            <TextField name={'time'} text={matchTime} />
-            <TextField name={'stadium'} text={match.stadium} />
-            <TextField name={'home team'} text={homeTeam.name} />
-            <TextField name={'away team'} text={awayTeam.name} />
+            <TextField name={'Date:'} text={matchDate} />
+            <TextField name={'Time:'} text={matchTime} />
+            <TextField name={'Stadium:'} text={match.stadium} />
+            <TextField name={'Home team:'} text={homeTeam.name} />
+            <TextField name={'Away team:'} text={awayTeam.name} />
           </Flex>
         </Flex>
       </Flex>

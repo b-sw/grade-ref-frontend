@@ -4,7 +4,6 @@ import { DataTable } from 'components/matchPage/components/DataTable';
 import { NoRecords } from 'components/utils/NoRecords';
 import { Feature, FeatureType } from 'entities/Feature';
 import { Column } from "react-table";
-import { scrollbarStyle } from 'components/dashboard/styles/styles';
 
 export const ConclusionsPanel = () => {
   const { query: featuresQuery } = useUserFeatures();
@@ -48,7 +47,6 @@ export const ConclusionsPanel = () => {
           backgroundColor={'gray.200'}
           p={5}
           overflowY={'scroll'}
-          css={scrollbarStyle}
         >
           <DataTable
             columns={cols}

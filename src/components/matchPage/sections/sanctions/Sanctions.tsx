@@ -32,6 +32,11 @@ export const Sanctions = ({ teams }: SanctionsProps) => {
 
   teams.forEach((team) => mappedTeams[team.id] = team);
 
+  const validityValues = {
+    [true.toString()]: 'correct',
+    [false.toString()]: 'incorrect',
+  };
+
   const cols: Column<Foul>[] = [
     {
       Header: 'Minute',
@@ -59,10 +64,12 @@ export const Sanctions = ({ teams }: SanctionsProps) => {
     },
     {
       id: 'valid',
-      Header: 'Valid',
+      Header: 'Validity',
       accessor: d => d.valid.toString(),
       Cell: (props: any) =>
-        <Badge variant={'outline'} colorScheme={props.value === 'true' ? 'linkedin' : 'gray'}>{props.value}</Badge>,
+        <Badge variant={'outline'} colorScheme={props.value === 'true' ? 'linkedin' : 'gray'}>
+          {validityValues[props.value]}
+        </Badge>,
     },
   ];
 

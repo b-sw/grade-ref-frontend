@@ -1,6 +1,5 @@
 import { Flex, Input, InputGroup, InputLeftElement, Spacer, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
 import {GradeSummaryHeading} from "components/dashboard/grades/GradeSummaryHeading";
-import {scrollbarStyle} from "../styles/styles";
 import {GradeListItem} from "components/dashboard/grades/GradeListItem";
 import {Role} from "utils/Role";
 import {Match} from "entities/Match";
@@ -94,7 +93,7 @@ export const GradesPanelBody = (props: GradesPanelBodyProps) => {
           <Tab>{GradeStatus.Pending}</Tab>
           <Tab>{GradeStatus.Expected}</Tab>
         </TabList>
-        <TabPanels overflowY={'scroll'} css={scrollbarStyle} h={'100%'}>
+        <TabPanels overflowY={'scroll'} h={'100%'}>
           <TabPanel display='flex' flexDirection='column' gap={2} h={'100%'}>
             {props.state.matches.length ?
               props.state.matches.map((match) =>

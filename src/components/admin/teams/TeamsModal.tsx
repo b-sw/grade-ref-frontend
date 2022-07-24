@@ -3,7 +3,6 @@ import {Button, Flex, Input, InputGroup, InputLeftElement, Modal, ModalBody, Mod
   ModalHeader,
   ModalOverlay, Spacer, Text, useDisclosure } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
-import {scrollbarStyle} from "components/dashboard/styles/styles";
 import {Team} from "entities/Team";
 import { MdSearch } from "react-icons/md";
 import {TeamListItem} from "components/admin/teams/TeamListItem";
@@ -74,7 +73,7 @@ export const TeamsModal = (props: Props) => {
               />
             </InputGroup>
 
-            <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
+            <Flex direction={'column'} gap={2} overflowY={'scroll'}>
               {state.teams.length ?
                 state.teams.map((team: Team) =>
                   <TeamListItem key={team.id} team={team} />)

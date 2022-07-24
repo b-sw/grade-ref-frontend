@@ -2,7 +2,6 @@ import {Button, Flex, InputLeftElement, InputGroup, Spacer, Text, useDisclosure,
 import { AddIcon } from '@chakra-ui/icons';
 import {ObserverCreateModal} from "components/owner/observers/ObserverCreateModal";
 import {useUsers} from "hooks/useUsers";
-import {scrollbarStyle} from "components/dashboard/styles/styles";
 import {User} from "entities/User";
 import {ObserverListItem} from "components/owner/observers/ObserverListItem";
 import { MdSearch } from 'react-icons/md';
@@ -64,7 +63,7 @@ export const OwnerObserversPanel = () => {
           />
         </InputGroup>
 
-        <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
+        <Flex direction={'column'} gap={2} overflowY={'scroll'}>
           {state.observers.map((observer: User) =>
               <ObserverListItem key={observer.id} observer={observer} />
           )}

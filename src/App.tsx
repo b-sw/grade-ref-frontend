@@ -22,6 +22,8 @@ import { ParallaxProvider } from "react-scroll-parallax";
 import {MatchPage} from "pages/MatchPage";
 import {RequireAuthRoute} from "components/auth/RequireAuthRoute";
 import { Conclusions } from 'pages/Conclusions';
+import 'styles/styles.css';
+import { RequireAuthRouteReferee } from "components/auth/RequireAuthRouteReferee";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +54,9 @@ export const App = () => (
                 <Route path={Path.EXPLORER} element={<Explorer />} />
                 <Route path={Path.DASHBOARD + '/:leagueId'} element={<Dashboard />} />
                 <Route path={Path.CALENDAR + '/:leagueId'} element={<Calendar />} />
+              </Route>
+
+              <Route element={<RequireAuthRouteReferee />}>
                 <Route path={Path.CONCLUSIONS + '/:leagueId'} element={<Conclusions />} />
               </Route>
 

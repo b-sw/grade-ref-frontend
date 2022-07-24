@@ -1,11 +1,10 @@
 import { EditIcon } from "@chakra-ui/icons";
-import { Button, Flex, Icon, Textarea, useDisclosure } from "@chakra-ui/react";
+import { Button, Flex, Icon, useDisclosure, Spacer } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { Match } from "entities/Match";
 import { Constants } from "utils/Constants";
 import { BiDetail } from "react-icons/bi";
 import { TextField } from "components/matchPage/components/TextField";
-import { Field } from "components/matchPage/components/Field";
 import { useStore } from "zustandStore/store";
 import { Role } from "utils/Role";
 import { SectionHeading } from "components/matchPage/components/SectionHeading";
@@ -13,6 +12,7 @@ import { MatchData } from "components/matchPage/MatchSectionsPanel";
 import { Section } from 'components/matchPage/components/Section';
 import { SectionBody } from 'components/matchPage/components/SectionBody';
 import { OverallGradeEditModal } from 'components/matchPage/sections/overallGrade/OverallGradeEditModal';
+import { AutoResizeTextFlex } from 'components/matchPage/components/AutoResizeTextFlex';
 
 interface OverallGradeProps {
   match: Match;
@@ -29,15 +29,11 @@ export const OverallGrade = ({ match }: OverallGradeProps) => {
   const overallGradeDate: string = getReadableDatetime(match.overallGradeDate, 'DD-MM-YYYY HH:mm');
 
   const gradeTextArea: JSX.Element = (
-    <Textarea
-      isReadOnly={true}
-      resize={'none'}
-      value={match.overallGrade ?? 'N/A'}
-      borderColor={'gray.400'}
-      focusBorderColor={'gray.400'}
-      backgroundColor={'gray.100'}
-      _hover={{}}
-    />
+    <Flex>
+      <Spacer />
+      <AutoResizeTextFlex text={match.overallGrade || 'N/A'} />
+      <Spacer />
+    </Flex>
   );
 
   const userCanEdit: boolean = user.role === Role.Admin || user.role === Role.Observer;
@@ -58,11 +54,9 @@ export const OverallGrade = ({ match }: OverallGradeProps) => {
         </SectionHeading>
 
         <SectionBody>
-          <Flex direction={'column'} pr={[0, 20]} gap={2}>
-
-            <Field name={'overall grade'} element={gradeTextArea} />
-            <TextField name={'overall grade date'} text={overallGradeDate} />
-
+          <Flex direction={'column'} gap={2}>
+            {gradeTextArea}
+            <TextField name={'Description date:'} text={overallGradeDate} />
           </Flex>
         </SectionBody>
       </Section>

@@ -1,7 +1,7 @@
 import { Match } from 'entities/Match';
 import { FormikModal } from 'components/matchPage/components/FormikModal';
 import { useEffect } from 'react';
-import { InputControl } from 'formik-chakra-ui';
+import { TextareaControl } from 'formik-chakra-ui';
 import { noteValidationSchema } from 'components/matchPage/sections/note/note.validation';
 import { useLeagueMatch } from 'hooks/useLeagueMatch';
 
@@ -38,9 +38,16 @@ export const RefereeNoteEditModal = ({ isOpen, handleClose, match }: RefereeNote
   };
 
   const modalBody: JSX.Element = (
-    <>
-      <InputControl name='refereeNote' label='Referee note' size={'md'} />
-    </>
+    <TextareaControl
+      name='refereeNote'
+      label='Referee note'
+      textareaProps={{
+        rows: 15,
+        resize: 'none',
+        whiteSpace: 'pre-wrap',
+        } as any
+      }
+    />
   );
 
   return (

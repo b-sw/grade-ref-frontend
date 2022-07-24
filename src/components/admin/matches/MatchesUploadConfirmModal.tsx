@@ -2,7 +2,6 @@ import { Modal, ModalHeader, ModalContent, ModalOverlay, ModalCloseButton, Modal
 import {useFile} from "hooks/useFile";
 import {Match} from "entities/Match";
 import {useSetState} from "hooks/useSetState";
-import {scrollbarStyle} from "components/dashboard/styles/styles";
 import {MatchListItem} from "components/dashboard/matches/MatchListItem";
 import {useEffect} from "react";
 import { MdSearch } from "react-icons/md";
@@ -85,7 +84,7 @@ export const MatchesUploadConfirmModal = (props: Props) => {
             />
           </InputGroup>
 
-          <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle} h={'70vh'}>
+          <Flex direction={'column'} gap={2} overflowY={'scroll'} h={'70vh'}>
             {state.matches.length ?
               state.matches.map((match: Match) =>
               <MatchListItem key={match.id} readOnly={true} match={match} />)

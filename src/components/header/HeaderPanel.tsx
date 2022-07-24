@@ -7,7 +7,6 @@ import {
   MenuList,
   MenuItem,
   MenuDivider,
-  Heading,
   Spacer,
   Badge,
   Text,
@@ -24,6 +23,7 @@ import { MdApps, MdDashboard, MdList } from 'react-icons/md';
 import { getUserBadge } from "components/dashboard/grades/GradeListItem";
 import { League } from "entities/League";
 import { useLeagues } from "hooks/useLeagues";
+import { Role } from 'utils/Role';
 
 interface Props {
   pageTitle: string;
@@ -38,26 +38,27 @@ export const HeaderPanel = (props: Props) => {
   const { query: leaguesQuery } = useLeagues();
 
   const leagueIdx: number = leaguesQuery.data!.findIndex((l: League) => l.id === leagueId)!;
-  const leagueShortName: string = leaguesQuery.data![leagueIdx].shortName;
+  const leagueName: string = leaguesQuery.data![leagueIdx].name;
 
   const { badgeColor, badgeString } = getUserBadge(user.role!);
 
   return (
     <>
       <Flex m={0} p={0} mb={2} direction={['column', 'row']}>
-        <Heading>{leagueShortName} {calendarYear}</Heading>
         <Spacer />
 
         <Flex alignItems={'center'} direction={['column', 'row']} gap={2}>
-          <Button
-            onClick={() => {
-              navigate(`${Path.CONCLUSIONS}/${leagueId}`);
-            }}
-            leftIcon={<MdList />}
-            colorScheme={props.pageTitle.includes(PageTitle.Conclusions) ? 'blue' : 'gray'}
-          >
-            Conclusions
-          </Button>
+          {user.role === Role.Referee &&
+            <Button
+              onClick={() => {
+                navigate(`${Path.CONCLUSIONS}/${leagueId}`);
+              }}
+              leftIcon={<MdList />}
+              colorScheme={props.pageTitle.includes(PageTitle.Conclusions) ? 'blue' : 'gray'}
+            >
+              Conclusions
+            </Button>
+          }
 
           <Button
             onClick={() => {
@@ -107,13 +108,18 @@ export const HeaderPanel = (props: Props) => {
                 <Avatar
                   name={user.firstName + ' ' + user.lastName}
                   size={'xl'}
+                  mb={2}
                 />
-                <Badge my={2} colorScheme={badgeColor} fontSize={'xs'}>{badgeString}</Badge>
-                <Text>
+                <Text fontWeight={'medium'}>
                   {user.firstName} {user.lastName}
                 </Text>
                 <Text fontSize={'sm'} color={'gray.400'}>
                   {user.email}
+                </Text>
+
+                <Badge mt={3} colorScheme={badgeColor} fontSize={'xs'}>{badgeString}</Badge>
+                <Text mb={2} mt={1}>
+                  {leagueName} {calendarYear}
                 </Text>
               </Flex>
 

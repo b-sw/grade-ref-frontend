@@ -1,9 +1,8 @@
 import {Match} from "entities/Match";
 import {FormikModal} from "components/matchPage/components/FormikModal";
 import {useEffect} from "react";
-import {InputControl, NumberInputControl} from "formik-chakra-ui";
-import {gradeValidationSchema} from "components/matchPage/sections/grade/grade.validation";
-import {useGrades} from "hooks/useGrades";
+import { TextareaControl } from "formik-chakra-ui";
+import { useGrades } from "hooks/useGrades";
 import { overallGradeValidationSchema } from 'components/matchPage/sections/overallGrade/overall-grade.validation';
 
 interface OverallGradeEditModalProps {
@@ -39,7 +38,16 @@ export const OverallGradeEditModal = ({ isOpen, handleClose, match }: OverallGra
 
   const modalBody: JSX.Element = (
     <>
-      <InputControl name='overallGrade' label='Overall grade' />
+      <TextareaControl
+        name='overallGrade'
+        label='Overall grade'
+        textareaProps={{
+          rows: 30,
+          resize: 'none',
+          whiteSpace: 'pre-wrap',
+          } as any
+        }
+      />
     </>
   );
 
@@ -53,6 +61,7 @@ export const OverallGradeEditModal = ({ isOpen, handleClose, match }: OverallGra
       handleClose={handleClose}
       initialValues={initialValues}
       validationSchema={overallGradeValidationSchema}
+      size={'3xl'}
     />
   );
 }

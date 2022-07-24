@@ -20,14 +20,15 @@ export interface FormikModalProps<T> {
   handleClose: () => void;
   initialValues: T;
   validationSchema: any;
+  size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
 }
 
 export const FormikModal = <T,>(
   {
-    headingTitle, body, isOpen, isLoading, handleSubmit, handleClose, initialValues, validationSchema }: FormikModalProps<T>
+    headingTitle, body, isOpen, isLoading, handleSubmit, handleClose, initialValues, validationSchema, size }: FormikModalProps<T>
 ) => {
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} isCentered>
+    <Modal isOpen={isOpen} onClose={handleClose} isCentered size={size ?? 'md'}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{headingTitle}</ModalHeader>

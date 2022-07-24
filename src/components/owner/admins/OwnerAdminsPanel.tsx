@@ -2,7 +2,6 @@ import {Button, Flex, Input, InputGroup, InputLeftElement, Spacer, Text, useDisc
 import { AddIcon } from '@chakra-ui/icons';
 import {AdminCreateModal} from "components/owner/admins/AdminCreateModal";
 import {useUsers} from "hooks/useUsers";
-import {scrollbarStyle} from "components/dashboard/styles/styles";
 import {User} from "entities/User";
 import {AdminListItem} from "components/owner/admins/AdminListItem";
 import { MdSearch } from 'react-icons/md';
@@ -65,7 +64,7 @@ export const OwnerAdminsPanel = () => {
           />
         </InputGroup>
 
-        <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
+        <Flex direction={'column'} gap={2} overflowY={'scroll'}>
           {state.admins.map((admin: User) =>
               <AdminListItem key={admin.id} admin={admin} />
           )}

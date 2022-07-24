@@ -14,7 +14,6 @@ import { Sanctions } from 'components/matchPage/sections/sanctions/Sanctions';
 import { Conclusions } from 'components/matchPage/sections/conclusions/Conclusions';
 import { useLeagueTeams } from 'hooks/useLeagueTeams';
 import { RefereeNote } from 'components/matchPage/sections/note/RefereeNote';
-import { scrollbarStyle } from 'components/dashboard/styles/styles';
 import { MatchListItem } from 'components/dashboard/matches/MatchListItem';
 import { MatchDeleteModal } from 'components/admin/matches/MatchDeleteModal';
 import { useStore } from 'zustandStore/store';
@@ -88,7 +87,6 @@ export const MatchSectionsPanel = ({ match, teams, referees, observers }: MatchO
       <MatchDeleteModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} match={match} />
       <Flex
         overflow={'hidden'}
-        gap={4}
       >
         <Spacer />
 
@@ -98,10 +96,11 @@ export const MatchSectionsPanel = ({ match, teams, referees, observers }: MatchO
           p={PADDING}
           backgroundColor={'gray.300'}
           shadow={'md'}
-          overflowY={'hidden'}
+          overflow={'hidden'}
           alignItems={'center'}
-          flexGrow={1}
           maxH={['90vh', '100%']}
+          w={'80%'}
+          maxW={'100%'}
           gap={PADDING}
         >
           <Flex w={'100%'} alignItems={'center'} gap={2}>
@@ -133,7 +132,7 @@ export const MatchSectionsPanel = ({ match, teams, referees, observers }: MatchO
             </Button>
           </Flex>
 
-          <Flex gap={PADDING} overflowY={'hidden'} flexGrow={1} w={'100%'} h={['auto', '100%']} maxH={['90vh', '100%']}>
+          <Flex gap={PADDING} overflow={'hidden'} w={'100%'} h={['auto', '100%']} maxH={['90vh', '100%']}>
             <Flex direction={'column'} borderRadius={10} w={'15%'} gap={2}>
               <Text fontSize={'xl'} fontWeight={'medium'}>
                 Page sections
@@ -149,7 +148,7 @@ export const MatchSectionsPanel = ({ match, teams, referees, observers }: MatchO
             </Flex>
 
             <Flex direction={'column'} p={PADDING} w={'85%'} overflowY={'hidden'}>
-              <Flex direction={'column'} overflowY={'scroll'} css={scrollbarStyle} ref={overviewRef}>
+              <Flex direction={'column'} overflowY={'scroll'} ref={overviewRef}>
                 <Flex ref={detailsRef}>
                   <Details match={match} homeTeam={homeTeam} awayTeam={awayTeam}/>
                 </Flex>

@@ -10,7 +10,7 @@ import { MATCH_QUERY_KEY } from 'hooks/useLeagueMatch';
 export enum ReportType {
   Observer = 'Observer',
   Mentor = 'Mentor',
-  Tv = 'Tv',
+  Tv = 'Television',
 }
 
 export interface ReportDto {

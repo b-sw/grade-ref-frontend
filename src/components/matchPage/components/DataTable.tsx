@@ -10,7 +10,8 @@ import {
   IconButton,
   Flex,
   Spacer,
-  useDisclosure
+  useDisclosure,
+  Text,
 } from "@chakra-ui/react";
 import {
   DeleteIcon,
@@ -99,16 +100,18 @@ export function DataTable<T extends object & { id: uuid }>({
                   )}
                   isNumeric={column.isNumeric}
                 >
-                  {column.render("Header")}
-                  <chakra.span pl="4">
-                    {column.isSorted ? (
-                      column.isSortedDesc ? (
-                        <TriangleDownIcon aria-label="sorted descending" />
-                      ) : (
-                        <TriangleUpIcon aria-label="sorted ascending" />
-                      )
-                    ) : null}
-                  </chakra.span>
+                  <Flex>
+                    <Text fontSize={'md'}>{column.render("Header")}</Text>
+                    <chakra.span pl="4">
+                      {column.isSorted ? (
+                        column.isSortedDesc ? (
+                          <TriangleDownIcon aria-label="sorted descending" />
+                        ) : (
+                          <TriangleUpIcon aria-label="sorted ascending" />
+                        )
+                      ) : <TriangleUpIcon aria-label="sorted ascending" opacity={0} />}
+                    </chakra.span>
+                  </Flex>
                 </Th>
               ))}
               <Th/>
