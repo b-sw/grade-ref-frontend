@@ -11,15 +11,11 @@ import {useStore} from "zustandStore/store";
 import { SectionHeading } from "components/matchPage/components/SectionHeading";
 import { SectionBody } from 'components/matchPage/components/SectionBody';
 import { Section } from 'components/matchPage/components/Section';
-import { ConclusionAddModal } from 'components/matchPage/sections/conclusions/ConclusionAddModal';
-import { Match } from 'entities/Match';
+import { ConclusionAddModal } from 'components/matchPage/sections/conclusions/modals/ConclusionAddModal';
 import { useMatchFeatures } from 'components/matchPage/sections/conclusions/useMatchFeatures';
+import { ConclusionEditModal } from 'components/matchPage/sections/conclusions/modals/ConclusionEditModal';
 
-interface ConclusionsProps {
-  match: Match;
-}
-
-export const Conclusions = ({ match }: ConclusionsProps) => {
+export const Conclusions = () => {
   const { isOpen: isAddOpen, onOpen: onAddOpen, onClose: onAddClose } = useDisclosure();
   const { query: featuresQuery, deleteMutation } = useMatchFeatures();
   const user = useStore((state) => state.user);
@@ -27,7 +23,11 @@ export const Conclusions = ({ match }: ConclusionsProps) => {
   const cols: Column<Feature>[] = [
     {
       Header: 'Type',
-      accessor: d => <Text fontWeight={'medium'} color={d.type === FeatureType.Positive ? 'green.500' : 'red.400'}>{d.type}</Text>
+      accessor: (d) => d.type,
+      Cell: (props: any) =>
+        <Text fontWeight={'medium'} color={props.value === FeatureType.Positive ? 'green.500' : 'red.400'}>
+          {props.value}
+        </Text>,
     },
     {
       Header: 'Description',
@@ -39,7 +39,7 @@ export const Conclusions = ({ match }: ConclusionsProps) => {
 
   return (
     <>
-      {userCanEdit && <ConclusionAddModal isOpen={isAddOpen} handleClose={onAddClose} match={match} />}
+      {userCanEdit && <ConclusionAddModal isOpen={isAddOpen} handleClose={onAddClose} />}
 
       <Section>
         <SectionHeading title={MatchData.Conclusions} icon={<Icon as={MdGrade} boxSize={25} />}>
@@ -60,6 +60,7 @@ export const Conclusions = ({ match }: ConclusionsProps) => {
               data={featuresQuery.data!}
               readOnly={!userCanEdit}
               deleteMutation={deleteMutation}
+              EditModal={ConclusionEditModal}
             />
             {!featuresQuery.data!.length && NoRecords()}
           </>

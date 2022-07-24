@@ -25,7 +25,6 @@ export const useReports = () => {
   const { matchId } = useParams<{ matchId: uuid }>();
 
   const uploadReport = async (dto: ReportDto): Promise<Match> => {
-    console.log(dto);
     const response = await axios.post(`leagues/${leagueId}/matches/${matchId}/reports/${dto.type}`, dto.fileFormData);
     return response.data;
   };
@@ -49,7 +48,7 @@ export const useReports = () => {
   });
 
   const deleteMutation = useMutation(deleteReport, {
-    onSuccess(match: Match) {
+    onSuccess(_match: Match) {
       queryClient.invalidateQueries([MATCHES_QUERY_KEY]);
       queryClient.invalidateQueries([MATCH_QUERY_KEY]);
       toast({
@@ -58,7 +57,6 @@ export const useReports = () => {
         position: 'bottom-right',
         duration: 2000,
       });
-      console.log(match);
     },
   });
 

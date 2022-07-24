@@ -167,11 +167,11 @@ export const MatchSectionsPanel = ({ match, teams, referees, observers }: MatchO
                 </Flex>
 
                 <Flex ref={foulsRef}>
-                  <Sanctions teams={teamsQuery.data!} match={match} />
+                  <Sanctions teams={teamsQuery.data!} />
                 </Flex>
 
                 <Flex ref={conclusionsRef}>
-                  <Conclusions match={match} />
+                  <Conclusions />
                 </Flex>
 
                 <Flex ref={noteRef}>

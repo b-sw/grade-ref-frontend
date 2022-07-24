@@ -12,9 +12,10 @@ export const ConclusionsPanel = () => {
   const cols: Column<Feature>[] = [
     {
       Header: 'Type',
-      accessor: d =>
-        <Text fontWeight={'medium'} color={d.type === FeatureType.Positive ? 'green.500' : 'red.400'}>
-          {d.type}
+      accessor: (d) => d.type,
+      Cell: (props: any) =>
+        <Text fontWeight={'medium'} color={props.value === FeatureType.Positive ? 'green.500' : 'red.400'}>
+          {props.value}
         </Text>,
     },
     {

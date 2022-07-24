@@ -14,18 +14,17 @@ import {useStore} from "zustandStore/store";
 import {Role} from "utils/Role";
 import {NoRecords} from "components/utils/NoRecords";
 import { SectionHeading } from "components/matchPage/components/SectionHeading";
-import { SanctionAddModal } from 'components/matchPage/sections/sanctions/SanctionAddModal';
-import { Match } from 'entities/Match';
+import { SanctionAddModal } from 'components/matchPage/sections/sanctions/modals/SanctionAddModal';
 import { SectionBody } from 'components/matchPage/components/SectionBody';
 import { Section } from 'components/matchPage/components/Section';
 import { useMatchFouls } from 'components/matchPage/sections/sanctions/useMatchFouls';
+import { SanctionEditModal } from 'components/matchPage/sections/sanctions/modals/SanctionEditModal';
 
 interface SanctionsProps {
   teams: Team[];
-  match: Match;
 }
 
-export const Sanctions = ({ teams, match }: SanctionsProps) => {
+export const Sanctions = ({ teams }: SanctionsProps) => {
   const { isOpen: isAddOpen, onOpen: onAddOpen, onClose: onAddClose } = useDisclosure();
   const { query: foulsQuery, deleteMutation } = useMatchFouls();
   let mappedTeams: { [id: uuid]: Team } = {};
@@ -36,15 +35,19 @@ export const Sanctions = ({ teams, match }: SanctionsProps) => {
   const cols: Column<Foul>[] = [
     {
       Header: 'Minute',
-      accessor: d => <Flex><Spacer />{timeItem(d.minute.toString())}<Spacer /></Flex>,
+      accessor: (d) => d.minute,
+      Cell: (props: any) => <Flex><Spacer />{timeItem(props.value.toString())}<Spacer /></Flex>,
     },
     {
       Header: 'Card',
-      accessor: d => <Badge colorScheme={d.card === Card.Red ? 'red' : 'yellow'} variant={'solid'}>{d.card}</Badge>
+      accessor: d => d.card,
+      Cell: (props: any) =>
+        <Badge colorScheme={props.value === Card.Red ? 'red' : 'yellow'} variant={'solid'}>{props.value}</Badge>,
     },
     {
       Header: 'Player',
-      accessor: d => <Flex alignItems={'center'}><IoIosShirt />{d.playerNumber}</Flex>,
+      accessor: d => d.playerNumber,
+      Cell: (props: any) => <Flex alignItems={'center'}><IoIosShirt />{props.value}</Flex>,
     },
     {
       Header: 'Team',
@@ -57,7 +60,9 @@ export const Sanctions = ({ teams, match }: SanctionsProps) => {
     {
       id: 'valid',
       Header: 'Valid',
-      accessor: d => <Badge variant={'outline'} colorScheme={d.valid ? 'linkedin' : 'gray'}>{d.valid.toString()}</Badge>,
+      accessor: d => d.valid.toString(),
+      Cell: (props: any) =>
+        <Badge variant={'outline'} colorScheme={props.value === 'true' ? 'linkedin' : 'gray'}>{props.value}</Badge>,
     },
   ];
 
@@ -65,7 +70,7 @@ export const Sanctions = ({ teams, match }: SanctionsProps) => {
 
   return (
     <>
-      {userCanEdit && <SanctionAddModal isOpen={isAddOpen} handleClose={onAddClose} match={match} />}
+      {userCanEdit && <SanctionAddModal isOpen={isAddOpen} handleClose={onAddClose} />}
 
       <Section>
         <SectionHeading title={MatchData.DisciplinarySanctions} icon={<Icon as={MdWarning} boxSize={25}/>}>
@@ -81,7 +86,13 @@ export const Sanctions = ({ teams, match }: SanctionsProps) => {
 
         <SectionBody>
           <>
-            <DataTable columns={cols} data={foulsQuery.data!} readOnly={!userCanEdit} deleteMutation={deleteMutation} />
+            <DataTable
+              columns={cols}
+              data={foulsQuery.data!}
+              readOnly={!userCanEdit}
+              deleteMutation={deleteMutation}
+              EditModal={SanctionEditModal}
+            />
             {!foulsQuery.data!.length && NoRecords()}
           </>
         </SectionBody>
