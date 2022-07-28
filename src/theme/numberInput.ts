@@ -1,4 +1,4 @@
-const numberInputDefaultVariant = (_props: any) => {
+const numberInputDefaultVariant = () => {
   return {
     field: {
       background: 'gray.100',
@@ -12,15 +12,15 @@ const numberInputDefaultVariant = (_props: any) => {
       _focus: {
         background: 'gray.50',
       },
-    }
-  }
-}
+    },
+  };
+};
 
 export const NumberInput = {
   variants: {
-    defaultNumberInput: numberInputDefaultVariant
+    defaultNumberInput: numberInputDefaultVariant,
   },
   defaultProps: {
     variant: 'defaultNumberInput',
-  }
+  },
 };

@@ -1,9 +1,9 @@
-import { Flex, Spacer, Text } from "@chakra-ui/react";
+import { Flex, Spacer, Text } from '@chakra-ui/react';
 import { useUserFeatures } from 'hooks/useUserFeatures';
 import { DataTable } from 'components/matchPage/components/DataTable';
 import { NoRecords } from 'components/utils/NoRecords';
 import { Feature, FeatureType } from 'entities/Feature';
-import { Column } from "react-table";
+import { Column } from 'react-table';
 
 export const ConclusionsPanel = () => {
   const { query: featuresQuery } = useUserFeatures();
@@ -12,10 +12,11 @@ export const ConclusionsPanel = () => {
     {
       Header: 'Type',
       accessor: (d) => d.type,
-      Cell: (props: any) =>
+      Cell: (props: any) => (
         <Text fontWeight={'medium'} color={props.value === FeatureType.Positive ? 'green.500' : 'red.400'}>
           {props.value}
-        </Text>,
+        </Text>
+      ),
     },
     {
       Header: 'Description',
@@ -48,17 +49,12 @@ export const ConclusionsPanel = () => {
           p={5}
           overflowY={'scroll'}
         >
-          <DataTable
-            columns={cols}
-            data={featuresQuery.data!}
-            readOnly={true}
-          />
+          <DataTable columns={cols} data={featuresQuery.data!} readOnly={true} />
           {!featuresQuery.data!.length && NoRecords()}
         </Flex>
-
       </Flex>
 
       <Spacer />
     </Flex>
   );
-}
+};

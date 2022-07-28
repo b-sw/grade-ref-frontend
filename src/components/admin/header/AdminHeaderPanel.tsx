@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Badge,
   Button,
   Flex,
   Heading,
@@ -10,25 +11,24 @@ import {
   MenuList,
   Spacer,
   Text,
-  Badge,
   useDisclosure,
 } from '@chakra-ui/react';
-import { useStore } from "zustandStore/store";
-import useAuth from "hooks/useAuth";
-import {Path} from "utils/Path";
-import {MdApps, MdDashboard} from 'react-icons/md';
-import {CalendarIcon, SettingsIcon} from '@chakra-ui/icons';
-import {useNavigate, useParams} from 'react-router-dom';
-import {useLeagues} from "hooks/useLeagues";
-import {uuid} from "utils/uuid";
-import {League} from "entities/League";
-import {PageTitle} from "utils/PageTitle";
-import {getUserBadge} from "components/dashboard/grades/GradeListItem";
+import { useStore } from 'zustandStore/store';
+import useAuth from 'hooks/useAuth';
+import { Path } from 'utils/Path';
+import { MdApps, MdDashboard } from 'react-icons/md';
+import { CalendarIcon, SettingsIcon } from '@chakra-ui/icons';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useLeagues } from 'hooks/useLeagues';
+import { uuid } from 'utils/uuid';
+import { League } from 'entities/League';
+import { PageTitle } from 'utils/PageTitle';
+import { getUserBadge } from 'components/dashboard/grades/GradeListItem';
 import dayjs from 'dayjs';
-import {AdminSettingsModal} from "components/admin/settings/AdminSettingsModal";
-import { RiTeamFill } from "react-icons/ri";
-import {TeamsModal} from "components/admin/teams/TeamsModal";
-import { LoadingOverlay } from "pages/LoadingOverlay";
+import { AdminSettingsModal } from 'components/admin/settings/AdminSettingsModal';
+import { RiTeamFill } from 'react-icons/ri';
+import { TeamsModal } from 'components/admin/teams/TeamsModal';
+import { LoadingOverlay } from 'pages/LoadingOverlay';
 
 interface Props {
   pageTitle: PageTitle;
@@ -43,7 +43,7 @@ export const AdminHeaderPanel = (props: Props) => {
   const setCalendarYear = useStore((state) => state.setCalendarYear);
   const { logout } = useAuth();
   const navigate = useNavigate();
-  const { query: leaguesQuery } = useLeagues({ enableAutoRefetch: true});
+  const { query: leaguesQuery } = useLeagues({ enableAutoRefetch: true });
   const { leagueId } = useParams<{ leagueId: uuid }>();
 
   if (leaguesQuery.isLoading) {
@@ -60,12 +60,16 @@ export const AdminHeaderPanel = (props: Props) => {
       <AdminSettingsModal isOpen={isSettingsOpen} onClose={onSettingsClose} />
       <TeamsModal isOpen={isTeamsOpen} onClose={onTeamsClose} />
       <Flex m={0} p={0} mb={2} direction={['column', 'row']}>
-        <Heading>{leagueShortName} {calendarYear}</Heading>
+        <Heading>
+          {leagueShortName} {calendarYear}
+        </Heading>
         <Spacer />
 
         <Flex alignItems={'center'} direction={['column', 'row']} gap={2}>
           <Button
-            onClick={() => {navigate(`${Path.ADMIN_CALENDAR}/${leagueId}`)}}
+            onClick={() => {
+              navigate(`${Path.ADMIN_CALENDAR}/${leagueId}`);
+            }}
             leftIcon={<CalendarIcon />}
             colorScheme={props.pageTitle.includes(PageTitle.Calendar) ? 'blue' : 'gray'}
           >
@@ -81,17 +85,10 @@ export const AdminHeaderPanel = (props: Props) => {
           >
             Dashboard
           </Button>
-          <Button
-            onClick={onTeamsOpen}
-            leftIcon={<RiTeamFill />}
-            colorScheme={isTeamsOpen ? 'blue' : 'gray'}
-          >
+          <Button onClick={onTeamsOpen} leftIcon={<RiTeamFill />} colorScheme={isTeamsOpen ? 'blue' : 'gray'}>
             Teams
           </Button>
-          <Button
-            onClick={onSettingsOpen}
-            leftIcon={<SettingsIcon />}
-          >
+          <Button onClick={onSettingsOpen} leftIcon={<SettingsIcon />}>
             Settings
           </Button>
           <Button
@@ -105,30 +102,15 @@ export const AdminHeaderPanel = (props: Props) => {
           </Button>
 
           <Menu>
-            <MenuButton
-              as={Button}
-              rounded={'full'}
-              variant={'link'}
-              cursor={'pointer'}
-              minW={0}>
-              <Avatar
-                name={user.firstName + ' ' + user.lastName}
-                size={'md'}
-              />
+            <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
+              <Avatar name={user.firstName + ' ' + user.lastName} size={'md'} />
             </MenuButton>
-            <MenuList
-              alignItems={'center'}
-            >
-              <Flex
-                direction={'column'}
-                align={'center'}
-                p={2}
-              >
-                <Avatar
-                  name={user.firstName + ' ' + user.lastName}
-                  size={'xl'}
-                />
-                <Badge my={2} colorScheme={badgeColor} fontSize={'xs'}>{badgeString}</Badge>
+            <MenuList alignItems={'center'}>
+              <Flex direction={'column'} align={'center'} p={2}>
+                <Avatar name={user.firstName + ' ' + user.lastName} size={'xl'} />
+                <Badge my={2} colorScheme={badgeColor} fontSize={'xs'}>
+                  {badgeString}
+                </Badge>
                 <Text>
                   {user.firstName} {user.lastName}
                 </Text>
@@ -145,5 +127,5 @@ export const AdminHeaderPanel = (props: Props) => {
         </Flex>
       </Flex>
     </>
-  )
-}
+  );
+};

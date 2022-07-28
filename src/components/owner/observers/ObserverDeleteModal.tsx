@@ -1,17 +1,17 @@
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   Button,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Text,
 } from '@chakra-ui/react';
-import {User} from "entities/User";
-import {useUsers} from "hooks/useUsers";
-import {observerItem} from "components/owner/observers/ObserverListItem";
+import { User } from 'entities/User';
+import { useUsers } from 'hooks/useUsers';
+import { observerItem } from 'components/owner/observers/ObserverListItem';
 
 export interface Props {
   isOpen: boolean;
@@ -24,7 +24,7 @@ export const ObserverDeleteModal = (props: Props) => {
 
   const deleteObserver = () => {
     deleteMutation.mutate(props.observer.id);
-  }
+  };
 
   return (
     <>
@@ -34,25 +34,23 @@ export const ObserverDeleteModal = (props: Props) => {
           <ModalHeader>Delete observer</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text fontWeight='bold' mb='1rem'>
+            <Text fontWeight="bold" mb="1rem">
               Are you sure you want to delete the following observer?
             </Text>
             {observerItem(props.observer)}
-            <Text fontWeight='bold' mt='1rem'>
+            <Text fontWeight="bold" mt="1rem">
               You can't undo this action afterwards.
             </Text>
           </ModalBody>
 
           <ModalFooter>
-            <Button onClick={props.onClose}>
-              Cancel
-            </Button>
-            <Button colorScheme='red' onClick={deleteObserver} isLoading={deleteMutation.isLoading} ml={3}>
+            <Button onClick={props.onClose}>Cancel</Button>
+            <Button colorScheme="red" onClick={deleteObserver} isLoading={deleteMutation.isLoading} ml={3}>
               Delete
             </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
     </>
-  )
-}
+  );
+};

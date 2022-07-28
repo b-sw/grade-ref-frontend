@@ -1,5 +1,6 @@
-import dayjs, { Dayjs } from "dayjs";
-import {GRADE_ADMISSION_TIME_WINDOW, Match, MATCH_DURATION_TIME} from "entities/Match";
+import dayjs, { Dayjs } from 'dayjs';
+import { GRADE_ADMISSION_TIME_WINDOW, Match, MATCH_DURATION_TIME } from 'entities/Match';
+import { MatchInfo } from 'entities/MatchInfo';
 
 export enum GradeStatus {
   Received = 'Received',
@@ -14,8 +15,7 @@ export interface GradeInfo {
   delay: string | null;
 }
 
-
-export const getGradeInfo = (match: Match): GradeInfo => {
+export const getGradeInfo = (match: Match | MatchInfo): GradeInfo => {
   const matchStart: Dayjs = dayjs(match.matchDate);
   const admissionEnd: Dayjs = dayjs(match.matchDate).add(GRADE_ADMISSION_TIME_WINDOW, 'hour');
   const now: Dayjs = dayjs();
@@ -47,8 +47,11 @@ export const getGradeInfo = (match: Match): GradeInfo => {
     return {
       status: gradeStatus,
       badgeScheme: gradeBadgeScheme,
-      delay: (dayDelay > 0 ? dayDelay + 'd' : '') + (hourDelay > 0 ? hourDelay + 'h' : '') + (minuteDelay > 0 ? minuteDelay + 'm' : '')
-    }
+      delay:
+        (dayDelay > 0 ? dayDelay + 'd' : '') +
+        (hourDelay > 0 ? hourDelay + 'h' : '') +
+        (minuteDelay > 0 ? minuteDelay + 'm' : ''),
+    };
   }
 
   if (matchStart.add(GRADE_ADMISSION_TIME_WINDOW, 'hour') > now) {
@@ -56,13 +59,12 @@ export const getGradeInfo = (match: Match): GradeInfo => {
       status: GradeStatus.Expected,
       badgeScheme: 'gray',
       delay: null,
-    }
+    };
   }
 
   return {
     status: GradeStatus.Pending,
     badgeScheme: 'orange',
     delay: null,
-  }
-
-}
+  };
+};

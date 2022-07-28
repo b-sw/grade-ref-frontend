@@ -1,15 +1,15 @@
-import { useToast } from "@chakra-ui/react";
-import axios, { AxiosError } from "axios";
-import {QueryClient, useMutation, useQuery, useQueryClient } from "react-query";
-import {uuid} from "utils/uuid";
-import {League} from "entities/League";
-import {Path} from "utils/Path";
-import { useNavigate } from "react-router-dom";
-import { useStore } from "zustandStore/store";
-import {Role} from "utils/Role";
-import {toastError} from "./utils/toastError";
+import { useToast } from '@chakra-ui/react';
+import axios, { AxiosError } from 'axios';
+import { QueryClient, useMutation, useQuery, useQueryClient } from 'react-query';
+import { uuid } from 'utils/uuid';
+import { League } from 'entities/League';
+import { Path } from 'utils/Path';
+import { useNavigate } from 'react-router-dom';
+import { useStore } from 'zustandStore/store';
+import { Role } from 'utils/Role';
+import { toastError } from './utils/toastError';
 
-export const LEAGUES_QUERY_KEY: string = 'leagues_qk'
+export const LEAGUES_QUERY_KEY = 'leagues_qk';
 
 interface UseLeaguesProps {
   enableAutoRefetch: boolean;
@@ -27,28 +27,24 @@ export const useLeagues = (props?: UseLeaguesProps) => {
     const url: string = user.role === Role.Owner ? `leagues` : `users/${user.id}/leagues`;
     const response = await axios.get(url);
     return response.data;
-  }
+  };
 
   const postLeague = async (league: League): Promise<League> => {
     const response = await axios.post(`leagues`, league);
     return response.data;
-  }
+  };
 
   const updateLeague = async (league: League): Promise<League> => {
     const response = await axios.put(`leagues/${league.id}`, league);
     return response.data;
-  }
+  };
 
   const deleteLeague = async (leagueId: uuid): Promise<League> => {
     const response = await axios.delete(`leagues/${leagueId}`);
     return response.data;
-  }
+  };
 
-  const query = useQuery(
-    queryKey,
-    getLeagues,
-    { enabled: props ? props.enableAutoRefetch : false },
-  );
+  const query = useQuery(queryKey, getLeagues, { enabled: props ? props.enableAutoRefetch : false });
 
   const postMutation = useMutation(postLeague, {
     onSuccess: (league: League) => {
@@ -60,7 +56,7 @@ export const useLeagues = (props?: UseLeaguesProps) => {
         duration: 2000,
       });
     },
-    onError: (error: AxiosError, _variables, _context) => toastError(toast, error),
+    onError: (error: AxiosError) => toastError(toast, error),
   });
 
   const updateMutation = useMutation(updateLeague, {
@@ -73,7 +69,7 @@ export const useLeagues = (props?: UseLeaguesProps) => {
         duration: 2000,
       });
     },
-    onError: (error: AxiosError, _variables, _context) => toastError(toast, error),
+    onError: (error: AxiosError) => toastError(toast, error),
   });
 
   const deleteMutation = useMutation(deleteLeague, {
@@ -87,8 +83,8 @@ export const useLeagues = (props?: UseLeaguesProps) => {
       });
       navigate(Path.ADMIN_EXPLORER);
     },
-    onError: (error: AxiosError, _variables, _context) => toastError(toast, error),
+    onError: (error: AxiosError) => toastError(toast, error),
   });
 
-  return { query, postMutation, updateMutation, deleteMutation }
-}
+  return { query, postMutation, updateMutation, deleteMutation };
+};

@@ -1,10 +1,10 @@
-import {useLeagues} from "hooks/useLeagues";
-import useAuth from "../hooks/useAuth";
-import {LoadingOverlay} from "./LoadingOverlay";
-import {League} from "entities/League";
-import {Button, Flex, Spacer } from "@chakra-ui/react";
-import { HiOutlineLogout } from "react-icons/hi";
-import { LeagueCard } from "components/explorer/LeagueCard";
+import { useLeagues } from 'hooks/useLeagues';
+import useAuth from '../hooks/useAuth';
+import { LoadingOverlay } from './LoadingOverlay';
+import { League } from 'entities/League';
+import { Button, Flex, Spacer } from '@chakra-ui/react';
+import { HiOutlineLogout } from 'react-icons/hi';
+import { LeagueCard } from 'components/explorer/LeagueCard';
 
 export const Explorer = () => {
   const { query: leaguesQuery } = useLeagues({ enableAutoRefetch: true });
@@ -12,7 +12,7 @@ export const Explorer = () => {
   const queries = [leaguesQuery];
 
   if (queries.some((query) => query.isLoading)) {
-    return (<LoadingOverlay />);
+    return <LoadingOverlay />;
   }
 
   return (
@@ -34,11 +34,9 @@ export const Explorer = () => {
           wrap={'wrap'}
         >
           {leaguesQuery.data &&
-            leaguesQuery.data.map((league: League) => (
-              <LeagueCard key={league.id} league={league} />
-            ))}
+            leaguesQuery.data.map((league: League) => <LeagueCard key={league.id} league={league} />)}
         </Flex>
       </Flex>
     </Flex>
   );
-}
+};

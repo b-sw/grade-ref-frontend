@@ -1,6 +1,6 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import useAuth from 'hooks/useAuth';
-import {Path} from "utils/Path";
+import { Path } from 'utils/Path';
 
 export const RequireAuthRouteReferee = () => {
   const auth = useAuth();

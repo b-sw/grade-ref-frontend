@@ -10,13 +10,13 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react';
-import {useEffect} from 'react';
-import {Role} from "utils/Role";
-import {MultiValue, Select} from "chakra-react-select";
-import {useLeagueUsers} from "hooks/useLeagueUsers";
-import {useSetState} from "hooks/useSetState";
-import {User} from "entities/User";
-import {useReferees} from "hooks/useReferees";
+import { useEffect } from 'react';
+import { Role } from 'utils/Role';
+import { MultiValue, Select } from 'chakra-react-select';
+import { useLeagueUsers } from 'hooks/useLeagueUsers';
+import { useSetState } from 'hooks/useSetState';
+import { User } from 'entities/User';
+import { useReferees } from 'hooks/useReferees';
 
 interface Props {
   isOpen: boolean;
@@ -24,13 +24,13 @@ interface Props {
 }
 
 interface Option {
-  value: User,
-  label: string,
+  value: User;
+  label: string;
 }
 
 interface State {
-  selectedOptions: MultiValue<Option>,
-  mappedReferees: Option[],
+  selectedOptions: MultiValue<Option>;
+  mappedReferees: Option[];
 }
 
 export const RefereeAddModal = (props: Props) => {
@@ -44,18 +44,17 @@ export const RefereeAddModal = (props: Props) => {
 
   const updateSelection = (selection: MultiValue<Option>) => {
     setState({ selectedOptions: selection });
-  }
+  };
 
   useEffect(() => {
-    const filteredReferees: User[] = refereesQuery.data!.filter((referee: User) =>
-      !leagueRefereesQuery.data!.some((leagueReferee) => leagueReferee.id === referee.id)
+    const filteredReferees: User[] = refereesQuery.data!.filter(
+      (referee: User) => !leagueRefereesQuery.data!.some((leagueReferee) => leagueReferee.id === referee.id),
     );
     const referees: Option[] = filteredReferees.map((referee) => ({
       value: referee,
       label: referee.firstName + ' ' + referee.lastName,
     }));
     setState({ mappedReferees: referees });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [leagueRefereesQuery.data]);
 
   useEffect(() => {
@@ -63,7 +62,6 @@ export const RefereeAddModal = (props: Props) => {
       props.onClose();
       addMutation.reset();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addMutation.isSuccess]);
 
   const addReferees = () => {
@@ -80,9 +78,7 @@ export const RefereeAddModal = (props: Props) => {
 
         <ModalBody>
           <FormControl p={4}>
-            <FormLabel>
-              Select referee
-            </FormLabel>
+            <FormLabel>Select referee</FormLabel>
             <Select
               isMulti
               name={'referees'}
@@ -94,12 +90,11 @@ export const RefereeAddModal = (props: Props) => {
           </FormControl>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme='blue' mr={'3'} onClick={addReferees} isLoading={addMutation.isLoading}>
+          <Button colorScheme="blue" mr={'3'} onClick={addReferees} isLoading={addMutation.isLoading}>
             Add
           </Button>
           <Button onClick={() => props.onClose()}>Cancel</Button>
         </ModalFooter>
-
       </ModalContent>
     </Modal>
   );

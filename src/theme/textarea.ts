@@ -1,4 +1,4 @@
-const textareaDefaultVariant = (_props: any) => {
+const textareaDefaultVariant = () => {
   return {
     field: {
       background: 'gray.100',
@@ -13,14 +13,14 @@ const textareaDefaultVariant = (_props: any) => {
         background: 'gray.50',
       },
     },
-  }
-}
+  };
+};
 
 export const Textarea = {
   variants: {
-    defaultInput: textareaDefaultVariant
+    defaultInput: textareaDefaultVariant,
   },
   defaultProps: {
     variant: 'defaultTextarea',
-  }
+  },
 };

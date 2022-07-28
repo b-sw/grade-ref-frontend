@@ -1,28 +1,27 @@
 import {
-  Flex,
   Avatar,
+  Badge,
   Button,
+  Flex,
   Menu,
   MenuButton,
-  MenuList,
-  MenuItem,
   MenuDivider,
+  MenuItem,
+  MenuList,
   Spacer,
-  Badge,
   Text,
 } from '@chakra-ui/react';
-import { useStore } from "zustandStore/store";
-import useAuth from "hooks/useAuth";
+import { useStore } from 'zustandStore/store';
+import useAuth from 'hooks/useAuth';
 import { CalendarIcon } from '@chakra-ui/icons';
-import { Path } from "utils/Path";
-import { PageTitle } from "utils/PageTitle";
-import { uuid } from "utils/uuid";
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Path } from 'utils/Path';
+import { PageTitle } from 'utils/PageTitle';
+import { uuid } from 'utils/uuid';
+import { useNavigate, useParams } from 'react-router-dom';
 import { MdApps, MdDashboard, MdList } from 'react-icons/md';
-import { getUserBadge } from "components/dashboard/grades/GradeListItem";
-import { League } from "entities/League";
-import { useLeagues } from "hooks/useLeagues";
+import { getUserBadge } from 'components/dashboard/grades/GradeListItem';
+import { League } from 'entities/League';
+import { useLeagues } from 'hooks/useLeagues';
 import { Role } from 'utils/Role';
 
 interface Props {
@@ -48,7 +47,7 @@ export const HeaderPanel = (props: Props) => {
         <Spacer />
 
         <Flex alignItems={'center'} direction={['column', 'row']} gap={2}>
-          {user.role === Role.Referee &&
+          {user.role === Role.Referee && (
             <Button
               onClick={() => {
                 navigate(`${Path.CONCLUSIONS}/${leagueId}`);
@@ -58,7 +57,7 @@ export const HeaderPanel = (props: Props) => {
             >
               Conclusions
             </Button>
-          }
+          )}
 
           <Button
             onClick={() => {
@@ -71,7 +70,9 @@ export const HeaderPanel = (props: Props) => {
           </Button>
 
           <Button
-            onClick={() => {navigate(`${Path.DASHBOARD}/${leagueId}`)}}
+            onClick={() => {
+              navigate(`${Path.DASHBOARD}/${leagueId}`);
+            }}
             leftIcon={<MdDashboard />}
             colorScheme={props.pageTitle.includes(PageTitle.Dashboard) ? 'blue' : 'gray'}
           >
@@ -79,37 +80,21 @@ export const HeaderPanel = (props: Props) => {
           </Button>
 
           <Button
-            onClick={() => {navigate(Path.EXPLORER)}}
+            onClick={() => {
+              navigate(Path.EXPLORER);
+            }}
             leftIcon={<MdApps />}
           >
             Leagues
           </Button>
 
           <Menu>
-            <MenuButton
-              as={Button}
-              rounded={'full'}
-              variant={'link'}
-              cursor={'pointer'}
-              minW={0}>
-              <Avatar
-                name={user.firstName + ' ' + user.lastName}
-                size={'md'}
-              />
+            <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
+              <Avatar name={user.firstName + ' ' + user.lastName} size={'md'} />
             </MenuButton>
-            <MenuList
-              alignItems={'center'}
-            >
-              <Flex
-                direction={'column'}
-                align={'center'}
-                p={2}
-              >
-                <Avatar
-                  name={user.firstName + ' ' + user.lastName}
-                  size={'xl'}
-                  mb={2}
-                />
+            <MenuList alignItems={'center'}>
+              <Flex direction={'column'} align={'center'} p={2}>
+                <Avatar name={user.firstName + ' ' + user.lastName} size={'xl'} mb={2} />
                 <Text fontWeight={'medium'}>
                   {user.firstName} {user.lastName}
                 </Text>
@@ -117,7 +102,9 @@ export const HeaderPanel = (props: Props) => {
                   {user.email}
                 </Text>
 
-                <Badge mt={3} colorScheme={badgeColor} fontSize={'xs'}>{badgeString}</Badge>
+                <Badge mt={3} colorScheme={badgeColor} fontSize={'xs'}>
+                  {badgeString}
+                </Badge>
                 <Text mb={2} mt={1}>
                   {leagueName} {calendarYear}
                 </Text>
@@ -131,5 +118,5 @@ export const HeaderPanel = (props: Props) => {
         </Flex>
       </Flex>
     </>
-  )
-}
+  );
+};

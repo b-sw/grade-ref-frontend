@@ -10,11 +10,11 @@ import {
   ModalOverlay,
   Text,
 } from '@chakra-ui/react';
-import {User} from "entities/User";
-import {refereeItem} from "components/admin/referees/RefereeListItem";
-import {useLeagueUsers} from "hooks/useLeagueUsers";
-import {Role} from "utils/Role";
-import {useEffect} from "react";
+import { User } from 'entities/User';
+import { refereeItem } from 'components/admin/referees/RefereeListItem';
+import { useLeagueUsers } from 'hooks/useLeagueUsers';
+import { Role } from 'utils/Role';
+import { useEffect } from 'react';
 
 export interface Props {
   isOpen: boolean;
@@ -27,13 +27,12 @@ export const RefereeRemoveModal = (props: Props) => {
 
   const deleteReferee = () => {
     removeMutation.mutate(props.referee.id);
-  }
+  };
 
   useEffect(() => {
     if (removeMutation.isSuccess) {
       props.onClose();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [removeMutation.isSuccess]);
 
   return (
@@ -44,29 +43,22 @@ export const RefereeRemoveModal = (props: Props) => {
           <ModalHeader>Remove referee</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text fontWeight='bold' mb='1rem'>
+            <Text fontWeight="bold" mb="1rem">
               Are you sure you want to remove the following referee from this league?
             </Text>
-            <Flex
-              p={5}
-              borderRadius={10}
-              alignItems={'center'}
-              backgroundColor={'gray.50'}
-            >
+            <Flex p={5} borderRadius={10} alignItems={'center'} backgroundColor={'gray.50'}>
               {refereeItem(props.referee)}
             </Flex>
           </ModalBody>
 
           <ModalFooter>
-            <Button onClick={props.onClose}>
-              Cancel
-            </Button>
-            <Button colorScheme='red' onClick={deleteReferee} isLoading={removeMutation.isLoading} ml={3}>
+            <Button onClick={props.onClose}>Cancel</Button>
+            <Button colorScheme="red" onClick={deleteReferee} isLoading={removeMutation.isLoading} ml={3}>
               Remove
             </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
     </>
-  )
-}
+  );
+};

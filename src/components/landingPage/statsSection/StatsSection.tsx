@@ -1,9 +1,9 @@
-import {Box, Fade, Flex, Heading, SimpleGrid, Spacer, Text } from "@chakra-ui/react";
+import { Box, Fade, Flex, Heading, SimpleGrid, Spacer, Text } from '@chakra-ui/react';
 import { Parallax } from 'react-scroll-parallax';
-import { useScrollPercentage } from "react-scroll-percentage";
-import React, {useEffect} from "react";
-import {useSetState} from "hooks/useSetState";
-import { useCountUp } from "use-count-up";
+import { useScrollPercentage } from 'react-scroll-percentage';
+import React, { useEffect } from 'react';
+import { useSetState } from 'hooks/useSetState';
+import { useCountUp } from 'use-count-up';
 
 const LEAGUES = 13;
 const COUNTRIES = 3;
@@ -44,20 +44,11 @@ export const StatsSection = () => {
     if (percentage > 0.25 && !state.countStarted) {
       setState({ countStarted: true });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [percentage]);
 
   return (
     <>
-      <Flex
-        p={4}
-        m={0}
-        h={'100vh'}
-        direction={'column'}
-        align={'center'}
-        backgroundColor={'gray.400'}
-        ref={ref}
-      >
+      <Flex p={4} m={0} h={'100vh'} direction={'column'} align={'center'} backgroundColor={'gray.400'} ref={ref}>
         <Spacer />
         <Parallax speed={-10}>
           <Heading fontSize={'7xl'} fontWeight={'semibold'} color={'gray.50'} mb={10}>
@@ -67,14 +58,14 @@ export const StatsSection = () => {
 
         <SimpleGrid columns={[1, 3]} spacing={'100'}>
           <Parallax speed={-15}>
-          <Box>
-            <Fade in={state.countStarted}>
-              <Heading fontSize={'8xl'}>{leaguesCount}</Heading>
-            </Fade>
-            <Text fontSize={'4xl'} fontWeight={'light'}>
-              Leagues.
-            </Text>
-          </Box>
+            <Box>
+              <Fade in={state.countStarted}>
+                <Heading fontSize={'8xl'}>{leaguesCount}</Heading>
+              </Fade>
+              <Text fontSize={'4xl'} fontWeight={'light'}>
+                Leagues.
+              </Text>
+            </Box>
           </Parallax>
 
           <Parallax speed={-15}>
@@ -104,4 +95,4 @@ export const StatsSection = () => {
       </Flex>
     </>
   );
-}
+};

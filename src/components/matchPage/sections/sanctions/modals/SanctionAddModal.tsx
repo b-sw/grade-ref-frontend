@@ -11,7 +11,5 @@ export const SanctionAddModal = ({ isOpen, handleClose }: SanctionAddModalProps)
   const { postMutation } = useMatchFouls();
   const { query: matchQuery } = useLeagueMatch();
 
-  return (
-    <SanctionModal isOpen={isOpen} handleClose={handleClose} match={matchQuery.data!} mutation={postMutation} />
-  );
+  return <SanctionModal isOpen={isOpen} handleClose={handleClose} match={matchQuery.data!} mutation={postMutation} />;
 };

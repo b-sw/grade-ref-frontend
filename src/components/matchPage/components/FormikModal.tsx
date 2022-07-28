@@ -9,7 +9,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react';
-import {Form, Formik} from 'formik';
+import { Form, Formik } from 'formik';
 
 export interface FormikModalProps<T> {
   headingTitle: string;
@@ -23,10 +23,17 @@ export interface FormikModalProps<T> {
   size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
 }
 
-export const FormikModal = <T,>(
-  {
-    headingTitle, body, isOpen, isLoading, handleSubmit, handleClose, initialValues, validationSchema, size }: FormikModalProps<T>
-) => {
+export const FormikModal = <T,>({
+  headingTitle,
+  body,
+  isOpen,
+  isLoading,
+  handleSubmit,
+  handleClose,
+  initialValues,
+  validationSchema,
+  size,
+}: FormikModalProps<T>) => {
   return (
     <Modal isOpen={isOpen} onClose={handleClose} isCentered size={size ?? 'md'}>
       <ModalOverlay />
@@ -44,7 +51,7 @@ export const FormikModal = <T,>(
               </ModalBody>
 
               <ModalFooter>
-                <Button type='submit' colorScheme='blue' mr={'3'} isLoading={isLoading}>
+                <Button type="submit" colorScheme="blue" mr={'3'} isLoading={isLoading}>
                   Save
                 </Button>
                 <Button onClick={handleClose}>Cancel</Button>
@@ -55,4 +62,4 @@ export const FormikModal = <T,>(
       </ModalContent>
     </Modal>
   );
-}
+};

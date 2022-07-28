@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex } from '@chakra-ui/react';
 
 interface SectionProps {
   children: JSX.Element[];
@@ -10,4 +10,4 @@ export const Section = ({ children }: SectionProps) => {
       {children}
     </Flex>
   );
-}
+};

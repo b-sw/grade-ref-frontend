@@ -1,14 +1,14 @@
-import {useToast} from "@chakra-ui/react";
-import axios, { AxiosError } from "axios";
-import {QueryClient, useMutation, useQuery, useQueryClient} from "react-query";
-import {uuid} from "utils/uuid";
-import {User} from "entities/User";
-import {Role} from "utils/Role";
-import { useParams } from "react-router-dom";
-import {toastError} from "./utils/toastError";
+import { useToast } from '@chakra-ui/react';
+import axios, { AxiosError } from 'axios';
+import { QueryClient, useMutation, useQuery, useQueryClient } from 'react-query';
+import { uuid } from 'utils/uuid';
+import { User } from 'entities/User';
+import { Role } from 'utils/Role';
+import { useParams } from 'react-router-dom';
+import { toastError } from './utils/toastError';
 
 const REFEREES_QUERY_KEY = 'referees_qk';
-const OBSERVERS_QUERY_KEY = 'observers_qk'
+const OBSERVERS_QUERY_KEY = 'observers_qk';
 
 export interface Props {
   enableAutoRefetch?: boolean;
@@ -26,17 +26,17 @@ export const useLeagueUsers = (role: Role, props?: Props) => {
   const getAssignedUsers = async (): Promise<User[]> => {
     const response = await axios.get(`leagues/${leagueId}/${usersTypes}`);
     return response.data;
-  }
+  };
 
   const assignUserToLeague = async (user: User): Promise<User> => {
     const response = await axios.post(`leagues/${leagueId}/${usersTypes}/${user.id}`, user);
     return response.data;
-  }
+  };
 
   const unassignUserFromLeague = async (userId: uuid): Promise<User> => {
     const response = await axios.delete(`leagues/${leagueId}/${usersTypes}/${userId}`);
     return response.data;
-  }
+  };
 
   const usersQuery = useQuery(
     [role === Role.Referee ? REFEREES_QUERY_KEY : OBSERVERS_QUERY_KEY, leagueId],
@@ -56,7 +56,7 @@ export const useLeagueUsers = (role: Role, props?: Props) => {
         duration: 2000,
       });
     },
-    onError: (error: AxiosError, _variables, _context) => toastError(toast, error),
+    onError: (error: AxiosError) => toastError(toast, error),
   });
 
   const removeMutation = useMutation(unassignUserFromLeague, {
@@ -71,8 +71,8 @@ export const useLeagueUsers = (role: Role, props?: Props) => {
         duration: 2000,
       });
     },
-    onError: (error: AxiosError, _variables, _context) => toastError(toast, error),
+    onError: (error: AxiosError) => toastError(toast, error),
   });
 
-  return { usersQuery, addMutation, removeMutation }
-}
+  return { usersQuery, addMutation, removeMutation };
+};

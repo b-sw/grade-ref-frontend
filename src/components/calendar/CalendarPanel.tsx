@@ -1,13 +1,13 @@
-import dayjs, { Dayjs } from "dayjs";
-import { useStore } from "zustandStore/store";
-import {useSetState} from "hooks/useSetState";
-import {Flex, Grid, IconButton, SimpleGrid, SlideFade, Spacer, Text} from "@chakra-ui/react";
-import {CalendarTile} from "components/calendar/CalendarTile";
-import { useEffect } from "react";
-import { useCalendar } from "hooks/useCalendar";
-import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
-import {Match} from "entities/Match";
-import {getMatchesByDate} from "hooks/utils/matches";
+import dayjs, { Dayjs } from 'dayjs';
+import { useStore } from 'zustandStore/store';
+import { useSetState } from 'hooks/useSetState';
+import { Flex, Grid, IconButton, SimpleGrid, SlideFade, Spacer, Text } from '@chakra-ui/react';
+import { CalendarTile } from 'components/calendar/CalendarTile';
+import { useEffect } from 'react';
+import { useCalendar } from 'hooks/useCalendar';
+import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
+import { getMatchesByDate } from 'hooks/utils/matches';
+import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
 
 export enum SlideDirection {
   LEFT = -1,
@@ -25,7 +25,7 @@ export enum DayShortNames {
 }
 
 interface Props {
-  matches: Match[];
+  matches: MatchInfoEnriched[];
   readOnly?: boolean;
 }
 
@@ -48,13 +48,11 @@ export const CalendarPanel = (props: Props) => {
 
   useEffect(() => {
     setSelectedDate(dayjs());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     setState({ days: getCalendarPageDays(state.monthOffset) });
     setCalendarYear(dayjs().add(state.monthOffset, 'month').year());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.monthOffset]);
 
   return (
@@ -71,7 +69,7 @@ export const CalendarPanel = (props: Props) => {
         <Spacer />
 
         <IconButton
-          aria-label='left'
+          aria-label="left"
           icon={<ArrowBackIcon />}
           onClick={() => {
             setState({ monthOffset: state.monthOffset - 1 });
@@ -91,13 +89,11 @@ export const CalendarPanel = (props: Props) => {
               {getMonthName(state.monthOffset)}
             </Text>
           </SlideFade>
-          <Text>
-            {dayjs().add(state.monthOffset, 'month').year()}
-          </Text>
+          <Text>{dayjs().add(state.monthOffset, 'month').year()}</Text>
         </Flex>
 
         <IconButton
-          aria-label='left'
+          aria-label="left"
           icon={<ArrowForwardIcon />}
           onClick={() => {
             setState({ monthOffset: state.monthOffset + 1 });
@@ -139,10 +135,10 @@ export const CalendarPanel = (props: Props) => {
               date={day}
               matches={getMatchesByDate(day, props.matches)}
               monthOffset={state.monthOffset}
-            />)
-          )}
+            />
+          ))}
         </Grid>
       </SlideFade>
     </Flex>
   );
-}
+};

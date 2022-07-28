@@ -1,22 +1,22 @@
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   Button,
   FormControl,
   FormLabel,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
 } from '@chakra-ui/react';
 import { useEffect } from 'react';
-import {Role} from "utils/Role";
+import { Role } from 'utils/Role';
 import { MultiValue, Select } from 'chakra-react-select';
 import { User } from 'entities/User';
-import {useSetState} from "hooks/useSetState";
-import {useLeagueUsers} from "hooks/useLeagueUsers";
-import {useObservers} from "hooks/useObservers";
+import { useSetState } from 'hooks/useSetState';
+import { useLeagueUsers } from 'hooks/useLeagueUsers';
+import { useObservers } from 'hooks/useObservers';
 
 interface Props {
   isOpen: boolean;
@@ -24,15 +24,14 @@ interface Props {
 }
 
 interface Option {
-  value: User,
-  label: string,
+  value: User;
+  label: string;
 }
 
 interface State {
-  selectedOptions: MultiValue<Option>,
-  mappedObservers: Option[],
+  selectedOptions: MultiValue<Option>;
+  mappedObservers: Option[];
 }
-
 
 export const ObserverAddModal = (props: Props) => {
   const { usersQuery: leagueObserversQuery, addMutation } = useLeagueUsers(Role.Observer);
@@ -45,18 +44,17 @@ export const ObserverAddModal = (props: Props) => {
 
   const updateSelection = (selection: MultiValue<Option>) => {
     setState({ selectedOptions: selection });
-  }
+  };
 
   useEffect(() => {
-    const filteredReferees: User[] = observersQuery.data!.filter((observer: User) =>
-      !leagueObserversQuery.data!.some((leagueObserver) => leagueObserver.id === observer.id)
+    const filteredReferees: User[] = observersQuery.data!.filter(
+      (observer: User) => !leagueObserversQuery.data!.some((leagueObserver) => leagueObserver.id === observer.id),
     );
     const observers: Option[] = filteredReferees.map((observer) => ({
       value: observer,
       label: observer.firstName + ' ' + observer.lastName,
     }));
     setState({ mappedObservers: observers });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [leagueObserversQuery.data]);
 
   useEffect(() => {
@@ -64,7 +62,6 @@ export const ObserverAddModal = (props: Props) => {
       props.onClose();
       addMutation.reset();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addMutation.isSuccess]);
 
   const addObservers = () => {
@@ -81,9 +78,7 @@ export const ObserverAddModal = (props: Props) => {
 
         <ModalBody>
           <FormControl p={4}>
-            <FormLabel>
-              Select observer
-            </FormLabel>
+            <FormLabel>Select observer</FormLabel>
             <Select
               isMulti
               name={'referees'}
@@ -95,7 +90,7 @@ export const ObserverAddModal = (props: Props) => {
           </FormControl>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme='blue' mr={'3'} onClick={addObservers} isLoading={addMutation.isLoading}>
+          <Button colorScheme="blue" mr={'3'} onClick={addObservers} isLoading={addMutation.isLoading}>
             Add
           </Button>
           <Button onClick={() => props.onClose()}>Cancel</Button>

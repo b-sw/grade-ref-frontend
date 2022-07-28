@@ -1,17 +1,17 @@
-import {Button, Flex, InputLeftElement, InputGroup, Spacer, Text, useDisclosure, Input } from '@chakra-ui/react';
+import { Button, Flex, Input, InputGroup, InputLeftElement, Spacer, Text, useDisclosure } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
-import {ObserverCreateModal} from "components/owner/observers/ObserverCreateModal";
-import {useUsers} from "hooks/useUsers";
-import {User} from "entities/User";
-import {ObserverListItem} from "components/owner/observers/ObserverListItem";
+import { ObserverCreateModal } from 'components/owner/observers/ObserverCreateModal';
+import { useUsers } from 'hooks/useUsers';
+import { User } from 'entities/User';
+import { ObserverListItem } from 'components/owner/observers/ObserverListItem';
 import { MdSearch } from 'react-icons/md';
-import {useSetState} from "hooks/useSetState";
-import {userFilter} from "components/utils/filters";
+import { useSetState } from 'hooks/useSetState';
+import { userFilter } from 'components/utils/filters';
 import { useEffect } from 'react';
 
 interface State {
-  observers: User[],
-  filter: string,
+  observers: User[];
+  filter: string;
 }
 
 export const OwnerObserversPanel = () => {
@@ -26,7 +26,6 @@ export const OwnerObserversPanel = () => {
   useEffect(() => {
     const filteredObservers: User[] = userFilter(observersQuery.data!, state.filter);
     setState({ observers: filteredObservers });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.filter, observersQuery.data]);
 
   return (
@@ -52,10 +51,7 @@ export const OwnerObserversPanel = () => {
         </Flex>
 
         <InputGroup>
-          <InputLeftElement
-            pointerEvents={'none'}
-            children={<MdSearch />}
-          />
+          <InputLeftElement pointerEvents={'none'} children={<MdSearch />} />
           <Input
             mb={2}
             placeholder={'Search observer'}
@@ -64,11 +60,11 @@ export const OwnerObserversPanel = () => {
         </InputGroup>
 
         <Flex direction={'column'} gap={2} overflowY={'scroll'}>
-          {state.observers.map((observer: User) =>
-              <ObserverListItem key={observer.id} observer={observer} />
-          )}
+          {state.observers.map((observer: User) => (
+            <ObserverListItem key={observer.id} observer={observer} />
+          ))}
         </Flex>
       </Flex>
     </>
   );
-}
+};

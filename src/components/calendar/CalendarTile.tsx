@@ -1,12 +1,12 @@
-import {Badge, Flex, Spacer, Text } from "@chakra-ui/react";
-import dayjs, { Dayjs } from "dayjs";
-import { useStore } from "zustandStore/store";
-import {Match} from "entities/Match";
+import { Badge, Flex, Spacer, Text } from '@chakra-ui/react';
+import dayjs, { Dayjs } from 'dayjs';
+import { useStore } from 'zustandStore/store';
+import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
 
 export interface Props {
   date: Dayjs;
   monthOffset: number;
-  matches: Match[];
+  matches: MatchInfoEnriched[];
 }
 
 export const CalendarTile = (props: Props) => {
@@ -14,7 +14,7 @@ export const CalendarTile = (props: Props) => {
   const setSelectedDate: (date: Dayjs) => void = useStore((state) => state.setSelectedDate);
 
   const isCurrentMonth: boolean = props.date.month() === dayjs().add(props.monthOffset, 'month').month();
-  const compareFormat: string = 'YYYY-MM-DD';
+  const compareFormat = 'YYYY-MM-DD';
 
   const getTileColor = (): string => {
     if (props.date.format(compareFormat) === selectedDate.format(compareFormat)) {
@@ -30,7 +30,7 @@ export const CalendarTile = (props: Props) => {
     }
 
     return 'gray.200';
-  }
+  };
 
   return (
     <Flex
@@ -53,12 +53,12 @@ export const CalendarTile = (props: Props) => {
       <Text fontWeight={'medium'} fontSize={'md'} opacity={isCurrentMonth ? 1 : 0.5}>
         {props.date.format('DD')}
       </Text>
-      {props.matches.length > 0 &&
+      {props.matches.length > 0 && (
         <Badge variant={'solid'} colorScheme={'red'} opacity={isCurrentMonth ? 1 : 0.5}>
           {props.matches.length}
         </Badge>
-      }
+      )}
       <Spacer />
     </Flex>
   );
-}
+};
