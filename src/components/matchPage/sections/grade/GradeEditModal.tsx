@@ -1,14 +1,14 @@
-import {Match} from "entities/Match";
-import {FormikModal} from "components/matchPage/components/FormikModal";
-import {useEffect} from "react";
-import {NumberInputControl} from "formik-chakra-ui";
-import {gradeValidationSchema} from "components/matchPage/sections/grade/grade.validation";
-import {useGrades} from "hooks/useGrades";
+import { FormikModal } from 'components/matchPage/components/FormikModal';
+import { useEffect } from 'react';
+import { NumberInputControl } from 'formik-chakra-ui';
+import { gradeValidationSchema } from 'components/matchPage/sections/grade/grade.validation';
+import { useGrades } from 'hooks/useGrades';
+import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
 
 interface GradeEditModalProps {
   isOpen: boolean;
   handleClose: () => void;
-  match: Match;
+  match: MatchInfoEnriched;
 }
 
 interface GradeFormikValues {
@@ -23,7 +23,6 @@ export const GradeEditModal = ({ isOpen, handleClose, match }: GradeEditModalPro
       handleClose();
       updateMutation.reset();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updateMutation.isSuccess]);
 
   const initialValues: GradeFormikValues = {
@@ -34,12 +33,12 @@ export const GradeEditModal = ({ isOpen, handleClose, match }: GradeEditModalPro
     updateMutation.mutate({
       ...match,
       refereeGrade: values.refereeGrade,
-    } as Match);
+    } as MatchInfoEnriched);
   };
 
   const modalBody: JSX.Element = (
     <>
-      <NumberInputControl name='refereeGrade' label='Referee grade' />
+      <NumberInputControl name="refereeGrade" label="Referee grade" />
     </>
   );
 
@@ -55,4 +54,4 @@ export const GradeEditModal = ({ isOpen, handleClose, match }: GradeEditModalPro
       validationSchema={gradeValidationSchema}
     />
   );
-}
+};

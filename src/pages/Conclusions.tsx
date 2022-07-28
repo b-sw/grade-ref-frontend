@@ -11,13 +11,13 @@ export const Conclusions = () => {
   const { query: leaguesQuery } = useLeagues({ enableAutoRefetch: true });
 
   if ([conclusionsQuery, leaguesQuery].some((query) => query.isLoading)) {
-    return (<LoadingOverlay />);
+    return <LoadingOverlay />;
   }
 
   return (
     <Flex p={[2, 4]} m={0} h={['auto', '100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
-      <HeaderPanel pageTitle={PageTitle.Conclusions}/>
+      <HeaderPanel pageTitle={PageTitle.Conclusions} />
       <ConclusionsPanel />
     </Flex>
   );
-}
+};

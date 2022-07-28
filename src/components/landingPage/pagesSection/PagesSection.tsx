@@ -1,6 +1,6 @@
-import { Parallax } from "react-parallax";
-import {useMobile} from "hooks/useMobile";
-import {PagesCarousel} from "./PagesCarousel";
+import { Parallax } from 'react-parallax';
+import { useMobile } from 'hooks/useMobile';
+import { PagesCarousel } from './PagesCarousel';
 import { Parallax as ScrollParallax } from 'react-scroll-parallax';
 
 export const PagesSection = () => {
@@ -21,4 +21,4 @@ export const PagesSection = () => {
       </Parallax>
     </>
   );
-}
+};

@@ -1,14 +1,11 @@
 import { ArrowBackIcon, DeleteIcon } from '@chakra-ui/icons';
 import { Button, Flex, Icon, Link, Spacer, Text, useDisclosure } from '@chakra-ui/react';
-import { Match } from 'entities/Match';
 import { Path } from 'utils/Path';
 import { uuid } from 'utils/uuid';
 import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useRef } from 'react';
 import { Details } from 'components/matchPage/sections/details/Details';
-import { Team } from 'entities/Team';
-import { User } from 'entities/User';
 import { Assignments } from 'components/matchPage/sections/assignments/Assignments';
 import { Sanctions } from 'components/matchPage/sections/sanctions/Sanctions';
 import { Conclusions } from 'components/matchPage/sections/conclusions/Conclusions';
@@ -19,8 +16,9 @@ import { MatchDeleteModal } from 'components/admin/matches/MatchDeleteModal';
 import { useStore } from 'zustandStore/store';
 import { Role } from 'utils/Role';
 import { Files } from 'components/matchPage/sections/files/Files';
-import { Grade } from "components/matchPage/sections/grade/Grade";
+import { Grade } from 'components/matchPage/sections/grade/Grade';
 import { OverallGrade } from 'components/matchPage/sections/overallGrade/OverallGrade';
+import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
 
 export const enum MatchData {
   Details = 'Match Details',
@@ -34,15 +32,12 @@ export const enum MatchData {
 }
 
 interface MatchOverviewPanelProps {
-  match: Match;
-  teams: Team[];
-  referees: User[];
-  observers: User[];
+  match: MatchInfoEnriched;
 }
 
 const PADDING = 4;
 
-export const MatchSectionsPanel = ({ match, teams, referees, observers }: MatchOverviewPanelProps) => {
+export const MatchSectionsPanel = ({ match }: MatchOverviewPanelProps) => {
   const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
   const { query: teamsQuery } = useLeagueTeams();
   const user = useStore((state) => state.user);
@@ -59,11 +54,6 @@ export const MatchSectionsPanel = ({ match, teams, referees, observers }: MatchO
   const conclusionsRef: any = useRef();
   const noteRef: any = useRef();
   const reportsRef: any = useRef();
-
-  const homeTeam = teams.find((team: Team) => team.id === match.homeTeamId)!;
-  const awayTeam = teams.find((team: Team) => team.id === match.awayTeamId)!;
-  const referee = referees.find((referee: User) => referee.id === match.refereeId)!;
-  const observer = observers.find((observer: User) => observer.id === match.observerId)!;
 
   const menuLink = (sectionName: MatchData, ref: any) => {
     return (
@@ -85,9 +75,7 @@ export const MatchSectionsPanel = ({ match, teams, referees, observers }: MatchO
   return (
     <>
       <MatchDeleteModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} match={match} />
-      <Flex
-        overflow={'hidden'}
-      >
+      <Flex overflow={'hidden'}>
         <Spacer />
 
         <Flex
@@ -150,7 +138,7 @@ export const MatchSectionsPanel = ({ match, teams, referees, observers }: MatchO
             <Flex direction={'column'} p={PADDING} w={'85%'} overflowY={'hidden'}>
               <Flex direction={'column'} overflowY={'scroll'} ref={overviewRef}>
                 <Flex ref={detailsRef}>
-                  <Details match={match} homeTeam={homeTeam} awayTeam={awayTeam}/>
+                  <Details match={match} />
                 </Flex>
 
                 <Flex ref={gradeRef}>
@@ -162,7 +150,7 @@ export const MatchSectionsPanel = ({ match, teams, referees, observers }: MatchO
                 </Flex>
 
                 <Flex ref={assignmentsRef}>
-                  <Assignments match={match} referee={referee} observer={observer} />
+                  <Assignments match={match} />
                 </Flex>
 
                 <Flex ref={foulsRef}>

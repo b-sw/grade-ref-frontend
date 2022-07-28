@@ -1,33 +1,41 @@
-import { Button, Icon, Text, useDisclosure } from "@chakra-ui/react";
-import { MdGrade } from "react-icons/md";
-import { AddIcon } from "@chakra-ui/icons";
-import {DataTable} from "components/matchPage/components/DataTable";
-import {Feature, FeatureType} from "entities/Feature";
-import { Column } from "react-table";
-import {MatchData} from "components/matchPage/MatchSectionsPanel";
-import {Role} from "utils/Role";
-import {NoRecords} from "components/utils/NoRecords";
-import {useStore} from "zustandStore/store";
-import { SectionHeading } from "components/matchPage/components/SectionHeading";
+import { Button, Icon, Text, useDisclosure } from '@chakra-ui/react';
+import { MdGrade } from 'react-icons/md';
+import { AddIcon } from '@chakra-ui/icons';
+import { DataTable } from 'components/matchPage/components/DataTable';
+import { Feature, FeatureType } from 'entities/Feature';
+import { Column } from 'react-table';
+import { MatchData } from 'components/matchPage/MatchSectionsPanel';
+import { Role } from 'utils/Role';
+import { NoRecords } from 'components/utils/NoRecords';
+import { useStore } from 'zustandStore/store';
+import { SectionHeading } from 'components/matchPage/components/SectionHeading';
 import { SectionBody } from 'components/matchPage/components/SectionBody';
 import { Section } from 'components/matchPage/components/Section';
 import { ConclusionAddModal } from 'components/matchPage/sections/conclusions/modals/ConclusionAddModal';
 import { useMatchFeatures } from 'components/matchPage/sections/conclusions/useMatchFeatures';
 import { ConclusionEditModal } from 'components/matchPage/sections/conclusions/modals/ConclusionEditModal';
+import { useMatch } from 'hooks/useMatch';
 
 export const Conclusions = () => {
+  const { query: matchQuery } = useMatch();
   const { isOpen: isAddOpen, onOpen: onAddOpen, onClose: onAddClose } = useDisclosure();
   const { query: featuresQuery, deleteMutation } = useMatchFeatures();
   const user = useStore((state) => state.user);
+
+  const handleOpenAddModal = async () => {
+    await matchQuery.refetch();
+    onAddOpen();
+  };
 
   const cols: Column<Feature>[] = [
     {
       Header: 'Type',
       accessor: (d) => d.type,
-      Cell: (props: any) =>
+      Cell: (props: any) => (
         <Text fontWeight={'medium'} color={props.value === FeatureType.Positive ? 'green.500' : 'red.400'}>
           {props.value}
-        </Text>,
+        </Text>
+      ),
     },
     {
       Header: 'Description',
@@ -46,8 +54,9 @@ export const Conclusions = () => {
           <Button
             variant={'ghost'}
             leftIcon={<Icon as={AddIcon} />}
-            onClick={onAddOpen}
+            onClick={handleOpenAddModal}
             disabled={!userCanEdit}
+            isLoading={matchQuery.isLoading}
           >
             Add
           </Button>
@@ -68,4 +77,4 @@ export const Conclusions = () => {
       </Section>
     </>
   );
-}
+};

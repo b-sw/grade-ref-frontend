@@ -3,8 +3,8 @@ import { ReportDto, ReportType, useReports } from 'hooks/useReports';
 import { useSetState } from 'hooks/useSetState';
 import { useDropzone } from 'react-dropzone';
 import { MdFileUpload } from 'react-icons/md';
-import { useEffect } from "react";
-import { Dropzone } from "components/matchPage/components/Dropzone";
+import { useEffect } from 'react';
+import { Dropzone } from 'components/matchPage/components/Dropzone';
 
 interface UploadReportZoneProps {
   reportType: ReportType;
@@ -50,7 +50,6 @@ export const UploadReportZone = ({ reportType }: UploadReportZoneProps) => {
         });
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fileRejections]);
 
   const uploadFile = (file: any) => {
@@ -70,13 +69,10 @@ export const UploadReportZone = ({ reportType }: UploadReportZoneProps) => {
   const borderStyle = 'dashed';
   const _hover = { borderColor: postMutation.isLoading ? 'gray.400' : 'gray.500' };
   const cursor = postMutation.isLoading ? 'default' : 'pointer';
-  const rootProps = {...getRootProps({ className: 'dropzone' })};
+  const rootProps = { ...getRootProps({ className: 'dropzone' }) };
 
   return (
-    <Dropzone
-      text={dropzoneText}
-      flexProps={{borderStyle, _hover, cursor, ...rootProps}}
-    >
+    <Dropzone text={dropzoneText} flexProps={{ borderStyle, _hover, cursor, ...rootProps }}>
       <input {...getInputProps()} />
       {state.isLoading && <Spinner />}
 

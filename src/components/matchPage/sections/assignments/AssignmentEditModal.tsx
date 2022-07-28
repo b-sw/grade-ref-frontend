@@ -1,19 +1,18 @@
-import {SelectControl} from 'formik-chakra-ui';
-import {useEffect} from 'react';
-import {Match} from "entities/Match";
-import {uuid} from "utils/uuid";
-import {LoadingOverlay} from "pages/LoadingOverlay";
-import {SelectOptions} from "components/matchPage/components/SelectOptions";
-import {useLeagueUsers} from "hooks/useLeagueUsers";
-import {Role} from "utils/Role";
-import {assignmentsValidationSchema} from "components/matchPage/sections/assignments/assignments.validation";
-import {FormikModal} from "components/matchPage/components/FormikModal";
-import { useLeagueMatch } from 'hooks/useLeagueMatch';
+import { SelectControl } from 'formik-chakra-ui';
+import { useEffect } from 'react';
+import { uuid } from 'utils/uuid';
+import { LoadingOverlay } from 'pages/LoadingOverlay';
+import { SelectOptions } from 'components/matchPage/components/SelectOptions';
+import { useLeagueUsers } from 'hooks/useLeagueUsers';
+import { Role } from 'utils/Role';
+import { assignmentsValidationSchema } from 'components/matchPage/sections/assignments/assignments.validation';
+import { FormikModal } from 'components/matchPage/components/FormikModal';
+import { useMatch } from 'hooks/useMatch';
+import { Match } from 'entities/Match';
 
 interface AssignmentEditModalProps {
   isOpen: boolean;
   handleClose: () => void;
-  match: Match;
 }
 
 interface AssignmentFormikValues {
@@ -21,8 +20,8 @@ interface AssignmentFormikValues {
   observerId: uuid;
 }
 
-export const AssignmentEditModal = ({ isOpen, handleClose, match }: AssignmentEditModalProps) => {
-  const { updateMatchMutation: updateMutation } = useLeagueMatch();
+export const AssignmentEditModal = ({ isOpen, handleClose }: AssignmentEditModalProps) => {
+  const { query: matchQuery, updateMatchMutation: updateMutation } = useMatch();
   const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
   const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
 
@@ -31,17 +30,16 @@ export const AssignmentEditModal = ({ isOpen, handleClose, match }: AssignmentEd
       handleClose();
       updateMutation.reset();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updateMutation.isSuccess]);
 
   const initialValues: AssignmentFormikValues = {
-    refereeId: match.refereeId,
-    observerId: match.observerId,
+    refereeId: matchQuery.data!.refereeId,
+    observerId: matchQuery.data!.observerId,
   };
 
   const handleEditMatch = (values: AssignmentFormikValues) => {
     updateMutation.mutate({
-      ...match,
+      ...matchQuery.data!,
       refereeId: values.refereeId,
       observerId: values.observerId,
     } as Match);
@@ -49,17 +47,17 @@ export const AssignmentEditModal = ({ isOpen, handleClose, match }: AssignmentEd
 
   const modalBody: JSX.Element = (
     <>
-      <SelectControl name='refereeId' label='Referee'>
+      <SelectControl name="refereeId" label="Referee">
         <SelectOptions data={refereesQuery.data!} labelProps={['firstName', 'lastName']} />
       </SelectControl>
 
-      <SelectControl name='observerId' label='Observer'>
+      <SelectControl name="observerId" label="Observer">
         <SelectOptions data={observersQuery.data!} labelProps={['firstName', 'lastName']} />
       </SelectControl>
     </>
   );
 
-  const queriesAreLoading: boolean = [refereesQuery, observersQuery].some(query => query.isLoading);
+  const queriesAreLoading: boolean = [refereesQuery, observersQuery].some((query) => query.isLoading);
 
   if (queriesAreLoading) {
     return <LoadingOverlay />;

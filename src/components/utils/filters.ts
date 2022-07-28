@@ -1,40 +1,44 @@
-import {User} from "entities/User";
-import {Team} from "entities/Team";
-import {League} from "entities/League";
-import {Match} from "entities/Match";
-import {uuid} from "utils/uuid";
+import { User } from 'entities/User';
+import { Team } from 'entities/Team';
+import { League } from 'entities/League';
+import { uuid } from 'utils/uuid';
+import { MatchEnriched } from 'entities/MatchEnriched';
+import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
 
 export const userFilter = (initialUsers: User[], filter: string): User[] => {
   filter = filter.toLowerCase();
   return initialUsers.filter((user) => {
     const fullName: string = user.firstName + ' ' + user.lastName;
-    return fullName.toLowerCase().includes(filter) ||
+    return (
+      fullName.toLowerCase().includes(filter) ||
       user.email.toLowerCase().includes(filter) ||
-      user.phoneNumber.toLowerCase().includes(filter);
+      user.phoneNumber.toLowerCase().includes(filter)
+    );
   });
-}
+};
 
 export const teamFilter = (initialTeams: Team[], filter: string): Team[] => {
   filter = filter.toLowerCase();
-  return initialTeams.filter((team) => (
-    team.name.toLowerCase().includes(filter)
-  ));
-}
+  return initialTeams.filter((team) => team.name.toLowerCase().includes(filter));
+};
 
 export const leagueFilter = (initialLeagues: League[], filter: string): League[] => {
   filter = filter.toLowerCase();
-  return initialLeagues.filter((league) => (
-    league.name.toLowerCase().includes(filter) ||
-    league.shortName.toLowerCase().includes(filter) ||
-    league.country.toLowerCase().includes(filter)
-  ));
-}
+  return initialLeagues.filter(
+    (league) =>
+      league.name.toLowerCase().includes(filter) ||
+      league.shortName.toLowerCase().includes(filter) ||
+      league.country.toLowerCase().includes(filter),
+  );
+};
 
-export const matchFilter = (initialMatches: Match[],
-                            teams: { [id: uuid]: Team },
-                            referees: { [id: uuid]: User },
-                            observers: { [id: uuid]: User },
-                            filter: string): Match[] => {
+export const matchFilter = (
+  initialMatches: MatchEnriched[],
+  teams: { [id: uuid]: Team },
+  referees: { [id: uuid]: User },
+  observers: { [id: uuid]: User },
+  filter: string,
+): MatchEnriched[] => {
   filter = filter.toLowerCase();
   return initialMatches.filter((match) => {
     const homeTeam: Team = teams[match.homeTeamId];
@@ -45,11 +49,29 @@ export const matchFilter = (initialMatches: Match[],
     const refereeFullName: string = referee.firstName + ' ' + referee.lastName;
     const observerFullName: string = observer.firstName + ' ' + observer.lastName;
 
-    return match.userReadableKey.toLowerCase().includes(filter) ||
+    return (
+      match.userReadableKey.toLowerCase().includes(filter) ||
       match.stadium.toLowerCase().includes(filter) ||
       homeTeam.name.toLowerCase().includes(filter) ||
       awayTeam.name.toLowerCase().includes(filter) ||
       refereeFullName.toLowerCase().includes(filter) ||
-      observerFullName.toLowerCase().includes(filter);
+      observerFullName.toLowerCase().includes(filter)
+    );
   });
-}
+};
+
+export const matchFilterByTeam = (
+  initialMatches: MatchInfoEnriched[],
+  teams: { [id: uuid]: Team },
+  filter: string,
+): MatchInfoEnriched[] => {
+  filter = filter.toLowerCase();
+  return initialMatches.filter((match) => {
+    return (
+      match.userReadableKey.toLowerCase().includes(filter) ||
+      match.stadium.toLowerCase().includes(filter) ||
+      match.homeTeamId.toLowerCase().includes(filter) ||
+      match.awayTeamId.toLowerCase().includes(filter)
+    );
+  });
+};

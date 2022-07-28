@@ -1,29 +1,25 @@
-import * as React from "react";
+import * as React from 'react';
 import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
   chakra,
-  IconButton,
   Flex,
+  IconButton,
   Spacer,
-  useDisclosure,
+  Table,
+  Tbody,
+  Td,
   Text,
-} from "@chakra-ui/react";
-import {
-  DeleteIcon,
-  EditIcon,
-  TriangleDownIcon,
-  TriangleUpIcon
-} from "@chakra-ui/icons";
-import { useTable, useSortBy, Column, usePagination, Row } from "react-table";
+  Th,
+  Thead,
+  Tr,
+  useDisclosure,
+} from '@chakra-ui/react';
+import { DeleteIcon, EditIcon, TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
+import { Column, Row, usePagination, useSortBy, useTable } from 'react-table';
 import { uuid } from 'utils/uuid';
-import { AxiosError } from "axios";
-import { UseMutationResult } from "react-query";
+import { AxiosError } from 'axios';
+import { UseMutationResult } from 'react-query';
 import { useSetState } from 'hooks/useSetState';
+import { useMatch } from 'hooks/useMatch';
 
 interface EditModalProps<T> {
   isOpen: boolean;
@@ -44,64 +40,59 @@ interface DataTableState<T extends object> {
 }
 
 export function DataTable<T extends object & { id: uuid }>({
-                                                 data,
-                                                 columns,
-                                                 readOnly,
-                                                 deleteMutation,
-                                                 EditModal,
-                                               }: DataTableProps<T>) {
+  data,
+  columns,
+  readOnly,
+  deleteMutation,
+  EditModal,
+}: DataTableProps<T>) {
   const { isOpen: isEditModalOpen, onOpen: onEditModalOpen, onClose: onEditModalClose } = useDisclosure();
+  const { query: matchQuery } = useMatch();
   const [state, setState] = useSetState({ selected: null } as DataTableState<T>);
 
   const handleClose = () => {
     setState({ selected: null });
     onEditModalClose();
-  }
+  };
 
-  const handleEdit = (row: Row<T>) => {
+  const handleEdit = async (row: Row<T>) => {
     if (readOnly) {
       return;
     }
     setState({ selected: row.original });
+    await matchQuery.refetch();
     onEditModalOpen();
-  }
+  };
 
-  const handleDelete = (row: Row<T>) => {
+  const handleDelete = async (row: Row<T>) => {
     if (readOnly) {
       return;
     }
     if (deleteMutation) {
+      await matchQuery.refetch();
       deleteMutation.mutate(row.original.id);
     }
-  }
+  };
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow
-  } = useTable({ columns, data }, useSortBy, usePagination);
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(
+    { columns, data },
+    useSortBy,
+    usePagination,
+  );
 
   return (
     <>
-      {
-        !readOnly && EditModal &&
+      {!readOnly && EditModal && (
         <EditModal isOpen={isEditModalOpen} handleClose={handleClose} initialValue={state.selected!} />
-      }
+      )}
       <Table {...getTableProps()}>
         <Thead>
           {headerGroups.map((headerGroup) => (
             <Tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column: any) => (
-                <Th
-                  {...column.getHeaderProps(
-                    column.getSortByToggleProps()
-                  )}
-                  isNumeric={column.isNumeric}
-                >
+                <Th {...column.getHeaderProps(column.getSortByToggleProps())} isNumeric={column.isNumeric}>
                   <Flex>
-                    <Text fontSize={'md'}>{column.render("Header")}</Text>
+                    <Text fontSize={'md'}>{column.render('Header')}</Text>
                     <chakra.span pl="4">
                       {column.isSorted ? (
                         column.isSortedDesc ? (
@@ -109,12 +100,14 @@ export function DataTable<T extends object & { id: uuid }>({
                         ) : (
                           <TriangleUpIcon aria-label="sorted ascending" />
                         )
-                      ) : <TriangleUpIcon aria-label="sorted ascending" opacity={0} />}
+                      ) : (
+                        <TriangleUpIcon aria-label="sorted ascending" opacity={0} />
+                      )}
                     </chakra.span>
                   </Flex>
                 </Th>
               ))}
-              <Th/>
+              <Th />
             </Tr>
           ))}
         </Thead>
@@ -124,34 +117,35 @@ export function DataTable<T extends object & { id: uuid }>({
             return (
               <Tr {...row.getRowProps()} role={'group'}>
                 {row.cells.map((cell: any) => (
-                  <Td
-                    {...cell.getCellProps()}
-                    isNumeric={cell.column.isNumeric}
-                  >
-                    {cell.render("Cell")}
+                  <Td {...cell.getCellProps()} isNumeric={cell.column.isNumeric}>
+                    {cell.render('Cell')}
                   </Td>
                 ))}
                 <Td>
-                  <Flex _hover={{ child: { display: 'inherit'} }}>
+                  <Flex _hover={{ child: { display: 'inherit' } }}>
                     <Spacer />
                     <Flex gap={2}>
                       <IconButton
                         variant={'ghost'}
-                        aria-label='edit'
+                        aria-label="edit"
                         icon={<EditIcon />}
                         opacity={0}
                         cursor={'default'}
                         _groupHover={{ opacity: readOnly ? 0 : 1, cursor: readOnly ? 'default' : 'pointer' }}
-                        onClick={() => { handleEdit(row); }}
+                        onClick={async () => {
+                          await handleEdit(row);
+                        }}
                       />
                       <IconButton
                         variant={'ghost'}
-                        aria-label='delete'
+                        aria-label="delete"
                         icon={<DeleteIcon />}
                         opacity={0}
                         cursor={'default'}
                         _groupHover={{ opacity: readOnly ? 0 : 1, cursor: readOnly ? 'default' : 'pointer' }}
-                        onClick={(_) => { handleDelete(row); }}
+                        onClick={async () => {
+                          await handleDelete(row);
+                        }}
                         isLoading={deleteMutation?.isLoading && deleteMutation.variables === row.original.id}
                       />
                     </Flex>

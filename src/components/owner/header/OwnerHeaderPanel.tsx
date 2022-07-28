@@ -1,18 +1,18 @@
 import {
-  Flex,
   Avatar,
   Button,
+  Center,
+  Flex,
+  Heading,
   Menu,
   MenuButton,
-  MenuList,
-  MenuItem,
   MenuDivider,
-  Center,
-  Heading,
+  MenuItem,
+  MenuList,
   Spacer,
 } from '@chakra-ui/react';
-import { useStore } from "zustandStore/store";
-import useAuth from "hooks/useAuth";
+import { useStore } from 'zustandStore/store';
+import useAuth from 'hooks/useAuth';
 import { MdDashboard, MdPeople } from 'react-icons/md';
 
 export const OwnerHeaderPanel = () => {
@@ -26,38 +26,27 @@ export const OwnerHeaderPanel = () => {
         <Spacer />
 
         <Flex alignItems={'center'}>
-          <Button mr={3} onClick={() => {}} leftIcon={<MdPeople />}>
+          <Button mr={3} onClick={() => undefined} leftIcon={<MdPeople />}>
             Mock button 1
           </Button>
-          <Button mr={3} onClick={() => {}} leftIcon={<MdDashboard />}>
+          <Button mr={3} onClick={() => undefined} leftIcon={<MdDashboard />}>
             Mock button 2
           </Button>
 
           <Menu>
-            <MenuButton
-              as={Button}
-              rounded={'full'}
-              variant={'link'}
-              cursor={'pointer'}
-              minW={0}>
-              <Avatar
-                name={user.firstName + ' ' + user.lastName}
-                size={'md'}
-              />
+            <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
+              <Avatar name={user.firstName + ' ' + user.lastName} size={'md'} />
             </MenuButton>
-            <MenuList
-              alignItems={'center'}
-            >
+            <MenuList alignItems={'center'}>
               <br />
               <Center>
-                <Avatar
-                  name={user.firstName + ' ' + user.lastName}
-                  size={'xl'}
-                />
+                <Avatar name={user.firstName + ' ' + user.lastName} size={'xl'} />
               </Center>
               <br />
               <Center>
-                <p>{user.firstName} {user.lastName}</p>
+                <p>
+                  {user.firstName} {user.lastName}
+                </p>
               </Center>
               <br />
               <MenuDivider />
@@ -68,5 +57,5 @@ export const OwnerHeaderPanel = () => {
         </Flex>
       </Flex>
     </>
-  )
-}
+  );
+};

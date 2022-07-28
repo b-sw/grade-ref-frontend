@@ -1,23 +1,23 @@
-import {Button, Flex, Input, InputGroup, InputLeftElement, Spacer, Text, useDisclosure} from '@chakra-ui/react';
-import {AddIcon} from '@chakra-ui/icons';
-import {ObserverAddModal} from "components/admin/observers/ObserverAddModal";
-import {User} from "entities/User";
-import {ObserverListItem} from "components/admin/observers/ObserverListItem";
-import {useLeagueUsers} from "hooks/useLeagueUsers";
-import {Role} from "utils/Role";
+import { Button, Flex, Input, InputGroup, InputLeftElement, Spacer, Text, useDisclosure } from '@chakra-ui/react';
+import { AddIcon } from '@chakra-ui/icons';
+import { ObserverAddModal } from 'components/admin/observers/ObserverAddModal';
+import { User } from 'entities/User';
+import { ObserverListItem } from 'components/admin/observers/ObserverListItem';
+import { useLeagueUsers } from 'hooks/useLeagueUsers';
+import { Role } from 'utils/Role';
 import { MdSearch } from 'react-icons/md';
-import {useSetState} from "hooks/useSetState";
-import {userFilter} from "components/utils/filters";
+import { useSetState } from 'hooks/useSetState';
+import { userFilter } from 'components/utils/filters';
 import { useEffect } from 'react';
-import {NoRecords} from "components/utils/NoRecords";
+import { NoRecords } from 'components/utils/NoRecords';
 
 interface State {
-  observers: User[],
-  filter: string,
+  observers: User[];
+  filter: string;
 }
 
 export const ObserversPanel = () => {
-  const {isOpen: isCreateModalOpen, onOpen: onCreateModalOpen, onClose: onCreateModalClose } = useDisclosure();
+  const { isOpen: isCreateModalOpen, onOpen: onCreateModalOpen, onClose: onCreateModalClose } = useDisclosure();
   const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
 
   const [state, setState] = useSetState({
@@ -28,7 +28,6 @@ export const ObserversPanel = () => {
   useEffect(() => {
     const filteredObservers: User[] = userFilter(observersQuery.data!, state.filter);
     setState({ observers: filteredObservers });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.filter, observersQuery.data]);
 
   return (
@@ -57,10 +56,7 @@ export const ObserversPanel = () => {
         </Flex>
 
         <InputGroup>
-          <InputLeftElement
-            pointerEvents={'none'}
-            children={<MdSearch />}
-          />
+          <InputLeftElement pointerEvents={'none'} children={<MdSearch />} />
           <Input
             mb={2}
             placeholder={'Search observer'}
@@ -69,14 +65,11 @@ export const ObserversPanel = () => {
         </InputGroup>
 
         <Flex direction={'column'} gap={2} overflowY={'scroll'}>
-          {state.observers.length ?
-            state.observers.map((observer: User) =>
-              <ObserverListItem key={observer.id} observer={observer} />)
-            :
-            NoRecords()
-          }
+          {state.observers.length
+            ? state.observers.map((observer: User) => <ObserverListItem key={observer.id} observer={observer} />)
+            : NoRecords()}
         </Flex>
       </Flex>
     </>
   );
-}
+};

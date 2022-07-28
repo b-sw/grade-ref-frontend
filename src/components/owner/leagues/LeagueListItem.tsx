@@ -1,8 +1,8 @@
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
-import { Flex, Spacer, IconButton, VStack, Text, useDisclosure, Avatar, HStack } from '@chakra-ui/react';
+import { Avatar, Flex, HStack, IconButton, Spacer, Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { LeagueDeleteModal } from 'components/owner/leagues/LeagueDeleteModal';
 import { LeagueEditModal } from 'components/owner/leagues/LeagueEditModal';
-import {League} from "entities/League";
+import { League } from 'entities/League';
 
 export interface Props {
   league: League;
@@ -16,33 +16,21 @@ export const LeagueListItem = (props: Props) => {
     <>
       <LeagueEditModal isOpen={isEditModalOpen} onClose={onEditModalClose} league={props.league} />
       <LeagueDeleteModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} league={props.league} />
-      <Flex
-        p={5}
-        borderRadius={10}
-        alignItems={'center'}
-        backgroundColor={'gray.50'}
-        cursor={'pointer'}
-      >
+      <Flex p={5} borderRadius={10} alignItems={'center'} backgroundColor={'gray.50'} cursor={'pointer'}>
         {leagueItem(props.league)}
         <Spacer />
-        <IconButton onClick={onEditModalOpen} variant={'ghost'} aria-label='Edit league' icon={<EditIcon />} />
-        <IconButton onClick={onDeleteModalOpen} variant={'ghost'} aria-label='Delete league' icon={<DeleteIcon />} />
+        <IconButton onClick={onEditModalOpen} variant={'ghost'} aria-label="Edit league" icon={<EditIcon />} />
+        <IconButton onClick={onDeleteModalOpen} variant={'ghost'} aria-label="Delete league" icon={<DeleteIcon />} />
       </Flex>
     </>
   );
-}
+};
 
-export const leagueItem = (league: League,
-                           avatarSize?: string,
-                           nameSize?: string,
-                           descriptionSize?: string) => {
+export const leagueItem = (league: League, avatarSize?: string, nameSize?: string, descriptionSize?: string) => {
   return (
     <>
       <HStack>
-        <Avatar
-          name={league.name}
-          size={avatarSize ?? 'sm'}
-        />
+        <Avatar name={league.name} size={avatarSize ?? 'sm'} />
         <VStack spacing={0} alignItems={'baseline'}>
           <HStack>
             <Text fontSize={nameSize ?? 'md'}>{league.name}</Text>
@@ -58,5 +46,5 @@ export const leagueItem = (league: League,
         </VStack>
       </HStack>
     </>
-  )
-}
+  );
+};

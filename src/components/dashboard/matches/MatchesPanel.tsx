@@ -11,51 +11,41 @@ import {
   TabPanels,
   Tabs,
   Text,
-  useDisclosure
+  useDisclosure,
 } from '@chakra-ui/react';
-import {AddIcon, AttachmentIcon} from '@chakra-ui/icons';
-import {Match} from "entities/Match";
-import {MatchListItem} from "components/dashboard/matches/MatchListItem";
-import {MatchCreateModal} from "components/admin/matches/MatchCreateModal";
-import {useSetState} from "hooks/useSetState";
-import {matchFilter} from "components/utils/filters";
-import {useEffect} from "react";
-import {MdSearch} from 'react-icons/md';
-import {useLeagueTeams} from "hooks/useLeagueTeams";
-import {useLeagueUsers} from "hooks/useLeagueUsers";
-import {Role} from "utils/Role";
-import {uuid} from "utils/uuid";
-import {User} from "entities/User";
-import {Team} from "entities/Team";
-import {MatchStatus} from "entities/utils/matchStatus";
-import {NoRecords} from "components/utils/NoRecords";
+import { AddIcon, AttachmentIcon } from '@chakra-ui/icons';
+import { MatchListItem } from 'components/dashboard/matches/MatchListItem';
+import { MatchCreateModal } from 'components/admin/matches/MatchCreateModal';
+import { useSetState } from 'hooks/useSetState';
+import { matchFilterByTeam } from 'components/utils/filters';
+import { useEffect } from 'react';
+import { MdSearch } from 'react-icons/md';
+import { useLeagueTeams } from 'hooks/useLeagueTeams';
+import { uuid } from 'utils/uuid';
+import { Team } from 'entities/Team';
+import { MatchStatus } from 'entities/utils/matchStatus';
+import { NoRecords } from 'components/utils/NoRecords';
 import { MatchesUploadModal } from 'components/admin/matches/MatchesUploadModal';
+import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
 
 interface State {
-  matches: Match[];
+  matches: MatchInfoEnriched[];
   filter: string;
 }
 
-interface Props {
-  matches: Match[];
+interface MatchesPanelProps {
+  matches: MatchInfoEnriched[];
   readOnly?: boolean;
   hideTabs?: boolean;
 }
 
-export const MatchesPanel = (props: Props) => {
+export const MatchesPanel = ({ matches, readOnly, hideTabs }: MatchesPanelProps) => {
   const { isOpen: isCreateModalOpen, onOpen: onCreateModalOpen, onClose: onCreateModalClose } = useDisclosure();
   const { isOpen: isUploadModalOpen, onOpen: onUploadModalOpen, onClose: onUploadModalClose } = useDisclosure();
   const { query: teamsQuery } = useLeagueTeams();
-  const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
-  const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
 
-  let referees: { [id: uuid]: User } = {};
-  let observers: { [id: uuid]: User } = {};
-  let teams: { [id: uuid]: Team } = {};
-
-  refereesQuery.data!.forEach((referee) => referees[referee.id] = referee);
-  observersQuery.data!.forEach((observer) => observers[observer.id] = observer);
-  teamsQuery.data!.forEach((team) => teams[team.id] = team);
+  const teams: { [id: uuid]: Team } = {};
+  teamsQuery.data!.forEach((team) => (teams[team.id] = team));
 
   const [state, setState] = useSetState({
     matches: [],
@@ -63,19 +53,18 @@ export const MatchesPanel = (props: Props) => {
   } as State);
 
   useEffect(() => {
-    const filteredMatches: Match[] = matchFilter(props.matches, teams, referees, observers, state.filter);
+    const filteredMatches: MatchInfoEnriched[] = matchFilterByTeam(matches, teams, state.filter);
     setState({ matches: filteredMatches });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.filter, props.matches]);
+  }, [state.filter, matches]);
 
-  const getFilteredMatches = (status: MatchStatus): Match[] => {
-    return state.matches.filter((match: Match) => match.matchStatus === status);
-  }
+  const getFilteredMatches = (status: MatchStatus): MatchInfoEnriched[] => {
+    return state.matches.filter((match) => match.matchStatus === status);
+  };
 
   return (
     <>
-      {!props.readOnly && <MatchCreateModal isOpen={isCreateModalOpen} onClose={onCreateModalClose} />}
-      {!props.readOnly && <MatchesUploadModal isOpen={isUploadModalOpen} onClose={onUploadModalClose} />}
+      {!readOnly && <MatchCreateModal isOpen={isCreateModalOpen} onClose={onCreateModalClose} />}
+      {!readOnly && <MatchesUploadModal isOpen={isUploadModalOpen} onClose={onUploadModalClose} />}
       <Flex
         direction={'column'}
         borderRadius={10}
@@ -91,65 +80,60 @@ export const MatchesPanel = (props: Props) => {
             Matches
           </Text>
           <Spacer />
-          {!props.readOnly &&
+          {!readOnly && (
             <>
               <Button variant={'ghost'} leftIcon={<AttachmentIcon />} onClick={onUploadModalOpen}>
-                  Load
+                Load
               </Button>
               <Button variant={'ghost'} leftIcon={<AddIcon />} onClick={onCreateModalOpen}>
-                  Add
+                Add
               </Button>
-            </>}
+            </>
+          )}
         </Flex>
 
         <InputGroup>
-          <InputLeftElement
-            pointerEvents={'none'}
-            children={<MdSearch />}
-          />
-          <Input
-            mb={2}
-            placeholder={'Search match'}
-            onChange={(event) => setState({ filter: event.target.value })}
-          />
+          <InputLeftElement pointerEvents={'none'} children={<MdSearch />} />
+          <Input mb={2} placeholder={'Search match'} onChange={(event) => setState({ filter: event.target.value })} />
         </InputGroup>
 
-        {props.hideTabs ?
+        {hideTabs ? (
           <Flex direction={'column'} gap={2} overflowY={'scroll'} h={'100%'}>
-            {state.matches.length ?
-              state.matches.map((match: Match) =>
-                <MatchListItem key={match.id} match={match} />)
-              :
-              NoRecords()
-            }
+            {state.matches.length
+              ? state.matches.map((match) => <MatchListItem key={match.id} match={match} />)
+              : NoRecords()}
           </Flex>
-          :
-          <Tabs display='flex' flexDirection='column' isFitted variant='solid-rounded' overflowY={'hidden'} colorScheme='tabsButton' h={'100%'}>
+        ) : (
+          <Tabs
+            display="flex"
+            flexDirection="column"
+            isFitted
+            variant="solid-rounded"
+            overflowY={'hidden'}
+            colorScheme="tabsButton"
+            h={'100%'}
+          >
             <TabList mx={5} my={2} gap={5}>
               <Tab>Past</Tab>
               <Tab>Upcoming</Tab>
             </TabList>
             <TabPanels overflowY={'scroll'} h={'100%'}>
               <TabPanel display={'flex'} flexDirection={'column'} gap={2} h={'100%'}>
-                {getFilteredMatches(MatchStatus.Past).length ?
-                  getFilteredMatches(MatchStatus.Past).map((match: Match) =>
-                    <MatchListItem key={match.id} match={match} />)
-                  :
-                  NoRecords()
-                }
+                {getFilteredMatches(MatchStatus.Past).length
+                  ? getFilteredMatches(MatchStatus.Past).map((match) => <MatchListItem key={match.id} match={match} />)
+                  : NoRecords()}
               </TabPanel>
               <TabPanel display={'flex'} flexDirection={'column'} gap={2} h={'100%'}>
-                {getFilteredMatches(MatchStatus.Upcoming).length ?
-                  getFilteredMatches(MatchStatus.Upcoming).map((match: Match) =>
-                    <MatchListItem key={match.id} match={match} />)
-                  :
-                  NoRecords()
-                }
+                {getFilteredMatches(MatchStatus.Upcoming).length
+                  ? getFilteredMatches(MatchStatus.Upcoming).map((match) => (
+                      <MatchListItem key={match.id} match={match} />
+                    ))
+                  : NoRecords()}
               </TabPanel>
             </TabPanels>
           </Tabs>
-        }
+        )}
       </Flex>
     </>
   );
-}
+};

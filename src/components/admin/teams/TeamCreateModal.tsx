@@ -1,18 +1,18 @@
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   Button,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
 } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { InputControl } from 'formik-chakra-ui';
 import { useEffect } from 'react';
-import {useLeagueTeams} from "hooks/useLeagueTeams";
-import {Team, teamValidationSchema} from "entities/Team";
+import { useLeagueTeams } from 'hooks/useLeagueTeams';
+import { Team, teamValidationSchema } from 'entities/Team';
 
 interface Props {
   isOpen: boolean;
@@ -31,7 +31,6 @@ export const TeamCreateModal = (props: Props) => {
       props.onClose();
       postMutation.reset();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postMutation.isSuccess]);
 
   const initialValues: FormikValues = {
@@ -53,10 +52,10 @@ export const TeamCreateModal = (props: Props) => {
           {({ handleSubmit }) => (
             <Form onSubmit={handleSubmit}>
               <ModalBody>
-                <InputControl name='name' label='Name' inputProps={{ placeholder: 'Legia Warszawa' }} />
+                <InputControl name="name" label="Name" inputProps={{ placeholder: 'Legia Warszawa' }} />
               </ModalBody>
               <ModalFooter>
-                <Button colorScheme='blue' mr={'3'} type='submit' isLoading={postMutation.isLoading}>
+                <Button colorScheme="blue" mr={'3'} type="submit" isLoading={postMutation.isLoading}>
                   Add
                 </Button>
                 <Button onClick={() => props.onClose()}>Cancel</Button>

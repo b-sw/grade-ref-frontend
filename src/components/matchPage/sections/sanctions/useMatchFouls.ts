@@ -1,20 +1,20 @@
-import { useToast } from "@chakra-ui/react";
-import { QueryClient, useMutation, useQuery, useQueryClient } from "react-query";
-import { useParams } from "react-router-dom";
-import {uuid} from "utils/uuid";
-import {Foul} from "entities/Foul";
-import axios, { AxiosError } from "axios";
-import {toastError} from "hooks/utils/toastError";
+import { useToast } from '@chakra-ui/react';
+import { QueryClient, useMutation, useQuery, useQueryClient } from 'react-query';
+import { useParams } from 'react-router-dom';
+import { uuid } from 'utils/uuid';
+import { Foul } from 'entities/Foul';
+import axios, { AxiosError } from 'axios';
+import { toastError } from 'hooks/utils/toastError';
 
 interface Props {
   enableAutoRefetch?: boolean;
 }
 
-const FOULS_QUERY_KEY: string = 'fouls_qk';
+const FOULS_QUERY_KEY = 'fouls_qk';
 
 export const useMatchFouls = (props?: Props) => {
   const { leagueId } = useParams<{ leagueId: uuid }>();
-  let { matchId } = useParams<{ matchId: uuid }>();
+  const { matchId } = useParams<{ matchId: uuid }>();
   const queryClient: QueryClient = useQueryClient();
   const toast = useToast();
 
@@ -23,28 +23,24 @@ export const useMatchFouls = (props?: Props) => {
   const getFouls = async (): Promise<Foul[]> => {
     const response = await axios.get(`leagues/${leagueId}/matches/${matchId}/fouls`);
     return response.data;
-  }
+  };
 
   const postFoul = async (foul: Foul): Promise<Foul> => {
     const response = await axios.post(`leagues/${leagueId}/matches/${matchId}/fouls`, foul);
     return response.data;
-  }
+  };
 
   const updateFoul = async (foul: Foul): Promise<Foul> => {
     const response = await axios.put(`leagues/${leagueId}/matches/${matchId}/fouls/${foul.id}`, foul);
     return response.data;
-  }
+  };
 
   const deleteFoul = async (foulId: uuid): Promise<Foul> => {
     const response = await axios.delete(`leagues/${leagueId}/matches/${matchId}/fouls/${foulId}`);
     return response.data;
-  }
+  };
 
-  const query = useQuery(
-    queryKey,
-    getFouls,
-    { enabled: props ? !!props.enableAutoRefetch : false },
-  );
+  const query = useQuery(queryKey, getFouls, { enabled: props ? !!props.enableAutoRefetch : false });
 
   const postMutation = useMutation(postFoul, {
     onSuccess: (foul: Foul) => {
@@ -56,7 +52,7 @@ export const useMatchFouls = (props?: Props) => {
         duration: 2000,
       });
     },
-    onError: (error: AxiosError, _variables, _context) => toastError(toast, error),
+    onError: (error: AxiosError) => toastError(toast, error),
   });
 
   const updateMutation = useMutation(updateFoul, {
@@ -69,7 +65,7 @@ export const useMatchFouls = (props?: Props) => {
         duration: 2000,
       });
     },
-    onError: (error: AxiosError, _variables, _context) => toastError(toast, error),
+    onError: (error: AxiosError) => toastError(toast, error),
   });
 
   const deleteMutation = useMutation(deleteFoul, {
@@ -82,8 +78,8 @@ export const useMatchFouls = (props?: Props) => {
         duration: 2000,
       });
     },
-    onError: (error: AxiosError, _variables, _context) => toastError(toast, error),
+    onError: (error: AxiosError) => toastError(toast, error),
   });
 
   return { query, postMutation, updateMutation, deleteMutation };
-}
+};

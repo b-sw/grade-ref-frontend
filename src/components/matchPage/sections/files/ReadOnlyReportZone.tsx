@@ -1,6 +1,6 @@
-import { Icon } from "@chakra-ui/react";
-import { Dropzone } from "components/matchPage/components/Dropzone";
-import { IconType } from "react-icons";
+import { Icon } from '@chakra-ui/react';
+import { Dropzone } from 'components/matchPage/components/Dropzone';
+import { IconType } from 'react-icons';
 
 interface ReadOnlyReportZoneProps {
   text: string;
@@ -9,10 +9,7 @@ interface ReadOnlyReportZoneProps {
 
 export const ReadOnlyReportZone = ({ text, iconType }: ReadOnlyReportZoneProps) => {
   return (
-    <Dropzone
-      text={text}
-      opacity={0.8}
-    >
+    <Dropzone text={text} opacity={0.8}>
       <Icon as={iconType} boxSize={35} />
     </Dropzone>
   );

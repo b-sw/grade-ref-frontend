@@ -1,14 +1,14 @@
-import { Match } from 'entities/Match';
 import { FormikModal } from 'components/matchPage/components/FormikModal';
 import { useEffect } from 'react';
 import { TextareaControl } from 'formik-chakra-ui';
 import { noteValidationSchema } from 'components/matchPage/sections/note/note.validation';
 import { useLeagueMatch } from 'hooks/useLeagueMatch';
+import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
 
 interface RefereeNoteEditModalProps {
   isOpen: boolean;
   handleClose: () => void;
-  match: Match;
+  match: MatchInfoEnriched;
 }
 
 interface RefereeNoteFormikValues {
@@ -23,12 +23,11 @@ export const RefereeNoteEditModal = ({ isOpen, handleClose, match }: RefereeNote
       handleClose();
       updateMutation.reset();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updateMutation.isSuccess]);
 
   const initialValues: RefereeNoteFormikValues = {
     refereeNote: match.refereeNote ?? 'N/A',
-  }
+  };
 
   const handleUpdateRefereeNote = (values: RefereeNoteFormikValues) => {
     updateMutation.mutate({
@@ -39,12 +38,13 @@ export const RefereeNoteEditModal = ({ isOpen, handleClose, match }: RefereeNote
 
   const modalBody: JSX.Element = (
     <TextareaControl
-      name='refereeNote'
-      label='Referee note'
-      textareaProps={{
-        rows: 15,
-        resize: 'none',
-        whiteSpace: 'pre-wrap',
+      name="refereeNote"
+      label="Referee note"
+      textareaProps={
+        {
+          rows: 15,
+          resize: 'none',
+          whiteSpace: 'pre-wrap',
         } as any
       }
     />
@@ -62,4 +62,4 @@ export const RefereeNoteEditModal = ({ isOpen, handleClose, match }: RefereeNote
       validationSchema={noteValidationSchema}
     />
   );
-}
+};

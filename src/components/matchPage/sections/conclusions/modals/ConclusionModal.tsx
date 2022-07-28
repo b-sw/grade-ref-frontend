@@ -1,17 +1,17 @@
-import { Match } from "entities/Match";
-import { FormikModal } from "components/matchPage/components/FormikModal";
-import { useEffect } from "react";
-import { InputControl, SelectControl } from "formik-chakra-ui";
+import { FormikModal } from 'components/matchPage/components/FormikModal';
+import { useEffect } from 'react';
+import { InputControl, SelectControl } from 'formik-chakra-ui';
 import { SelectOptionsConstant } from 'components/matchPage/components/SelectOptions';
 import { Feature, FeatureType } from 'entities/Feature';
 import { conclusionsValidationSchema } from 'components/matchPage/sections/conclusions/conclusions.validation';
-import { AxiosError } from "axios";
-import { UseMutationResult } from "react-query";
+import { AxiosError } from 'axios';
+import { UseMutationResult } from 'react-query';
+import { MatchEnriched } from 'entities/MatchEnriched';
 
 interface ConclusionModalProps {
   isOpen: boolean;
   handleClose: () => void;
-  match: Match;
+  match: MatchEnriched;
   mutation: UseMutationResult<Feature, AxiosError<unknown, any>, Feature, unknown>;
   feature?: Feature;
 }
@@ -22,19 +22,17 @@ interface ConclusionFormikValues {
 }
 
 export const ConclusionModal = ({ isOpen, handleClose, match, mutation, feature }: ConclusionModalProps) => {
-
   useEffect(() => {
     if (mutation.isSuccess) {
       handleClose();
       mutation.reset();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mutation.isSuccess]);
 
   const initialValues: ConclusionFormikValues = {
     type: feature ? feature.type : FeatureType.Positive,
     description: feature ? feature.description : '',
-  }
+  };
 
   const handleMutateFeature = (values: ConclusionFormikValues) => {
     mutation.mutate({
@@ -47,11 +45,13 @@ export const ConclusionModal = ({ isOpen, handleClose, match, mutation, feature 
 
   const modalBody: JSX.Element = (
     <>
-      <SelectControl name='type' label='Type'>
-        <SelectOptionsConstant valuesMap={{ [FeatureType.Positive]: FeatureType.Positive, [FeatureType.Negative]: FeatureType.Negative }} />
+      <SelectControl name="type" label="Type">
+        <SelectOptionsConstant
+          valuesMap={{ [FeatureType.Positive]: FeatureType.Positive, [FeatureType.Negative]: FeatureType.Negative }}
+        />
       </SelectControl>
 
-      <InputControl name='description' label='Description' />
+      <InputControl name="description" label="Description" />
     </>
   );
 

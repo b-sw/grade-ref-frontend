@@ -1,15 +1,15 @@
 import { Flex } from '@chakra-ui/react';
-import { Match } from 'entities/Match';
 import { MatchData } from 'components/matchPage/MatchSectionsPanel';
 import { Report } from 'components/matchPage/sections/files/Report';
 import { ReportType } from 'hooks/useReports';
-import { SectionHeading } from "components/matchPage/components/SectionHeading";
+import { SectionHeading } from 'components/matchPage/components/SectionHeading';
 import { AttachmentIcon } from '@chakra-ui/icons';
 import { Section } from 'components/matchPage/components/Section';
 import { SectionBody } from 'components/matchPage/components/SectionBody';
+import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
 
 interface ReportsProps {
-  match: Match;
+  match: MatchInfoEnriched;
 }
 
 export const Files = ({ match }: ReportsProps) => {

@@ -1,4 +1,4 @@
-const defaultSelectVariant = (_props: any) => {
+const defaultSelectVariant = () => {
   return {
     field: {
       background: 'gray.100',
@@ -10,14 +10,14 @@ const defaultSelectVariant = (_props: any) => {
         background: 'gray.50',
       },
     },
-  }
-}
+  };
+};
 
 export const Select = {
   variants: {
-    defaultSelect: defaultSelectVariant
+    defaultSelect: defaultSelectVariant,
   },
   defaultProps: {
     variant: 'defaultSelect',
-  }
+  },
 };

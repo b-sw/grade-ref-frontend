@@ -1,30 +1,30 @@
-import { EditIcon } from "@chakra-ui/icons";
-import { Button, Flex, Icon, useDisclosure, Spacer } from "@chakra-ui/react";
-import dayjs from "dayjs";
-import { Match } from "entities/Match";
-import { Constants } from "utils/Constants";
-import { BiDetail } from "react-icons/bi";
-import { TextField } from "components/matchPage/components/TextField";
-import { useStore } from "zustandStore/store";
-import { Role } from "utils/Role";
-import { SectionHeading } from "components/matchPage/components/SectionHeading";
-import { MatchData } from "components/matchPage/MatchSectionsPanel";
+import { EditIcon } from '@chakra-ui/icons';
+import { Button, Flex, Icon, Spacer, useDisclosure } from '@chakra-ui/react';
+import dayjs from 'dayjs';
+import { Constants } from 'utils/Constants';
+import { BiDetail } from 'react-icons/bi';
+import { TextField } from 'components/matchPage/components/TextField';
+import { useStore } from 'zustandStore/store';
+import { Role } from 'utils/Role';
+import { SectionHeading } from 'components/matchPage/components/SectionHeading';
+import { MatchData } from 'components/matchPage/MatchSectionsPanel';
 import { Section } from 'components/matchPage/components/Section';
 import { SectionBody } from 'components/matchPage/components/SectionBody';
 import { OverallGradeEditModal } from 'components/matchPage/sections/overallGrade/OverallGradeEditModal';
 import { AutoResizeTextFlex } from 'components/matchPage/components/AutoResizeTextFlex';
+import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
 
 interface OverallGradeProps {
-  match: Match;
+  match: MatchInfoEnriched;
 }
 
 export const OverallGrade = ({ match }: OverallGradeProps) => {
-  const user = useStore(state => state.user);
+  const user = useStore((state) => state.user);
   const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
 
-  const getReadableDatetime = (date: Date, format: string): string => {
+  const getReadableDatetime = (date: Date | undefined, format: string): string => {
     return date ? dayjs(date, Constants.DATETIME_FORMAT).format(format) : 'N/A';
-  }
+  };
 
   const overallGradeDate: string = getReadableDatetime(match.overallGradeDate, 'DD-MM-YYYY HH:mm');
 
@@ -43,12 +43,7 @@ export const OverallGrade = ({ match }: OverallGradeProps) => {
       {userCanEdit && <OverallGradeEditModal isOpen={isEditOpen} handleClose={onEditClose} match={match} />}
       <Section>
         <SectionHeading title={MatchData.OverallGrade} icon={<Icon as={BiDetail} boxSize={25} />}>
-          <Button
-            variant={'ghost'}
-            leftIcon={<Icon as={EditIcon} />}
-            onClick={onEditOpen}
-            disabled={!userCanEdit}
-          >
+          <Button variant={'ghost'} leftIcon={<Icon as={EditIcon} />} onClick={onEditOpen} disabled={!userCanEdit}>
             Edit
           </Button>
         </SectionHeading>
@@ -62,4 +57,4 @@ export const OverallGrade = ({ match }: OverallGradeProps) => {
       </Section>
     </>
   );
-}
+};

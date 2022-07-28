@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { MdFileDownload } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
 import { uuid } from 'utils/uuid';
-import { Dropzone } from "components/matchPage/components/Dropzone";
+import { Dropzone } from 'components/matchPage/components/Dropzone';
 
 interface DownloadableReportProps {
   reportType: ReportType;
@@ -29,7 +29,6 @@ export const DownloadReportZone = ({ reportType, hasWritePermissions }: Download
 
   useEffect(() => {
     getFile();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const deleteReport = () => {
@@ -42,9 +41,7 @@ export const DownloadReportZone = ({ reportType, hasWritePermissions }: Download
   };
 
   return (
-    <Dropzone
-      text={'Download'}
-    >
+    <Dropzone text={'Download'}>
       {/* todo: Fix positioning */}
       {hasWritePermissions && (
         <IconButton

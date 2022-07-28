@@ -15,13 +15,11 @@ export const useUserFeatures = (props?: UseUserFeaturesProps) => {
   const getUserFeatures = async (): Promise<Feature[]> => {
     const response = await axios.get(`users/${user.id}/features`);
     return response.data;
-  }
+  };
 
-  const query = useQuery(
-    [USER_FEATURES_QUERY_KEY, user.id],
-    getUserFeatures,
-    { enabled: props ? props.enableAutoRefetch : false },
-  );
+  const query = useQuery([USER_FEATURES_QUERY_KEY, user.id], getUserFeatures, {
+    enabled: props ? props.enableAutoRefetch : false,
+  });
 
   return { query };
-}
+};

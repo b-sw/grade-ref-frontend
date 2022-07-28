@@ -8,7 +8,7 @@ interface DropzoneProps {
   flexProps?: FlexProps;
 }
 
-export const Dropzone = ({ text, textColor, opacity, children, flexProps}: DropzoneProps) => {
+export const Dropzone = ({ text, textColor, opacity, children, flexProps }: DropzoneProps) => {
   return (
     <Flex
       w={'100%'}
@@ -27,9 +27,11 @@ export const Dropzone = ({ text, textColor, opacity, children, flexProps}: Dropz
 
       {children}
 
-      <Text opacity={opacity ?? 1} color={textColor ?? 'default'}>{text}</Text>
+      <Text opacity={opacity ?? 1} color={textColor ?? 'default'}>
+        {text}
+      </Text>
 
       <Spacer />
     </Flex>
   );
-}
+};

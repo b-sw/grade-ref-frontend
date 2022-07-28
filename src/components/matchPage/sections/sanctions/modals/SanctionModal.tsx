@@ -1,20 +1,20 @@
-import { Match } from "entities/Match";
-import { FormikModal } from "components/matchPage/components/FormikModal";
-import { useEffect } from "react";
+import { FormikModal } from 'components/matchPage/components/FormikModal';
+import { useEffect } from 'react';
 import { uuid } from 'utils/uuid';
 import { Card, Foul } from 'entities/Foul';
-import { sanctionsValidationSchema } from "components/matchPage/sections/sanctions/sanctions.validation";
-import { InputControl, NumberInputControl, SelectControl } from "formik-chakra-ui";
+import { sanctionsValidationSchema } from 'components/matchPage/sections/sanctions/sanctions.validation';
+import { InputControl, NumberInputControl, SelectControl } from 'formik-chakra-ui';
 import { SelectOptions, SelectOptionsConstant } from 'components/matchPage/components/SelectOptions';
 import { useLeagueTeams } from 'hooks/useLeagueTeams';
 import { Team } from 'entities/Team';
-import { AxiosError } from "axios";
-import { UseMutationResult } from "react-query";
+import { AxiosError } from 'axios';
+import { UseMutationResult } from 'react-query';
+import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
 
 interface SanctionsModalProps {
   isOpen: boolean;
   handleClose: () => void;
-  match: Match;
+  match: MatchInfoEnriched;
   mutation: UseMutationResult<Foul, AxiosError<unknown, any>, Foul, unknown>;
   foul?: Foul;
 }
@@ -36,7 +36,6 @@ export const SanctionModal = ({ isOpen, handleClose, match, mutation, foul }: Sa
       handleClose();
       mutation.reset();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mutation.isSuccess]);
 
   const initialValues: SanctionFormikValues = {
@@ -46,7 +45,7 @@ export const SanctionModal = ({ isOpen, handleClose, match, mutation, foul }: Sa
     description: foul ? foul.description : '',
     valid: foul ? foul.valid : true,
     teamId: foul ? foul.teamId : match.homeTeamId,
-  }
+  };
 
   const handleMutate = (values: SanctionFormikValues) => {
     mutation.mutate({
@@ -61,22 +60,22 @@ export const SanctionModal = ({ isOpen, handleClose, match, mutation, foul }: Sa
 
   const modalBody: JSX.Element = (
     <>
-      <NumberInputControl name='minute' label='Minute' />
+      <NumberInputControl name="minute" label="Minute" />
 
-      <SelectControl name='card' label='Card'>
+      <SelectControl name="card" label="Card">
         <SelectOptionsConstant valuesMap={{ [Card.Red]: Card.Red, [Card.Yellow]: Card.Yellow }} />
       </SelectControl>
 
-      <NumberInputControl name='playerNumber' label='Player number' />
+      <NumberInputControl name="playerNumber" label="Player number" />
 
-      <SelectControl name='teamId' label='Team'>
+      <SelectControl name="teamId" label="Team">
         <SelectOptions data={[homeTeam, awayTeam]} labelProps={['name']} />
       </SelectControl>
 
-      <InputControl name='description' label='Description' />
+      <InputControl name="description" label="Description" />
 
-      <SelectControl name='valid' label='Valid'>
-        <SelectOptionsConstant valuesMap={{ 'true': true, 'false': false }} />
+      <SelectControl name="valid" label="Valid">
+        <SelectOptionsConstant valuesMap={{ true: true, false: false }} />
       </SelectControl>
     </>
   );

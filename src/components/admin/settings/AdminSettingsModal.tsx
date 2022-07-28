@@ -1,6 +1,17 @@
-import {Box, Button, Modal, ModalHeader, ModalContent, ModalOverlay, useDisclosure, ModalCloseButton, ModalBody, ModalFooter } from '@chakra-ui/react';
-import {LeagueDeleteModal} from "components/admin/settings/LeagueDeleteModal";
-import {uuid} from "utils/uuid";
+import {
+  Box,
+  Button,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
+} from '@chakra-ui/react';
+import { LeagueDeleteModal } from 'components/admin/settings/LeagueDeleteModal';
+import { uuid } from 'utils/uuid';
 import { useParams } from 'react-router-dom';
 
 interface Props {
@@ -13,11 +24,7 @@ export const AdminSettingsModal = (props: Props) => {
   const { leagueId } = useParams<{ leagueId: uuid }>();
 
   return (
-    <Modal
-      isOpen={props.isOpen}
-      onClose={props.onClose}
-      isCentered
-    >
+    <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>League settings</ModalHeader>
@@ -29,9 +36,7 @@ export const AdminSettingsModal = (props: Props) => {
           </Box>
         </ModalBody>
         <ModalFooter>
-          <Button onClick={props.onClose}>
-            Close
-          </Button>
+          <Button onClick={props.onClose}>Close</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

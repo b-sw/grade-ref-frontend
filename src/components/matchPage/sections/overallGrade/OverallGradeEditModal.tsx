@@ -1,14 +1,14 @@
-import {Match} from "entities/Match";
-import {FormikModal} from "components/matchPage/components/FormikModal";
-import {useEffect} from "react";
-import { TextareaControl } from "formik-chakra-ui";
-import { useGrades } from "hooks/useGrades";
+import { FormikModal } from 'components/matchPage/components/FormikModal';
+import { useEffect } from 'react';
+import { TextareaControl } from 'formik-chakra-ui';
+import { useGrades } from 'hooks/useGrades';
 import { overallGradeValidationSchema } from 'components/matchPage/sections/overallGrade/overall-grade.validation';
+import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
 
 interface OverallGradeEditModalProps {
   isOpen: boolean;
   handleClose: () => void;
-  match: Match;
+  match: MatchInfoEnriched;
 }
 
 interface GradeFormikValues {
@@ -23,7 +23,6 @@ export const OverallGradeEditModal = ({ isOpen, handleClose, match }: OverallGra
       handleClose();
       updateMutation.reset();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updateMutation.isSuccess]);
 
   const initialValues: GradeFormikValues = {
@@ -33,18 +32,19 @@ export const OverallGradeEditModal = ({ isOpen, handleClose, match }: OverallGra
   const handleEditGrade = (values: GradeFormikValues) => {
     updateMutation.mutate({
       overallGrade: values.overallGrade,
-    } as Match);
+    } as MatchInfoEnriched);
   };
 
   const modalBody: JSX.Element = (
     <>
       <TextareaControl
-        name='overallGrade'
-        label='Overall grade'
-        textareaProps={{
-          rows: 30,
-          resize: 'none',
-          whiteSpace: 'pre-wrap',
+        name="overallGrade"
+        label="Overall grade"
+        textareaProps={
+          {
+            rows: 30,
+            resize: 'none',
+            whiteSpace: 'pre-wrap',
           } as any
         }
       />
@@ -64,4 +64,4 @@ export const OverallGradeEditModal = ({ isOpen, handleClose, match }: OverallGra
       size={'3xl'}
     />
   );
-}
+};

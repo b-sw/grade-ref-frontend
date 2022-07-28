@@ -1,17 +1,29 @@
-import {Button, Flex, Input, InputGroup, InputLeftElement, Modal, ModalBody, ModalContent,
+import {
+  Button,
+  Flex,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Modal,
+  ModalBody,
+  ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay, Spacer, Text, useDisclosure } from '@chakra-ui/react';
+  ModalOverlay,
+  Spacer,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
-import {Team} from "entities/Team";
-import { MdSearch } from "react-icons/md";
-import {TeamListItem} from "components/admin/teams/TeamListItem";
-import {useLeagueTeams} from "hooks/useLeagueTeams";
-import {TeamCreateModal} from "components/admin/teams/TeamCreateModal";
-import {useSetState} from "hooks/useSetState";
-import {teamFilter} from "components/utils/filters";
+import { Team } from 'entities/Team';
+import { MdSearch } from 'react-icons/md';
+import { TeamListItem } from 'components/admin/teams/TeamListItem';
+import { useLeagueTeams } from 'hooks/useLeagueTeams';
+import { TeamCreateModal } from 'components/admin/teams/TeamCreateModal';
+import { useSetState } from 'hooks/useSetState';
+import { teamFilter } from 'components/utils/filters';
 import { useEffect } from 'react';
-import {NoRecords} from "components/utils/NoRecords";
+import { NoRecords } from 'components/utils/NoRecords';
 
 interface Props {
   isOpen: boolean;
@@ -19,8 +31,8 @@ interface Props {
 }
 
 interface State {
-  teams: Team[],
-  filter: string,
+  teams: Team[];
+  filter: string;
 }
 
 export const TeamsModal = (props: Props) => {
@@ -35,15 +47,10 @@ export const TeamsModal = (props: Props) => {
   useEffect(() => {
     const filteredTeams: Team[] = teamFilter(teamsQuery.data!, state.filter);
     setState({ teams: filteredTeams });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.filter, teamsQuery.data]);
 
   return (
-    <Modal
-      isOpen={props.isOpen}
-      onClose={props.onClose}
-      isCentered
-    >
+    <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
@@ -62,10 +69,7 @@ export const TeamsModal = (props: Props) => {
           <Flex direction={'column'} h={'70vh'}>
             <TeamCreateModal isOpen={isCreateModalOpen} onClose={onCreateModalClose} />
             <InputGroup>
-              <InputLeftElement
-                pointerEvents={'none'}
-                children={<MdSearch />}
-              />
+              <InputLeftElement pointerEvents={'none'} children={<MdSearch />} />
               <Input
                 mb={2}
                 placeholder={'Search team'}
@@ -74,21 +78,16 @@ export const TeamsModal = (props: Props) => {
             </InputGroup>
 
             <Flex direction={'column'} gap={2} overflowY={'scroll'}>
-              {state.teams.length ?
-                state.teams.map((team: Team) =>
-                  <TeamListItem key={team.id} team={team} />)
-                :
-                NoRecords()
-              }
+              {state.teams.length
+                ? state.teams.map((team: Team) => <TeamListItem key={team.id} team={team} />)
+                : NoRecords()}
             </Flex>
           </Flex>
         </ModalBody>
         <ModalFooter>
-          <Button onClick={props.onClose}>
-            Close
-          </Button>
+          <Button onClick={props.onClose}>Close</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
   );
-}
+};

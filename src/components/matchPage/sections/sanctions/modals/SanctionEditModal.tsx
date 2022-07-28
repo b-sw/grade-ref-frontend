@@ -14,6 +14,12 @@ export const SanctionEditModal = ({ isOpen, handleClose, initialValue }: Sanctio
   const { query: matchQuery } = useLeagueMatch();
 
   return (
-    <SanctionModal isOpen={isOpen} handleClose={handleClose} match={matchQuery.data!} mutation={updateMutation} foul={initialValue} />
+    <SanctionModal
+      isOpen={isOpen}
+      handleClose={handleClose}
+      match={matchQuery.data!}
+      mutation={updateMutation}
+      foul={initialValue}
+    />
   );
 };

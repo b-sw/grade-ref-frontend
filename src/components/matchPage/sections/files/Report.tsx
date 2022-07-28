@@ -4,7 +4,7 @@ import { ActionType, GradeFilePermissions, Role } from 'utils/Role';
 import { useStore } from 'zustandStore/store';
 import { UploadReportZone } from 'components/matchPage/sections/files/UploadReportZone';
 import { DownloadReportZone } from 'components/matchPage/sections/files/DownloadReportZone';
-import { ReadOnlyReportZone } from "components/matchPage/sections/files/ReadOnlyReportZone";
+import { ReadOnlyReportZone } from 'components/matchPage/sections/files/ReadOnlyReportZone';
 import { AiOutlineFileDone, AiOutlineFileUnknown } from 'react-icons/ai';
 
 interface ReportProps {
@@ -32,7 +32,9 @@ export const Report = ({ reportType, isUploaded }: ReportProps) => {
 
   return (
     <Flex direction={'column'} w={'100%'}>
-      <Text fontSize={'xl'} fontWeight={'medium'}>{reportType} report:</Text>
+      <Text fontSize={'xl'} fontWeight={'medium'}>
+        {reportType} report:
+      </Text>
       {report}
     </Flex>
   );

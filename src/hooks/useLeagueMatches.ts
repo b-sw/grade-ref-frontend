@@ -1,13 +1,16 @@
-import { useToast } from "@chakra-ui/react";
-import axios, { AxiosError } from "axios";
-import { Dayjs } from "dayjs";
-import { QueryClient, useMutation, useQuery, useQueryClient } from "react-query";
-import { useParams } from "react-router-dom";
-import {Match} from "entities/Match";
-import {uuid} from "utils/uuid";
-import {getMatchesByDate} from "./utils/matches";
-import {toastError} from "./utils/toastError";
-import {enrichMatch} from "entities/utils/matchStatus";
+import { useToast } from '@chakra-ui/react';
+import axios, { AxiosError } from 'axios';
+import { Dayjs } from 'dayjs';
+import { QueryClient, useMutation, useQuery, useQueryClient } from 'react-query';
+import { useParams } from 'react-router-dom';
+import { uuid } from 'utils/uuid';
+import { getMatchesByDate } from './utils/matches';
+import { toastError } from './utils/toastError';
+import { enrichMatch, enrichMatchInfo } from 'entities/utils/matchStatus';
+import { MatchInfo } from 'entities/MatchInfo';
+import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
+import { Match } from 'entities/Match';
+import { MatchEnriched } from 'entities/MatchEnriched';
 
 export const MATCHES_QUERY_KEY = 'matches_qk';
 
@@ -22,30 +25,28 @@ export const useLeagueMatches = (props?: Props) => {
   let { leagueId } = useParams<{ leagueId: uuid }>();
   leagueId = props ? props.leagueId ?? leagueId : leagueId;
 
-  const getMatches = async (): Promise<Match[]> => {
+  const getMatches = async (): Promise<MatchInfoEnriched[]> => {
     const response = await axios.get(`leagues/${leagueId}/matches`);
-    return response.data.map((match: Match) => enrichMatch(match));
-  }
+    return response.data.map((match: MatchInfo) => enrichMatchInfo(match));
+  };
 
-  const postMatch = async (match: Match): Promise<Match> => {
+  const postMatch = async (match: Match): Promise<MatchEnriched> => {
     const response = await axios.post(`leagues/${leagueId}/matches`, match);
     return enrichMatch(response.data);
-  }
+  };
 
-  const deleteMatch = async (matchId: uuid): Promise<Match> => {
+  const deleteMatch = async (matchId: uuid): Promise<MatchEnriched> => {
     const response = await axios.delete(`leagues/${leagueId}/matches/${matchId}`);
-    return response.data;
-  }
+    return enrichMatch(response.data);
+  };
 
-  const query = useQuery(
-    [MATCHES_QUERY_KEY, leagueId],
-    getMatches,
-    { enabled: props ? !!props.enableAutoRefetch : false },
-  );
+  const query = useQuery([MATCHES_QUERY_KEY, leagueId], getMatches, {
+    enabled: props ? !!props.enableAutoRefetch : false,
+  });
 
   const postMutation = useMutation(postMatch, {
-    onSuccess: (match: Match) => {
-      queryClient.setQueryData([MATCHES_QUERY_KEY, leagueId], (old: any) => [...old, match]);
+    onSuccess: () => {
+      queryClient.invalidateQueries([MATCHES_QUERY_KEY, leagueId]);
       toast({
         title: 'Successfully added a match',
         status: 'success',
@@ -53,12 +54,12 @@ export const useLeagueMatches = (props?: Props) => {
         duration: 2000,
       });
     },
-    onError: (error: AxiosError, _variables, _context) => toastError(toast, error),
+    onError: (error: AxiosError) => toastError(toast, error),
   });
 
   const deleteMutation = useMutation(deleteMatch, {
-    onSuccess: (match: Match) => {
-      queryClient.setQueryData([MATCHES_QUERY_KEY, leagueId], (old: any) => old.filter((m: Match) => m.id !== match.id));
+    onSuccess: () => {
+      queryClient.invalidateQueries([MATCHES_QUERY_KEY, leagueId]);
       toast({
         title: 'Successfully deleted a match',
         status: 'success',
@@ -66,12 +67,12 @@ export const useLeagueMatches = (props?: Props) => {
         duration: 2000,
       });
     },
-    onError: (error: AxiosError, _variables, _context) => toastError(toast, error),
+    onError: (error: AxiosError) => toastError(toast, error),
   });
 
   const getByDate = (date: Dayjs) => {
     return getMatchesByDate(date, query.data);
-  }
+  };
 
   return { query, postMutation, deleteMutation, getByDate };
-}
+};

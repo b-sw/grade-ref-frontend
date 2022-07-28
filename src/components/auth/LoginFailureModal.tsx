@@ -1,17 +1,17 @@
 import {
-  Modal,
-  ModalHeader,
-  ModalBody,
   Button,
-  ModalOverlay,
-  ModalContent,
+  Modal,
+  ModalBody,
   ModalCloseButton,
+  ModalContent,
   ModalFooter,
+  ModalHeader,
+  ModalOverlay,
 } from '@chakra-ui/react';
 
 export interface Props {
-  onClose: () => void,
-  isOpen: boolean
+  onClose: () => void;
+  isOpen: boolean;
 }
 
 export const LoginFailureModal = (props: Props) => {
@@ -32,4 +32,4 @@ export const LoginFailureModal = (props: Props) => {
       </Modal>
     </>
   );
-}
+};

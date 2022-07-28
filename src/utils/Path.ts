@@ -9,4 +9,4 @@ export const Path = {
   MATCH_PAGE: '/match-page',
   OWNER_DASHBOARD: '/owner-dashboard',
   CONCLUSIONS: '/conclusions',
-}
+};

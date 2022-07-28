@@ -1,15 +1,8 @@
 import React from 'react';
-import {
-  IconButton,
-  Heading,
-  Text,
-  Flex,
-  Spacer,
-  Image,
-} from '@chakra-ui/react';
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import { Flex, Heading, IconButton, Image, Spacer, Text } from '@chakra-ui/react';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 
 const sliderProps = {
@@ -49,13 +42,7 @@ export const PagesCarousel = () => {
   ];
 
   return (
-    <Flex
-      p={4}
-      h={'100vh'}
-      align={'center'}
-      direction={'row'}
-      overflow={'hidden'}
-    >
+    <Flex p={4} h={'100vh'} align={'center'} direction={'row'} overflow={'hidden'}>
       <IconButton
         aria-label={'left-arrow'}
         variant={'ghost'}
@@ -63,10 +50,7 @@ export const PagesCarousel = () => {
         onClick={() => slider?.slickPrev()}
       />
 
-      <Flex
-        overflow={'hidden'}
-        direction={'column'}
-      >
+      <Flex overflow={'hidden'} direction={'column'}>
         <Slider {...sliderProps} ref={(slider) => setSlider(slider)}>
           {cards.map((card, index) => (
             <Flex key={index}>
@@ -75,7 +59,9 @@ export const PagesCarousel = () => {
                   <Image shadow={'xl'} src={card.img} />
                 </Flex>
                 <Flex direction={'column'} w={'40%'} ml={20}>
-                  <Heading fontSize={'5xl'} fontWeight={'semibold'}>{card.heading}</Heading>
+                  <Heading fontSize={'5xl'} fontWeight={'semibold'}>
+                    {card.heading}
+                  </Heading>
                   <Text fontSize={'2xl'} fontWeight={'light'}>
                     {card.shortText}
                   </Text>
@@ -98,4 +84,4 @@ export const PagesCarousel = () => {
       />
     </Flex>
   );
-}
+};

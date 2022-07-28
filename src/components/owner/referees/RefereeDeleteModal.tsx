@@ -1,17 +1,17 @@
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   Button,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Text,
 } from '@chakra-ui/react';
-import {User} from "entities/User";
-import {useUsers} from "hooks/useUsers";
-import {refereeItem} from "components/owner/referees/RefereeListItem";
+import { User } from 'entities/User';
+import { useUsers } from 'hooks/useUsers';
+import { refereeItem } from 'components/owner/referees/RefereeListItem';
 
 export interface Props {
   isOpen: boolean;
@@ -24,7 +24,7 @@ export const RefereeDeleteModal = (props: Props) => {
 
   const deleteReferee = () => {
     deleteMutation.mutate(props.referee.id);
-  }
+  };
 
   return (
     <>
@@ -34,25 +34,23 @@ export const RefereeDeleteModal = (props: Props) => {
           <ModalHeader>Delete referee</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text fontWeight='bold' mb='1rem'>
+            <Text fontWeight="bold" mb="1rem">
               Are you sure you want to delete the following referee?
             </Text>
             {refereeItem(props.referee)}
-            <Text fontWeight='bold' mt='1rem'>
+            <Text fontWeight="bold" mt="1rem">
               You can't undo this action afterwards.
             </Text>
           </ModalBody>
 
           <ModalFooter>
-            <Button onClick={props.onClose}>
-              Cancel
-            </Button>
-            <Button colorScheme='red' onClick={deleteReferee} isLoading={deleteMutation.isLoading} ml={3}>
+            <Button onClick={props.onClose}>Cancel</Button>
+            <Button colorScheme="red" onClick={deleteReferee} isLoading={deleteMutation.isLoading} ml={3}>
               Delete
             </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
     </>
-  )
-}
+  );
+};
