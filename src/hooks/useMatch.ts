@@ -38,6 +38,7 @@ export const useMatch = (props?: UseMatchProps) => {
 
   const query = useQuery([MATCH_QUERY_KEY, matchId, 'details'], getMatch, {
     enabled: props ? !!props.enableAutoRefetch : false,
+    staleTime: 60 * 1000,
   });
 
   const updateMatchMutation = useMutation(updateMatch, {

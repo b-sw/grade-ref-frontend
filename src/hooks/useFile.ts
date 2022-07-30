@@ -34,6 +34,7 @@ export const useFile = () => {
     {
       enabled: false,
       initialData: [] as MatchEnriched[],
+      staleTime: 60 * 1000,
     },
   );
 

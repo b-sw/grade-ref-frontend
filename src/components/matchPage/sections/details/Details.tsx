@@ -42,7 +42,7 @@ export const Details = ({ match }: DetailsProps) => {
 
   return (
     <>
-      {userCanEdit && <DetailsEditModal isOpen={isEditOpen} handleClose={onEditClose} />}
+      {userCanEdit && matchQuery.data && <DetailsEditModal isOpen={isEditOpen} handleClose={onEditClose} />}
 
       <Flex direction={'column'} w={'100%'} mb={5} gap={2}>
         <SectionHeading title={MatchData.Details} icon={<InfoIcon boxSize={25} />}>

@@ -115,12 +115,20 @@ export const MatchesPanel = ({ matches, readOnly, hideTabs }: MatchesPanelProps)
           >
             <TabList mx={5} my={2} gap={5}>
               <Tab>Past</Tab>
+              <Tab>Grade overdue</Tab>
               <Tab>Upcoming</Tab>
             </TabList>
             <TabPanels overflowY={'scroll'} h={'100%'}>
               <TabPanel display={'flex'} flexDirection={'column'} gap={2} h={'100%'}>
                 {getFilteredMatches(MatchStatus.Past).length
                   ? getFilteredMatches(MatchStatus.Past).map((match) => <MatchListItem key={match.id} match={match} />)
+                  : NoRecords()}
+              </TabPanel>
+              <TabPanel display={'flex'} flexDirection={'column'} gap={2} h={'100%'}>
+                {getFilteredMatches(MatchStatus.GradeOverdue).length
+                  ? getFilteredMatches(MatchStatus.GradeOverdue).map((match) => (
+                      <MatchListItem key={match.id} match={match} />
+                    ))
                   : NoRecords()}
               </TabPanel>
               <TabPanel display={'flex'} flexDirection={'column'} gap={2} h={'100%'}>

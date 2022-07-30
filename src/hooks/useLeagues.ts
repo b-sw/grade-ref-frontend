@@ -44,7 +44,10 @@ export const useLeagues = (props?: UseLeaguesProps) => {
     return response.data;
   };
 
-  const query = useQuery(queryKey, getLeagues, { enabled: props ? props.enableAutoRefetch : false });
+  const query = useQuery(queryKey, getLeagues, {
+    enabled: props ? props.enableAutoRefetch : false,
+    staleTime: 60 * 1000,
+  });
 
   const postMutation = useMutation(postLeague, {
     onSuccess: (league: League) => {

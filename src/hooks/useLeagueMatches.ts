@@ -42,6 +42,7 @@ export const useLeagueMatches = (props?: Props) => {
 
   const query = useQuery([MATCHES_QUERY_KEY, leagueId], getMatches, {
     enabled: props ? !!props.enableAutoRefetch : false,
+    staleTime: 60 * 1000,
   });
 
   const postMutation = useMutation(postMatch, {

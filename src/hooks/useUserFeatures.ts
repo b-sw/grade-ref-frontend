@@ -19,6 +19,7 @@ export const useUserFeatures = (props?: UseUserFeaturesProps) => {
 
   const query = useQuery([USER_FEATURES_QUERY_KEY, user.id], getUserFeatures, {
     enabled: props ? props.enableAutoRefetch : false,
+    staleTime: 60 * 1000,
   });
 
   return { query };

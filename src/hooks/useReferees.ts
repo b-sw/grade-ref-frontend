@@ -13,7 +13,10 @@ export const useReferees = (props?: Props) => {
     return response.data;
   };
 
-  const refereesQuery = useQuery(REFEREES_QUERY_KEY, getReferees, { enabled: props ? props.enableAutoRefetch : false });
+  const refereesQuery = useQuery(REFEREES_QUERY_KEY, getReferees, {
+    enabled: props ? props.enableAutoRefetch : false,
+    staleTime: 60 * 1000,
+  });
 
   return { refereesQuery };
 };
