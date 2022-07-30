@@ -19,7 +19,7 @@ import { uuid } from 'utils/uuid';
 import { AxiosError } from 'axios';
 import { UseMutationResult } from 'react-query';
 import { useSetState } from 'hooks/useSetState';
-import { useMatch } from 'hooks/useMatch';
+import { useLeagueMatch } from 'hooks/useLeagueMatch';
 
 interface EditModalProps<T> {
   isOpen: boolean;
@@ -47,7 +47,7 @@ export function DataTable<T extends object & { id: uuid }>({
   EditModal,
 }: DataTableProps<T>) {
   const { isOpen: isEditModalOpen, onOpen: onEditModalOpen, onClose: onEditModalClose } = useDisclosure();
-  const { query: matchQuery } = useMatch();
+  const { query: matchQuery } = useLeagueMatch();
   const [state, setState] = useSetState({ selected: null } as DataTableState<T>);
 
   const handleClose = () => {

@@ -12,11 +12,15 @@ import { User } from 'entities/User';
 
 export enum MatchStatus {
   Past = 'Past',
+  GradeOverdue = 'Grade overdue',
   Upcoming = 'Upcoming',
 }
 
 export const getMatchStatus = (match: Match | MatchInfo): MatchStatus => {
   if (dayjs(match.matchDate, Constants.DATETIME_FORMAT).toDate().getTime() < Date.now()) {
+    if (!match.refereeGrade || !match.overallGrade) {
+      return MatchStatus.GradeOverdue;
+    }
     return MatchStatus.Past;
   } else {
     return MatchStatus.Upcoming;

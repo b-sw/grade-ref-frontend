@@ -41,7 +41,10 @@ export const useLeagueUsers = (role: Role, props?: Props) => {
   const usersQuery = useQuery(
     [role === Role.Referee ? REFEREES_QUERY_KEY : OBSERVERS_QUERY_KEY, leagueId],
     getAssignedUsers,
-    { enabled: props ? !!props.enableAutoRefetch : false },
+    {
+      enabled: props ? !!props.enableAutoRefetch : false,
+      staleTime: 60 * 1000,
+    },
   );
 
   const addMutation = useMutation(assignUserToLeague, {

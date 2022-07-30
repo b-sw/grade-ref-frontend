@@ -1,7 +1,7 @@
 import { useMatchFeatures } from 'components/matchPage/sections/conclusions/useMatchFeatures';
 import { ConclusionModal } from 'components/matchPage/sections/conclusions/modals/ConclusionModal';
 import { Feature } from 'entities/Feature';
-import { useMatch } from 'hooks/useMatch';
+import { useLeagueMatch } from 'hooks/useLeagueMatch';
 
 interface ConclusionEditModalProps {
   isOpen: boolean;
@@ -11,7 +11,7 @@ interface ConclusionEditModalProps {
 
 export const ConclusionEditModal = ({ isOpen, handleClose, initialValue }: ConclusionEditModalProps) => {
   const { updateMutation } = useMatchFeatures();
-  const { query: matchQuery } = useMatch();
+  const { query: matchQuery } = useLeagueMatch();
 
   return (
     <ConclusionModal

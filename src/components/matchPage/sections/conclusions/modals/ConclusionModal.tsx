@@ -6,12 +6,12 @@ import { Feature, FeatureType } from 'entities/Feature';
 import { conclusionsValidationSchema } from 'components/matchPage/sections/conclusions/conclusions.validation';
 import { AxiosError } from 'axios';
 import { UseMutationResult } from 'react-query';
-import { MatchEnriched } from 'entities/MatchEnriched';
+import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
 
 interface ConclusionModalProps {
   isOpen: boolean;
   handleClose: () => void;
-  match: MatchEnriched;
+  match: MatchInfoEnriched;
   mutation: UseMutationResult<Feature, AxiosError<unknown, any>, Feature, unknown>;
   feature?: Feature;
 }
@@ -37,7 +37,6 @@ export const ConclusionModal = ({ isOpen, handleClose, match, mutation, feature 
   const handleMutateFeature = (values: ConclusionFormikValues) => {
     mutation.mutate({
       ...values,
-      refereeId: match.refereeId,
       matchId: match.id,
       id: feature?.id,
     } as Feature);

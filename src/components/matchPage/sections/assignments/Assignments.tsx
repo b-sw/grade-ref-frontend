@@ -33,7 +33,7 @@ export const Assignments = ({ match }: AssignmentsProps) => {
 
   return (
     <>
-      {userCanEdit && <AssignmentEditModal isOpen={isEditOpen} handleClose={onEditClose} />}
+      {userCanEdit && matchQuery.data && <AssignmentEditModal isOpen={isEditOpen} handleClose={onEditClose} />}
 
       <Section>
         <SectionHeading title={MatchData.Assignments} icon={<Icon as={MdPeople} boxSize={'25'} />}>

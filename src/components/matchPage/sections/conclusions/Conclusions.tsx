@@ -14,18 +14,11 @@ import { Section } from 'components/matchPage/components/Section';
 import { ConclusionAddModal } from 'components/matchPage/sections/conclusions/modals/ConclusionAddModal';
 import { useMatchFeatures } from 'components/matchPage/sections/conclusions/useMatchFeatures';
 import { ConclusionEditModal } from 'components/matchPage/sections/conclusions/modals/ConclusionEditModal';
-import { useMatch } from 'hooks/useMatch';
 
 export const Conclusions = () => {
-  const { query: matchQuery } = useMatch();
   const { isOpen: isAddOpen, onOpen: onAddOpen, onClose: onAddClose } = useDisclosure();
   const { query: featuresQuery, deleteMutation } = useMatchFeatures();
   const user = useStore((state) => state.user);
-
-  const handleOpenAddModal = async () => {
-    await matchQuery.refetch();
-    onAddOpen();
-  };
 
   const cols: Column<Feature>[] = [
     {
@@ -51,13 +44,7 @@ export const Conclusions = () => {
 
       <Section>
         <SectionHeading title={MatchData.Conclusions} icon={<Icon as={MdGrade} boxSize={25} />}>
-          <Button
-            variant={'ghost'}
-            leftIcon={<Icon as={AddIcon} />}
-            onClick={handleOpenAddModal}
-            disabled={!userCanEdit}
-            isLoading={matchQuery.isLoading}
-          >
+          <Button variant={'ghost'} leftIcon={<Icon as={AddIcon} />} onClick={onAddOpen} disabled={!userCanEdit}>
             Add
           </Button>
         </SectionHeading>

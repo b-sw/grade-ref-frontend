@@ -11,7 +11,7 @@ import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
 export enum ReportType {
   Observer = 'Observer',
   Mentor = 'Mentor',
-  Tv = 'Television',
+  Tv = 'Tv',
 }
 
 export interface ReportDto {

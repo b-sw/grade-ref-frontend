@@ -49,7 +49,10 @@ export const useUsers = (props?: Props) => {
 
   const { observersQuery } = useObservers(props);
 
-  const adminsQuery = useQuery(ADMINS_QUERY_KEY, getAdmins, { enabled: props ? props.enableAutoRefetch : false });
+  const adminsQuery = useQuery(ADMINS_QUERY_KEY, getAdmins, {
+    enabled: props ? props.enableAutoRefetch : false,
+    staleTime: 60 * 1000,
+  });
 
   const postMutation = useMutation(postUser, {
     onSuccess: (user: User) => {

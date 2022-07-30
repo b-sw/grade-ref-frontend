@@ -39,7 +39,10 @@ export const useLeagueTeams = (props?: Props) => {
     return response.data;
   };
 
-  const query = useQuery([TEAMS_QUERY_KEY, leagueId], getTeams, { enabled: props ? !!props.enableAutoRefetch : false });
+  const query = useQuery([TEAMS_QUERY_KEY, leagueId], getTeams, {
+    enabled: props ? !!props.enableAutoRefetch : false,
+    staleTime: 60 * 1000,
+  });
 
   const postMutation = useMutation(postTeam, {
     onSuccess: (team: Team) => {

@@ -15,6 +15,7 @@ export const useObservers = (props?: Props) => {
 
   const observersQuery = useQuery(OBSERVERS_QUERY_KEY, getObservers, {
     enabled: props ? props.enableAutoRefetch : false,
+    staleTime: 60 * 1000,
   });
 
   return { observersQuery };

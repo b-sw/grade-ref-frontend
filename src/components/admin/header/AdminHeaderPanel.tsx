@@ -3,7 +3,6 @@ import {
   Badge,
   Button,
   Flex,
-  Heading,
   Menu,
   MenuButton,
   MenuDivider,
@@ -51,7 +50,7 @@ export const AdminHeaderPanel = (props: Props) => {
   }
 
   const leagueIdx: number = leaguesQuery.data!.findIndex((l: League) => l.id === leagueId)!;
-  const leagueShortName: string = leaguesQuery.data![leagueIdx].shortName;
+  const leagueName: string = leaguesQuery.data![leagueIdx].name;
 
   const { badgeColor, badgeString } = getUserBadge(user.role!);
 
@@ -59,12 +58,9 @@ export const AdminHeaderPanel = (props: Props) => {
     <>
       <AdminSettingsModal isOpen={isSettingsOpen} onClose={onSettingsClose} />
       <TeamsModal isOpen={isTeamsOpen} onClose={onTeamsClose} />
-      <Flex m={0} p={0} mb={2} direction={['column', 'row']}>
-        <Heading>
-          {leagueShortName} {calendarYear}
-        </Heading>
-        <Spacer />
 
+      <Flex m={0} p={0} mb={2} direction={['column', 'row']}>
+        <Spacer />
         <Flex alignItems={'center'} direction={['column', 'row']} gap={2}>
           <Button
             onClick={() => {
@@ -108,14 +104,18 @@ export const AdminHeaderPanel = (props: Props) => {
             <MenuList alignItems={'center'}>
               <Flex direction={'column'} align={'center'} p={2}>
                 <Avatar name={user.firstName + ' ' + user.lastName} size={'xl'} />
-                <Badge my={2} colorScheme={badgeColor} fontSize={'xs'}>
-                  {badgeString}
-                </Badge>
                 <Text>
                   {user.firstName} {user.lastName}
                 </Text>
                 <Text fontSize={'sm'} color={'gray.400'}>
                   {user.email}
+                </Text>
+
+                <Badge mt={3} colorScheme={badgeColor} fontSize={'xs'}>
+                  {badgeString}
+                </Badge>
+                <Text mb={2} mt={1}>
+                  {leagueName} {calendarYear}
                 </Text>
               </Flex>
 

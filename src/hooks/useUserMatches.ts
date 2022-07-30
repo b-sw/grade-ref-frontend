@@ -32,6 +32,7 @@ export const useUserMatches = (props?: Props) => {
 
   const query = useQuery([USER_LEAGUE_MATCHES_QK, userId, leagueId], getMatches, {
     enabled: props ? !!props.enableAutoRefetch : false,
+    staleTime: 60 * 1000,
   });
 
   const getByDate = (date: Dayjs) => {

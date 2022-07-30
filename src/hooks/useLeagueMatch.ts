@@ -43,7 +43,10 @@ export const useLeagueMatch = (props?: UseLeagueMatchProps) => {
     return enrichMatchInfo(response.data);
   };
 
-  const query = useQuery([MATCH_QUERY_KEY, matchId], getMatch, { enabled: props ? !!props.enableAutoRefetch : false });
+  const query = useQuery([MATCH_QUERY_KEY, matchId], getMatch, {
+    enabled: props ? !!props.enableAutoRefetch : false,
+    staleTime: 60 * 1000,
+  });
 
   const updateRefereeNoteMutation = useMutation(updateRefereeNote, {
     onSuccess: (match: MatchInfo) => {
