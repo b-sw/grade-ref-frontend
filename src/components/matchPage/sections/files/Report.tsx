@@ -6,6 +6,7 @@ import { UploadReportZone } from 'components/matchPage/sections/files/UploadRepo
 import { DownloadReportZone } from 'components/matchPage/sections/files/DownloadReportZone';
 import { ReadOnlyReportZone } from 'components/matchPage/sections/files/ReadOnlyReportZone';
 import { AiOutlineFileDone, AiOutlineFileUnknown } from 'react-icons/ai';
+import { useTranslation } from 'react-i18next';
 
 interface ReportProps {
   reportType: ReportType;
@@ -14,11 +15,18 @@ interface ReportProps {
 
 export const Report = ({ reportType, isUploaded }: ReportProps) => {
   const user = useStore((state) => state.user);
+  const { t } = useTranslation();
+
+  const reportTypeNames = {
+    [ReportType.Observer]: t('matchPage.reports.observer'),
+    [ReportType.Mentor]: t('matchPage.reports.mentor'),
+    [ReportType.Tv]: t('matchPage.reports.tv'),
+  };
 
   const hasReadPermissions = GradeFilePermissions[user.role! as Role][ActionType.Read].has(reportType);
   const hasWritePermissions = GradeFilePermissions[user.role! as Role][ActionType.Write].has(reportType);
 
-  let report = <ReadOnlyReportZone text={'Empty'} iconType={AiOutlineFileUnknown} />;
+  let report = <ReadOnlyReportZone text={t('matchPage.reports.empty')} iconType={AiOutlineFileUnknown} />;
 
   if (hasReadPermissions) {
     if (isUploaded) {
@@ -27,13 +35,13 @@ export const Report = ({ reportType, isUploaded }: ReportProps) => {
       report = <UploadReportZone reportType={reportType} />;
     }
   } else if (isUploaded) {
-    report = <ReadOnlyReportZone text={'Uploaded'} iconType={AiOutlineFileDone} />;
+    report = <ReadOnlyReportZone text={t('matchPage.reports.uploaded')} iconType={AiOutlineFileDone} />;
   }
 
   return (
     <Flex direction={'column'} w={'100%'}>
       <Text fontSize={'xl'} fontWeight={'medium'}>
-        {reportType} report:
+        {reportTypeNames[reportType]} {t('matchPage.reports.report')}:
       </Text>
       {report}
     </Flex>

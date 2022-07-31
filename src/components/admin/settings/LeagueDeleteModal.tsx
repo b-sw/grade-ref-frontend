@@ -1,18 +1,18 @@
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   Button,
-  Text,
   Code,
+  Flex,
   FormControl,
   FormLabel,
   Input,
-  Flex,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Text,
 } from '@chakra-ui/react';
 import { useLeagues } from 'hooks/useLeagues';
 import { useLeagueMatches } from 'hooks/useLeagueMatches';
@@ -21,6 +21,7 @@ import { League } from 'entities/League';
 import { uuid } from 'utils/uuid';
 import { leagueItem } from 'components/admin/explorer/AdminLeagueCard';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   isOpen: boolean;
@@ -39,6 +40,7 @@ export const LeagueDeleteModal = (props: Props) => {
   const [state, setState] = useSetState({
     text: '',
   } as State);
+  const { t } = useTranslation();
   const safetyText = 'greedy marlin';
 
   const leagueIdx: number = leaguesQuery.data!.findIndex((l: League) => l.id === props.leagueId)!;
@@ -61,22 +63,22 @@ export const LeagueDeleteModal = (props: Props) => {
     <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>League deletion</ModalHeader>
+        <ModalHeader>{t('league.deleteModal.title')}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Text>
             {matchesQuery.data && matchesQuery.data.length > 0
-              ? 'If you remove this league all its matches and their grades will also be purged.'
-              : 'Are you sure you want to delete this league?'}
+              ? t('league.deleteModal.matchesWarning')
+              : t('league.deleteModal.questionWarning')}
           </Text>
           <Flex my={2} p={5} borderRadius={10} alignItems={'center'} backgroundColor={'gray.50'}>
             {leagueItem(league)}
           </Flex>
-          <Text color={'red'}>This operation cannot be reversed.</Text>
-          <Text mt={5}>Confirm by rewriting this text:</Text>
+          <Text color={'red'}>{t('league.deleteModal.reverseWarning')}</Text>
+          <Text mt={5}>{t('league.deleteModal.confirm')}:</Text>
           <Code my={2}>{safetyText}</Code>
           <FormControl>
-            <FormLabel>Text</FormLabel>
+            <FormLabel>{t('league.deleteModal.text')}</FormLabel>
             <Input
               value={state.text}
               onChange={(e) => setState({ text: e.target.value })}
@@ -87,9 +89,9 @@ export const LeagueDeleteModal = (props: Props) => {
 
         <ModalFooter>
           <Button colorScheme="red" mr={'3'} onClick={() => deleteLeague()} isLoading={deleteMutation.isLoading}>
-            Delete
+            {t('modal.delete')}
           </Button>
-          <Button onClick={props.onClose}>Cancel</Button>
+          <Button onClick={props.onClose}>{t('modal.cancel')}</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

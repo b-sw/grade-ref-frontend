@@ -9,6 +9,7 @@ import { assignmentsValidationSchema } from 'components/matchPage/sections/assig
 import { FormikModal } from 'components/matchPage/components/FormikModal';
 import { useMatch } from 'hooks/useMatch';
 import { Match } from 'entities/Match';
+import { useTranslation } from 'react-i18next';
 
 interface AssignmentEditModalProps {
   isOpen: boolean;
@@ -24,6 +25,7 @@ export const AssignmentEditModal = ({ isOpen, handleClose }: AssignmentEditModal
   const { query: matchQuery, updateMatchMutation: updateMutation } = useMatch();
   const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
   const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (updateMutation.isSuccess) {
@@ -47,11 +49,11 @@ export const AssignmentEditModal = ({ isOpen, handleClose }: AssignmentEditModal
 
   const modalBody: JSX.Element = (
     <>
-      <SelectControl name="refereeId" label="Referee">
+      <SelectControl name="refereeId" label={t('referee')}>
         <SelectOptions data={refereesQuery.data!} labelProps={['firstName', 'lastName']} />
       </SelectControl>
 
-      <SelectControl name="observerId" label="Observer">
+      <SelectControl name="observerId" label={t('observer')}>
         <SelectOptions data={observersQuery.data!} labelProps={['firstName', 'lastName']} />
       </SelectControl>
     </>
@@ -65,7 +67,7 @@ export const AssignmentEditModal = ({ isOpen, handleClose }: AssignmentEditModal
 
   return (
     <FormikModal
-      headingTitle={'Edit assignments'}
+      headingTitle={t('matchPage.assignments.editModal.title')}
       body={modalBody}
       isOpen={isOpen}
       handleSubmit={handleEditMatch}

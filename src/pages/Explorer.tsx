@@ -2,13 +2,18 @@ import { useLeagues } from 'hooks/useLeagues';
 import useAuth from '../hooks/useAuth';
 import { LoadingOverlay } from './LoadingOverlay';
 import { League } from 'entities/League';
-import { Button, Flex, Spacer } from '@chakra-ui/react';
+import { Button, Flex, IconButton, Spacer, useDisclosure } from '@chakra-ui/react';
 import { HiOutlineLogout } from 'react-icons/hi';
 import { LeagueCard } from 'components/explorer/LeagueCard';
+import { SettingsIcon } from '@chakra-ui/icons';
+import { useTranslation } from 'react-i18next';
+import { LanguageSettingsModal } from 'components/explorer/LanguageSettingsModal';
 
 export const Explorer = () => {
+  const { isOpen: isSettingsOpen, onOpen: onSettingsOpen, onClose: onSettingsClose } = useDisclosure();
   const { query: leaguesQuery } = useLeagues({ enableAutoRefetch: true });
   const { logout } = useAuth();
+  const { t } = useTranslation();
   const queries = [leaguesQuery];
 
   if (queries.some((query) => query.isLoading)) {
@@ -17,10 +22,12 @@ export const Explorer = () => {
 
   return (
     <Flex p={[2, 4]} m={0} h={['100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
+      <LanguageSettingsModal isOpen={isSettingsOpen} onClose={onSettingsClose} />
       <Flex mb={5}>
         <Spacer />
+        <IconButton aria-label={'settings'} onClick={onSettingsOpen} icon={<SettingsIcon />} />
         <Button ml={3} onClick={() => logout()} leftIcon={<HiOutlineLogout />}>
-          Log out
+          {t('explorer.logOut')}
         </Button>
       </Flex>
       <Flex flexGrow={1} flexDirection={'column'} justifyContent={'center'}>

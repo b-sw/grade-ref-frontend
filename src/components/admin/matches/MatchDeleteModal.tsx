@@ -20,6 +20,7 @@ import { useStore } from 'zustandStore/store';
 import { Role } from 'utils/Role';
 import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
 import { useLeagueTeams } from 'hooks/useLeagueTeams';
+import { useTranslation } from 'react-i18next';
 
 export interface MatchDeleteModalProps {
   isOpen: boolean;
@@ -31,6 +32,7 @@ export const MatchDeleteModal = ({ isOpen, onClose, match }: MatchDeleteModalPro
   const user = useStore((state) => state.user);
   const { deleteMutation } = useLeagueMatches();
   const { query: teamsQuery } = useLeagueTeams();
+  const { t } = useTranslation();
 
   const navigate: NavigateFunction = useNavigate();
   const { leagueId } = useParams<{ leagueId: uuid }>();
@@ -54,24 +56,24 @@ export const MatchDeleteModal = ({ isOpen, onClose, match }: MatchDeleteModalPro
       <Modal isOpen={isOpen} onClose={onClose} isCentered size={'3xl'}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Delete match</ModalHeader>
+          <ModalHeader>{t('matches.deleteModal.title')}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Text fontWeight="bold" mb="1rem">
-              Are you sure you want to delete the following match?
+              {t('matches.deleteModal.confirm')}
             </Text>
             <Flex p={5} borderRadius={10} alignItems={'center'} backgroundColor={'gray.50'}>
               {matchItem(match, teamsQuery.data!, navigate, leagueId!, true)}
             </Flex>
             <Text fontWeight="bold" mt="1rem">
-              You can't undo this action afterwards.
+              {t('matches.deleteModal.warning')}
             </Text>
           </ModalBody>
 
           <ModalFooter>
-            <Button onClick={onClose}>Cancel</Button>
+            <Button onClick={onClose}>{t('modal.cancel')}</Button>
             <Button colorScheme="red" onClick={deleteMatch} isLoading={deleteMutation.isLoading} ml={3}>
-              Delete
+              {t('modal.delete')}
             </Button>
           </ModalFooter>
         </ModalContent>

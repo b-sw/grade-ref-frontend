@@ -10,6 +10,7 @@ import { Team } from 'entities/Team';
 import { AxiosError } from 'axios';
 import { UseMutationResult } from 'react-query';
 import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
+import { useTranslation } from 'react-i18next';
 
 interface SanctionsModalProps {
   isOpen: boolean;
@@ -30,6 +31,7 @@ interface SanctionFormikValues {
 
 export const SanctionModal = ({ isOpen, handleClose, match, mutation, foul }: SanctionsModalProps) => {
   const { query: teamsQuery } = useLeagueTeams();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (mutation.isSuccess) {
@@ -60,21 +62,21 @@ export const SanctionModal = ({ isOpen, handleClose, match, mutation, foul }: Sa
 
   const modalBody: JSX.Element = (
     <>
-      <NumberInputControl name="minute" label="Minute" />
+      <NumberInputControl name="minute" label={t('matchPage.sanctions.minute')} />
 
-      <SelectControl name="card" label="Card">
+      <SelectControl name="card" label={t('matchPage.sanctions.card')}>
         <SelectOptionsConstant valuesMap={{ [Card.Red]: Card.Red, [Card.Yellow]: Card.Yellow }} />
       </SelectControl>
 
-      <NumberInputControl name="playerNumber" label="Player number" />
+      <NumberInputControl name="playerNumber" label={t('matchPage.sanctions.playerNumber')} />
 
-      <SelectControl name="teamId" label="Team">
+      <SelectControl name="teamId" label={t('matchPage.sanctions.team')}>
         <SelectOptions data={[homeTeam, awayTeam]} labelProps={['name']} />
       </SelectControl>
 
-      <InputControl name="description" label="Description" />
+      <InputControl name="description" label={t('matchPage.sanctions.description')} />
 
-      <SelectControl name="valid" label="Valid">
+      <SelectControl name="valid" label={t('matchPage.sanctions.validity')}>
         <SelectOptionsConstant valuesMap={{ true: true, false: false }} />
       </SelectControl>
     </>
@@ -82,7 +84,7 @@ export const SanctionModal = ({ isOpen, handleClose, match, mutation, foul }: Sa
 
   return (
     <FormikModal
-      headingTitle={foul ? 'Edit' : 'Add' + ' disciplinary sanction'}
+      headingTitle={foul ? t('modal.edit') : t('modal.add') + ' ' + t('matchPage.sanctions.modal.title')}
       body={modalBody}
       isOpen={isOpen}
       handleSubmit={handleMutate}

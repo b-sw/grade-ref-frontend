@@ -7,6 +7,7 @@ import { conclusionsValidationSchema } from 'components/matchPage/sections/concl
 import { AxiosError } from 'axios';
 import { UseMutationResult } from 'react-query';
 import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
+import { useTranslation } from 'react-i18next';
 
 interface ConclusionModalProps {
   isOpen: boolean;
@@ -22,6 +23,8 @@ interface ConclusionFormikValues {
 }
 
 export const ConclusionModal = ({ isOpen, handleClose, match, mutation, feature }: ConclusionModalProps) => {
+  const { t } = useTranslation();
+
   useEffect(() => {
     if (mutation.isSuccess) {
       handleClose();
@@ -56,7 +59,7 @@ export const ConclusionModal = ({ isOpen, handleClose, match, mutation, feature 
 
   return (
     <FormikModal
-      headingTitle={feature ? 'Edit' : 'Add' + ' conclusion'}
+      headingTitle={feature ? t('modal.edit') : t('modal.add') + ' ' + t('matchPage.conclusions.modal.title')}
       body={modalBody}
       isOpen={isOpen}
       handleSubmit={handleMutateFeature}

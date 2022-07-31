@@ -62,17 +62,29 @@ export const matchItem = (
       <Flex w={'50%'}>
         <Flex w={'40%'}>
           <Spacer />
-          <Text fontWeight={'medium'}>{homeTeam.name}</Text>
+          <Flex direction={'column'}>
+            <Spacer />
+            <Text fontWeight={'medium'}>{homeTeam.name}</Text>
+            <Spacer />
+          </Flex>
         </Flex>
 
         <Flex w={'20%'}>
           <Spacer />
-          {timeItem(matchTime)}
+          <Flex direction={'column'}>
+            <Spacer />
+            {timeItem(matchTime)}
+            <Spacer />
+          </Flex>
           <Spacer />
         </Flex>
 
         <Flex w={'40%'}>
-          <Text fontWeight={'medium'}>{awayTeam.name}</Text>
+          <Flex direction={'column'}>
+            <Spacer />
+            <Text fontWeight={'medium'}>{awayTeam.name}</Text>
+            <Spacer />
+          </Flex>
           <Spacer />
         </Flex>
       </Flex>
@@ -116,9 +128,7 @@ export const matchItem = (
 export const timeItem = (time: string) => {
   return (
     <Flex direction={'column'} borderRadius={5} borderWidth={1} px={1} borderColor={'gray.300'}>
-      <Spacer />
       <Text fontWeight={'light'}>{time}</Text>
-      <Spacer />
     </Flex>
   );
 };

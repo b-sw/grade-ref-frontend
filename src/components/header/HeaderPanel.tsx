@@ -10,6 +10,7 @@ import {
   MenuList,
   Spacer,
   Text,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { useStore } from 'zustandStore/store';
 import useAuth from 'hooks/useAuth';
@@ -23,26 +24,31 @@ import { getUserBadge } from 'components/dashboard/grades/GradeListItem';
 import { League } from 'entities/League';
 import { useLeagues } from 'hooks/useLeagues';
 import { Role } from 'utils/Role';
+import { LanguageSettingsModal } from 'components/explorer/LanguageSettingsModal';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   pageTitle: string;
 }
 
 export const HeaderPanel = (props: Props) => {
+  const { isOpen: isSettingsOpen, onOpen: onSettingsOpen, onClose: onSettingsClose } = useDisclosure();
   const user = useStore((state) => state.user);
   const calendarYear: number = useStore((state) => state.calendarYear);
   const navigate = useNavigate();
   const { leagueId } = useParams<{ leagueId: uuid }>();
   const { logout } = useAuth();
   const { query: leaguesQuery } = useLeagues();
+  const { t } = useTranslation();
 
   const leagueIdx: number = leaguesQuery.data!.findIndex((l: League) => l.id === leagueId)!;
   const leagueName: string = leaguesQuery.data![leagueIdx].name;
 
-  const { badgeColor, badgeString } = getUserBadge(user.role!);
+  const { badgeColor, badgeString } = getUserBadge(user.role!, t);
 
   return (
     <>
+      <LanguageSettingsModal isOpen={isSettingsOpen} onClose={onSettingsClose} />
       <Flex m={0} p={0} mb={2} direction={['column', 'row']}>
         <Spacer />
 
@@ -55,7 +61,7 @@ export const HeaderPanel = (props: Props) => {
               leftIcon={<MdList />}
               colorScheme={props.pageTitle.includes(PageTitle.Conclusions) ? 'blue' : 'gray'}
             >
-              Conclusions
+              {t('pageNames.conclusions')}
             </Button>
           )}
 
@@ -66,7 +72,16 @@ export const HeaderPanel = (props: Props) => {
             leftIcon={<CalendarIcon />}
             colorScheme={props.pageTitle.includes(PageTitle.Calendar) ? 'blue' : 'gray'}
           >
-            Calendar
+            {t('pageNames.calendar')}
+          </Button>
+
+          <Button
+            onClick={() => {
+              navigate(Path.EXPLORER);
+            }}
+            leftIcon={<MdApps />}
+          >
+            {t('pageNames.explorer')}
           </Button>
 
           <Button
@@ -76,16 +91,7 @@ export const HeaderPanel = (props: Props) => {
             leftIcon={<MdDashboard />}
             colorScheme={props.pageTitle.includes(PageTitle.Dashboard) ? 'blue' : 'gray'}
           >
-            Dashboard
-          </Button>
-
-          <Button
-            onClick={() => {
-              navigate(Path.EXPLORER);
-            }}
-            leftIcon={<MdApps />}
-          >
-            Leagues
+            {t('pageNames.dashboard')}
           </Button>
 
           <Menu>
@@ -112,7 +118,8 @@ export const HeaderPanel = (props: Props) => {
 
               <MenuDivider />
 
-              <MenuItem onClick={() => logout()}>Logout</MenuItem>
+              <MenuItem onClick={onSettingsOpen}>{t('userMenu.settings')}</MenuItem>
+              <MenuItem onClick={() => logout()}>{t('userMenu.logOut')}</MenuItem>
             </MenuList>
           </Menu>
         </Flex>

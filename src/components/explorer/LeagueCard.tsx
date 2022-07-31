@@ -6,6 +6,7 @@ import { useLeagueTeams } from 'hooks/useLeagueTeams';
 import { leagueItem } from 'components/admin/explorer/AdminLeagueCard';
 import { useUserMatches } from 'hooks/useUserMatches';
 import { useStore } from 'zustandStore/store';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   league: League;
@@ -16,6 +17,7 @@ export const LeagueCard = (props: Props) => {
   const user = useStore((state) => state.user);
   const { query: teamsQuery } = useLeagueTeams({ leagueId: props.league.id });
   const { query: matchesQuery } = useUserMatches({ userId: user.id!, leagueId: props.league.id });
+  const { t } = useTranslation();
 
   const queries = [teamsQuery, matchesQuery];
 
@@ -37,7 +39,7 @@ export const LeagueCard = (props: Props) => {
           onClick={async () => await navigateToDashboard(props.league)}
           isLoading={queries.some((query) => query.isLoading)}
         >
-          Select
+          {t('explorer.select')}
         </Button>
       </VStack>
     </Flex>

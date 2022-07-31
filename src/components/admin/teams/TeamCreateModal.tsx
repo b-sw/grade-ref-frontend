@@ -13,6 +13,7 @@ import { InputControl } from 'formik-chakra-ui';
 import { useEffect } from 'react';
 import { useLeagueTeams } from 'hooks/useLeagueTeams';
 import { Team, teamValidationSchema } from 'entities/Team';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   isOpen: boolean;
@@ -25,6 +26,7 @@ interface FormikValues {
 
 export const TeamCreateModal = (props: Props) => {
   const { postMutation } = useLeagueTeams();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (postMutation.isSuccess) {
@@ -45,20 +47,20 @@ export const TeamCreateModal = (props: Props) => {
     <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Add team</ModalHeader>
+        <ModalHeader>{t('teams.addModal.title')}</ModalHeader>
         <ModalCloseButton />
 
         <Formik initialValues={initialValues} onSubmit={createTeam} validationSchema={teamValidationSchema}>
           {({ handleSubmit }) => (
             <Form onSubmit={handleSubmit}>
               <ModalBody>
-                <InputControl name="name" label="Name" inputProps={{ placeholder: 'Legia Warszawa' }} />
+                <InputControl name="name" label={t('teams.name')} inputProps={{ placeholder: 'Legia Warszawa' }} />
               </ModalBody>
               <ModalFooter>
                 <Button colorScheme="blue" mr={'3'} type="submit" isLoading={postMutation.isLoading}>
-                  Add
+                  {t('modal.add')}
                 </Button>
-                <Button onClick={() => props.onClose()}>Cancel</Button>
+                <Button onClick={() => props.onClose()}>{t('modal.cancel')}</Button>
               </ModalFooter>
             </Form>
           )}

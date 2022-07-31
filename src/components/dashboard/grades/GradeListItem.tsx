@@ -18,6 +18,7 @@ import { BsClockFill } from 'react-icons/bs';
 import { Role } from 'utils/Role';
 import { GradeEditModal } from 'components/matchPage/sections/grade/GradeEditModal';
 import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
+import { TFunction, useTranslation } from 'react-i18next';
 
 interface GradeListItemProps {
   match: MatchInfoEnriched;
@@ -28,6 +29,7 @@ interface GradeListItemProps {
 
 export const GradeListItem = ({ match, userFullName, userRole, readOnly }: GradeListItemProps) => {
   const { isOpen: isEditModalOpen, onOpen: onEditModalOpen, onClose: onEditModalClose } = useDisclosure();
+  const { t } = useTranslation();
 
   const enableEdit: boolean = (!isPastAdmissionWindow(match) || !match.refereeGrade) && !isUpcoming(match);
 
@@ -35,7 +37,7 @@ export const GradeListItem = ({ match, userFullName, userRole, readOnly }: Grade
     <>
       {!readOnly && <GradeEditModal isOpen={isEditModalOpen} handleClose={onEditModalClose} match={match} />}
       <Flex p={5} borderRadius={10} alignItems={'center'} backgroundColor={'gray.50'}>
-        {matchGradeItem(match, userFullName, userRole)}
+        {matchGradeItem(match, userFullName, userRole, t)}
         <Spacer />
         {!readOnly && (
           <IconButton
@@ -59,20 +61,27 @@ export const isUpcoming = (match: MatchInfoEnriched): boolean => {
   return dayjs(match.matchDate).add(MATCH_DURATION_TIME, 'hour').isAfter(dayjs());
 };
 
-export const matchGradeItem = (match: MatchInfoEnriched, userFullName: string, userRole: Role) => {
+export const matchGradeItem = (
+  match: MatchInfoEnriched,
+  userFullName: string,
+  userRole: Role,
+  t: TFunction<'translation', undefined>,
+) => {
   let gradeDate = 'TBD';
   let gradeTime = 'TBD';
   if (match.refereeGradeDate) {
     gradeDate = dayjs(match.refereeGradeDate, Constants.DATETIME_FORMAT).format('DD-MM-YYYY');
     gradeTime = dayjs(match.refereeGradeDate, Constants.DATETIME_FORMAT).format('HH:mm');
   }
-  const { badgeColor, badgeString } = getUserBadge(userRole);
+  const { badgeColor, badgeString } = getUserBadge(userRole, t);
 
   return (
     <>
       <VStack w={'100%'} align={'left'}>
         <Text fontSize={'sm'}>
-          <b>Match #{match.userReadableKey}</b>
+          <b>
+            {t('match')} #{match.userReadableKey}
+          </b>
         </Text>
         <Flex direction={['column', 'row']} gap={2}>
           <HStack w={['100$', '40%']}>
@@ -89,13 +98,13 @@ export const matchGradeItem = (match: MatchInfoEnriched, userFullName: string, u
 
           <VStack alignItems={'baseline'} w={['100$', '30%']}>
             <HStack>
-              <Text>Status:</Text>
+              <Text>{t('matches.status')}:</Text>
               <Badge colorScheme={match.gradeStatus.badgeScheme} fontSize={'xs'}>
                 {match.gradeStatus.status}
               </Badge>
             </HStack>
             <HStack>
-              <Text>Grade:</Text>
+              <Text>{t('grade')}:</Text>
               <Badge variant={'outline'} colorScheme={match.gradeStatus.badgeScheme} fontSize={'xs'}>
                 {match.refereeGrade ?? 'N/A'}
               </Badge>
@@ -123,18 +132,21 @@ export const matchGradeItem = (match: MatchInfoEnriched, userFullName: string, u
   );
 };
 
-export const getUserBadge = (userRole: Role): { badgeColor: string; badgeString: string } => {
+export const getUserBadge = (
+  userRole: Role,
+  t: TFunction<'translation', undefined>,
+): { badgeColor: string; badgeString: string } => {
   if (userRole === Role.Referee) {
-    return { badgeColor: 'facebook', badgeString: 'Referee' };
+    return { badgeColor: 'facebook', badgeString: t('referee') };
   }
 
   if (userRole === Role.Observer) {
-    return { badgeColor: 'purple', badgeString: 'Observer' };
+    return { badgeColor: 'purple', badgeString: t('observer') };
   }
 
   if (userRole === Role.Admin) {
-    return { badgeColor: 'orange', badgeString: 'League admin' };
+    return { badgeColor: 'orange', badgeString: t('leagueAdmin') };
   }
 
-  return { badgeColor: 'linkedin', badgeString: 'Owner' };
+  return { badgeColor: 'linkedin', badgeString: t('owner') };
 };

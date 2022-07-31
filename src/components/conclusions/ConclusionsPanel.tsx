@@ -4,9 +4,11 @@ import { DataTable } from 'components/matchPage/components/DataTable';
 import { NoRecords } from 'components/utils/NoRecords';
 import { Feature, FeatureType } from 'entities/Feature';
 import { Column } from 'react-table';
+import { useTranslation } from 'react-i18next';
 
 export const ConclusionsPanel = () => {
   const { query: featuresQuery } = useUserFeatures();
+  const { t } = useTranslation();
 
   const cols: Column<Feature>[] = [
     {
@@ -50,7 +52,7 @@ export const ConclusionsPanel = () => {
           overflowY={'scroll'}
         >
           <DataTable columns={cols} data={featuresQuery.data!} readOnly={true} />
-          {!featuresQuery.data!.length && NoRecords()}
+          {!featuresQuery.data!.length && NoRecords(t('noRecords'))}
         </Flex>
       </Flex>
 

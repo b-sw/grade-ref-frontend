@@ -8,6 +8,7 @@ import { MdFileDownload } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
 import { uuid } from 'utils/uuid';
 import { Dropzone } from 'components/matchPage/components/Dropzone';
+import { useTranslation } from 'react-i18next';
 
 interface DownloadableReportProps {
   reportType: ReportType;
@@ -24,6 +25,7 @@ export const DownloadReportZone = ({ reportType, hasWritePermissions }: Download
   } as State);
   const { leagueId } = useParams<{ leagueId: uuid }>();
   const { matchId } = useParams<{ matchId: uuid }>();
+  const { t } = useTranslation();
 
   const { deleteMutation } = useReports();
 
@@ -41,8 +43,7 @@ export const DownloadReportZone = ({ reportType, hasWritePermissions }: Download
   };
 
   return (
-    <Dropzone text={'Download'}>
-      {/* todo: Fix positioning */}
+    <Dropzone text={t('matchPage.reports.download')}>
       {hasWritePermissions && (
         <IconButton
           onClick={deleteReport}

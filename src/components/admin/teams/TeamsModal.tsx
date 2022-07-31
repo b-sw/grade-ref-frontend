@@ -24,6 +24,7 @@ import { useSetState } from 'hooks/useSetState';
 import { teamFilter } from 'components/utils/filters';
 import { useEffect } from 'react';
 import { NoRecords } from 'components/utils/NoRecords';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   isOpen: boolean;
@@ -38,6 +39,7 @@ interface State {
 export const TeamsModal = (props: Props) => {
   const { isOpen: isCreateModalOpen, onOpen: onCreateModalOpen, onClose: onCreateModalClose } = useDisclosure();
   const { query: teamsQuery } = useLeagueTeams();
+  const { t } = useTranslation();
 
   const [state, setState] = useSetState({
     teams: [],
@@ -56,11 +58,11 @@ export const TeamsModal = (props: Props) => {
         <ModalHeader>
           <Flex direction={'row'}>
             <Text fontWeight={'bold'} fontSize={'2xl'}>
-              Teams
+              {t('teams.title')}
             </Text>
             <Spacer />
             <Button variant={'ghost'} leftIcon={<AddIcon />} onClick={onCreateModalOpen}>
-              Add
+              {t('modal.add')}
             </Button>
           </Flex>
         </ModalHeader>
@@ -72,7 +74,7 @@ export const TeamsModal = (props: Props) => {
               <InputLeftElement pointerEvents={'none'} children={<MdSearch />} />
               <Input
                 mb={2}
-                placeholder={'Search team'}
+                placeholder={t('teams.search')}
                 onChange={(event) => setState({ filter: event.target.value })}
               />
             </InputGroup>
@@ -80,12 +82,12 @@ export const TeamsModal = (props: Props) => {
             <Flex direction={'column'} gap={2} overflowY={'scroll'}>
               {state.teams.length
                 ? state.teams.map((team: Team) => <TeamListItem key={team.id} team={team} />)
-                : NoRecords()}
+                : NoRecords(t('noRecords'))}
             </Flex>
           </Flex>
         </ModalBody>
         <ModalFooter>
-          <Button onClick={props.onClose}>Close</Button>
+          <Button onClick={props.onClose}>{t('modal.close')}</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

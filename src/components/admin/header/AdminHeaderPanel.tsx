@@ -16,7 +16,7 @@ import { useStore } from 'zustandStore/store';
 import useAuth from 'hooks/useAuth';
 import { Path } from 'utils/Path';
 import { MdApps, MdDashboard } from 'react-icons/md';
-import { CalendarIcon, SettingsIcon } from '@chakra-ui/icons';
+import { CalendarIcon } from '@chakra-ui/icons';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useLeagues } from 'hooks/useLeagues';
 import { uuid } from 'utils/uuid';
@@ -28,6 +28,7 @@ import { AdminSettingsModal } from 'components/admin/settings/AdminSettingsModal
 import { RiTeamFill } from 'react-icons/ri';
 import { TeamsModal } from 'components/admin/teams/TeamsModal';
 import { LoadingOverlay } from 'pages/LoadingOverlay';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   pageTitle: PageTitle;
@@ -44,6 +45,7 @@ export const AdminHeaderPanel = (props: Props) => {
   const navigate = useNavigate();
   const { query: leaguesQuery } = useLeagues({ enableAutoRefetch: true });
   const { leagueId } = useParams<{ leagueId: uuid }>();
+  const { t } = useTranslation();
 
   if (leaguesQuery.isLoading) {
     return <LoadingOverlay />;
@@ -52,7 +54,7 @@ export const AdminHeaderPanel = (props: Props) => {
   const leagueIdx: number = leaguesQuery.data!.findIndex((l: League) => l.id === leagueId)!;
   const leagueName: string = leaguesQuery.data![leagueIdx].name;
 
-  const { badgeColor, badgeString } = getUserBadge(user.role!);
+  const { badgeColor, badgeString } = getUserBadge(user.role!, t);
 
   return (
     <>
@@ -71,6 +73,21 @@ export const AdminHeaderPanel = (props: Props) => {
           >
             Calendar
           </Button>
+
+          <Button
+            onClick={() => {
+              setCalendarYear(dayjs().year());
+              navigate(Path.ADMIN_EXPLORER);
+            }}
+            leftIcon={<MdApps />}
+          >
+            Leagues
+          </Button>
+
+          <Button onClick={onTeamsOpen} leftIcon={<RiTeamFill />} colorScheme={isTeamsOpen ? 'blue' : 'gray'}>
+            Teams
+          </Button>
+
           <Button
             onClick={() => {
               setCalendarYear(dayjs().year());
@@ -80,21 +97,6 @@ export const AdminHeaderPanel = (props: Props) => {
             colorScheme={props.pageTitle.includes(PageTitle.Dashboard) && !isTeamsOpen ? 'blue' : 'gray'}
           >
             Dashboard
-          </Button>
-          <Button onClick={onTeamsOpen} leftIcon={<RiTeamFill />} colorScheme={isTeamsOpen ? 'blue' : 'gray'}>
-            Teams
-          </Button>
-          <Button onClick={onSettingsOpen} leftIcon={<SettingsIcon />}>
-            Settings
-          </Button>
-          <Button
-            onClick={() => {
-              setCalendarYear(dayjs().year());
-              navigate(Path.ADMIN_EXPLORER);
-            }}
-            leftIcon={<MdApps />}
-          >
-            Leagues
           </Button>
 
           <Menu>
@@ -121,6 +123,7 @@ export const AdminHeaderPanel = (props: Props) => {
 
               <MenuDivider />
 
+              <MenuItem onClick={onSettingsOpen}>Settings</MenuItem>
               <MenuItem onClick={() => logout()}>Logout</MenuItem>
             </MenuList>
           </Menu>

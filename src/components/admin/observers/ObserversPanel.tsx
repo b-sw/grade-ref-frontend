@@ -10,6 +10,7 @@ import { useSetState } from 'hooks/useSetState';
 import { userFilter } from 'components/utils/filters';
 import { useEffect } from 'react';
 import { NoRecords } from 'components/utils/NoRecords';
+import { useTranslation } from 'react-i18next';
 
 interface State {
   observers: User[];
@@ -19,6 +20,7 @@ interface State {
 export const ObserversPanel = () => {
   const { isOpen: isCreateModalOpen, onOpen: onCreateModalOpen, onClose: onCreateModalClose } = useDisclosure();
   const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
+  const { t } = useTranslation();
 
   const [state, setState] = useSetState({
     observers: [],
@@ -67,7 +69,7 @@ export const ObserversPanel = () => {
         <Flex direction={'column'} gap={2} overflowY={'scroll'}>
           {state.observers.length
             ? state.observers.map((observer: User) => <ObserverListItem key={observer.id} observer={observer} />)
-            : NoRecords()}
+            : NoRecords(t('noRecords'))}
         </Flex>
       </Flex>
     </>
