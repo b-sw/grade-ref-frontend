@@ -2,6 +2,7 @@ import { Flex, FlexProps, Spacer, Text } from '@chakra-ui/react';
 
 interface DropzoneProps {
   text: string;
+  disabled?: boolean;
   textColor?: string;
   opacity?: number;
   children?: (JSX.Element | false)[] | (JSX.Element | false);
@@ -21,7 +22,6 @@ export const Dropzone = ({ text, textColor, opacity, children, flexProps }: Drop
       borderWidth={2}
       borderColor={'gray.400'}
       {...flexProps}
-      position={'relative'}
     >
       <Spacer />
 

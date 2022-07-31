@@ -6,6 +6,8 @@ import { MdFileUpload } from 'react-icons/md';
 import { useEffect } from 'react';
 import { Dropzone } from 'components/matchPage/components/Dropzone';
 import { useTranslation } from 'react-i18next';
+import { useLeagueMatch } from 'hooks/useLeagueMatch';
+import { MatchStatus } from 'entities/utils/matchStatus';
 
 interface UploadReportZoneProps {
   reportType: ReportType;
@@ -21,6 +23,9 @@ export const UploadReportZone = ({ reportType }: UploadReportZoneProps) => {
   const toast = useToast();
   const { t } = useTranslation();
 
+  const { query: matchQuery } = useLeagueMatch();
+  const matchIsUpcoming = matchQuery.data!.matchStatus === MatchStatus.Upcoming;
+
   const [state, setState] = useSetState({
     files: [],
     isLoading: false,
@@ -31,7 +36,7 @@ export const UploadReportZone = ({ reportType }: UploadReportZoneProps) => {
       setState({ files: files });
       uploadFile(files[0]);
     },
-    disabled: postMutation.isLoading,
+    disabled: postMutation.isLoading || matchIsUpcoming,
     accept: {
       'application/pdf': ['.pdf'],
     },

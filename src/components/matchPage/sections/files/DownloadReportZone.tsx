@@ -9,6 +9,8 @@ import { useParams } from 'react-router-dom';
 import { uuid } from 'utils/uuid';
 import { Dropzone } from 'components/matchPage/components/Dropzone';
 import { useTranslation } from 'react-i18next';
+import { useLeagueMatch } from 'hooks/useLeagueMatch';
+import { MatchStatus } from 'entities/utils/matchStatus';
 
 interface DownloadableReportProps {
   reportType: ReportType;
@@ -26,11 +28,15 @@ export const DownloadReportZone = ({ reportType, hasWritePermissions }: Download
   const { leagueId } = useParams<{ leagueId: uuid }>();
   const { matchId } = useParams<{ matchId: uuid }>();
   const { t } = useTranslation();
-
   const { deleteMutation } = useReports();
 
+  const { query: matchQuery } = useLeagueMatch();
+  const matchIsUpcoming = matchQuery.data!.matchStatus === MatchStatus.Upcoming;
+
   useEffect(() => {
-    getFile();
+    if (!matchIsUpcoming) {
+      getFile();
+    }
   }, []);
 
   const deleteReport = () => {
@@ -54,6 +60,7 @@ export const DownloadReportZone = ({ reportType, hasWritePermissions }: Download
           top={2}
           right={2}
           isLoading={deleteMutation.isLoading}
+          disabled={matchIsUpcoming}
         />
       )}
 
@@ -64,6 +71,7 @@ export const DownloadReportZone = ({ reportType, hasWritePermissions }: Download
         aria-label="Download"
         icon={<MdFileDownload size={'40'} />}
         opacity={0.6}
+        disabled={matchIsUpcoming}
       />
     </Dropzone>
   );
