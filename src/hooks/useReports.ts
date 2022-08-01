@@ -7,6 +7,7 @@ import { MATCHES_QUERY_KEY } from './useLeagueMatches';
 import { MATCH_QUERY_KEY } from 'hooks/useLeagueMatch';
 import { enrichMatchInfo } from 'entities/utils/matchStatus';
 import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
+import { useTranslation } from 'react-i18next';
 
 export enum ReportType {
   Observer = 'Observer',
@@ -24,6 +25,7 @@ export const useReports = () => {
   const toast = useToast();
   const { leagueId } = useParams<{ leagueId: uuid }>();
   const { matchId } = useParams<{ matchId: uuid }>();
+  const { t } = useTranslation();
 
   const uploadReport = async (dto: ReportDto): Promise<MatchInfoEnriched> => {
     const response = await axios.post(`leagues/${leagueId}/matches/${matchId}/reports/${dto.type}`, dto.fileFormData);
@@ -40,7 +42,7 @@ export const useReports = () => {
       queryClient.invalidateQueries([MATCHES_QUERY_KEY]);
       queryClient.invalidateQueries([MATCH_QUERY_KEY]);
       toast({
-        title: 'Successfully uploaded a report',
+        title: t('success.reportUpload'),
         status: 'success',
         position: 'bottom-right',
         duration: 2000,
@@ -53,7 +55,7 @@ export const useReports = () => {
       queryClient.invalidateQueries([MATCHES_QUERY_KEY]);
       queryClient.invalidateQueries([MATCH_QUERY_KEY]);
       toast({
-        title: 'Successfully deleted a report',
+        title: t('success.reportDelete'),
         status: 'success',
         position: 'bottom-right',
         duration: 2000,

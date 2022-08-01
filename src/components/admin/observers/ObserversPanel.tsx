@@ -49,11 +49,11 @@ export const ObserversPanel = () => {
       >
         <Flex mb={4}>
           <Text fontWeight={'bold'} fontSize={'2xl'}>
-            Observers
+            {t('observer_many')}
           </Text>
           <Spacer />
           <Button variant={'ghost'} leftIcon={<AddIcon />} onClick={onCreateModalOpen}>
-            Add
+            {t('modal.add')}
           </Button>
         </Flex>
 
@@ -61,7 +61,7 @@ export const ObserversPanel = () => {
           <InputLeftElement pointerEvents={'none'} children={<MdSearch />} />
           <Input
             mb={2}
-            placeholder={'Search observer'}
+            placeholder={t('observers.search')}
             onChange={(event) => setState({ filter: event.target.value })}
           />
         </InputGroup>

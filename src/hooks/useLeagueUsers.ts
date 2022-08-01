@@ -6,6 +6,7 @@ import { User } from 'entities/User';
 import { Role } from 'utils/Role';
 import { useParams } from 'react-router-dom';
 import { toastError } from './utils/toastError';
+import { useTranslation } from 'react-i18next';
 
 const REFEREES_QUERY_KEY = 'referees_qk';
 const OBSERVERS_QUERY_KEY = 'observers_qk';
@@ -20,6 +21,7 @@ export const useLeagueUsers = (role: Role, props?: Props) => {
   const queryClient: QueryClient = useQueryClient();
   let { leagueId } = useParams<{ leagueId: uuid }>();
   leagueId = props ? props.leagueId ?? leagueId : leagueId;
+  const { t } = useTranslation();
 
   const usersTypes: string = role === Role.Referee ? 'referees' : 'observers';
 
@@ -53,7 +55,7 @@ export const useLeagueUsers = (role: Role, props?: Props) => {
       queryClient.setQueryData([queryKey, leagueId], (old: any) => [...old, user]);
 
       toast({
-        title: `Successfully added ${user.role}`,
+        title: t('success.userAssigned', { who: user.role }),
         status: 'success',
         position: 'bottom-right',
         duration: 2000,
@@ -68,7 +70,7 @@ export const useLeagueUsers = (role: Role, props?: Props) => {
       queryClient.setQueryData([queryKey, leagueId], (old: any) => old.filter((u: User) => u.id !== user.id));
 
       toast({
-        title: `Successfully deleted ${user.role}`,
+        title: t('success.userUnassigned', { who: user.role }),
         status: 'success',
         position: 'bottom-right',
         duration: 2000,

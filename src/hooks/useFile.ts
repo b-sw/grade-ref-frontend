@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 import { enrichMatch, enrichMatchDto } from 'entities/utils/matchStatus';
 import { MATCHES_QUERY_KEY } from './useLeagueMatches';
 import { MatchEnriched } from 'entities/MatchEnriched';
+import { useTranslation } from 'react-i18next';
 
 const UPLOADED_MATCHES_QK = 'uploaded_matches_qk';
 
@@ -15,6 +16,7 @@ export const useFile = () => {
   const toast = useToast();
   const queryClient: QueryClient = useQueryClient();
   const { leagueId } = useParams<{ leagueId: uuid }>();
+  const { t } = useTranslation();
 
   const validateFile = async (fileFormData: FormData): Promise<MatchEnriched[]> => {
     const response = await axios.post(`leagues/${leagueId}/matches/upload/validate`, fileFormData);
@@ -42,7 +44,7 @@ export const useFile = () => {
     onSuccess: (matchesDtos: MatchEnriched[]) => {
       queryClient.setQueryData([UPLOADED_MATCHES_QK, leagueId], () => matchesDtos);
       toast({
-        title: `Successfully validated ${matchesDtos.length} matches`,
+        title: t('success.matchesValidate', { howMany: matchesDtos.length }),
         status: 'success',
         position: 'bottom-right',
         duration: 2000,
@@ -55,7 +57,7 @@ export const useFile = () => {
     onSuccess: (matches: MatchEnriched[]) => {
       queryClient.setQueryData([MATCHES_QUERY_KEY, leagueId], (old: any) => [...old, ...matches]);
       toast({
-        title: `Successfully uploaded ${matches.length} matches`,
+        title: t('success.matchesUpload', { howMany: matches.length }),
         status: 'success',
         position: 'bottom-right',
         duration: 2000,

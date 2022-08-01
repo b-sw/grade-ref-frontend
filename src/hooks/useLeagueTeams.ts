@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { Team } from 'entities/Team';
 import { uuid } from 'utils/uuid';
 import { toastError } from './utils/toastError';
+import { useTranslation } from 'react-i18next';
 
 const TEAMS_QUERY_KEY = 'teams_qk';
 
@@ -18,6 +19,7 @@ export const useLeagueTeams = (props?: Props) => {
   const queryClient: QueryClient = useQueryClient();
   let { leagueId } = useParams<{ leagueId: uuid }>();
   leagueId = props ? props.leagueId ?? leagueId : leagueId;
+  const { t } = useTranslation();
 
   const getTeams = async (): Promise<Team[]> => {
     const response = await axios.get(`leagues/${leagueId}/teams`);
@@ -48,7 +50,7 @@ export const useLeagueTeams = (props?: Props) => {
     onSuccess: (team: Team) => {
       queryClient.setQueryData([TEAMS_QUERY_KEY, leagueId], (old: any) => [...old, team]);
       toast({
-        title: 'Successfully added a team',
+        title: t('success.teamAdd'),
         status: 'success',
         position: 'bottom-right',
         duration: 2000,
@@ -64,7 +66,7 @@ export const useLeagueTeams = (props?: Props) => {
         team,
       ]);
       toast({
-        title: 'Successfully updated a team',
+        title: t('success.teamUpdate'),
         status: 'success',
         position: 'bottom-right',
         duration: 2000,
@@ -77,7 +79,7 @@ export const useLeagueTeams = (props?: Props) => {
     onSuccess: (team: Team) => {
       queryClient.setQueryData([TEAMS_QUERY_KEY, leagueId], (old: any) => old.filter((t: Team) => t.id !== team.id));
       toast({
-        title: 'Successfully deleted a team',
+        title: t('success.teamDelete'),
         status: 'success',
         position: 'bottom-right',
         duration: 2000,

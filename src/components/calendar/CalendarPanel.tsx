@@ -8,6 +8,7 @@ import { useCalendar } from 'hooks/useCalendar';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { getMatchesByDate } from 'hooks/utils/matches';
 import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
+import { useTranslation } from 'react-i18next';
 
 export enum SlideDirection {
   LEFT = -1,
@@ -43,8 +44,11 @@ export const CalendarPanel = (props: Props) => {
     monthOffset: 0,
     slideDirection: SlideDirection.RIGHT,
   } as State);
+  const { t } = useTranslation();
 
   const { getCalendarPageDays, getMonthName } = useCalendar();
+
+  const dayShortNames: string[] = t('shortDays', { returnObjects: true });
 
   useEffect(() => {
     setSelectedDate(dayjs());
@@ -105,7 +109,7 @@ export const CalendarPanel = (props: Props) => {
       </Flex>
 
       <SimpleGrid columns={7} gap={2} mb={2}>
-        {Object.values(DayShortNames).map((dayName) => (
+        {dayShortNames.map((dayName) => (
           <Flex key={dayName}>
             <Spacer />
             <Text opacity={0.8}>{dayName}</Text>

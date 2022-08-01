@@ -37,7 +37,7 @@ export const AdminSettingsModal = (props: Props) => {
           {changeLanguageSection(i18n, t)}
           <Flex gap={2} direction={'column'}>
             <LeagueDeleteModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} leagueId={leagueId!} />
-            <Text fontWeight={'medium'}>League</Text>
+            <Text fontWeight={'medium'}>{t('league.title')}</Text>
             <Button onClick={onDeleteModalOpen} w={['auto', '30%']}>
               {t('settingsModal.deleteLeague')}
             </Button>

@@ -5,6 +5,7 @@ import { uuid } from 'utils/uuid';
 import { Foul } from 'entities/Foul';
 import axios, { AxiosError } from 'axios';
 import { toastError } from 'hooks/utils/toastError';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   enableAutoRefetch?: boolean;
@@ -17,6 +18,7 @@ export const useMatchFouls = (props?: Props) => {
   const { matchId } = useParams<{ matchId: uuid }>();
   const queryClient: QueryClient = useQueryClient();
   const toast = useToast();
+  const { t } = useTranslation();
 
   const queryKey = [FOULS_QUERY_KEY, matchId];
 
@@ -46,7 +48,7 @@ export const useMatchFouls = (props?: Props) => {
     onSuccess: (foul: Foul) => {
       queryClient.setQueryData(queryKey, (old: any) => [...old, foul]);
       toast({
-        title: 'Successfully added a foul',
+        title: t('success.foulAdd'),
         status: 'success',
         position: 'bottom-right',
         duration: 2000,
@@ -59,7 +61,7 @@ export const useMatchFouls = (props?: Props) => {
     onSuccess: (foul: Foul) => {
       queryClient.setQueryData(queryKey, (old: any) => [...old.filter((f: Foul) => f.id !== foul.id), foul]);
       toast({
-        title: 'Successfully updated a foul',
+        title: t('success.foulUpdate'),
         status: 'success',
         position: 'bottom-right',
         duration: 2000,
@@ -72,7 +74,7 @@ export const useMatchFouls = (props?: Props) => {
     onSuccess: (foul: Foul) => {
       queryClient.setQueryData(queryKey, (old: any) => [...old.filter((f: Foul) => f.id !== foul.id)]);
       toast({
-        title: 'Successfully deleted a foul',
+        title: t('success.foulDelete'),
         status: 'success',
         position: 'bottom-right',
         duration: 2000,

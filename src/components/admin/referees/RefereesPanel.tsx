@@ -49,17 +49,21 @@ export const RefereesPanel = () => {
       >
         <Flex mb={4}>
           <Text fontWeight={'bold'} fontSize={'2xl'}>
-            Referees
+            {t('referee_many')}
           </Text>
           <Spacer />
           <Button variant={'ghost'} leftIcon={<AddIcon />} onClick={onCreateModalOpen}>
-            Add
+            {t('modal.add')}
           </Button>
         </Flex>
 
         <InputGroup>
           <InputLeftElement pointerEvents={'none'} children={<MdSearch />} />
-          <Input mb={2} placeholder={'Search referee'} onChange={(event) => setState({ filter: event.target.value })} />
+          <Input
+            mb={2}
+            placeholder={t('referees.search')}
+            onChange={(event) => setState({ filter: event.target.value })}
+          />
         </InputGroup>
 
         <Flex direction={'column'} gap={2} overflow={'scroll'}>

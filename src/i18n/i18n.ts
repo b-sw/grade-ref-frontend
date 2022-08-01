@@ -13,6 +13,29 @@ i18next
     resources: {
       en: {
         translation: {
+          success: {
+            reportDelete: 'Successfully deleted a report',
+            reportUpload: 'Successfully uploaded a report',
+            foulAdd: 'Successfully added a foul',
+            foulUpdate: 'Successfully updated a foul',
+            foulDelete: 'Successfully deleted a foul',
+            matchesValidate: 'Successfully validated {{howMany}} matches',
+            matchesUpload: 'Successfully uploaded {{howMany}} matches',
+            gradeUpdate: 'Successfully updated a grade',
+            gradeOverallUpdate: 'Successfully updated an overall grade',
+            refereeNoteUpdate: 'Successfully updated a referee note',
+            matchAdd: 'Successfully added a match',
+            matchDelete: 'Successfully deleted a match',
+            matchUpdate: 'Successfully updated a match',
+            leagueAdd: 'Successfully added a league',
+            leagueUpdate: 'Successfully updated a league',
+            leagueDelete: 'Successfully deleted a league',
+            teamAdd: 'Successfully added a team',
+            teamUpdate: 'Successfully updated a team',
+            teamDelete: 'Successfully deleted a team',
+            userAssign: 'Successfully assigned {{who}}',
+            userUnassign: 'Successfully unassigned {{who}}',
+          },
           noRecords: 'No records found',
           modal: {
             close: 'Close',
@@ -25,6 +48,7 @@ i18next
             edit: 'Edit',
           },
           observer: 'Observer',
+          observer_many: 'Observers',
           referee: 'Referee',
           referee_many: 'Referees',
           leagueAdmin: 'League admin',
@@ -133,6 +157,7 @@ i18next
               title: 'Add referee to league',
               select: 'Select referee',
             },
+            search: 'Search referee',
           },
           observers: {
             remove: 'Remove observer',
@@ -141,8 +166,10 @@ i18next
               title: 'Add observer to league',
               select: 'Select observer',
             },
+            search: 'Search observer',
           },
           league: {
+            title: 'League',
             deleteModal: {
               title: 'Delete league',
               matchesWarning: 'If you remove this league all its matches and their grades will also be purged.',
@@ -166,7 +193,7 @@ i18next
             'November',
             'December',
           ],
-          days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+          shortDays: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
           matchPage: {
             sections: 'Page sections',
             details: {

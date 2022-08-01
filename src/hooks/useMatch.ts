@@ -7,6 +7,7 @@ import axios, { AxiosError } from 'axios';
 import { toastError } from 'hooks/utils/toastError';
 import { Match } from 'entities/Match';
 import { MatchEnriched } from 'entities/MatchEnriched';
+import { useTranslation } from 'react-i18next';
 
 interface UseMatchProps {
   matchId?: uuid;
@@ -19,6 +20,7 @@ export const MATCH_QUERY_KEY = 'match_qk';
 export const useMatch = (props?: UseMatchProps) => {
   const toast = useToast();
   const queryClient: QueryClient = useQueryClient();
+  const { t } = useTranslation();
 
   let { leagueId } = useParams<{ leagueId: uuid }>();
   let { matchId } = useParams<{ matchId: uuid }>();
@@ -45,7 +47,7 @@ export const useMatch = (props?: UseMatchProps) => {
     onSuccess: (match: MatchEnriched) => {
       queryClient.invalidateQueries([MATCH_QUERY_KEY, match.id]);
       toast({
-        title: 'Successfully updated a match',
+        title: t('success.matchUpdate'),
         status: 'success',
         position: 'bottom-right',
         duration: 2000,

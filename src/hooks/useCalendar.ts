@@ -1,20 +1,10 @@
 import dayjs, { Dayjs } from 'dayjs';
+import { useTranslation } from 'react-i18next';
 
 export const useCalendar = () => {
-  const monthNames = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
+  const { t } = useTranslation();
+
+  const monthNames: string[] = t('months', { returnObjects: true });
 
   const pageDaysCount = 42;
 
