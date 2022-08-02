@@ -100,7 +100,11 @@ export const MatchesUploadConfirmModal = (props: Props) => {
         <ModalBody>
           <InputGroup>
             <InputLeftElement pointerEvents={'none'} children={<MdSearch />} />
-            <Input mb={2} placeholder={'Search match'} onChange={(event) => setState({ filter: event.target.value })} />
+            <Input
+              mb={2}
+              placeholder={t('matches.searchMatch')}
+              onChange={(event) => setState({ filter: event.target.value })}
+            />
           </InputGroup>
 
           <Flex direction={'column'} gap={2} overflowY={'scroll'} h={'70vh'}>

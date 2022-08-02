@@ -23,8 +23,8 @@ interface AssignmentFormikValues {
 
 export const AssignmentEditModal = ({ isOpen, handleClose }: AssignmentEditModalProps) => {
   const { query: matchQuery, updateMatchMutation: updateMutation } = useMatch();
-  const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
-  const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
+  const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee, { enableAutoRefetch: true });
+  const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer, { enableAutoRefetch: true });
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -33,6 +33,12 @@ export const AssignmentEditModal = ({ isOpen, handleClose }: AssignmentEditModal
       updateMutation.reset();
     }
   }, [updateMutation.isSuccess]);
+
+  const queriesAreLoading: boolean = [refereesQuery, observersQuery].some((query) => query.isLoading);
+
+  if (queriesAreLoading) {
+    return <LoadingOverlay />;
+  }
 
   const initialValues: AssignmentFormikValues = {
     refereeId: matchQuery.data!.refereeId,
@@ -58,12 +64,6 @@ export const AssignmentEditModal = ({ isOpen, handleClose }: AssignmentEditModal
       </SelectControl>
     </>
   );
-
-  const queriesAreLoading: boolean = [refereesQuery, observersQuery].some((query) => query.isLoading);
-
-  if (queriesAreLoading) {
-    return <LoadingOverlay />;
-  }
 
   return (
     <FormikModal

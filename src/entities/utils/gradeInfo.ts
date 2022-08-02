@@ -3,10 +3,10 @@ import { GRADE_ADMISSION_TIME_WINDOW, Match, MATCH_DURATION_TIME } from 'entitie
 import { MatchInfo } from 'entities/MatchInfo';
 
 export enum GradeStatus {
-  Received = 'Received',
-  Overdue = 'Overdue',
-  Expected = 'Expected',
-  Pending = 'Pending',
+  Received,
+  Overdue,
+  Expected,
+  Pending,
 }
 
 export interface GradeInfo {

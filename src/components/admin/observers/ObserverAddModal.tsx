@@ -85,7 +85,7 @@ export const ObserverAddModal = (props: Props) => {
               isMulti
               name={'referees'}
               options={state.mappedObservers}
-              placeholder={'Select observer'}
+              placeholder={t('observers.addModal.select')}
               closeMenuOnSelect={false}
               onChange={(selection) => updateSelection(selection)}
             />

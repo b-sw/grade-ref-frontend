@@ -10,9 +10,11 @@ export const ConclusionsPanel = () => {
   const { query: featuresQuery } = useUserFeatures();
   const { t } = useTranslation();
 
+  const columnHeaders = [t('conlusions.type'), t('conlusions.description')];
+
   const cols: Column<Feature>[] = [
     {
-      Header: 'Type',
+      Header: columnHeaders[0],
       accessor: (d) => d.type,
       Cell: (props: any) => (
         <Text fontWeight={'medium'} color={props.value === FeatureType.Positive ? 'green.500' : 'red.400'}>
@@ -21,7 +23,7 @@ export const ConclusionsPanel = () => {
       ),
     },
     {
-      Header: 'Description',
+      Header: columnHeaders[1],
       accessor: 'description',
     },
   ];

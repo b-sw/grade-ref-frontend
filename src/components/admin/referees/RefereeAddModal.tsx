@@ -85,7 +85,7 @@ export const RefereeAddModal = (props: Props) => {
               isMulti
               name={'referees'}
               options={state.mappedReferees}
-              placeholder={'Select referee'}
+              placeholder={t('referees.addModal.select')}
               closeMenuOnSelect={false}
               onChange={(selection) => updateSelection(selection)}
             />

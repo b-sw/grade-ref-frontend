@@ -71,7 +71,7 @@ export const AdminHeaderPanel = (props: Props) => {
             leftIcon={<CalendarIcon />}
             colorScheme={props.pageTitle.includes(PageTitle.Calendar) ? 'blue' : 'gray'}
           >
-            Calendar
+            {t('pageNames.calendar')}
           </Button>
 
           <Button
@@ -81,11 +81,11 @@ export const AdminHeaderPanel = (props: Props) => {
             }}
             leftIcon={<MdApps />}
           >
-            Leagues
+            {t('pageNames.explorer')}
           </Button>
 
           <Button onClick={onTeamsOpen} leftIcon={<RiTeamFill />} colorScheme={isTeamsOpen ? 'blue' : 'gray'}>
-            Teams
+            {t('teams.title')}
           </Button>
 
           <Button
@@ -96,7 +96,7 @@ export const AdminHeaderPanel = (props: Props) => {
             leftIcon={<MdDashboard />}
             colorScheme={props.pageTitle.includes(PageTitle.Dashboard) && !isTeamsOpen ? 'blue' : 'gray'}
           >
-            Dashboard
+            {t('pageNames.dashboard')}
           </Button>
 
           <Menu>
@@ -123,8 +123,8 @@ export const AdminHeaderPanel = (props: Props) => {
 
               <MenuDivider />
 
-              <MenuItem onClick={onSettingsOpen}>Settings</MenuItem>
-              <MenuItem onClick={() => logout()}>Logout</MenuItem>
+              <MenuItem onClick={onSettingsOpen}>{t('userMenu.settings')}</MenuItem>
+              <MenuItem onClick={() => logout()}>{t('userMenu.logOut')}</MenuItem>
             </MenuList>
           </Menu>
         </Flex>

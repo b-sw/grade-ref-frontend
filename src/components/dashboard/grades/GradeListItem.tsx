@@ -19,6 +19,7 @@ import { Role } from 'utils/Role';
 import { GradeEditModal } from 'components/matchPage/sections/grade/GradeEditModal';
 import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
 import { TFunction, useTranslation } from 'react-i18next';
+import { GradeStatus } from 'entities/utils/gradeInfo';
 
 interface GradeListItemProps {
   match: MatchInfoEnriched;
@@ -75,6 +76,13 @@ export const matchGradeItem = (
   }
   const { badgeColor, badgeString } = getUserBadge(userRole, t);
 
+  const gradeStatuses: Map<GradeStatus, string> = new Map([
+    [GradeStatus.Expected, t('grades.expected')],
+    [GradeStatus.Overdue, t('grades.overdue')],
+    [GradeStatus.Received, t('grades.received')],
+    [GradeStatus.Pending, t('grades.pending')],
+  ]);
+
   return (
     <>
       <VStack w={'100%'} align={'left'}>
@@ -100,7 +108,7 @@ export const matchGradeItem = (
             <HStack>
               <Text>{t('matches.status')}:</Text>
               <Badge colorScheme={match.gradeStatus.badgeScheme} fontSize={'xs'}>
-                {match.gradeStatus.status}
+                {gradeStatuses.get(match.gradeStatus.status)}
               </Badge>
             </HStack>
             <HStack>
