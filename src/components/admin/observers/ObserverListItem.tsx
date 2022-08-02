@@ -5,6 +5,7 @@ import { User } from 'entities/User';
 import { ObserverRemoveModal } from 'components/admin/observers/ObserverRemoveModal';
 import { ObserverGradesModal } from 'components/admin/observers/ObserverGradesModal';
 import { useUserMatches } from 'hooks/useUserMatches';
+import { TFunction, useTranslation } from 'react-i18next';
 
 export interface Props {
   observer: User;
@@ -14,6 +15,7 @@ export const ObserverListItem = (props: Props) => {
   const { query: matchesQuery } = useUserMatches({ userId: props.observer.id });
   const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
   const { isOpen: isGradesModalOpen, onOpen: onGradesModalOpen, onClose: onGradesModalClose } = useDisclosure();
+  const { t } = useTranslation();
 
   const handleOpenGradesModal = async () => {
     await matchesQuery.refetch();
@@ -25,7 +27,7 @@ export const ObserverListItem = (props: Props) => {
       <ObserverRemoveModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} observer={props.observer} />
       <ObserverGradesModal observer={props.observer} isOpen={isGradesModalOpen} onClose={onGradesModalClose} />
       <Flex p={3} borderRadius={10} alignItems={'center'} backgroundColor={'gray.50'}>
-        {observerItem(props.observer)}
+        {observerItem(props.observer, t)}
         <Spacer />
         <IconButton
           onClick={handleOpenGradesModal}
@@ -40,33 +42,27 @@ export const ObserverListItem = (props: Props) => {
   );
 };
 
-export const observerItem = (
-  user: User,
-  avatarSize?: string,
-  nameSize?: string,
-  descriptionSize?: string,
-  showBadge?: boolean,
-) => {
+export const observerItem = (user: User, t: TFunction<'translation', undefined>) => {
   return (
     <>
       <HStack>
-        <Avatar name={user.firstName + ' ' + user.lastName} size={avatarSize ?? 'sm'} />
+        <Avatar name={user.firstName + ' ' + user.lastName} size={'sm'} />
         <VStack spacing={0} alignItems={'baseline'}>
           <HStack>
-            <Text fontSize={nameSize ?? 'md'}>
+            <Text fontSize={'md'}>
               {user.firstName} {user.lastName}
             </Text>
-            {showBadge && (
+            {
               <Badge colorScheme="purple" fontSize={'xs'}>
-                Observer
+                {t('observer')}
               </Badge>
-            )}
+            }
           </HStack>
           <VStack alignItems={'baseline'} spacing={0}>
-            <Text fontSize={descriptionSize ?? 'sm'} color={'gray.400'}>
+            <Text fontSize={'sm'} color={'gray.400'}>
               {user.email}
             </Text>
-            <Text fontSize={descriptionSize ?? 'sm'} color={'gray.400'}>
+            <Text fontSize={'sm'} color={'gray.400'}>
               {user.phoneNumber}
             </Text>
           </VStack>

@@ -10,6 +10,7 @@ import { SelectOptions } from 'components/matchPage/components/SelectOptions';
 import { FormikModal } from 'components/matchPage/components/FormikModal';
 import { useMatch } from 'hooks/useMatch';
 import { Match } from 'entities/Match';
+import { useTranslation } from 'react-i18next';
 
 interface DetailsEditModalProps {
   isOpen: boolean;
@@ -26,6 +27,7 @@ interface DetailsFormikValues {
 export const DetailsEditModal = ({ isOpen, handleClose }: DetailsEditModalProps) => {
   const { query: matchQuery, updateMatchMutation: updateMutation } = useMatch();
   const { query: teamsQuery } = useLeagueTeams();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (updateMutation.isSuccess) {
@@ -55,15 +57,15 @@ export const DetailsEditModal = ({ isOpen, handleClose }: DetailsEditModalProps)
 
   const modalBody: JSX.Element = (
     <>
-      <InputControl name="date" label="Date" inputProps={{ type: 'datetime-local' }} />
+      <InputControl name="date" label={t('matchPage.details.date')} inputProps={{ type: 'datetime-local' }} />
 
-      <InputControl name="stadium" label="Stadium" />
+      <InputControl name="stadium" label={t('matchPage.details.stadium')} />
 
-      <SelectControl name="homeTeamId" label="Home team">
+      <SelectControl name="homeTeamId" label={t('matchPage.details.homeTeam')}>
         <SelectOptions data={teamsQuery.data!} labelProps={['name']} />
       </SelectControl>
 
-      <SelectControl name="awayTeamId" label="Away team">
+      <SelectControl name="awayTeamId" label={t('matchPage.details.awayTeam')}>
         <SelectOptions data={teamsQuery.data!} labelProps={['name']} />
       </SelectControl>
     </>
@@ -75,7 +77,7 @@ export const DetailsEditModal = ({ isOpen, handleClose }: DetailsEditModalProps)
 
   return (
     <FormikModal
-      headingTitle={'Edit match details'}
+      headingTitle={t('matchPage.details.editTitle')}
       body={modalBody}
       isOpen={isOpen}
       handleSubmit={handleEditMatch}

@@ -17,6 +17,7 @@ import { User } from 'entities/User';
 import { useSetState } from 'hooks/useSetState';
 import { useLeagueUsers } from 'hooks/useLeagueUsers';
 import { useObservers } from 'hooks/useObservers';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   isOpen: boolean;
@@ -36,6 +37,7 @@ interface State {
 export const ObserverAddModal = (props: Props) => {
   const { usersQuery: leagueObserversQuery, addMutation } = useLeagueUsers(Role.Observer);
   const { observersQuery } = useObservers();
+  const { t } = useTranslation();
 
   const [state, setState] = useSetState({
     selectedOptions: [],
@@ -73,17 +75,17 @@ export const ObserverAddModal = (props: Props) => {
     <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Add observer</ModalHeader>
+        <ModalHeader>{t('observers.addModal.title')}</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
           <FormControl p={4}>
-            <FormLabel>Select observer</FormLabel>
+            <FormLabel>{t('observers.addModal.select')}</FormLabel>
             <Select
               isMulti
               name={'referees'}
               options={state.mappedObservers}
-              placeholder={'Select observer'}
+              placeholder={t('observers.addModal.select')}
               closeMenuOnSelect={false}
               onChange={(selection) => updateSelection(selection)}
             />
@@ -91,9 +93,9 @@ export const ObserverAddModal = (props: Props) => {
         </ModalBody>
         <ModalFooter>
           <Button colorScheme="blue" mr={'3'} onClick={addObservers} isLoading={addMutation.isLoading}>
-            Add
+            {t('modal.add')}
           </Button>
-          <Button onClick={() => props.onClose()}>Cancel</Button>
+          <Button onClick={() => props.onClose()}>{t('modal.cancel')}</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client';
 import { App } from 'App';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
+import './i18n/i18n.ts';
 
 // axios.defaults.baseURL = 'http://localhost:3000/';
 axios.defaults.baseURL = process.env.REACT_APP_BACKEND ?? 'https://dureo552e4.execute-api.eu-west-1.amazonaws.com/dev/';

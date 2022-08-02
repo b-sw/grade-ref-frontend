@@ -4,11 +4,13 @@ import { HeroLoginPanel } from './HeroLoginPanel';
 import { Parallax } from 'react-parallax';
 import { useMobile } from 'hooks/useMobile';
 import { Parallax as ScrollParallax } from 'react-scroll-parallax';
+import { useTranslation } from 'react-i18next';
 
 export const MOBILE_WINDOW_WIDTH = 768;
 
 export const Hero = () => {
   const { isMobile } = useMobile();
+  const { t } = useTranslation();
 
   return (
     <Parallax
@@ -40,10 +42,10 @@ export const Hero = () => {
               rounded={'xl'}
             >
               <Text fontSize={'4xl'} color={'gray.700'} mt={2}>
-                <b>Grade referee</b>
+                <b>Graderef</b>
               </Text>
               <Text fontSize={'lg'} color={'gray.900'} align={'center'} mb={5}>
-                Easily manage your league by keeping track of its officials
+                {t('hero.description')}
               </Text>
               <Divider borderColor={'gray.700'} w={'80%'} />
               <HeroLoginPanel />

@@ -4,7 +4,6 @@ import { AddIcon } from '@chakra-ui/icons';
 import { DataTable } from 'components/matchPage/components/DataTable';
 import { Feature, FeatureType } from 'entities/Feature';
 import { Column } from 'react-table';
-import { MatchData } from 'components/matchPage/MatchSectionsPanel';
 import { Role } from 'utils/Role';
 import { NoRecords } from 'components/utils/NoRecords';
 import { useStore } from 'zustandStore/store';
@@ -14,24 +13,28 @@ import { Section } from 'components/matchPage/components/Section';
 import { ConclusionAddModal } from 'components/matchPage/sections/conclusions/modals/ConclusionAddModal';
 import { useMatchFeatures } from 'components/matchPage/sections/conclusions/useMatchFeatures';
 import { ConclusionEditModal } from 'components/matchPage/sections/conclusions/modals/ConclusionEditModal';
+import { useTranslation } from 'react-i18next';
 
 export const Conclusions = () => {
   const { isOpen: isAddOpen, onOpen: onAddOpen, onClose: onAddClose } = useDisclosure();
   const { query: featuresQuery, deleteMutation } = useMatchFeatures();
   const user = useStore((state) => state.user);
+  const { t } = useTranslation();
+
+  const headers = [t('conclusions.type'), t('conclusions.description')];
 
   const cols: Column<Feature>[] = [
     {
-      Header: 'Type',
+      Header: headers[0],
       accessor: (d) => d.type,
       Cell: (props: any) => (
         <Text fontWeight={'medium'} color={props.value === FeatureType.Positive ? 'green.500' : 'red.400'}>
-          {props.value}
+          {props.value === FeatureType.Positive ? t('conclusions.positive') : t('conclusions.negative')}
         </Text>
       ),
     },
     {
-      Header: 'Description',
+      Header: headers[1],
       accessor: 'description',
     },
   ];
@@ -43,9 +46,9 @@ export const Conclusions = () => {
       {userCanEdit && <ConclusionAddModal isOpen={isAddOpen} handleClose={onAddClose} />}
 
       <Section>
-        <SectionHeading title={MatchData.Conclusions} icon={<Icon as={MdGrade} boxSize={25} />}>
+        <SectionHeading title={t('matchPage.conclusions.title')} icon={<Icon as={MdGrade} boxSize={25} />}>
           <Button variant={'ghost'} leftIcon={<Icon as={AddIcon} />} onClick={onAddOpen} disabled={!userCanEdit}>
-            Add
+            {t('modal.add')}
           </Button>
         </SectionHeading>
 
@@ -58,7 +61,7 @@ export const Conclusions = () => {
               deleteMutation={deleteMutation}
               EditModal={ConclusionEditModal}
             />
-            {!featuresQuery.data!.length && NoRecords()}
+            {!featuresQuery.data!.length && NoRecords(t('noRecords'))}
           </>
         </SectionBody>
       </Section>

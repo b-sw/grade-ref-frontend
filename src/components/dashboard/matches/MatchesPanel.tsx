@@ -27,6 +27,7 @@ import { MatchStatus } from 'entities/utils/matchStatus';
 import { NoRecords } from 'components/utils/NoRecords';
 import { MatchesUploadModal } from 'components/admin/matches/MatchesUploadModal';
 import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
+import { useTranslation } from 'react-i18next';
 
 interface State {
   matches: MatchInfoEnriched[];
@@ -43,6 +44,7 @@ export const MatchesPanel = ({ matches, readOnly, hideTabs }: MatchesPanelProps)
   const { isOpen: isCreateModalOpen, onOpen: onCreateModalOpen, onClose: onCreateModalClose } = useDisclosure();
   const { isOpen: isUploadModalOpen, onOpen: onUploadModalOpen, onClose: onUploadModalClose } = useDisclosure();
   const { query: teamsQuery } = useLeagueTeams();
+  const { t } = useTranslation();
 
   const teams: { [id: uuid]: Team } = {};
   teamsQuery.data!.forEach((team) => (teams[team.id] = team));
@@ -77,16 +79,16 @@ export const MatchesPanel = ({ matches, readOnly, hideTabs }: MatchesPanelProps)
       >
         <Flex mb={4}>
           <Text fontWeight={'bold'} fontSize={'2xl'}>
-            Matches
+            {t('match_many')}
           </Text>
           <Spacer />
           {!readOnly && (
             <>
               <Button variant={'ghost'} leftIcon={<AttachmentIcon />} onClick={onUploadModalOpen}>
-                Load
+                {t('matches.upload')}
               </Button>
               <Button variant={'ghost'} leftIcon={<AddIcon />} onClick={onCreateModalOpen}>
-                Add
+                {t('matches.add')}
               </Button>
             </>
           )}
@@ -94,14 +96,18 @@ export const MatchesPanel = ({ matches, readOnly, hideTabs }: MatchesPanelProps)
 
         <InputGroup>
           <InputLeftElement pointerEvents={'none'} children={<MdSearch />} />
-          <Input mb={2} placeholder={'Search match'} onChange={(event) => setState({ filter: event.target.value })} />
+          <Input
+            mb={2}
+            placeholder={t('matches.searchMatch')}
+            onChange={(event) => setState({ filter: event.target.value })}
+          />
         </InputGroup>
 
         {hideTabs ? (
           <Flex direction={'column'} gap={2} overflowY={'scroll'} h={'100%'}>
             {state.matches.length
               ? state.matches.map((match) => <MatchListItem key={match.id} match={match} />)
-              : NoRecords()}
+              : NoRecords(t('noRecords'))}
           </Flex>
         ) : (
           <Tabs
@@ -114,29 +120,29 @@ export const MatchesPanel = ({ matches, readOnly, hideTabs }: MatchesPanelProps)
             h={'100%'}
           >
             <TabList mx={5} my={2} gap={5}>
-              <Tab>Past</Tab>
-              <Tab>Grade overdue</Tab>
-              <Tab>Upcoming</Tab>
+              <Tab>{t('matches.upcoming')}</Tab>
+              <Tab>{t('matches.past')}</Tab>
+              <Tab>{t('matches.gradeOverdue')}</Tab>
             </TabList>
             <TabPanels overflowY={'scroll'} h={'100%'}>
               <TabPanel display={'flex'} flexDirection={'column'} gap={2} h={'100%'}>
+                {getFilteredMatches(MatchStatus.Upcoming).length
+                  ? getFilteredMatches(MatchStatus.Upcoming).map((match) => (
+                      <MatchListItem key={match.id} match={match} />
+                    ))
+                  : NoRecords(t('noRecords'))}
+              </TabPanel>
+              <TabPanel display={'flex'} flexDirection={'column'} gap={2} h={'100%'}>
                 {getFilteredMatches(MatchStatus.Past).length
                   ? getFilteredMatches(MatchStatus.Past).map((match) => <MatchListItem key={match.id} match={match} />)
-                  : NoRecords()}
+                  : NoRecords(t('noRecords'))}
               </TabPanel>
               <TabPanel display={'flex'} flexDirection={'column'} gap={2} h={'100%'}>
                 {getFilteredMatches(MatchStatus.GradeOverdue).length
                   ? getFilteredMatches(MatchStatus.GradeOverdue).map((match) => (
                       <MatchListItem key={match.id} match={match} />
                     ))
-                  : NoRecords()}
-              </TabPanel>
-              <TabPanel display={'flex'} flexDirection={'column'} gap={2} h={'100%'}>
-                {getFilteredMatches(MatchStatus.Upcoming).length
-                  ? getFilteredMatches(MatchStatus.Upcoming).map((match) => (
-                      <MatchListItem key={match.id} match={match} />
-                    ))
-                  : NoRecords()}
+                  : NoRecords(t('noRecords'))}
               </TabPanel>
             </TabPanels>
           </Tabs>

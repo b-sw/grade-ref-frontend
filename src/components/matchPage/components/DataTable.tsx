@@ -81,7 +81,7 @@ export function DataTable<T extends object & { id: uuid }>({
   );
 
   return (
-    <>
+    <Flex overflowY={'scroll'}>
       {!readOnly && EditModal && (
         <EditModal isOpen={isEditModalOpen} handleClose={handleClose} initialValue={state.selected!} />
       )}
@@ -156,6 +156,6 @@ export function DataTable<T extends object & { id: uuid }>({
           })}
         </Tbody>
       </Table>
-    </>
+    </Flex>
   );
 }

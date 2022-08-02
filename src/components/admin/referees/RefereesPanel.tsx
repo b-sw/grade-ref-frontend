@@ -1,4 +1,4 @@
-import { Button, Flex, InputLeftElement, InputGroup, Spacer, Text, useDisclosure, Input } from '@chakra-ui/react';
+import { Button, Flex, Input, InputGroup, InputLeftElement, Spacer, Text, useDisclosure } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import { User } from 'entities/User';
 import { RefereeListItem } from 'components/admin/referees/RefereeListItem';
@@ -10,6 +10,7 @@ import { userFilter } from 'components/utils/filters';
 import { useEffect } from 'react';
 import { MdSearch } from 'react-icons/md';
 import { NoRecords } from 'components/utils/NoRecords';
+import { useTranslation } from 'react-i18next';
 
 interface State {
   referees: User[];
@@ -19,6 +20,7 @@ interface State {
 export const RefereesPanel = () => {
   const { isOpen: isCreateModalOpen, onOpen: onCreateModalOpen, onClose: onCreateModalClose } = useDisclosure();
   const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
+  const { t } = useTranslation();
 
   const [state, setState] = useSetState({
     referees: [],
@@ -39,7 +41,7 @@ export const RefereesPanel = () => {
         p={5}
         backgroundColor={'gray.300'}
         shadow={'md'}
-        overflowY={'hidden'}
+        overflow={'hidden'}
         flexGrow={1}
         h={['auto', '100%']}
         w={['auto', '50%']}
@@ -47,23 +49,27 @@ export const RefereesPanel = () => {
       >
         <Flex mb={4}>
           <Text fontWeight={'bold'} fontSize={'2xl'}>
-            Referees
+            {t('referee_many')}
           </Text>
           <Spacer />
           <Button variant={'ghost'} leftIcon={<AddIcon />} onClick={onCreateModalOpen}>
-            Add
+            {t('modal.add')}
           </Button>
         </Flex>
 
         <InputGroup>
           <InputLeftElement pointerEvents={'none'} children={<MdSearch />} />
-          <Input mb={2} placeholder={'Search referee'} onChange={(event) => setState({ filter: event.target.value })} />
+          <Input
+            mb={2}
+            placeholder={t('referees.search')}
+            onChange={(event) => setState({ filter: event.target.value })}
+          />
         </InputGroup>
 
-        <Flex direction={'column'} gap={2} overflowY={'scroll'}>
+        <Flex direction={'column'} gap={2} overflow={'scroll'}>
           {state.referees.length
             ? state.referees.map((referee: User) => <RefereeListItem key={referee.id} referee={referee} />)
-            : NoRecords()}
+            : NoRecords(t('noRecords'))}
         </Flex>
       </Flex>
     </>

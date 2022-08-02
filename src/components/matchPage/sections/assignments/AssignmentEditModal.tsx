@@ -9,6 +9,7 @@ import { assignmentsValidationSchema } from 'components/matchPage/sections/assig
 import { FormikModal } from 'components/matchPage/components/FormikModal';
 import { useMatch } from 'hooks/useMatch';
 import { Match } from 'entities/Match';
+import { useTranslation } from 'react-i18next';
 
 interface AssignmentEditModalProps {
   isOpen: boolean;
@@ -22,8 +23,9 @@ interface AssignmentFormikValues {
 
 export const AssignmentEditModal = ({ isOpen, handleClose }: AssignmentEditModalProps) => {
   const { query: matchQuery, updateMatchMutation: updateMutation } = useMatch();
-  const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
-  const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
+  const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee, { enableAutoRefetch: true });
+  const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer, { enableAutoRefetch: true });
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (updateMutation.isSuccess) {
@@ -31,6 +33,12 @@ export const AssignmentEditModal = ({ isOpen, handleClose }: AssignmentEditModal
       updateMutation.reset();
     }
   }, [updateMutation.isSuccess]);
+
+  const queriesAreLoading: boolean = [refereesQuery, observersQuery].some((query) => query.isLoading);
+
+  if (queriesAreLoading) {
+    return <LoadingOverlay />;
+  }
 
   const initialValues: AssignmentFormikValues = {
     refereeId: matchQuery.data!.refereeId,
@@ -47,25 +55,19 @@ export const AssignmentEditModal = ({ isOpen, handleClose }: AssignmentEditModal
 
   const modalBody: JSX.Element = (
     <>
-      <SelectControl name="refereeId" label="Referee">
+      <SelectControl name="refereeId" label={t('referee')}>
         <SelectOptions data={refereesQuery.data!} labelProps={['firstName', 'lastName']} />
       </SelectControl>
 
-      <SelectControl name="observerId" label="Observer">
+      <SelectControl name="observerId" label={t('observer')}>
         <SelectOptions data={observersQuery.data!} labelProps={['firstName', 'lastName']} />
       </SelectControl>
     </>
   );
 
-  const queriesAreLoading: boolean = [refereesQuery, observersQuery].some((query) => query.isLoading);
-
-  if (queriesAreLoading) {
-    return <LoadingOverlay />;
-  }
-
   return (
     <FormikModal
-      headingTitle={'Edit assignments'}
+      headingTitle={t('matchPage.assignments.editModal.title')}
       body={modalBody}
       isOpen={isOpen}
       handleSubmit={handleEditMatch}

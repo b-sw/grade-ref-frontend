@@ -11,6 +11,7 @@ import { MatchInfo } from 'entities/MatchInfo';
 import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
 import { Match } from 'entities/Match';
 import { MatchEnriched } from 'entities/MatchEnriched';
+import { useTranslation } from 'react-i18next';
 
 export const MATCHES_QUERY_KEY = 'matches_qk';
 
@@ -24,6 +25,7 @@ export const useLeagueMatches = (props?: Props) => {
   const queryClient: QueryClient = useQueryClient();
   let { leagueId } = useParams<{ leagueId: uuid }>();
   leagueId = props ? props.leagueId ?? leagueId : leagueId;
+  const { t } = useTranslation();
 
   const getMatches = async (): Promise<MatchInfoEnriched[]> => {
     const response = await axios.get(`leagues/${leagueId}/matches`);
@@ -49,7 +51,7 @@ export const useLeagueMatches = (props?: Props) => {
     onSuccess: () => {
       queryClient.invalidateQueries([MATCHES_QUERY_KEY, leagueId]);
       toast({
-        title: 'Successfully added a match',
+        title: t('success.matchAdd'),
         status: 'success',
         position: 'bottom-right',
         duration: 2000,
@@ -62,7 +64,7 @@ export const useLeagueMatches = (props?: Props) => {
     onSuccess: () => {
       queryClient.invalidateQueries([MATCHES_QUERY_KEY, leagueId]);
       toast({
-        title: 'Successfully deleted a match',
+        title: t('success.matchDelete'),
         status: 'success',
         position: 'bottom-right',
         duration: 2000,

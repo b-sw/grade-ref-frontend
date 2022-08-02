@@ -22,6 +22,7 @@ import { useLeagueTeams } from 'hooks/useLeagueTeams';
 import { GradeStatus } from 'entities/utils/gradeInfo';
 import { NoRecords } from 'components/utils/NoRecords';
 import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   matches: MatchInfoEnriched[];
@@ -30,6 +31,7 @@ interface Props {
 export const GradesPanel = (props: Props) => {
   const { query: matchesQuery } = useUserMatches();
   const { query: teamsQuery } = useLeagueTeams();
+  const { t } = useTranslation();
 
   const { state, setState } = useGradesPanel({
     matches: props.matches,
@@ -49,7 +51,7 @@ export const GradesPanel = (props: Props) => {
       >
         <Flex mb={4}>
           <Text fontWeight={'bold'} fontSize={'2xl'}>
-            Grades
+            {t('grades.title')}
           </Text>
           <Spacer />
         </Flex>
@@ -71,6 +73,7 @@ interface GradesPanelBodyProps {
 export const GradesPanelBody = (props: GradesPanelBodyProps) => {
   const user = useStore((state) => state.user);
   const showReferee: boolean = props.showReferee || user.role === Role.Observer;
+  const { t } = useTranslation();
 
   const getFilteredGrades = (status: GradeStatus): MatchInfoEnriched[] => {
     return props.state.matches.filter((match) => match.gradeStatus.status === status);
@@ -82,7 +85,10 @@ export const GradesPanelBody = (props: GradesPanelBodyProps) => {
 
       <InputGroup>
         <InputLeftElement pointerEvents={'none'} children={<MdSearch />} />
-        <Input placeholder={'Search match'} onChange={(event) => props.setState({ filter: event.target.value })} />
+        <Input
+          placeholder={t('matches.searchMatch')}
+          onChange={(event) => props.setState({ filter: event.target.value })}
+        />
       </InputGroup>
 
       <Tabs
@@ -95,11 +101,11 @@ export const GradesPanelBody = (props: GradesPanelBodyProps) => {
         h={'100%'}
       >
         <TabList mx={5} my={2} gap={5}>
-          <Tab>All</Tab>
-          <Tab>{GradeStatus.Received}</Tab>
-          <Tab>{GradeStatus.Overdue}</Tab>
-          <Tab>{GradeStatus.Pending}</Tab>
-          <Tab>{GradeStatus.Expected}</Tab>
+          <Tab>{t('grades.all')}</Tab>
+          <Tab>{t('grades.received')}</Tab>
+          <Tab>{t('grades.overdue')}</Tab>
+          <Tab>{t('grades.pending')}</Tab>
+          <Tab>{t('grades.expected')}</Tab>
         </TabList>
         <TabPanels overflowY={'scroll'} h={'100%'}>
           <TabPanel display="flex" flexDirection="column" gap={2} h={'100%'}>
@@ -113,7 +119,7 @@ export const GradesPanelBody = (props: GradesPanelBodyProps) => {
                     userRole={showReferee ? Role.Referee : Role.Observer}
                   />
                 ))
-              : NoRecords()}
+              : NoRecords(t('noRecords'))}
           </TabPanel>
           <TabPanel display="flex" flexDirection="column" gap={2} h={'100%'}>
             {getFilteredGrades(GradeStatus.Received).length
@@ -126,7 +132,7 @@ export const GradesPanelBody = (props: GradesPanelBodyProps) => {
                     userRole={showReferee ? Role.Referee : Role.Observer}
                   />
                 ))
-              : NoRecords()}
+              : NoRecords(t('noRecords'))}
           </TabPanel>
           <TabPanel display="flex" flexDirection="column" gap={2} h={'100%'}>
             {getFilteredGrades(GradeStatus.Overdue).length
@@ -139,7 +145,7 @@ export const GradesPanelBody = (props: GradesPanelBodyProps) => {
                     userRole={showReferee ? Role.Referee : Role.Observer}
                   />
                 ))
-              : NoRecords()}
+              : NoRecords(t('noRecords'))}
           </TabPanel>
           <TabPanel display="flex" flexDirection="column" gap={2} h={'100%'}>
             {getFilteredGrades(GradeStatus.Pending).length
@@ -152,7 +158,7 @@ export const GradesPanelBody = (props: GradesPanelBodyProps) => {
                     userRole={showReferee ? Role.Referee : Role.Observer}
                   />
                 ))
-              : NoRecords()}
+              : NoRecords(t('noRecords'))}
           </TabPanel>
           <TabPanel display="flex" flexDirection="column" gap={2} h={'100%'}>
             {getFilteredGrades(GradeStatus.Expected).length
@@ -165,7 +171,7 @@ export const GradesPanelBody = (props: GradesPanelBodyProps) => {
                     userRole={showReferee ? Role.Referee : Role.Observer}
                   />
                 ))
-              : NoRecords()}
+              : NoRecords(t('noRecords'))}
           </TabPanel>
         </TabPanels>
       </Tabs>

@@ -19,6 +19,7 @@ import { Files } from 'components/matchPage/sections/files/Files';
 import { Grade } from 'components/matchPage/sections/grade/Grade';
 import { OverallGrade } from 'components/matchPage/sections/overallGrade/OverallGrade';
 import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
+import { useTranslation } from 'react-i18next';
 
 export const enum MatchData {
   Details = 'Match Details',
@@ -41,6 +42,7 @@ export const MatchSectionsPanel = ({ match }: MatchOverviewPanelProps) => {
   const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
   const { query: teamsQuery } = useLeagueTeams();
   const user = useStore((state) => state.user);
+  const { t } = useTranslation();
 
   const navigate: NavigateFunction = useNavigate();
   const { leagueId } = useParams<{ leagueId: uuid }>();
@@ -55,6 +57,17 @@ export const MatchSectionsPanel = ({ match }: MatchOverviewPanelProps) => {
   const noteRef: any = useRef();
   const reportsRef: any = useRef();
 
+  const sectionNames = {
+    [MatchData.Details]: t('matchPage.details.title'),
+    [MatchData.Grade]: t('matchPage.grade.title'),
+    [MatchData.OverallGrade]: t('matchPage.overallGrade.title'),
+    [MatchData.Assignments]: t('matchPage.assignments.title'),
+    [MatchData.DisciplinarySanctions]: t('matchPage.sanctions.title'),
+    [MatchData.Conclusions]: t('matchPage.conclusions.title'),
+    [MatchData.RefereeNote]: t('matchPage.note.title'),
+    [MatchData.Reports]: t('matchPage.reports.title'),
+  };
+
   const menuLink = (sectionName: MatchData, ref: any) => {
     return (
       <Link
@@ -65,7 +78,7 @@ export const MatchSectionsPanel = ({ match }: MatchOverviewPanelProps) => {
           });
         }}
       >
-        <Text fontSize={'md'}>{sectionName}</Text>
+        <Text fontSize={'md'}>{sectionNames[sectionName]}</Text>
       </Link>
     );
   };
@@ -102,7 +115,7 @@ export const MatchSectionsPanel = ({ match }: MatchOverviewPanelProps) => {
                 navigate(`${dashboardPath}/${leagueId}`);
               }}
             >
-              Dashboard
+              {t('pageNames.dashboard')}
             </Button>
 
             <Spacer />
@@ -116,14 +129,14 @@ export const MatchSectionsPanel = ({ match }: MatchOverviewPanelProps) => {
               onClick={onDeleteModalOpen}
               disabled={user.role !== Role.Admin}
             >
-              Delete
+              {t('modal.delete')}
             </Button>
           </Flex>
 
           <Flex gap={PADDING} overflow={'hidden'} w={'100%'} h={['auto', '100%']} maxH={['90vh', '100%']}>
             <Flex direction={'column'} borderRadius={10} w={'15%'} gap={2}>
               <Text fontSize={'xl'} fontWeight={'medium'}>
-                Page sections
+                {t('matchPage.sections')}
               </Text>
               {menuLink(MatchData.Details, detailsRef)}
               {menuLink(MatchData.Grade, gradeRef)}

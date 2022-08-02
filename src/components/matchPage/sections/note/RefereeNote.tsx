@@ -1,5 +1,4 @@
 import { Button, Flex, Icon, Spacer, useDisclosure } from '@chakra-ui/react';
-import { MatchData } from 'components/matchPage/MatchSectionsPanel';
 import { MdNote } from 'react-icons/md';
 import { EditIcon } from '@chakra-ui/icons';
 import { useStore } from 'zustandStore/store';
@@ -10,6 +9,7 @@ import { Section } from 'components/matchPage/components/Section';
 import { RefereeNoteEditModal } from 'components/matchPage/sections/note/RefereeNoteEditModal';
 import { AutoResizeTextFlex } from 'components/matchPage/components/AutoResizeTextFlex';
 import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
+import { useTranslation } from 'react-i18next';
 
 interface RefereeNoteProps {
   match: MatchInfoEnriched;
@@ -17,6 +17,7 @@ interface RefereeNoteProps {
 
 export const RefereeNote = ({ match }: RefereeNoteProps) => {
   const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
+  const { t } = useTranslation();
 
   const user = useStore((state) => state.user);
 
@@ -26,9 +27,9 @@ export const RefereeNote = ({ match }: RefereeNoteProps) => {
     <>
       {userCanEdit && <RefereeNoteEditModal isOpen={isEditOpen} handleClose={onEditClose} match={match} />}
       <Section>
-        <SectionHeading title={MatchData.RefereeNote} icon={<Icon as={MdNote} boxSize={25} />}>
+        <SectionHeading title={t('matchPage.note.title')} icon={<Icon as={MdNote} boxSize={25} />}>
           <Button variant={'ghost'} leftIcon={<Icon as={EditIcon} />} onClick={onEditOpen} disabled={!userCanEdit}>
-            Edit
+            {t('modal.edit')}
           </Button>
         </SectionHeading>
 

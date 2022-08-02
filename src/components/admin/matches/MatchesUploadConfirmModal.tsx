@@ -28,6 +28,7 @@ import { NoRecords } from 'components/utils/NoRecords';
 import { MatchEnriched } from 'entities/MatchEnriched';
 import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
 import { getMatchInfoEnriched } from 'entities/utils/matchStatus';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   isOpen: boolean;
@@ -45,6 +46,7 @@ export const MatchesUploadConfirmModal = (props: Props) => {
   const { query: teamsQuery } = useLeagueTeams();
   const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
   const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
+  const { t } = useTranslation();
 
   const referees: { [id: uuid]: User } = {};
   const observers: { [id: uuid]: User } = {};
@@ -90,19 +92,25 @@ export const MatchesUploadConfirmModal = (props: Props) => {
     <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered size={'4xl'}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>The following matches will be created: {uploadedMatchesQuery.data!.length}</ModalHeader>
+        <ModalHeader>
+          {t('matches.uploadConfirmModal.confirm')}: {uploadedMatchesQuery.data!.length}
+        </ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
           <InputGroup>
             <InputLeftElement pointerEvents={'none'} children={<MdSearch />} />
-            <Input mb={2} placeholder={'Search match'} onChange={(event) => setState({ filter: event.target.value })} />
+            <Input
+              mb={2}
+              placeholder={t('matches.searchMatch')}
+              onChange={(event) => setState({ filter: event.target.value })}
+            />
           </InputGroup>
 
           <Flex direction={'column'} gap={2} overflowY={'scroll'} h={'70vh'}>
             {state.matches.length
               ? state.matches.map((match) => <MatchListItem key={match.id} readOnly={true} match={match} />)
-              : NoRecords()}
+              : NoRecords(t('noRecords'))}
           </Flex>
         </ModalBody>
 
@@ -114,10 +122,10 @@ export const MatchesUploadConfirmModal = (props: Props) => {
             disabled={postMutation.isLoading}
             isLoading={postMutation.isLoading}
           >
-            Confirm
+            {t('modal.confirm')}
           </Button>
           <Button colorScheme="red" onClick={props.onClose}>
-            Cancel
+            {t('modal.cancel')}
           </Button>
         </ModalFooter>
       </ModalContent>

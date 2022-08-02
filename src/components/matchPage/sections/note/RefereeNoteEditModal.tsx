@@ -4,6 +4,7 @@ import { TextareaControl } from 'formik-chakra-ui';
 import { noteValidationSchema } from 'components/matchPage/sections/note/note.validation';
 import { useLeagueMatch } from 'hooks/useLeagueMatch';
 import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
+import { useTranslation } from 'react-i18next';
 
 interface RefereeNoteEditModalProps {
   isOpen: boolean;
@@ -17,6 +18,7 @@ interface RefereeNoteFormikValues {
 
 export const RefereeNoteEditModal = ({ isOpen, handleClose, match }: RefereeNoteEditModalProps) => {
   const { updateRefereeNoteMutation: updateMutation } = useLeagueMatch();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (updateMutation.isSuccess) {
@@ -39,7 +41,7 @@ export const RefereeNoteEditModal = ({ isOpen, handleClose, match }: RefereeNote
   const modalBody: JSX.Element = (
     <TextareaControl
       name="refereeNote"
-      label="Referee note"
+      label={t('matchPage.note.title')}
       textareaProps={
         {
           rows: 15,
@@ -52,7 +54,7 @@ export const RefereeNoteEditModal = ({ isOpen, handleClose, match }: RefereeNote
 
   return (
     <FormikModal
-      headingTitle={'Edit referee note'}
+      headingTitle={t('matchPage.note.editModal.title')}
       body={modalBody}
       isOpen={isOpen}
       handleSubmit={handleUpdateRefereeNote}

@@ -4,6 +4,7 @@ import { TextareaControl } from 'formik-chakra-ui';
 import { useGrades } from 'hooks/useGrades';
 import { overallGradeValidationSchema } from 'components/matchPage/sections/overallGrade/overall-grade.validation';
 import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
+import { useTranslation } from 'react-i18next';
 
 interface OverallGradeEditModalProps {
   isOpen: boolean;
@@ -17,6 +18,7 @@ interface GradeFormikValues {
 
 export const OverallGradeEditModal = ({ isOpen, handleClose, match }: OverallGradeEditModalProps) => {
   const { updateOverallGradeMutation: updateMutation } = useGrades();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (updateMutation.isSuccess) {
@@ -39,7 +41,7 @@ export const OverallGradeEditModal = ({ isOpen, handleClose, match }: OverallGra
     <>
       <TextareaControl
         name="overallGrade"
-        label="Overall grade"
+        label={t('matchPage.overallGrade.editModal.textArea')}
         textareaProps={
           {
             rows: 30,
@@ -53,7 +55,7 @@ export const OverallGradeEditModal = ({ isOpen, handleClose, match }: OverallGra
 
   return (
     <FormikModal
-      headingTitle={'Edit match overall grade'}
+      headingTitle={t('matchPage.overallGrade.editModal.title')}
       body={modalBody}
       isOpen={isOpen}
       handleSubmit={handleEditGrade}

@@ -15,6 +15,7 @@ import { useUserMatches } from 'hooks/useUserMatches';
 import { useGradesPanel } from 'hooks/useGradesPanel';
 import { useLeagueTeams } from 'hooks/useLeagueTeams';
 import { GradesPanelBody } from 'components/dashboard/grades/GradesPanel';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   referee: User;
@@ -25,6 +26,7 @@ interface Props {
 export const RefereeGradesModal = (props: Props) => {
   const { query: matchesQuery } = useUserMatches({ userId: props.referee.id });
   const { query: teamsQuery } = useLeagueTeams();
+  const { t } = useTranslation();
 
   const { state, setState } = useGradesPanel({
     matches: matchesQuery.data!,
@@ -36,7 +38,7 @@ export const RefereeGradesModal = (props: Props) => {
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          {props.referee.firstName} {props.referee.lastName}'s grades
+          {props.referee.firstName} {props.referee.lastName} {t('grade_many_lowercase')}
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -55,7 +57,7 @@ export const RefereeGradesModal = (props: Props) => {
           </Flex>
         </ModalBody>
         <ModalFooter>
-          <Button onClick={props.onClose}>Close</Button>
+          <Button onClick={props.onClose}>{t('modal.close')}</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

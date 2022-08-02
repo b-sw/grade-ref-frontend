@@ -5,6 +5,9 @@ import { useDropzone } from 'react-dropzone';
 import { MdFileUpload } from 'react-icons/md';
 import { useEffect } from 'react';
 import { Dropzone } from 'components/matchPage/components/Dropzone';
+import { useTranslation } from 'react-i18next';
+import { useLeagueMatch } from 'hooks/useLeagueMatch';
+import { MatchStatus } from 'entities/utils/matchStatus';
 
 interface UploadReportZoneProps {
   reportType: ReportType;
@@ -18,6 +21,10 @@ interface State {
 export const UploadReportZone = ({ reportType }: UploadReportZoneProps) => {
   const { postMutation } = useReports();
   const toast = useToast();
+  const { t } = useTranslation();
+
+  const { query: matchQuery } = useLeagueMatch();
+  const matchIsUpcoming = matchQuery.data!.matchStatus === MatchStatus.Upcoming;
 
   const [state, setState] = useSetState({
     files: [],
@@ -29,7 +36,7 @@ export const UploadReportZone = ({ reportType }: UploadReportZoneProps) => {
       setState({ files: files });
       uploadFile(files[0]);
     },
-    disabled: postMutation.isLoading,
+    disabled: postMutation.isLoading || matchIsUpcoming,
     accept: {
       'application/pdf': ['.pdf'],
     },
@@ -65,7 +72,7 @@ export const UploadReportZone = ({ reportType }: UploadReportZoneProps) => {
     setState({ isLoading: true });
   };
 
-  const dropzoneText = state.files.length ? state.files[0].name : 'Choose or drop a file here.';
+  const dropzoneText = state.files.length ? state.files[0].name : t('matchPage.reports.uploadMessage');
   const borderStyle = 'dashed';
   const _hover = { borderColor: postMutation.isLoading ? 'gray.400' : 'gray.500' };
   const cursor = postMutation.isLoading ? 'default' : 'pointer';

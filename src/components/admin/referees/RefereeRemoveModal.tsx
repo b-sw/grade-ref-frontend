@@ -15,6 +15,7 @@ import { refereeItem } from 'components/admin/referees/RefereeListItem';
 import { useLeagueUsers } from 'hooks/useLeagueUsers';
 import { Role } from 'utils/Role';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export interface Props {
   isOpen: boolean;
@@ -24,6 +25,7 @@ export interface Props {
 
 export const RefereeRemoveModal = (props: Props) => {
   const { removeMutation } = useLeagueUsers(Role.Referee);
+  const { t } = useTranslation();
 
   const deleteReferee = () => {
     removeMutation.mutate(props.referee.id);
@@ -40,21 +42,21 @@ export const RefereeRemoveModal = (props: Props) => {
       <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Remove referee</ModalHeader>
+          <ModalHeader>{t('referees.remove')}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Text fontWeight="bold" mb="1rem">
-              Are you sure you want to remove the following referee from this league?
+              {t('referees.removeConfirm')}
             </Text>
             <Flex p={5} borderRadius={10} alignItems={'center'} backgroundColor={'gray.50'}>
-              {refereeItem(props.referee)}
+              {refereeItem(props.referee, t)}
             </Flex>
           </ModalBody>
 
           <ModalFooter>
-            <Button onClick={props.onClose}>Cancel</Button>
+            <Button onClick={props.onClose}>{t('modal.cancel')}</Button>
             <Button colorScheme="red" onClick={deleteReferee} isLoading={removeMutation.isLoading} ml={3}>
-              Remove
+              {t('modal.remove')}
             </Button>
           </ModalFooter>
         </ModalContent>

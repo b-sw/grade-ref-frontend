@@ -7,6 +7,7 @@ import axios, { AxiosError } from 'axios';
 import { toastError } from 'hooks/utils/toastError';
 import { MatchInfo } from 'entities/MatchInfo';
 import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
+import { useTranslation } from 'react-i18next';
 
 interface UseLeagueMatchProps {
   matchId?: uuid;
@@ -24,6 +25,7 @@ export const MATCH_QUERY_KEY = 'match_qk';
 export const useLeagueMatch = (props?: UseLeagueMatchProps) => {
   const toast = useToast();
   const queryClient: QueryClient = useQueryClient();
+  const { t } = useTranslation();
 
   let { leagueId } = useParams<{ leagueId: uuid }>();
   let { matchId } = useParams<{ matchId: uuid }>();
@@ -52,7 +54,7 @@ export const useLeagueMatch = (props?: UseLeagueMatchProps) => {
     onSuccess: (match: MatchInfo) => {
       queryClient.setQueryData([MATCH_QUERY_KEY, match.id], () => match);
       toast({
-        title: 'Successfully updated a referee note',
+        title: t('success.refereeNoteUpdate'),
         status: 'success',
         position: 'bottom-right',
         duration: 2000,

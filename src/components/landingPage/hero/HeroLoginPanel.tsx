@@ -5,10 +5,12 @@ import { LoginFailureModal } from 'components/auth/LoginFailureModal';
 import useAuth from '../../../hooks/useAuth';
 import { Constants } from 'utils/Constants';
 import { Google } from 'react-bootstrap-icons';
+import { useTranslation } from 'react-i18next';
 
 export const HeroLoginPanel = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { loginMutation } = useAuth();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const checkForFailure = () => {
@@ -34,7 +36,7 @@ export const HeroLoginPanel = () => {
               isLoading={loginMutation.isLoading}
               leftIcon={<Google />}
             >
-              Log in with Google
+              {t('hero.logIn')}
             </Button>
           )}
         />

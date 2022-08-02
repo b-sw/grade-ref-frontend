@@ -17,6 +17,7 @@ import { useLeagueUsers } from 'hooks/useLeagueUsers';
 import { useSetState } from 'hooks/useSetState';
 import { User } from 'entities/User';
 import { useReferees } from 'hooks/useReferees';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   isOpen: boolean;
@@ -36,6 +37,7 @@ interface State {
 export const RefereeAddModal = (props: Props) => {
   const { usersQuery: leagueRefereesQuery, addMutation } = useLeagueUsers(Role.Referee);
   const { refereesQuery } = useReferees();
+  const { t } = useTranslation();
 
   const [state, setState] = useSetState({
     selectedOptions: [],
@@ -73,17 +75,17 @@ export const RefereeAddModal = (props: Props) => {
     <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Add referee to league</ModalHeader>
+        <ModalHeader>{t('referees.addModal.title')}</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
           <FormControl p={4}>
-            <FormLabel>Select referee</FormLabel>
+            <FormLabel>{t('referees.addModal.select')}</FormLabel>
             <Select
               isMulti
               name={'referees'}
               options={state.mappedReferees}
-              placeholder={'Select referee'}
+              placeholder={t('referees.addModal.select')}
               closeMenuOnSelect={false}
               onChange={(selection) => updateSelection(selection)}
             />
@@ -91,9 +93,9 @@ export const RefereeAddModal = (props: Props) => {
         </ModalBody>
         <ModalFooter>
           <Button colorScheme="blue" mr={'3'} onClick={addReferees} isLoading={addMutation.isLoading}>
-            Add
+            {t('modal.add')}
           </Button>
-          <Button onClick={() => props.onClose()}>Cancel</Button>
+          <Button onClick={() => props.onClose()}>{t('modal.cancel')}</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

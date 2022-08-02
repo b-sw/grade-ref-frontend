@@ -10,6 +10,7 @@ import { useStore } from 'zustandStore/store';
 import { USER_LEAGUE_MATCHES_QK } from 'hooks/useUserMatches';
 import { MatchInfo } from 'entities/MatchInfo';
 import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
+import { useTranslation } from 'react-i18next';
 
 interface UseGradesProps {
   matchId: uuid;
@@ -19,6 +20,7 @@ export const useGrades = (props?: UseGradesProps) => {
   const user = useStore((state) => state.user);
   const { leagueId } = useParams<{ leagueId: uuid }>();
   let { matchId } = useParams<{ matchId: uuid }>();
+  const { t } = useTranslation();
 
   matchId = props ? props.matchId ?? matchId : matchId;
 
@@ -43,7 +45,7 @@ export const useGrades = (props?: UseGradesProps) => {
         match,
       ]);
       toast({
-        title: 'Successfully updated a grade',
+        title: t('success.gradeUpdate'),
         status: 'success',
         position: 'bottom-right',
         duration: 2000,
@@ -56,7 +58,7 @@ export const useGrades = (props?: UseGradesProps) => {
     onSuccess(match: MatchInfo) {
       queryClient.setQueryData([MATCH_QUERY_KEY, match.id], () => match);
       toast({
-        title: 'Successfully updated an overall grade',
+        title: t('success.gradeOverallUpdate'),
         status: 'success',
         position: 'bottom-right',
         duration: 2000,

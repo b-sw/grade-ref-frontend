@@ -13,6 +13,7 @@ import { InputControl } from 'formik-chakra-ui';
 import { useEffect } from 'react';
 import { useLeagues } from 'hooks/useLeagues';
 import { League, leagueValidationSchema } from 'entities/League';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   isOpen: boolean;
@@ -27,6 +28,7 @@ interface FormikValues {
 
 export const LeagueCreateModal = (props: Props) => {
   const { postMutation } = useLeagues();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (postMutation.isSuccess) {
@@ -53,22 +55,36 @@ export const LeagueCreateModal = (props: Props) => {
     <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Add league</ModalHeader>
+        <ModalHeader>{t('explorer.addModal.title')}</ModalHeader>
         <ModalCloseButton />
 
         <Formik initialValues={initialValues} onSubmit={createLeague} validationSchema={leagueValidationSchema}>
           {({ handleSubmit }) => (
             <Form onSubmit={handleSubmit}>
               <ModalBody>
-                <InputControl name="name" label="Name" inputProps={{ placeholder: 'Premier League' }} />
-                <InputControl name="shortName" label="Short name" inputProps={{ placeholder: 'EPL' }} />
-                <InputControl name="country" label="Country" inputProps={{ placeholder: 'England' }} />
+                <InputControl
+                  name="name"
+                  label={t('explorer.addModal.name')}
+                  inputProps={{ placeholder: 'Premier League' }}
+                />
+                <InputControl
+                  name="shortName"
+                  label={t('explorer.addModal.shortName')}
+                  inputProps={{ placeholder: 'EPL' }}
+                  mt={3}
+                />
+                <InputControl
+                  name="country"
+                  label={t('explorer.addModal.country')}
+                  inputProps={{ placeholder: 'England' }}
+                  mt={3}
+                />
               </ModalBody>
               <ModalFooter>
                 <Button colorScheme="blue" mr={'3'} type="submit" isLoading={postMutation.isLoading}>
-                  Add
+                  {t('modal.add')}
                 </Button>
-                <Button onClick={() => props.onClose()}>Cancel</Button>
+                <Button onClick={() => props.onClose()}>{t('modal.cancel')}</Button>
               </ModalFooter>
             </Form>
           )}

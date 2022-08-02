@@ -10,6 +10,7 @@ import { useSetState } from 'hooks/useSetState';
 import { userFilter } from 'components/utils/filters';
 import { useEffect } from 'react';
 import { NoRecords } from 'components/utils/NoRecords';
+import { useTranslation } from 'react-i18next';
 
 interface State {
   observers: User[];
@@ -19,6 +20,7 @@ interface State {
 export const ObserversPanel = () => {
   const { isOpen: isCreateModalOpen, onOpen: onCreateModalOpen, onClose: onCreateModalClose } = useDisclosure();
   const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
+  const { t } = useTranslation();
 
   const [state, setState] = useSetState({
     observers: [],
@@ -47,11 +49,11 @@ export const ObserversPanel = () => {
       >
         <Flex mb={4}>
           <Text fontWeight={'bold'} fontSize={'2xl'}>
-            Observers
+            {t('observer_many')}
           </Text>
           <Spacer />
           <Button variant={'ghost'} leftIcon={<AddIcon />} onClick={onCreateModalOpen}>
-            Add
+            {t('modal.add')}
           </Button>
         </Flex>
 
@@ -59,7 +61,7 @@ export const ObserversPanel = () => {
           <InputLeftElement pointerEvents={'none'} children={<MdSearch />} />
           <Input
             mb={2}
-            placeholder={'Search observer'}
+            placeholder={t('observers.search')}
             onChange={(event) => setState({ filter: event.target.value })}
           />
         </InputGroup>
@@ -67,7 +69,7 @@ export const ObserversPanel = () => {
         <Flex direction={'column'} gap={2} overflowY={'scroll'}>
           {state.observers.length
             ? state.observers.map((observer: User) => <ObserverListItem key={observer.id} observer={observer} />)
-            : NoRecords()}
+            : NoRecords(t('noRecords'))}
         </Flex>
       </Flex>
     </>

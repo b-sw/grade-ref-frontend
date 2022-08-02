@@ -10,6 +10,7 @@ import {
   ModalOverlay,
 } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
+import { useTranslation } from 'react-i18next';
 
 export interface FormikModalProps<T> {
   headingTitle: string;
@@ -34,6 +35,7 @@ export const FormikModal = <T,>({
   validationSchema,
   size,
 }: FormikModalProps<T>) => {
+  const { t } = useTranslation();
   return (
     <Modal isOpen={isOpen} onClose={handleClose} isCentered size={size ?? 'md'}>
       <ModalOverlay />
@@ -52,9 +54,9 @@ export const FormikModal = <T,>({
 
               <ModalFooter>
                 <Button type="submit" colorScheme="blue" mr={'3'} isLoading={isLoading}>
-                  Save
+                  {t('modal.save')}
                 </Button>
-                <Button onClick={handleClose}>Cancel</Button>
+                <Button onClick={handleClose}>{t('modal.cancel')}</Button>
               </ModalFooter>
             </Form>
           )}

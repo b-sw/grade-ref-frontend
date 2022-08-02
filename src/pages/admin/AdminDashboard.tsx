@@ -47,9 +47,9 @@ export const AdminDashboard = () => {
         backgroundColor={'gray.400'}
       >
         <AdminHeaderPanel pageTitle={PageTitle.AdminDashboard} />
-        <SimpleGrid columns={[1, 1, 2]} flexGrow={1} overflowY={'hidden'} spacing={4} p={[4, 4, 4]} m={-4}>
+        <SimpleGrid columns={[1, 1, 2]} flexGrow={1} overflow={'hidden'} spacing={4} p={[4, 4, 4]} m={-4}>
           <MatchesPanel matches={matchesQuery.data!} />
-          <Flex gap={4} overflowY={'hidden'}>
+          <Flex gap={4} overflow={'hidden'}>
             <RefereesPanel />
             <ObserversPanel />
           </Flex>

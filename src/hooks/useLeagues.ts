@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useStore } from 'zustandStore/store';
 import { Role } from 'utils/Role';
 import { toastError } from './utils/toastError';
+import { useTranslation } from 'react-i18next';
 
 export const LEAGUES_QUERY_KEY = 'leagues_qk';
 
@@ -20,6 +21,7 @@ export const useLeagues = (props?: UseLeaguesProps) => {
   const navigate = useNavigate();
   const toast = useToast();
   const queryClient: QueryClient = useQueryClient();
+  const { t } = useTranslation();
 
   const queryKey: any = user.role === Role.Owner ? LEAGUES_QUERY_KEY : [LEAGUES_QUERY_KEY, user.id];
 
@@ -53,7 +55,7 @@ export const useLeagues = (props?: UseLeaguesProps) => {
     onSuccess: (league: League) => {
       queryClient.setQueryData(queryKey, (old: any) => [...old, league]);
       toast({
-        title: 'Successfully added a league',
+        title: t('success.leagueAdd'),
         status: 'success',
         position: 'bottom-right',
         duration: 2000,
@@ -66,7 +68,7 @@ export const useLeagues = (props?: UseLeaguesProps) => {
     onSuccess: (league: League) => {
       queryClient.setQueryData(queryKey, (old: any) => [...old.filter((l: League) => l.id !== league.id), league]);
       toast({
-        title: 'Successfully updated a league',
+        title: t('success.leagueUpdate'),
         status: 'success',
         position: 'bottom-right',
         duration: 2000,
@@ -79,7 +81,7 @@ export const useLeagues = (props?: UseLeaguesProps) => {
     onSuccess: (league: League) => {
       queryClient.setQueryData(queryKey, (old: any) => old.filter((l: League) => l.id !== league.id));
       toast({
-        title: 'Successfully deleted a league',
+        title: t('success.leagueDelete'),
         status: 'success',
         position: 'bottom-right',
         duration: 2000,

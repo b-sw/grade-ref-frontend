@@ -1,7 +1,6 @@
 import {
   Button,
   Flex,
-  Text,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -9,6 +8,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Text,
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
@@ -18,6 +18,7 @@ import { useSetState } from 'hooks/useSetState';
 import { useEffect } from 'react';
 import { useFile } from 'hooks/useFile';
 import { MatchesUploadConfirmModal } from 'components/admin/matches/MatchesUploadConfirmModal';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   isOpen: boolean;
@@ -32,6 +33,7 @@ export const MatchesUploadModal = (props: Props) => {
   const { isOpen: isConfirmModalOpen, onOpen: onConfirmModalOpen, onClose: onConfirmModalClose } = useDisclosure();
   const { validateMutation } = useFile();
   const toast = useToast();
+  const { t } = useTranslation();
 
   const [state, setState] = useSetState({
     files: [],
@@ -88,7 +90,7 @@ export const MatchesUploadModal = (props: Props) => {
       <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Upload matches</ModalHeader>
+          <ModalHeader>{t('matches.uploadModal.title')}</ModalHeader>
           <ModalCloseButton />
 
           <ModalBody>
@@ -111,7 +113,7 @@ export const MatchesUploadModal = (props: Props) => {
               <input {...getInputProps()} />
               <MdFileUpload size={'40'} opacity={0.6} />
               <Text opacity={0.6} color={state.files.length ? 'green.600' : 'gray.800'}>
-                {state.files.length ? state.files[0].name : 'Choose or drop a file here.'}
+                {state.files.length ? state.files[0].name : t('matches.uploadModal.description')}
               </Text>
             </Flex>
           </ModalBody>
@@ -124,9 +126,9 @@ export const MatchesUploadModal = (props: Props) => {
               disabled={!state.files.length || validateMutation.isLoading}
               isLoading={validateMutation.isLoading}
             >
-              Upload
+              {t('matches.upload')}
             </Button>
-            <Button onClick={props.onClose}>Cancel</Button>
+            <Button onClick={props.onClose}>{t('modal.cancel')}</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
