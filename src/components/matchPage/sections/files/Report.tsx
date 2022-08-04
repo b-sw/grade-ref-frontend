@@ -41,7 +41,7 @@ export const Report = ({ reportType, isUploaded }: ReportProps) => {
   return (
     <Flex direction={'column'} w={'100%'}>
       <Text fontSize={'xl'} fontWeight={'medium'}>
-        {reportTypeNames[reportType]} {t('matchPage.reports.report')}:
+        {t('matchPage.reports.report')} {reportTypeNames[reportType]}:
       </Text>
       {report}
     </Flex>
