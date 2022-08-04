@@ -86,7 +86,9 @@ export const MatchesUploadModal = (props: Props) => {
 
   return (
     <>
-      <MatchesUploadConfirmModal isOpen={isConfirmModalOpen} onClose={onConfirmModalClose} file={state.files[0]} />
+      {isConfirmModalOpen && (
+        <MatchesUploadConfirmModal isOpen={isConfirmModalOpen} onClose={onConfirmModalClose} file={state.files[0]} />
+      )}
       <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
         <ModalOverlay />
         <ModalContent>

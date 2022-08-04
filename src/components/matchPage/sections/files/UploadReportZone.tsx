@@ -40,7 +40,7 @@ export const UploadReportZone = ({ reportType }: UploadReportZoneProps) => {
     accept: {
       'application/pdf': ['.pdf'],
     },
-    maxSize: 100000,
+    maxSize: 1000000,
     multiple: false,
     maxFiles: 1,
   });
@@ -69,7 +69,6 @@ export const UploadReportZone = ({ reportType }: UploadReportZoneProps) => {
     };
 
     postMutation.mutate(reportDto);
-    setState({ isLoading: true });
   };
 
   const dropzoneText = state.files.length ? state.files[0].name : t('matchPage.reports.uploadMessage');
@@ -81,9 +80,9 @@ export const UploadReportZone = ({ reportType }: UploadReportZoneProps) => {
   return (
     <Dropzone text={dropzoneText} flexProps={{ borderStyle, _hover, cursor, ...rootProps }}>
       <input {...getInputProps()} />
-      {state.isLoading && <Spinner />}
+      {postMutation.isLoading && <Spinner />}
 
-      {!state.isLoading && <Icon as={MdFileUpload} boxSize={35} opacity={0.6} />}
+      {!postMutation.isLoading && <Icon as={MdFileUpload} boxSize={35} opacity={0.6} />}
     </Dropzone>
   );
 };

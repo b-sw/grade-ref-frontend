@@ -22,6 +22,7 @@ export const Dropzone = ({ text, textColor, opacity, children, flexProps }: Drop
       borderWidth={2}
       borderColor={'gray.400'}
       {...flexProps}
+      position={'relative'}
     >
       <Spacer />
 
