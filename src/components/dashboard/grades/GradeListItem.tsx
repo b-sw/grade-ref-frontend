@@ -1,16 +1,5 @@
 import { GRADE_ADMISSION_TIME_WINDOW, MATCH_DURATION_TIME } from 'entities/Match';
-import {
-  Avatar,
-  Badge,
-  Flex,
-  HStack,
-  IconButton,
-  Spacer,
-  Text,
-  Tooltip,
-  useDisclosure,
-  VStack,
-} from '@chakra-ui/react';
+import { Badge, Flex, HStack, IconButton, Spacer, Text, Tooltip, useDisclosure, VStack } from '@chakra-ui/react';
 import { Constants } from 'utils/Constants';
 import dayjs from 'dayjs';
 import { CalendarIcon, EditIcon, WarningIcon } from '@chakra-ui/icons';
@@ -93,13 +82,13 @@ export const matchGradeItem = (
         </Text>
         <Flex direction={['column', 'row']} gap={2}>
           <HStack w={['100$', '40%']}>
-            <Avatar name={userFullName} size={'sm'} />
+            {/*<Avatar name={userFullName} size={'sm'} />*/}
             <VStack spacing={0} alignItems={'baseline'}>
               <HStack>
-                <Text fontSize={'sm'}>{userFullName}</Text>
                 <Badge colorScheme={badgeColor} fontSize={'xs'}>
                   {badgeString}
                 </Badge>
+                <Text fontSize={'sm'}>{userFullName}</Text>
               </HStack>
             </VStack>
           </HStack>

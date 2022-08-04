@@ -317,7 +317,7 @@ i18next
           match: 'Mecz',
           match_many: 'Mecze',
           hero: {
-            description: 'Z łatwością zarządzaj ligą i nadzoruj jej urzędników',
+            description: 'Aplikacja stworzona dla działaczy, sędziów i obserwatorów.',
             logIn: 'Zaloguj się z Google',
           },
           pageNames: {

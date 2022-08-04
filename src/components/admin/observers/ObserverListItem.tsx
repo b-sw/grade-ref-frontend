@@ -1,5 +1,5 @@
 import { DeleteIcon } from '@chakra-ui/icons';
-import { Avatar, Badge, Flex, HStack, IconButton, Spacer, Text, useDisclosure, VStack } from '@chakra-ui/react';
+import { Badge, Flex, HStack, IconButton, Spacer, Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { MdAssignment } from 'react-icons/md';
 import { User } from 'entities/User';
 import { ObserverRemoveModal } from 'components/admin/observers/ObserverRemoveModal';
@@ -46,17 +46,17 @@ export const observerItem = (user: User, t: TFunction<'translation', undefined>)
   return (
     <>
       <HStack>
-        <Avatar name={user.firstName + ' ' + user.lastName} size={'sm'} />
+        {/*<Avatar name={user.firstName + ' ' + user.lastName} size={'sm'} />*/}
         <VStack spacing={0} alignItems={'baseline'}>
           <HStack>
-            <Text fontSize={'md'}>
-              {user.firstName} {user.lastName}
-            </Text>
             {
               <Badge colorScheme="purple" fontSize={'xs'}>
                 {t('observer')}
               </Badge>
             }
+            <Text fontSize={'md'}>
+              {user.firstName} {user.lastName}
+            </Text>
           </HStack>
           <VStack alignItems={'baseline'} spacing={0}>
             <Text fontSize={'sm'} color={'gray.400'}>

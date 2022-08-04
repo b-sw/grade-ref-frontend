@@ -42,7 +42,7 @@ export const Hero = () => {
               rounded={'xl'}
             >
               <Text fontSize={'4xl'} color={'gray.700'} mt={2}>
-                <b>Graderef</b>
+                <b>GradeRef</b>
               </Text>
               <Text fontSize={'lg'} color={'gray.900'} align={'center'} mb={5}>
                 {t('hero.description')}
