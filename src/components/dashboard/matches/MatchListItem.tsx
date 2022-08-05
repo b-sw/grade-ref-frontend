@@ -59,6 +59,7 @@ export const matchItem = (
   const matchTime = dayjs(match.matchDate, Constants.DATETIME_FORMAT).format('HH:mm');
 
   const firstButtonVariants = {
+    hidden: { x: -3, transition: { ease: 'easeOut', duration: 0.1 } },
     hover: { x: 3, transition: { ease: 'easeOut', duration: 0.1 } },
   };
   const secondButtonVariants = {
@@ -134,17 +135,17 @@ export const matchItem = (
             overflow={'hidden'}
           >
             {/* first */}
-            {/* <Flex as={motion.div} initial={{ x: -3 }} variants={secondButtonVariants}>
+            <Flex as={motion.div} variants={firstButtonVariants}>
               <Icon as={BsArrowRight} />
-            </Flex> */}
+            </Flex>
 
             {/* second */}
-            <Flex as={motion.div} variants={secondButtonVariants} position={'absolute'}>
+            {/* <Flex as={motion.div} variants={secondButtonVariants} position={'absolute'}>
               <Icon as={BsArrowRight} />
             </Flex>
             <Flex as={motion.div} variants={thirdButtonVariants} position={'absolute'}>
               <Icon as={BsArrowRightShort} />
-            </Flex>
+            </Flex> */}
           </Button>
         )}
       </Flex>
