@@ -1,4 +1,4 @@
-import { Flex, IconButton, Spacer, Text } from '@chakra-ui/react';
+import { Button, Flex, Icon, Spacer, Text } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import { CalendarIcon } from '@chakra-ui/icons';
 import { Constants } from 'utils/Constants';
@@ -57,6 +57,11 @@ export const matchItem = (
   const matchDate = dayjs(match.matchDate, Constants.DATETIME_FORMAT).format('DD-MM-YYYY');
   const matchTime = dayjs(match.matchDate, Constants.DATETIME_FORMAT).format('HH:mm');
 
+  const arrowButtonVariants = {
+    hidden: { x: -30, opacity: 0, transition: { ease: 'easeOut', duration: 0.2 } },
+    hover: { x: 0, opacity: 1, transition: { ease: 'easeOut', duration: 0.2 } },
+  };
+
   return (
     <Flex direction={'row'} w={'100%'} alignItems={'center'}>
       <Flex w={'50%'}>
@@ -109,16 +114,21 @@ export const matchItem = (
 
       <Flex direction={'row'} w={'5%'}>
         {!readOnly && (
-          <IconButton
+          <Button
             as={motion.div}
             onClick={() => {
               navigate(`${Path.MATCH_PAGE}/${leagueId}/match/${match.id}`);
             }}
             variant={'ghost'}
             aria-label="match-details"
-            whileHover={{ left: 5 }}
-            icon={<BsArrowRight />}
-          />
+            whileHover={'hover'}
+            initial={'hidden'}
+            overflow={'hidden'}
+          >
+            <Flex as={motion.div} initial={{ x: -3 }} variants={arrowButtonVariants}>
+              <Icon as={BsArrowRight} />
+            </Flex>
+          </Button>
         )}
       </Flex>
     </Flex>

@@ -89,7 +89,7 @@ export const MatchesUploadConfirmModal = (props: Props) => {
   }, [state.filter, uploadedMatchesQuery.data!]);
 
   return (
-    <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered size={'4xl'}>
+    <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered size={'5xl'}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
