@@ -1,5 +1,5 @@
 import { Flex } from '@chakra-ui/react';
-import { Report } from 'components/matchPage/sections/files/Report';
+import { Report } from 'components/matchPage/sections/reports/Report';
 import { ReportType } from 'hooks/useReports';
 import { SectionHeading } from 'components/matchPage/components/SectionHeading';
 import { AttachmentIcon } from '@chakra-ui/icons';
@@ -24,6 +24,7 @@ export const Files = ({ match }: ReportsProps) => {
           <Report isUploaded={!!match.observerReportKey} reportType={ReportType.Observer} />
           <Report isUploaded={!!match.mentorReportKey} reportType={ReportType.Mentor} />
           <Report isUploaded={!!match.tvReportKey} reportType={ReportType.Tv} />
+          <Report isUploaded={!!match.selfReportKey} reportType={ReportType.Self} />
         </Flex>
       </SectionBody>
     </Section>

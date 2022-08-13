@@ -13,6 +13,7 @@ export enum ReportType {
   Observer = 'Observer',
   Mentor = 'Mentor',
   Tv = 'Tv',
+  Self = 'Self',
 }
 
 export interface ReportDto {

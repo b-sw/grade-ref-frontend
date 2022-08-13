@@ -15,7 +15,7 @@ import { MatchListItem } from 'components/dashboard/matches/MatchListItem';
 import { MatchDeleteModal } from 'components/admin/matches/MatchDeleteModal';
 import { useStore } from 'zustandStore/store';
 import { Role } from 'utils/Role';
-import { Files } from 'components/matchPage/sections/files/Files';
+import { Files } from 'components/matchPage/sections/reports/Files';
 import { Grade } from 'components/matchPage/sections/grade/Grade';
 import { OverallGrade } from 'components/matchPage/sections/overallGrade/OverallGrade';
 import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';

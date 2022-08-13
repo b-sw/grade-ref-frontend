@@ -2,9 +2,9 @@ import { Flex, Text } from '@chakra-ui/react';
 import { ReportType } from 'hooks/useReports';
 import { ActionType, GradeFilePermissions, Role } from 'utils/Role';
 import { useStore } from 'zustandStore/store';
-import { UploadReportZone } from 'components/matchPage/sections/files/UploadReportZone';
-import { DownloadReportZone } from 'components/matchPage/sections/files/DownloadReportZone';
-import { ReadOnlyReportZone } from 'components/matchPage/sections/files/ReadOnlyReportZone';
+import { UploadReportZone } from 'components/matchPage/sections/reports/UploadReportZone';
+import { DownloadReportZone } from 'components/matchPage/sections/reports/DownloadReportZone';
+import { ReadOnlyReportZone } from 'components/matchPage/sections/reports/ReadOnlyReportZone';
 import { AiOutlineFileDone, AiOutlineFileUnknown } from 'react-icons/ai';
 import { useTranslation } from 'react-i18next';
 
@@ -21,6 +21,7 @@ export const Report = ({ reportType, isUploaded }: ReportProps) => {
     [ReportType.Observer]: t('matchPage.reports.observer'),
     [ReportType.Mentor]: t('matchPage.reports.mentor'),
     [ReportType.Tv]: t('matchPage.reports.tv'),
+    [ReportType.Self]: t('matchPage.reports.self'),
   };
 
   const hasReadPermissions = GradeFilePermissions[user.role! as Role][ActionType.Read].has(reportType);
@@ -41,7 +42,7 @@ export const Report = ({ reportType, isUploaded }: ReportProps) => {
   return (
     <Flex direction={'column'} w={'100%'}>
       <Text fontSize={'xl'} fontWeight={'medium'}>
-        {t('matchPage.reports.report')} {reportTypeNames[reportType]}:
+        {reportTypeNames[reportType]}:
       </Text>
       {report}
     </Flex>

@@ -13,16 +13,17 @@ export type Match = {
   awayTeamId: uuid;
   refereeId: uuid;
   observerId: uuid;
-  refereeGrade: number;
-  refereeGradeDate: Date;
+  refereeGrade?: number;
+  refereeGradeDate?: Date;
   refereeSmsId: uuid;
   observerSmsId: uuid;
-  overallGrade: string;
-  overallGradeDate: Date;
-  refereeNote: string;
-  observerReportKey: string;
-  mentorReportKey: string;
-  tvReportKey: string;
+  overallGrade?: string;
+  overallGradeDate?: Date;
+  refereeNote?: string;
+  observerReportKey?: string;
+  mentorReportKey?: string;
+  tvReportKey?: string;
+  selfReportKey?: string;
 };
 
 export const matchValidationSchema = Yup.object({

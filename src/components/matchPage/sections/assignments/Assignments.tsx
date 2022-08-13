@@ -32,6 +32,8 @@ export const Assignments = ({ match }: AssignmentsProps) => {
   const userIsAdmin: boolean = user.role === Role.Admin;
   const userCanEdit: boolean = userIsAdmin && !matchHasStarted;
 
+  const hiddenObserver = match.observer === 'hidden' ? t('matchPage.assignments.hidden') : undefined;
+
   return (
     <>
       {userCanEdit && matchQuery.data && <AssignmentEditModal isOpen={isEditOpen} handleClose={onEditClose} />}
@@ -52,7 +54,7 @@ export const Assignments = ({ match }: AssignmentsProps) => {
         <SectionBody>
           <Flex direction={'column'} pr={[0, 20]} gap={2}>
             <TextField name={t('referee') + ':'} text={match.referee} />
-            <TextField name={t('observer') + ':'} text={match.observer} />
+            <TextField name={t('observer') + ':'} text={hiddenObserver ?? match.observer} />
           </Flex>
         </SectionBody>
       </Section>

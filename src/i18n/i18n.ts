@@ -225,6 +225,7 @@ i18next
               editModal: {
                 title: 'Edit assignments',
               },
+              hidden: 'Hidden',
             },
             sanctions: {
               title: 'Disciplinary sanctions',
@@ -257,10 +258,10 @@ i18next
             },
             reports: {
               title: 'Reports',
-              report: 'Report',
-              mentor: 'mentor',
-              observer: 'observer',
-              tv: 'television',
+              mentor: 'Mentor report',
+              observer: 'Observer report',
+              tv: 'Television report',
+              self: 'Self report',
               download: 'Download',
               empty: 'Empty',
               uploaded: 'Uploaded',
@@ -485,6 +486,7 @@ i18next
               editModal: {
                 title: 'Edytuj obsadę',
               },
+              hidden: 'Ukryty',
             },
             sanctions: {
               title: 'Kary indywidualne',
@@ -517,10 +519,10 @@ i18next
             },
             reports: {
               title: 'Sprawozdania',
-              report: 'Raport',
-              mentor: 'mentora',
-              observer: 'obserwatora',
-              tv: 'telewizyjny',
+              mentor: 'Raport mentora',
+              observer: 'Raport obserwatora',
+              tv: 'Raport telewizyjny',
+              self: 'Samoocena',
               download: 'Pobierz',
               empty: 'Brak',
               uploaded: 'Załadowany',
