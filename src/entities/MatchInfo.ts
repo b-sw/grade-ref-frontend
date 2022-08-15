@@ -9,7 +9,7 @@ export type MatchInfo = {
   awayTeamId: uuid;
   referee: string;
   observer: string;
-  refereeGrade?: number;
+  refereeGrade?: string;
   refereeGradeDate?: Date;
   refereeNote?: string;
   overallGrade?: string;

@@ -1,6 +1,6 @@
 import { FormikModal } from 'components/matchPage/components/FormikModal';
 import { useEffect } from 'react';
-import { NumberInputControl } from 'formik-chakra-ui';
+import { InputControl } from 'formik-chakra-ui';
 import { gradeValidationSchema } from 'components/matchPage/sections/grade/grade.validation';
 import { useGrades } from 'hooks/useGrades';
 import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
@@ -13,7 +13,7 @@ interface GradeEditModalProps {
 }
 
 interface GradeFormikValues {
-  refereeGrade: number;
+  refereeGrade: string;
 }
 
 export const GradeEditModal = ({ isOpen, handleClose, match }: GradeEditModalProps) => {
@@ -28,7 +28,7 @@ export const GradeEditModal = ({ isOpen, handleClose, match }: GradeEditModalPro
   }, [updateMutation.isSuccess]);
 
   const initialValues: GradeFormikValues = {
-    refereeGrade: match.refereeGrade ?? 0,
+    refereeGrade: match.refereeGrade ?? 'N/A',
   };
 
   const handleEditGrade = (values: GradeFormikValues) => {
@@ -40,7 +40,7 @@ export const GradeEditModal = ({ isOpen, handleClose, match }: GradeEditModalPro
 
   const modalBody: JSX.Element = (
     <>
-      <NumberInputControl name="refereeGrade" label={t('matchPage.grade.editModal.input')} />
+      <InputControl name="refereeGrade" label={t('matchPage.grade.editModal.input')} />
     </>
   );
 
