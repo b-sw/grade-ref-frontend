@@ -1,18 +1,17 @@
-import {Button, Flex, Input, InputGroup, InputLeftElement, Spacer, Text, useDisclosure } from '@chakra-ui/react';
+import { Button, Flex, Input, InputGroup, InputLeftElement, Spacer, Text, useDisclosure } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
-import {AdminCreateModal} from "components/owner/admins/AdminCreateModal";
-import {useUsers} from "hooks/useUsers";
-import {scrollbarStyle} from "components/dashboard/styles/styles";
-import {User} from "entities/User";
-import {AdminListItem} from "components/owner/admins/AdminListItem";
+import { AdminCreateModal } from 'components/owner/admins/AdminCreateModal';
+import { useUsers } from 'hooks/useUsers';
+import { User } from 'entities/User';
+import { AdminListItem } from 'components/owner/admins/AdminListItem';
 import { MdSearch } from 'react-icons/md';
-import {useSetState} from "hooks/useSetState";
-import {useEffect} from "react";
-import {userFilter} from "components/utils/filters";
+import { useSetState } from 'hooks/useSetState';
+import { useEffect } from 'react';
+import { userFilter } from 'components/utils/filters';
 
 interface State {
-  admins: User[],
-  filter: string,
+  admins: User[];
+  filter: string;
 }
 
 export const OwnerAdminsPanel = () => {
@@ -27,7 +26,6 @@ export const OwnerAdminsPanel = () => {
   useEffect(() => {
     const filteredAdmins: User[] = userFilter(adminsQuery.data!, state.filter);
     setState({ admins: filteredAdmins });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.filter, adminsQuery.data]);
 
   return (
@@ -54,23 +52,16 @@ export const OwnerAdminsPanel = () => {
         </Flex>
 
         <InputGroup>
-          <InputLeftElement
-            pointerEvents={'none'}
-            children={<MdSearch />}
-          />
-          <Input
-            mb={2}
-            placeholder={'Search admin'}
-            onChange={(event) => setState({ filter: event.target.value })}
-          />
+          <InputLeftElement pointerEvents={'none'} children={<MdSearch />} />
+          <Input mb={2} placeholder={'Search admin'} onChange={(event) => setState({ filter: event.target.value })} />
         </InputGroup>
 
-        <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
-          {state.admins.map((admin: User) =>
-              <AdminListItem key={admin.id} admin={admin} />
-          )}
+        <Flex direction={'column'} gap={2} overflowY={'scroll'}>
+          {state.admins.map((admin: User) => (
+            <AdminListItem key={admin.id} admin={admin} />
+          ))}
         </Flex>
       </Flex>
     </>
   );
-}
+};

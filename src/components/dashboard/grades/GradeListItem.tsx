@@ -1,100 +1,110 @@
-import {GRADE_ADMISSION_TIME_WINDOW, Match, MATCH_DURATION_TIME} from "entities/Match";
-import {User} from "entities/User";
-import {Avatar, Badge, Flex, HStack, IconButton, Spacer, Text, Tooltip, useDisclosure, VStack} from "@chakra-ui/react";
-import {Constants} from "utils/Constants";
-import dayjs from "dayjs";
-import {CalendarIcon, EditIcon, WarningIcon} from "@chakra-ui/icons";
-import {BsClockFill} from "react-icons/bs";
-import {Role} from "utils/Role";
-import {GradeEditModal} from "components/matchPage/sections/grade/GradeEditModal";
+import { GRADE_ADMISSION_TIME_WINDOW, MATCH_DURATION_TIME } from 'entities/Match';
+import { Badge, Flex, HStack, IconButton, Spacer, Text, Tooltip, useDisclosure, VStack } from '@chakra-ui/react';
+import { Constants } from 'utils/Constants';
+import dayjs from 'dayjs';
+import { CalendarIcon, EditIcon, WarningIcon } from '@chakra-ui/icons';
+import { BsClockFill } from 'react-icons/bs';
+import { Role } from 'utils/Role';
+import { GradeEditModal } from 'components/matchPage/sections/grade/GradeEditModal';
+import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
+import { TFunction, useTranslation } from 'react-i18next';
+import { GradeStatus } from 'entities/utils/gradeInfo';
 
-interface Props {
-  match: Match;
-  user: User;
+interface GradeListItemProps {
+  match: MatchInfoEnriched;
+  userFullName: string;
+  userRole: Role;
   readOnly?: boolean;
 }
 
-export const GradeListItem = (props: Props) => {
+export const GradeListItem = ({ match, userFullName, userRole, readOnly }: GradeListItemProps) => {
   const { isOpen: isEditModalOpen, onOpen: onEditModalOpen, onClose: onEditModalClose } = useDisclosure();
+  const { t } = useTranslation();
 
-  const enableEdit: boolean = (!isPastAdmissionWindow(props.match) || !props.match.refereeGrade) && !isUpcoming(props.match);
+  const enableEdit: boolean = (!isPastAdmissionWindow(match) || !match.refereeGrade) && !isUpcoming(match);
 
   return (
     <>
-      {!props.readOnly && <GradeEditModal isOpen={isEditModalOpen} handleClose={onEditModalClose} match={props.match} />}
-      <Flex
-        p={5}
-        borderRadius={10}
-        alignItems={'center'}
-        backgroundColor={'gray.50'}
-      >
-        {matchGradeItem(props.match, props.user)}
+      {!readOnly && <GradeEditModal isOpen={isEditModalOpen} handleClose={onEditModalClose} match={match} />}
+      <Flex p={5} borderRadius={10} alignItems={'center'} backgroundColor={'gray.50'}>
+        {matchGradeItem(match, userFullName, userRole, t)}
         <Spacer />
-        {!props.readOnly &&
+        {!readOnly && (
           <IconButton
             onClick={onEditModalOpen}
             disabled={!enableEdit}
             variant={'ghost'}
-            aria-label='Edit grade'
+            aria-label="Edit grade"
             icon={<EditIcon />}
           />
-        }
+        )}
       </Flex>
     </>
   );
-}
+};
 
-export const isPastAdmissionWindow = (match: Match): boolean => {
+export const isPastAdmissionWindow = (match: MatchInfoEnriched): boolean => {
   return dayjs(match.matchDate).add(GRADE_ADMISSION_TIME_WINDOW, 'hour').isBefore(dayjs());
-}
+};
 
-export const isUpcoming = (match: Match): boolean => {
+export const isUpcoming = (match: MatchInfoEnriched): boolean => {
   return dayjs(match.matchDate).add(MATCH_DURATION_TIME, 'hour').isAfter(dayjs());
-}
+};
 
-export const matchGradeItem = (match: Match, user: User) => {
-  let gradeDate: string = 'TBD';
-  let gradeTime: string = 'TBD';
+export const matchGradeItem = (
+  match: MatchInfoEnriched,
+  userFullName: string,
+  userRole: Role,
+  t: TFunction<'translation', undefined>,
+) => {
+  let gradeDate = 'TBD';
+  let gradeTime = 'TBD';
   if (match.refereeGradeDate) {
     gradeDate = dayjs(match.refereeGradeDate, Constants.DATETIME_FORMAT).format('DD-MM-YYYY');
     gradeTime = dayjs(match.refereeGradeDate, Constants.DATETIME_FORMAT).format('HH:mm');
   }
-  const { badgeColor, badgeString } = getUserBadge(user.role);
+  const { badgeColor, badgeString } = getUserBadge(userRole, t);
+
+  const gradeStatuses: Map<GradeStatus, string> = new Map([
+    [GradeStatus.Expected, t('grades.expected')],
+    [GradeStatus.Overdue, t('grades.overdue')],
+    [GradeStatus.Received, t('grades.received')],
+    [GradeStatus.Pending, t('grades.pending')],
+  ]);
 
   return (
     <>
       <VStack w={'100%'} align={'left'}>
-        <Text fontSize={'sm'}><b>Match #{match.userReadableKey}</b></Text>
+        <Text fontSize={'sm'}>
+          <b>
+            {t('match')} #{match.userReadableKey}
+          </b>
+        </Text>
         <Flex direction={['column', 'row']} gap={2}>
           <HStack w={['100$', '40%']}>
-            <Avatar
-              name={user.firstName + ' ' + user.lastName}
-              size={'sm'}
-            />
+            {/*<Avatar name={userFullName} size={'sm'} />*/}
             <VStack spacing={0} alignItems={'baseline'}>
               <HStack>
-                <Text fontSize={'sm'}>{user.firstName} {user.lastName}</Text>
-                <Badge colorScheme={badgeColor} fontSize={'xs'}>{badgeString}</Badge>
+                <Badge colorScheme={badgeColor} fontSize={'xs'}>
+                  {badgeString}
+                </Badge>
+                <Text fontSize={'sm'}>{userFullName}</Text>
               </HStack>
-              <VStack alignItems={'baseline'} spacing={0}>
-                <Text fontSize={'xs'} color={'gray.400'}>
-                  {user.email}
-                </Text>
-                <Text fontSize={'xs'} color={'gray.400'}>
-                  {user.phoneNumber}
-                </Text>
-              </VStack>
             </VStack>
           </HStack>
 
           <VStack alignItems={'baseline'} w={['100$', '30%']}>
             <HStack>
-              <Text>Status:</Text>
-              <Badge colorScheme={match.gradeStatus.badgeScheme} fontSize={'xs'}>{match.gradeStatus.status}</Badge>
+              <Text>{t('matches.status')}:</Text>
+              <Badge colorScheme={match.gradeStatus.badgeScheme} fontSize={'xs'}>
+                {gradeStatuses.get(match.gradeStatus.status)}
+              </Badge>
             </HStack>
             <HStack>
-              <Text>Grade:</Text>
-              <Badge variant={'outline'} colorScheme={match.gradeStatus.badgeScheme} fontSize={'xs'}>{match.refereeGrade ?? 'N/A'}</Badge>
+              <Text>{t('grade')}:</Text>
+              <Badge variant={'outline'} colorScheme={match.gradeStatus.badgeScheme} fontSize={'xs'}>
+                {match.refereeGrade ?? 'N/A'}
+              </Badge>
             </HStack>
           </VStack>
 
@@ -106,31 +116,34 @@ export const matchGradeItem = (match: Match, user: User) => {
             <HStack>
               <BsClockFill />
               <Text fontSize={'sm'}>{gradeTime}</Text>
-              {match.gradeStatus.delay &&
+              {match.gradeStatus.delay && (
                 <Tooltip label={'+' + match.gradeStatus.delay}>
-                  <WarningIcon color={'red.600'}/>
+                  <WarningIcon color={'red.600'} />
                 </Tooltip>
-              }
+              )}
             </HStack>
           </VStack>
         </Flex>
       </VStack>
     </>
   );
-}
+};
 
-export const getUserBadge = (userRole: Role): { badgeColor: string, badgeString: string } => {
+export const getUserBadge = (
+  userRole: Role,
+  t: TFunction<'translation', undefined>,
+): { badgeColor: string; badgeString: string } => {
   if (userRole === Role.Referee) {
-    return { badgeColor: 'facebook', badgeString: 'Referee' };
+    return { badgeColor: 'facebook', badgeString: t('referee') };
   }
 
   if (userRole === Role.Observer) {
-    return { badgeColor: 'purple', badgeString: 'Observer' };
+    return { badgeColor: 'purple', badgeString: t('observer') };
   }
 
   if (userRole === Role.Admin) {
-    return { badgeColor: 'orange', badgeString: 'League admin' };
+    return { badgeColor: 'orange', badgeString: t('leagueAdmin') };
   }
 
-  return { badgeColor: 'linkedin', badgeString: 'Owner' };
-}
+  return { badgeColor: 'linkedin', badgeString: t('owner') };
+};

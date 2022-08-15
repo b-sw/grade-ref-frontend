@@ -1,13 +1,14 @@
-import {Avatar, Button, Flex, HStack, Text, VStack} from '@chakra-ui/react';
-import {useNavigate} from 'react-router-dom';
-import {Path} from 'utils/Path';
-import {League} from "entities/League";
-import {useLeagueTeams} from "hooks/useLeagueTeams";
-import {useLeagueMatches} from "hooks/useLeagueMatches";
-import {useLeagueUsers} from "hooks/useLeagueUsers";
-import {Role} from "utils/Role";
-import {useReferees} from "hooks/useReferees";
-import {useObservers} from "hooks/useObservers";
+import { Avatar, Button, Flex, HStack, Text, VStack } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
+import { Path } from 'utils/Path';
+import { League } from 'entities/League';
+import { useLeagueTeams } from 'hooks/useLeagueTeams';
+import { useLeagueMatches } from 'hooks/useLeagueMatches';
+import { useLeagueUsers } from 'hooks/useLeagueUsers';
+import { Role } from 'utils/Role';
+import { useReferees } from 'hooks/useReferees';
+import { useObservers } from 'hooks/useObservers';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   league: League;
@@ -15,22 +16,23 @@ interface Props {
 
 export const AdminLeagueCard = (props: Props) => {
   const navigate = useNavigate();
-  const { usersQuery: refereesQuery } =
-    useLeagueUsers(Role.Referee, { leagueId: props.league.id });
-  const { usersQuery: observersQuery } =
-    useLeagueUsers(Role.Observer, { leagueId: props.league.id });
+  const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee, { leagueId: props.league.id });
+  const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer, { leagueId: props.league.id });
   const { query: teamsQuery } = useLeagueTeams({ leagueId: props.league.id });
   const { query: matchesQuery } = useLeagueMatches({ leagueId: props.league.id });
   const { refereesQuery: allRefereesQuery } = useReferees({ enableAutoRefetch: true });
   const { observersQuery: allObserversQuery } = useObservers({ enableAutoRefetch: true });
+  const { t } = useTranslation();
 
   const loadingQueries = [refereesQuery, observersQuery, teamsQuery, matchesQuery];
   const allQueries = [allRefereesQuery, allObserversQuery, ...loadingQueries];
 
   const navigateToDashboard = async (league: League) => {
-    await Promise.all(allQueries.map(async (query): Promise<any> => {
-      await query.refetch();
-    }));
+    await Promise.all(
+      allQueries.map(async (query): Promise<any> => {
+        await query.refetch();
+      }),
+    );
     navigate(`${Path.ADMIN_DASHBOARD}/${league.id}`);
   };
 
@@ -43,7 +45,7 @@ export const AdminLeagueCard = (props: Props) => {
           onClick={async () => await navigateToDashboard(props.league)}
           isLoading={loadingQueries.some((query) => query.isLoading)}
         >
-          Select
+          {t('explorer.select')}
         </Button>
       </VStack>
     </Flex>
@@ -54,12 +56,11 @@ export const leagueItem = (league: League) => {
   return (
     <>
       <HStack>
-        <Avatar
-          name={league.name}
-          size={'md'}
-        />
+        <Avatar getInitials={(name) => name} name={league.shortName} size={'md'} />
         <VStack spacing={0} alignItems={'baseline'}>
-          <Text><b>{league.name}</b></Text>
+          <Text>
+            <b>{league.name}</b>
+          </Text>
           <Text fontSize={'sm'} color={'gray.500'}>
             {league.country}
           </Text>
@@ -67,4 +68,4 @@ export const leagueItem = (league: League) => {
       </HStack>
     </>
   );
-}
+};

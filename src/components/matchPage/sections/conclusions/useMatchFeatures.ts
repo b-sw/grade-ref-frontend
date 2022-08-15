@@ -1,45 +1,46 @@
-import { useToast } from "@chakra-ui/react";
-import { QueryClient, useMutation, useQuery, useQueryClient } from "react-query";
-import { useParams } from "react-router-dom";
-import {uuid} from "utils/uuid";
-import axios, { AxiosError } from "axios";
-import {toastError} from "hooks/utils/toastError";
-import {Feature} from "entities/Feature";
+import { useToast } from '@chakra-ui/react';
+import { QueryClient, useMutation, useQuery, useQueryClient } from 'react-query';
+import { useParams } from 'react-router-dom';
+import { uuid } from 'utils/uuid';
+import axios, { AxiosError } from 'axios';
+import { toastError } from 'hooks/utils/toastError';
+import { Feature } from 'entities/Feature';
 
 interface Props {
-  matchId: uuid;
+  enableAutoRefetch?: boolean;
 }
 
-const FEATURES_QUERY_KEY: string = 'features_qk';
+const FEATURES_QUERY_KEY = 'features_qk';
 
-export const useFeatures = (props: Props) => {
+export const useMatchFeatures = (props?: Props) => {
   const { leagueId } = useParams<{ leagueId: uuid }>();
+  const { matchId } = useParams<{ matchId: uuid }>();
   const queryClient: QueryClient = useQueryClient();
   const toast = useToast();
 
-  const queryKey = [FEATURES_QUERY_KEY, props.matchId];
+  const queryKey = [FEATURES_QUERY_KEY, matchId];
 
   const getFeatures = async (): Promise<Feature[]> => {
-    const response = await axios.get(`leagues/${leagueId}/matches/${props.matchId}/features`);
+    const response = await axios.get(`leagues/${leagueId}/matches/${matchId}/features`);
     return response.data;
-  }
+  };
 
   const postFeature = async (feature: Feature): Promise<Feature> => {
-    const response = await axios.post(`leagues/${leagueId}/matches/${props.matchId}/features`, feature);
+    const response = await axios.post(`leagues/${leagueId}/matches/${matchId}/features`, feature);
     return response.data;
-  }
+  };
 
   const updateFeature = async (feature: Feature): Promise<Feature> => {
-    const response = await axios.put(`leagues/${leagueId}/matches/${props.matchId}/features/${feature.id}`, feature);
+    const response = await axios.put(`leagues/${leagueId}/matches/${matchId}/features/${feature.id}`, feature);
     return response.data;
-  }
+  };
 
   const deleteFeature = async (featureId: uuid): Promise<Feature> => {
-    const response = await axios.delete(`leagues/${leagueId}/matches/${props.matchId}/features/${featureId}`);
+    const response = await axios.delete(`leagues/${leagueId}/matches/${matchId}/features/${featureId}`);
     return response.data;
-  }
+  };
 
-  const query = useQuery(queryKey, getFeatures);
+  const query = useQuery(queryKey, getFeatures, { enabled: props ? !!props.enableAutoRefetch : false });
 
   const postMutation = useMutation(postFeature, {
     onSuccess: (feature: Feature) => {
@@ -51,7 +52,7 @@ export const useFeatures = (props: Props) => {
         duration: 2000,
       });
     },
-    onError: (error: AxiosError, _variables, _context) => toastError(toast, error),
+    onError: (error: AxiosError) => toastError(toast, error),
   });
 
   const updateMutation = useMutation(updateFeature, {
@@ -64,7 +65,7 @@ export const useFeatures = (props: Props) => {
         duration: 2000,
       });
     },
-    onError: (error: AxiosError, _variables, _context) => toastError(toast, error),
+    onError: (error: AxiosError) => toastError(toast, error),
   });
 
   const deleteMutation = useMutation(deleteFeature, {
@@ -77,8 +78,8 @@ export const useFeatures = (props: Props) => {
         duration: 2000,
       });
     },
-    onError: (error: AxiosError, _variables, _context) => toastError(toast, error),
+    onError: (error: AxiosError) => toastError(toast, error),
   });
 
   return { query, postMutation, updateMutation, deleteMutation };
-}
+};

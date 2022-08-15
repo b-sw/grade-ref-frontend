@@ -2,10 +2,11 @@
 
 // 1. import `extendTheme` function
 import { extendTheme } from '@chakra-ui/react';
-import { Input } from "./input";
+import { Input } from './input';
 import { Modal } from './modal';
 import { Select } from './select';
-import {NumberInput} from "./numberInput";
+import { NumberInput } from './numberInput';
+import { Textarea } from 'theme/textarea';
 
 // 2. Add your color mode config
 const config = {
@@ -21,15 +22,16 @@ const colors = {
   },
   tabsButton: {
     600: '#3182CE',
-  }
-}
+  },
+};
 
 const components = {
   Input,
   NumberInput,
   Modal,
   Select,
-}
+  Textarea,
+};
 
 // 3. extend the theme
 const theme = extendTheme({ colors, components, config });

@@ -1,23 +1,23 @@
-import { Flex, Text, Spacer, IconButton } from '@chakra-ui/react';
-import {Match} from "entities/Match";
-import {useLeagueTeams} from "hooks/useLeagueTeams";
-import {Team} from "entities/Team";
+import { Button, Flex, Icon, Spacer, Text } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import { CalendarIcon } from '@chakra-ui/icons';
-import {Constants} from "utils/Constants";
+import { Constants } from 'utils/Constants';
 import { BsArrowRight } from 'react-icons/bs';
-import { GiSoccerField } from "react-icons/gi";
+import { GiSoccerField } from 'react-icons/gi';
 import { motion } from 'framer-motion';
-import {Path} from "utils/Path";
-import {NavigateFunction, useNavigate, useParams } from 'react-router-dom';
-import {uuid} from "utils/uuid";
+import { Path } from 'utils/Path';
+import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
+import { uuid } from 'utils/uuid';
+import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
+import { useLeagueTeams } from 'hooks/useLeagueTeams';
+import { Team } from 'entities/Team';
 
-export interface Props {
-  match: Match;
+export interface MatchListItemProps {
+  match: MatchInfoEnriched;
   readOnly?: boolean;
 }
 
-export const MatchListItem = (props: Props) => {
+export const MatchListItem = ({ match, readOnly }: MatchListItemProps) => {
   const { query: teamsQuery } = useLeagueTeams();
   const navigate: NavigateFunction = useNavigate();
   const { leagueId } = useParams<{ leagueId: uuid }>();
@@ -29,86 +29,116 @@ export const MatchListItem = (props: Props) => {
         borderRadius={10}
         alignItems={'center'}
         backgroundColor={'gray.50'}
-        cursor={props.readOnly ? 'default' : 'pointer'}
-        onClick={props.readOnly ? () => {} : () => { navigate(`${Path.MATCH_PAGE}/${leagueId}/match/${props.match.id}`); }}
+        cursor={readOnly ? 'default' : 'pointer'}
+        onClick={
+          readOnly
+            ? () => undefined
+            : () => {
+                navigate(`${Path.MATCH_PAGE}/${leagueId}/match/${match.id}`);
+              }
+        }
         w={'100%'}
       >
-        {matchItem(props.match, teamsQuery.data!, navigate, leagueId!, props.readOnly)}
+        {matchItem(match, teamsQuery.data!, navigate, leagueId!, readOnly)}
       </Flex>
     </>
   );
-}
+};
 
-export const matchItem = (match: Match, teams: Team[], navigate: NavigateFunction, leagueId: uuid, readOnly?: boolean) => {
-  const homeTeam = teams.find((team: Team) => team.id === match.homeTeamId)!;
-  const awayTeam = teams.find((team: Team) => team.id === match.awayTeamId)!;
+export const matchItem = (
+  match: MatchInfoEnriched,
+  teams: Team[],
+  navigate: NavigateFunction,
+  leagueId: uuid,
+  readOnly?: boolean,
+) => {
+  const homeTeam = teams.find((team) => team.id === match.homeTeamId)!;
+  const awayTeam = teams.find((team) => team.id === match.awayTeamId)!;
   const matchDate = dayjs(match.matchDate, Constants.DATETIME_FORMAT).format('DD-MM-YYYY');
   const matchTime = dayjs(match.matchDate, Constants.DATETIME_FORMAT).format('HH:mm');
+
+  const arrowButtonVariants = {
+    hidden: { x: -30, opacity: 0, transition: { ease: 'easeOut', duration: 0.2 } },
+    hover: { x: 0, opacity: 1, transition: { ease: 'easeOut', duration: 0.2 } },
+  };
 
   return (
     <Flex direction={'row'} w={'100%'} alignItems={'center'}>
       <Flex w={'50%'}>
         <Flex w={'40%'}>
           <Spacer />
-          <Text fontWeight={'medium'}>{homeTeam.name}</Text>
+          <Flex direction={'column'}>
+            <Spacer />
+            <Text fontWeight={'medium'}>{homeTeam.name}</Text>
+            <Spacer />
+          </Flex>
         </Flex>
 
         <Flex w={'20%'}>
           <Spacer />
-          {timeItem(matchTime)}
+          <Flex direction={'column'}>
+            <Spacer />
+            {timeItem(matchTime)}
+            <Spacer />
+          </Flex>
           <Spacer />
         </Flex>
 
         <Flex w={'40%'}>
-          <Text fontWeight={'medium'}>{awayTeam.name}</Text>
+          <Flex direction={'column'}>
+            <Spacer />
+            <Text fontWeight={'medium'}>{awayTeam.name}</Text>
+            <Spacer />
+          </Flex>
           <Spacer />
         </Flex>
       </Flex>
 
       <Spacer />
 
-      <Flex direction={'row'} w={'30%'} alignItems={'center'} >
+      <Flex direction={'row'} w={'30%'} alignItems={'center'}>
         <GiSoccerField />
-        <Text fontSize={'sm'} ml={1}>{match.stadium}</Text>
+        <Text fontSize={'sm'} ml={1}>
+          {match.stadium}
+        </Text>
       </Flex>
 
       <Spacer />
 
       <Flex direction={'row'} w={'15%'} alignItems={'center'}>
         <CalendarIcon />
-        <Text fontSize={'sm'} ml={1}>{matchDate}</Text>
+        <Text fontSize={'sm'} ml={1}>
+          {matchDate}
+        </Text>
       </Flex>
 
       <Flex direction={'row'} w={'5%'}>
-        {!readOnly &&
-          <IconButton
+        {!readOnly && (
+          <Button
             as={motion.div}
-            onClick={() => { navigate(`${Path.MATCH_PAGE}/${leagueId}/match/${match.id}`); }}
+            onClick={() => {
+              navigate(`${Path.MATCH_PAGE}/${leagueId}/match/${match.id}`);
+            }}
             variant={'ghost'}
-            aria-label='match-details'
-            whileHover={{ left: 5 }}
-            icon={
-              <BsArrowRight />
-            }
-          />
-        }
+            aria-label="match-details"
+            whileHover={'hover'}
+            initial={'hidden'}
+            overflow={'hidden'}
+          >
+            <Flex as={motion.div} initial={{ x: -3 }} variants={arrowButtonVariants}>
+              <Icon as={BsArrowRight} />
+            </Flex>
+          </Button>
+        )}
       </Flex>
     </Flex>
-  )
-}
+  );
+};
 
 export const timeItem = (time: string) => {
   return (
-    <Flex
-      direction={'column'}
-      borderRadius={5}
-      borderWidth={1}
-      px={1}
-      borderColor={'gray.300'}
-    >
-      <Spacer />
+    <Flex direction={'column'} borderRadius={5} borderWidth={1} px={1} borderColor={'gray.300'}>
       <Text fontWeight={'light'}>{time}</Text>
-      <Spacer />
     </Flex>
   );
-}
+};

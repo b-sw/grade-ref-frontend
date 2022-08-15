@@ -1,18 +1,17 @@
-import {Button, Flex, Input, InputGroup, InputLeftElement, Spacer, Text, useDisclosure} from '@chakra-ui/react';
-import {AddIcon} from '@chakra-ui/icons';
-import {scrollbarStyle} from "components/dashboard/styles/styles";
-import {User} from "entities/User";
-import {RefereeListItem} from 'components/owner/referees/RefereeListItem';
-import {RefereeCreateModal} from 'components/owner/referees/RefereeCreateModal';
+import { Button, Flex, Input, InputGroup, InputLeftElement, Spacer, Text, useDisclosure } from '@chakra-ui/react';
+import { AddIcon } from '@chakra-ui/icons';
+import { User } from 'entities/User';
+import { RefereeListItem } from 'components/owner/referees/RefereeListItem';
+import { RefereeCreateModal } from 'components/owner/referees/RefereeCreateModal';
 import { MdSearch } from 'react-icons/md';
-import {useSetState} from "hooks/useSetState";
-import {userFilter} from "components/utils/filters";
+import { useSetState } from 'hooks/useSetState';
+import { userFilter } from 'components/utils/filters';
 import { useEffect } from 'react';
-import {useReferees} from "hooks/useReferees";
+import { useReferees } from 'hooks/useReferees';
 
 interface State {
-  referees: User[],
-  filter: string,
+  referees: User[];
+  filter: string;
 }
 
 export const OwnerRefereesPanel = () => {
@@ -27,7 +26,6 @@ export const OwnerRefereesPanel = () => {
   useEffect(() => {
     const filteredReferees: User[] = userFilter(refereesQuery.data!, state.filter);
     setState({ referees: filteredReferees });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.filter, refereesQuery.data]);
 
   return (
@@ -53,23 +51,16 @@ export const OwnerRefereesPanel = () => {
         </Flex>
 
         <InputGroup>
-          <InputLeftElement
-            pointerEvents={'none'}
-            children={<MdSearch />}
-          />
-          <Input
-            mb={2}
-            placeholder={'Search referee'}
-            onChange={(event) => setState({ filter: event.target.value })}
-          />
+          <InputLeftElement pointerEvents={'none'} children={<MdSearch />} />
+          <Input mb={2} placeholder={'Search referee'} onChange={(event) => setState({ filter: event.target.value })} />
         </InputGroup>
 
-        <Flex direction={'column'} gap={2} overflowY={'scroll'} css={scrollbarStyle}>
-          {state.referees.map((referee: User) =>
-              <RefereeListItem key={referee.id} referee={referee} />
-          )}
+        <Flex direction={'column'} gap={2} overflowY={'scroll'}>
+          {state.referees.map((referee: User) => (
+            <RefereeListItem key={referee.id} referee={referee} />
+          ))}
         </Flex>
       </Flex>
     </>
   );
-}
+};

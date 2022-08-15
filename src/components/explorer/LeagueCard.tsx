@@ -1,13 +1,12 @@
-import {Button, Flex, VStack} from '@chakra-ui/react';
-import {useNavigate} from 'react-router-dom';
-import {Path} from 'utils/Path';
-import {League} from "entities/League";
-import {useLeagueTeams} from "hooks/useLeagueTeams";
-import {useLeagueUsers} from "hooks/useLeagueUsers";
-import {Role} from "utils/Role";
-import {leagueItem} from "components/admin/explorer/AdminLeagueCard";
-import {useUserMatches} from "hooks/useUserMatches";
-import { useStore } from "zustandStore/store";
+import { Button, Flex, VStack } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
+import { Path } from 'utils/Path';
+import { League } from 'entities/League';
+import { useLeagueTeams } from 'hooks/useLeagueTeams';
+import { leagueItem } from 'components/admin/explorer/AdminLeagueCard';
+import { useUserMatches } from 'hooks/useUserMatches';
+import { useStore } from 'zustandStore/store';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   league: League;
@@ -16,17 +15,18 @@ interface Props {
 export const LeagueCard = (props: Props) => {
   const navigate = useNavigate();
   const user = useStore((state) => state.user);
-  const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee, { leagueId: props.league.id });
-  const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer, { leagueId: props.league.id });
   const { query: teamsQuery } = useLeagueTeams({ leagueId: props.league.id });
   const { query: matchesQuery } = useUserMatches({ userId: user.id!, leagueId: props.league.id });
+  const { t } = useTranslation();
 
-  const queries = [refereesQuery, observersQuery, teamsQuery, matchesQuery];
+  const queries = [teamsQuery, matchesQuery];
 
   const navigateToDashboard = async (league: League) => {
-    await Promise.all(queries.map(async (query): Promise<any> => {
-      await query.refetch();
-    }));
+    await Promise.all(
+      queries.map(async (query): Promise<any> => {
+        await query.refetch();
+      }),
+    );
     navigate(`${Path.DASHBOARD}/${league.id}`);
   };
 
@@ -39,7 +39,7 @@ export const LeagueCard = (props: Props) => {
           onClick={async () => await navigateToDashboard(props.league)}
           isLoading={queries.some((query) => query.isLoading)}
         >
-          Select
+          {t('explorer.select')}
         </Button>
       </VStack>
     </Flex>

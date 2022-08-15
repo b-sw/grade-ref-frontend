@@ -1,73 +1,59 @@
-import {GRADE_ADMISSION_TIME_WINDOW, Match} from "entities/Match";
-import {FormikModal} from "components/matchPage/components/FormikModal";
-import {useEffect} from "react";
-import {InputControl, NumberInputControl} from "formik-chakra-ui";
-import {GradeStatus} from "entities/utils/gradeInfo";
-import {gradeValidationSchema} from "components/matchPage/sections/grade/grade.validation";
-import {useGrades} from "hooks/useGrades";
-import {useStore} from "zustandStore/store";
-import {Role} from "utils/Role";
-import dayjs from "dayjs";
+import { FormikModal } from 'components/matchPage/components/FormikModal';
+import { useEffect } from 'react';
+import { InputControl } from 'formik-chakra-ui';
+import { gradeValidationSchema } from 'components/matchPage/sections/grade/grade.validation';
+import { useGrades } from 'hooks/useGrades';
+import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
+import { useTranslation } from 'react-i18next';
 
 interface GradeEditModalProps {
   isOpen: boolean;
   handleClose: () => void;
-  match: Match;
+  match: MatchInfoEnriched;
 }
 
 interface GradeFormikValues {
-  refereeGrade: number;
-  overallGrade: string;
+  refereeGrade: string;
 }
 
 export const GradeEditModal = ({ isOpen, handleClose, match }: GradeEditModalProps) => {
-  const user = useStore(state => state.user);
-  const { updateMutation } = useGrades({ matchId: match.id });
+  const { updateGradeMutation: updateMutation } = useGrades({ matchId: match.id });
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (updateMutation.isSuccess) {
       handleClose();
       updateMutation.reset();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updateMutation.isSuccess]);
 
   const initialValues: GradeFormikValues = {
-    refereeGrade: match.refereeGrade ?? 0,
-    overallGrade: match.overallGrade ?? '',
+    refereeGrade: match.refereeGrade ?? 'N/A',
   };
 
-  const handleEditMatch = (values: GradeFormikValues) => {
+  const handleEditGrade = (values: GradeFormikValues) => {
     updateMutation.mutate({
       ...match,
       refereeGrade: values.refereeGrade,
-      overallGrade: values.overallGrade,
-    } as Match);
+    } as MatchInfoEnriched);
   };
-
-  const userIsAdmin: boolean = user.role === Role.Admin;
-  const gradeIsPastDue: boolean = dayjs(match.matchDate).add(GRADE_ADMISSION_TIME_WINDOW, 'hour').isBefore(dayjs());
-  const gradeIsReceived: boolean = match.gradeStatus.status === GradeStatus.Received;
-
-  const isGradeDisabled: boolean = !userIsAdmin && gradeIsReceived && gradeIsPastDue;
 
   const modalBody: JSX.Element = (
     <>
-      <NumberInputControl name='refereeGrade' label='Referee grade' isDisabled={isGradeDisabled} />
-      <InputControl name='overallGrade' label='OverallGrade' />
+      <InputControl name="refereeGrade" label={t('matchPage.grade.editModal.input')} />
     </>
   );
 
   return (
     <FormikModal
-      headingTitle={'Edit match grade'}
+      headingTitle={t('matchPage.grade.editModal.title')}
       body={modalBody}
       isOpen={isOpen}
-      handleSubmit={handleEditMatch}
+      handleSubmit={handleEditGrade}
       isLoading={updateMutation.isLoading}
       handleClose={handleClose}
       initialValues={initialValues}
       validationSchema={gradeValidationSchema}
     />
   );
-}
+};

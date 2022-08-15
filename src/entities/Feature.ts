@@ -1,4 +1,4 @@
-import {uuid} from "utils/uuid";
+import { uuid } from 'utils/uuid';
 
 export enum FeatureType {
   Positive = 'Positive',
@@ -11,4 +11,4 @@ export type Feature = {
   description: string;
   refereeId: uuid;
   matchId: uuid;
-}
+};

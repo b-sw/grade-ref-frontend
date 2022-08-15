@@ -1,6 +1,6 @@
 import Yup from '../utils/yup';
-import {uuid} from "utils/uuid";
-import {Role} from "utils/Role";
+import { uuid } from 'utils/uuid';
+import { Role } from 'utils/Role';
 
 export type User = {
   id: uuid;
@@ -9,7 +9,7 @@ export type User = {
   phoneNumber: string;
   firstName: string;
   lastName: string;
-}
+};
 
 export const userValidationSchema = Yup.object({
   email: Yup.string().required().max(30),

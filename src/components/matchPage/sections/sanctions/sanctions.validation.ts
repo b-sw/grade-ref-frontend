@@ -1,4 +1,4 @@
-import Yup from "utils/yup";
+import Yup from 'utils/yup';
 import { Card } from 'entities/Foul';
 
 export const sanctionsValidationSchema = Yup.object({

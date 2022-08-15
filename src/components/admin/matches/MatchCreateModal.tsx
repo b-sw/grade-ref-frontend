@@ -1,27 +1,28 @@
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   Button,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
 } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { InputControl, SelectControl } from 'formik-chakra-ui';
 import { useEffect } from 'react';
-import {uuid} from "utils/uuid";
-import {useLeagueMatches} from "hooks/useLeagueMatches";
-import {useLeagueTeams} from "hooks/useLeagueTeams";
-import {Match, matchValidationSchema} from "entities/Match";
-import {Constants, FORMIK_DATETIME_FORMAT} from "utils/Constants";
+import { uuid } from 'utils/uuid';
+import { useLeagueMatches } from 'hooks/useLeagueMatches';
+import { useLeagueTeams } from 'hooks/useLeagueTeams';
+import { Match, matchValidationSchema } from 'entities/Match';
+import { Constants, FORMIK_DATETIME_FORMAT } from 'utils/Constants';
 import dayjs, { Dayjs } from 'dayjs';
-import {useLeagueUsers} from "hooks/useLeagueUsers";
-import {Role} from "utils/Role";
-import { useStore } from "zustandStore/store";
-import {SelectOptions} from "components/matchPage/components/SelectOptions";
+import { useLeagueUsers } from 'hooks/useLeagueUsers';
+import { Role } from 'utils/Role';
+import { useStore } from 'zustandStore/store';
+import { SelectOptions } from 'components/matchPage/components/SelectOptions';
 import { LoadingOverlay } from 'pages/LoadingOverlay';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   isOpen: boolean;
@@ -43,13 +44,13 @@ export const MatchCreateModal = (props: Props) => {
   const { query: teamsQuery } = useLeagueTeams();
   const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
   const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (postMutation.isSuccess) {
       props.onClose();
       postMutation.reset();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postMutation.isSuccess]);
 
   const initialValues: FormikValues = {
@@ -81,48 +82,52 @@ export const MatchCreateModal = (props: Props) => {
     <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Add match</ModalHeader>
+        <ModalHeader>{t('matches.addModal.title')}</ModalHeader>
         <ModalCloseButton />
 
         <Formik initialValues={initialValues} onSubmit={createMatch} validationSchema={matchValidationSchema}>
           {({ handleSubmit }) => (
             <Form onSubmit={handleSubmit}>
               <ModalBody>
-                <InputControl name='date' label='Date' inputProps={{ type: 'datetime-local' }} />
+                <InputControl name="date" label={t('matches.addModal.date')} inputProps={{ type: 'datetime-local' }} />
 
-                <InputControl name='stadium' label='Stadium' inputProps={{ placeholder: 'stadium'}}/>
+                <InputControl
+                  name="stadium"
+                  label={t('matches.addModal.stadium')}
+                  inputProps={{ placeholder: t('matches.addModal.stadiumPH') }}
+                />
 
                 <SelectControl
-                  name='homeTeamId'
-                  label='Home team'
-                  selectProps={{ placeholder: 'Choose home team' }}
+                  name="homeTeamId"
+                  label={t('matches.addModal.homeTeam')}
+                  selectProps={{ placeholder: t('matches.addModal.homeTeamPH') }}
                   mt={3}
                 >
                   <SelectOptions data={teamsQuery.data!} labelProps={['name']} />
                 </SelectControl>
 
                 <SelectControl
-                  name='awayTeamId'
-                  label='Away team'
-                  selectProps={{ placeholder: 'Choose away team' }}
+                  name="awayTeamId"
+                  label={t('matches.addModal.awayTeam')}
+                  selectProps={{ placeholder: t('matches.addModal.awayTeamPH') }}
                   mt={3}
                 >
                   <SelectOptions data={teamsQuery.data!} labelProps={['name']} />
                 </SelectControl>
 
                 <SelectControl
-                  name='refereeId'
-                  label='Referee'
-                  selectProps={{ placeholder: 'Assign referee' }}
+                  name="refereeId"
+                  label={t('referee')}
+                  selectProps={{ placeholder: t('matches.addModal.refereePH') }}
                   mt={3}
                 >
                   <SelectOptions data={refereesQuery.data!} labelProps={['firstName', 'lastName']} />
                 </SelectControl>
 
                 <SelectControl
-                  name='observerId'
-                  label='Observer'
-                  selectProps={{ placeholder: 'Assign observer' }}
+                  name="observerId"
+                  label={t('observer')}
+                  selectProps={{ placeholder: t('matches.addModal.observerPH') }}
                   mt={3}
                 >
                   <SelectOptions data={observersQuery.data!} labelProps={['firstName', 'lastName']} />
@@ -130,10 +135,10 @@ export const MatchCreateModal = (props: Props) => {
               </ModalBody>
 
               <ModalFooter>
-                <Button colorScheme='blue' mr={'3'} type='submit' isLoading={postMutation.isLoading}>
-                  Add
+                <Button colorScheme="blue" mr={'3'} type="submit" isLoading={postMutation.isLoading}>
+                  {t('modal.add')}
                 </Button>
-                <Button onClick={() => props.onClose()}>Cancel</Button>
+                <Button onClick={() => props.onClose()}>{t('modal.cancel')}</Button>
               </ModalFooter>
             </Form>
           )}

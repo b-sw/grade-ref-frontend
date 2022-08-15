@@ -1,7 +1,7 @@
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
-import { Flex, Spacer, IconButton, VStack, Text, useDisclosure, Avatar, HStack, Badge } from '@chakra-ui/react';
+import { Avatar, Badge, Flex, HStack, IconButton, Spacer, Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { MdAssessment } from 'react-icons/md';
-import {User} from "entities/User";
+import { User } from 'entities/User';
 import { RefereeDeleteModal } from 'components/owner/referees/RefereeDeleteModal';
 import { RefereeEditModal } from 'components/owner/referees/RefereeEditModal';
 
@@ -17,39 +17,38 @@ export const RefereeListItem = (props: Props) => {
     <>
       <RefereeEditModal isOpen={isEditModalOpen} onClose={onEditModalClose} referee={props.referee} />
       <RefereeDeleteModal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose} referee={props.referee} />
-      <Flex
-        p={5}
-        borderRadius={10}
-        alignItems={'center'}
-        backgroundColor={'gray.50'}
-        cursor={'pointer'}
-      >
+      <Flex p={5} borderRadius={10} alignItems={'center'} backgroundColor={'gray.50'} cursor={'pointer'}>
         {refereeItem(props.referee)}
         <Spacer />
-        <IconButton onClick={() => {}} variant={'ghost'} aria-label='See grades' icon={<MdAssessment />} />
-        <IconButton onClick={onEditModalOpen} variant={'ghost'} aria-label='Edit referee' icon={<EditIcon />} />
-        <IconButton onClick={onDeleteModalOpen} variant={'ghost'} aria-label='Delete referee' icon={<DeleteIcon />} />
+        <IconButton onClick={() => undefined} variant={'ghost'} aria-label="See grades" icon={<MdAssessment />} />
+        <IconButton onClick={onEditModalOpen} variant={'ghost'} aria-label="Edit referee" icon={<EditIcon />} />
+        <IconButton onClick={onDeleteModalOpen} variant={'ghost'} aria-label="Delete referee" icon={<DeleteIcon />} />
       </Flex>
     </>
   );
-}
+};
 
-export const refereeItem = (user: User,
-                            avatarSize?: string,
-                            nameSize?: string,
-                            descriptionSize?: string,
-                            showBadge?: boolean) => {
+export const refereeItem = (
+  user: User,
+  avatarSize?: string,
+  nameSize?: string,
+  descriptionSize?: string,
+  showBadge?: boolean,
+) => {
   return (
     <>
       <HStack>
-        <Avatar
-          name={user.firstName + ' ' + user.lastName}
-          size={avatarSize ?? 'sm'}
-        />
+        <Avatar name={user.firstName + ' ' + user.lastName} size={avatarSize ?? 'sm'} />
         <VStack spacing={0} alignItems={'baseline'}>
           <HStack>
-            <Text fontSize={nameSize ?? 'md'}>{user.firstName} {user.lastName}</Text>
-            {showBadge && <Badge colorScheme='facebook' fontSize={'xs'}>Referee</Badge>}
+            <Text fontSize={nameSize ?? 'md'}>
+              {user.firstName} {user.lastName}
+            </Text>
+            {showBadge && (
+              <Badge colorScheme="facebook" fontSize={'xs'}>
+                Referee
+              </Badge>
+            )}
           </HStack>
           <VStack alignItems={'baseline'} spacing={0}>
             <Text fontSize={descriptionSize ?? 'sm'} color={'gray.400'}>
@@ -62,5 +61,5 @@ export const refereeItem = (user: User,
         </VStack>
       </HStack>
     </>
-  )
-}
+  );
+};

@@ -1,8 +1,10 @@
-import dayjs, { Dayjs } from "dayjs";
-import {Match} from "entities/Match";
+import dayjs, { Dayjs } from 'dayjs';
+import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
 
-export const getMatchesByDate = (date: Dayjs, matches: Match[] | undefined): Match[] => {
-    return matches?.filter((match: Match) => {
-        return dayjs(match.matchDate).isSame(date, 'day');
-    }) || [];
-}
+export const getMatchesByDate = (date: Dayjs, matches: MatchInfoEnriched[] | undefined): MatchInfoEnriched[] => {
+  return (
+    matches?.filter((match) => {
+      return dayjs(match.matchDate).isSame(date, 'day');
+    }) || []
+  );
+};

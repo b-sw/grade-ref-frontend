@@ -1,12 +1,12 @@
-import {useToast} from "@chakra-ui/react";
-import axios, { AxiosError } from "axios";
-import {QueryClient, useMutation, useQuery, useQueryClient} from "react-query";
-import {uuid} from "utils/uuid";
-import {User} from "entities/User";
-import {Role} from "utils/Role";
-import {toastError} from "./utils/toastError";
-import {useReferees} from "./useReferees";
-import {useObservers} from "./useObservers";
+import { useToast } from '@chakra-ui/react';
+import axios, { AxiosError } from 'axios';
+import { QueryClient, useMutation, useQuery, useQueryClient } from 'react-query';
+import { uuid } from 'utils/uuid';
+import { User } from 'entities/User';
+import { Role } from 'utils/Role';
+import { toastError } from './utils/toastError';
+import { useReferees } from './useReferees';
+import { useObservers } from './useObservers';
 
 export const REFEREES_QUERY_KEY = 'referees_qk';
 export const OBSERVERS_QUERY_KEY = 'observers_qk';
@@ -16,7 +16,7 @@ export interface Props {
   enableAutoRefetch: boolean;
 }
 
-const queryKeys: { [id: string] : any } = {};
+const queryKeys: { [id: string]: any } = {};
 queryKeys[Role.Admin] = ADMINS_QUERY_KEY;
 queryKeys[Role.Referee] = REFEREES_QUERY_KEY;
 queryKeys[Role.Observer] = OBSERVERS_QUERY_KEY;
@@ -28,32 +28,31 @@ export const useUsers = (props?: Props) => {
   const getAdmins = async (): Promise<User[]> => {
     const response = await axios.get(`users/admins`);
     return response.data;
-  }
+  };
 
   const postUser = async (user: User): Promise<User> => {
     const response = await axios.post(`users`, user);
     return response.data;
-  }
+  };
 
   const updateUser = async (user: User): Promise<User> => {
     const response = await axios.put(`users/${user.id}`, user);
     return response.data;
-  }
+  };
 
   const deleteUser = async (userId: uuid): Promise<User> => {
     const response = await axios.delete(`users/${userId}`);
     return response.data;
-  }
+  };
 
   const { refereesQuery } = useReferees(props);
 
   const { observersQuery } = useObservers(props);
 
-  const adminsQuery = useQuery(
-    ADMINS_QUERY_KEY,
-    getAdmins,
-    { enabled: props ? props.enableAutoRefetch : false },
-  );
+  const adminsQuery = useQuery(ADMINS_QUERY_KEY, getAdmins, {
+    enabled: props ? props.enableAutoRefetch : false,
+    staleTime: 60 * 1000,
+  });
 
   const postMutation = useMutation(postUser, {
     onSuccess: (user: User) => {
@@ -67,7 +66,7 @@ export const useUsers = (props?: Props) => {
         duration: 2000,
       });
     },
-    onError: (error: AxiosError, _variables, _context) => toastError(toast, error),
+    onError: (error: AxiosError) => toastError(toast, error),
   });
 
   const updateMutation = useMutation(updateUser, {
@@ -82,7 +81,7 @@ export const useUsers = (props?: Props) => {
         duration: 2000,
       });
     },
-    onError: (error: AxiosError, _variables, _context) => toastError(toast, error),
+    onError: (error: AxiosError) => toastError(toast, error),
   });
 
   const deleteMutation = useMutation(deleteUser, {
@@ -97,8 +96,8 @@ export const useUsers = (props?: Props) => {
         duration: 2000,
       });
     },
-    onError: (error: AxiosError, _variables, _context) => toastError(toast, error),
+    onError: (error: AxiosError) => toastError(toast, error),
   });
 
-  return { refereesQuery, observersQuery, adminsQuery, postMutation, updateMutation, deleteMutation }
-}
+  return { refereesQuery, observersQuery, adminsQuery, postMutation, updateMutation, deleteMutation };
+};

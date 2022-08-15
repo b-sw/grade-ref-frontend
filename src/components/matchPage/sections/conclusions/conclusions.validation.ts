@@ -1,4 +1,4 @@
-import Yup from "utils/yup";
+import Yup from 'utils/yup';
 import { FeatureType } from 'entities/Feature';
 
 export const conclusionsValidationSchema = Yup.object({

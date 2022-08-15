@@ -1,18 +1,19 @@
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   Button,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
 } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { InputControl } from 'formik-chakra-ui';
 import { useEffect } from 'react';
-import {Team, teamValidationSchema} from "entities/Team";
-import {useLeagueTeams} from "hooks/useLeagueTeams";
+import { Team, teamValidationSchema } from 'entities/Team';
+import { useLeagueTeams } from 'hooks/useLeagueTeams';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   isOpen: boolean;
@@ -26,13 +27,13 @@ interface FormikValues {
 
 export const TeamEditModal = (props: Props) => {
   const { updateMutation } = useLeagueTeams();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (updateMutation.isSuccess) {
       props.onClose();
       updateMutation.reset();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updateMutation.isSuccess]);
 
   const initialValues: FormikValues = {
@@ -47,20 +48,20 @@ export const TeamEditModal = (props: Props) => {
     <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Edit team</ModalHeader>
+        <ModalHeader>{t('teams.edit')}</ModalHeader>
         <ModalCloseButton />
 
         <Formik initialValues={initialValues} onSubmit={editTeam} validationSchema={teamValidationSchema}>
           {({ handleSubmit }) => (
             <Form onSubmit={handleSubmit}>
               <ModalBody>
-                <InputControl name='name' label='Name' />
+                <InputControl name="name" label={t('teams.name')} />
               </ModalBody>
               <ModalFooter>
-                <Button colorScheme='blue' mr={'3'} type='submit' isLoading={updateMutation.isLoading}>
-                  Save
+                <Button colorScheme="blue" mr={'3'} type="submit" isLoading={updateMutation.isLoading}>
+                  {t('modal.save')}
                 </Button>
-                <Button onClick={props.onClose}>Cancel</Button>
+                <Button onClick={props.onClose}>{t('modal.cancel')}</Button>
               </ModalFooter>
             </Form>
           )}

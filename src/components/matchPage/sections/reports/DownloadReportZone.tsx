@@ -7,7 +7,10 @@ import { useEffect } from 'react';
 import { MdFileDownload } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
 import { uuid } from 'utils/uuid';
-import { Dropzone } from "components/matchPage/components/Dropzone";
+import { Dropzone } from 'components/matchPage/components/Dropzone';
+import { useTranslation } from 'react-i18next';
+import { useLeagueMatch } from 'hooks/useLeagueMatch';
+import { MatchStatus } from 'entities/utils/matchStatus';
 
 interface DownloadableReportProps {
   reportType: ReportType;
@@ -24,12 +27,16 @@ export const DownloadReportZone = ({ reportType, hasWritePermissions }: Download
   } as State);
   const { leagueId } = useParams<{ leagueId: uuid }>();
   const { matchId } = useParams<{ matchId: uuid }>();
-
+  const { t } = useTranslation();
   const { deleteMutation } = useReports();
 
+  const { query: matchQuery } = useLeagueMatch();
+  const matchIsUpcoming = matchQuery.data!.matchStatus === MatchStatus.Upcoming;
+
   useEffect(() => {
-    getFile();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (!matchIsUpcoming) {
+      getFile();
+    }
   }, []);
 
   const deleteReport = () => {
@@ -42,32 +49,30 @@ export const DownloadReportZone = ({ reportType, hasWritePermissions }: Download
   };
 
   return (
-    <Dropzone
-      text={'Download'}
-    >
-      <>
-        {hasWritePermissions && (
-          <IconButton
-            onClick={deleteReport}
-            size={'sm'}
-            aria-label="Delete"
-            icon={<CloseIcon />}
-            position={'absolute'}
-            top={2}
-            right={2}
-            isLoading={deleteMutation.isLoading}
-          />
-        )}
-
+    <Dropzone text={t('matchPage.reports.download')}>
+      {hasWritePermissions && (
         <IconButton
-          as={Link}
-          href={state.url}
-          download
-          aria-label="Download"
-          icon={<MdFileDownload size={'40'} />}
-          opacity={0.6}
+          onClick={deleteReport}
+          size={'sm'}
+          aria-label="Delete"
+          icon={<CloseIcon />}
+          position={'absolute'}
+          top={2}
+          right={2}
+          isLoading={deleteMutation.isLoading}
+          disabled={matchIsUpcoming}
         />
-      </>
+      )}
+
+      <IconButton
+        as={Link}
+        href={state.url}
+        download
+        aria-label="Download"
+        icon={<MdFileDownload size={'40'} />}
+        opacity={0.6}
+        disabled={matchIsUpcoming}
+      />
     </Dropzone>
   );
 };

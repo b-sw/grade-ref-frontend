@@ -1,7 +1,5 @@
 import { uuid } from 'utils/uuid';
 import Yup from 'utils/yup';
-import { GradeInfo } from 'entities/utils/gradeInfo';
-import { MatchStatus } from 'entities/utils/matchStatus';
 
 export const GRADE_ADMISSION_TIME_WINDOW = 4;
 export const MATCH_DURATION_TIME = 2;
@@ -15,18 +13,17 @@ export type Match = {
   awayTeamId: uuid;
   refereeId: uuid;
   observerId: uuid;
-  refereeGrade: number;
-  refereeGradeDate: Date;
+  refereeGrade?: string;
+  refereeGradeDate?: Date;
   refereeSmsId: uuid;
   observerSmsId: uuid;
-  gradeStatus: GradeInfo;
-  matchStatus: MatchStatus;
-  overallGrade: string;
-  overallGradeDate: Date;
-  refereeNote: string;
-  observerReportKey: string;
-  mentorReportKey: string;
-  tvReportKey: string;
+  overallGrade?: string;
+  overallGradeDate?: Date;
+  refereeNote?: string;
+  observerReportKey?: string;
+  mentorReportKey?: string;
+  tvReportKey?: string;
+  selfReportKey?: string;
 };
 
 export const matchValidationSchema = Yup.object({

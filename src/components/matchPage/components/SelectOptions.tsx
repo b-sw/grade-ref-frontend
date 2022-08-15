@@ -1,4 +1,4 @@
-import {uuid} from "utils/uuid";
+import { uuid } from 'utils/uuid';
 
 interface SelectOptionsProps {
   data: any & { id: uuid }[];
@@ -8,14 +8,14 @@ interface SelectOptionsProps {
 export const SelectOptions = ({ data, labelProps }: SelectOptionsProps) => {
   return (
     <>
-      {(data).map((d:  any & { id: uuid }) => (
+      {data.map((d: any & { id: uuid }) => (
         <option key={d.id} value={d.id}>
           {labelProps.map((prop) => d[prop]).join(' ')}
         </option>
       ))}
     </>
   );
-}
+};
 
 interface SelectOptionsConstantProps {
   valuesMap: { [key: string]: any };
@@ -31,4 +31,4 @@ export const SelectOptionsConstant = ({ valuesMap }: SelectOptionsConstantProps)
       ))}
     </>
   );
-}
+};

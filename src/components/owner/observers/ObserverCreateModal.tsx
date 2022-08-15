@@ -1,19 +1,19 @@
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   Button,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
 } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { InputControl } from 'formik-chakra-ui';
 import { useEffect } from 'react';
-import {useUsers} from "hooks/useUsers";
-import {Role} from "utils/Role";
-import {User, userValidationSchema} from "entities/User";
+import { useUsers } from 'hooks/useUsers';
+import { Role } from 'utils/Role';
+import { User, userValidationSchema } from 'entities/User';
 
 interface Props {
   isOpen: boolean;
@@ -35,14 +35,13 @@ export const ObserverCreateModal = (props: Props) => {
       props.onClose();
       postMutation.reset();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postMutation.isSuccess]);
 
   const initialValues: FormikValues = {
     email: '',
     phoneNumber: '',
     firstName: '',
-    lastName: ''
+    lastName: '',
   };
 
   const createObserver = (values: FormikValues) => {
@@ -51,7 +50,7 @@ export const ObserverCreateModal = (props: Props) => {
       phoneNumber: values.phoneNumber,
       role: Role.Observer,
       firstName: values.firstName,
-      lastName: values.lastName
+      lastName: values.lastName,
     } as User);
   };
 
@@ -66,13 +65,13 @@ export const ObserverCreateModal = (props: Props) => {
           {({ handleSubmit }) => (
             <Form onSubmit={handleSubmit}>
               <ModalBody>
-                <InputControl name='email' label='Email address' inputProps={{ placeholder: 'john.doe@gmail.com' }} />
-                <InputControl name='phoneNumber' label='Phone number' inputProps={{ placeholder: '+48 669 797 907' }} />
-                <InputControl name='firstName' label='First name' inputProps={{ placeholder: 'John' }} />
-                <InputControl name='lastName' label='Last name' inputProps={{ placeholder: 'Doe' }} />
+                <InputControl name="email" label="Email address" inputProps={{ placeholder: 'john.doe@gmail.com' }} />
+                <InputControl name="phoneNumber" label="Phone number" inputProps={{ placeholder: '+48 669 797 907' }} />
+                <InputControl name="firstName" label="First name" inputProps={{ placeholder: 'John' }} />
+                <InputControl name="lastName" label="Last name" inputProps={{ placeholder: 'Doe' }} />
               </ModalBody>
               <ModalFooter>
-                <Button colorScheme='blue' mr={'3'} type='submit' isLoading={postMutation.isLoading}>
+                <Button colorScheme="blue" mr={'3'} type="submit" isLoading={postMutation.isLoading}>
                   Add
                 </Button>
                 <Button onClick={() => props.onClose()}>Cancel</Button>

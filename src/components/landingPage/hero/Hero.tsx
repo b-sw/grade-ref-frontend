@@ -1,15 +1,16 @@
-import {Divider, Flex, Spacer, Text} from "@chakra-ui/react";
-import 'react-device-frameset/styles/marvel-devices.min.css'
-import {HeroLoginPanel} from "./HeroLoginPanel";
-import {Device} from "./Device";
-import { Parallax } from "react-parallax";
-import {useMobile} from "hooks/useMobile";
+import { Divider, Flex, Spacer, Text } from '@chakra-ui/react';
+import 'react-device-frameset/styles/marvel-devices.min.css';
+import { HeroLoginPanel } from './HeroLoginPanel';
+import { Parallax } from 'react-parallax';
+import { useMobile } from 'hooks/useMobile';
 import { Parallax as ScrollParallax } from 'react-scroll-parallax';
+import { useTranslation } from 'react-i18next';
 
 export const MOBILE_WINDOW_WIDTH = 768;
 
 export const Hero = () => {
   const { isMobile } = useMobile();
+  const { t } = useTranslation();
 
   return (
     <Parallax
@@ -28,53 +29,32 @@ export const Hero = () => {
           overflow={'hidden'}
           position={['unset', 'unset', 'relative']}
         >
-          {!isMobile && (
-            <Flex
-              h={['50%', '50%', '100%']}
-              w={['100%', '100%', '50%']}
-              direction={'column'}
-              order={[2, 2, 1]}
-              align={'center'}
-            >
-              <Spacer />
-              <Flex
-                w={['100%', '100%', '90%']}
-                direction={'row'}
-              >
-                <Spacer />
-                <Device />
-              </Flex>
-              <Spacer />
-            </Flex>
-          )}
-
-          <Flex
-            h={['50%', '50%', '100%']}
-            w={['100%', '100%', '50%']}
-            direction={'column'}
-            order={[1, 1, 2]}
-          >
+          <Flex h={['50%', '50%', '100%']} w={'100%'} direction={'column'} order={[1, 1, 2]} align={'center'}>
             <Spacer />
+
             <Flex
               direction={'column'}
-              w={['100%', '100%', '35%']}
+              w={['100%', '100%', '30%']}
               px={[0, 0, 5]}
               mx={[0, 0, 5]}
               align={'center'}
               backgroundColor={'whiteAlpha.800'}
               rounded={'xl'}
             >
-              <Text fontSize={'4xl'} color={'gray.700'} mt={2}><b>Grade referee</b></Text>
-              <Text fontSize={'lg'} color={'gray.900'} align={'center'} mb={5}>
-                Easily manage your league by keeping track of its officials
+              <Text fontSize={'4xl'} color={'gray.700'} mt={2}>
+                <b>GradeRef</b>
               </Text>
-              <Divider borderColor={'gray.700'} />
+              <Text fontSize={'lg'} color={'gray.900'} align={'center'} mb={5}>
+                {t('hero.description')}
+              </Text>
+              <Divider borderColor={'gray.700'} w={'80%'} />
               <HeroLoginPanel />
             </Flex>
+
             <Spacer />
           </Flex>
         </Flex>
       </ScrollParallax>
     </Parallax>
   );
-}
+};

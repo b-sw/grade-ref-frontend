@@ -1,22 +1,23 @@
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   Button,
   FormControl,
   FormLabel,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
 } from '@chakra-ui/react';
 import { useEffect } from 'react';
-import {Role} from "utils/Role";
+import { Role } from 'utils/Role';
 import { MultiValue, Select } from 'chakra-react-select';
 import { User } from 'entities/User';
-import {useSetState} from "hooks/useSetState";
-import {useLeagueUsers} from "hooks/useLeagueUsers";
-import {useObservers} from "hooks/useObservers";
+import { useSetState } from 'hooks/useSetState';
+import { useLeagueUsers } from 'hooks/useLeagueUsers';
+import { useObservers } from 'hooks/useObservers';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   isOpen: boolean;
@@ -24,19 +25,19 @@ interface Props {
 }
 
 interface Option {
-  value: User,
-  label: string,
+  value: User;
+  label: string;
 }
 
 interface State {
-  selectedOptions: MultiValue<Option>,
-  mappedObservers: Option[],
+  selectedOptions: MultiValue<Option>;
+  mappedObservers: Option[];
 }
-
 
 export const ObserverAddModal = (props: Props) => {
   const { usersQuery: leagueObserversQuery, addMutation } = useLeagueUsers(Role.Observer);
   const { observersQuery } = useObservers();
+  const { t } = useTranslation();
 
   const [state, setState] = useSetState({
     selectedOptions: [],
@@ -45,18 +46,17 @@ export const ObserverAddModal = (props: Props) => {
 
   const updateSelection = (selection: MultiValue<Option>) => {
     setState({ selectedOptions: selection });
-  }
+  };
 
   useEffect(() => {
-    const filteredReferees: User[] = observersQuery.data!.filter((observer: User) =>
-      !leagueObserversQuery.data!.some((leagueObserver) => leagueObserver.id === observer.id)
+    const filteredReferees: User[] = observersQuery.data!.filter(
+      (observer: User) => !leagueObserversQuery.data!.some((leagueObserver) => leagueObserver.id === observer.id),
     );
     const observers: Option[] = filteredReferees.map((observer) => ({
       value: observer,
       label: observer.firstName + ' ' + observer.lastName,
     }));
     setState({ mappedObservers: observers });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [leagueObserversQuery.data]);
 
   useEffect(() => {
@@ -64,7 +64,6 @@ export const ObserverAddModal = (props: Props) => {
       props.onClose();
       addMutation.reset();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addMutation.isSuccess]);
 
   const addObservers = () => {
@@ -76,29 +75,27 @@ export const ObserverAddModal = (props: Props) => {
     <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Add observer</ModalHeader>
+        <ModalHeader>{t('observers.addModal.title')}</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
           <FormControl p={4}>
-            <FormLabel>
-              Select observer
-            </FormLabel>
+            <FormLabel>{t('observers.addModal.select')}</FormLabel>
             <Select
               isMulti
               name={'referees'}
               options={state.mappedObservers}
-              placeholder={'Select observer'}
+              placeholder={t('observers.addModal.select')}
               closeMenuOnSelect={false}
               onChange={(selection) => updateSelection(selection)}
             />
           </FormControl>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme='blue' mr={'3'} onClick={addObservers} isLoading={addMutation.isLoading}>
-            Add
+          <Button colorScheme="blue" mr={'3'} onClick={addObservers} isLoading={addMutation.isLoading}>
+            {t('modal.add')}
           </Button>
-          <Button onClick={() => props.onClose()}>Cancel</Button>
+          <Button onClick={() => props.onClose()}>{t('modal.cancel')}</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

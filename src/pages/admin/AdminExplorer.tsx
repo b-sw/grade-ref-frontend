@@ -1,35 +1,37 @@
-import {
-  Flex,
-  Spacer,
-  Button,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Button, Flex, IconButton, Spacer, useDisclosure } from '@chakra-ui/react';
 import useAuth from '../../hooks/useAuth';
-import { PlusSquareIcon } from '@chakra-ui/icons';
+import { PlusSquareIcon, SettingsIcon } from '@chakra-ui/icons';
 import { HiOutlineLogout } from 'react-icons/hi';
-import {useLeagues} from "hooks/useLeagues";
-import {League} from "entities/League";
-import {AdminLeagueCard} from "components/admin/explorer/AdminLeagueCard";
-import {LoadingOverlay} from "../LoadingOverlay";
-import {LeagueCreateModal} from "components/owner/leagues/LeagueCreateModal";
+import { useLeagues } from 'hooks/useLeagues';
+import { League } from 'entities/League';
+import { AdminLeagueCard } from 'components/admin/explorer/AdminLeagueCard';
+import { LoadingOverlay } from '../LoadingOverlay';
+import { LeagueCreateModal } from 'components/owner/leagues/LeagueCreateModal';
+import { LanguageSettingsModal } from 'components/explorer/LanguageSettingsModal';
+import { useTranslation } from 'react-i18next';
 
 export const AdminExplorer = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isCreateLeagueOpen, onOpen: onCreateLeagueOpen, onClose: onCreateLeagueClose } = useDisclosure();
+  const { isOpen: isSettingsOpen, onOpen: onSettingsOpen, onClose: onSettingsClose } = useDisclosure();
   const { query: leaguesQuery } = useLeagues({ enableAutoRefetch: true });
   const { logout } = useAuth();
+  const { t } = useTranslation();
+
   const queries = [leaguesQuery];
 
   if (queries.some((query) => query.isLoading)) {
-    return (<LoadingOverlay />);
+    return <LoadingOverlay />;
   }
 
   return (
     <Flex p={[2, 4]} m={0} h={['100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
-      <LeagueCreateModal isOpen={isOpen} onClose={onClose} />
+      <LanguageSettingsModal isOpen={isSettingsOpen} onClose={onSettingsClose} />
+      <LeagueCreateModal isOpen={isCreateLeagueOpen} onClose={onCreateLeagueClose} />
       <Flex mb={5}>
         <Spacer />
+        <IconButton aria-label={'settings'} onClick={onSettingsOpen} icon={<SettingsIcon />} />
         <Button ml={3} onClick={() => logout()} leftIcon={<HiOutlineLogout />}>
-          Log out
+          {t('explorer.logOut')}
         </Button>
       </Flex>
       <Flex flexGrow={1} flexDirection={'column'} justifyContent={'center'}>
@@ -43,12 +45,10 @@ export const AdminExplorer = () => {
           wrap={'wrap'}
         >
           {leaguesQuery.data &&
-            leaguesQuery.data.map((league: League) => (
-              <AdminLeagueCard key={league.id} league={league} />
-            ))}
+            leaguesQuery.data.map((league: League) => <AdminLeagueCard key={league.id} league={league} />)}
           <Button
             ml={[0, 0, 5]}
-            onClick={onOpen}
+            onClick={onCreateLeagueOpen}
             rightIcon={<PlusSquareIcon />}
             variant={'outline'}
             w={['80%', '80%', '20%']}
@@ -56,7 +56,7 @@ export const AdminExplorer = () => {
             minH={'10em'}
             colorScheme={'explorerButton'}
           >
-            Add league
+            {t('explorer.addLeague')}
           </Button>
         </Flex>
       </Flex>

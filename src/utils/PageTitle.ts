@@ -3,6 +3,7 @@ export enum PageTitle {
   AdminDashboard = 'admin dashboard',
   OwnerDashboard = 'owner dashboard',
   Dashboard = 'dashboard',
-  Teams ='teams',
+  Teams = 'teams',
   MatchDetails = 'match details',
+  Conclusions = 'conclusions',
 }

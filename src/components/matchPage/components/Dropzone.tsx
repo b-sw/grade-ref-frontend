@@ -2,13 +2,14 @@ import { Flex, FlexProps, Spacer, Text } from '@chakra-ui/react';
 
 interface DropzoneProps {
   text: string;
+  disabled?: boolean;
   textColor?: string;
   opacity?: number;
-  children?: JSX.Element | false;
+  children?: (JSX.Element | false)[] | (JSX.Element | false);
   flexProps?: FlexProps;
 }
 
-export const Dropzone = ({ text, textColor, opacity, children, flexProps}: DropzoneProps) => {
+export const Dropzone = ({ text, textColor, opacity, children, flexProps }: DropzoneProps) => {
   return (
     <Flex
       w={'100%'}
@@ -21,14 +22,17 @@ export const Dropzone = ({ text, textColor, opacity, children, flexProps}: Dropz
       borderWidth={2}
       borderColor={'gray.400'}
       {...flexProps}
+      position={'relative'}
     >
       <Spacer />
 
       {children}
 
-      <Text opacity={opacity ?? 1} color={textColor ?? 'default'}>{text}</Text>
+      <Text opacity={opacity ?? 1} color={textColor ?? 'default'}>
+        {text}
+      </Text>
 
       <Spacer />
     </Flex>
   );
-}
+};

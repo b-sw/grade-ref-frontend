@@ -1,66 +1,36 @@
-import {uuid} from "utils/uuid";
-import {User} from "entities/User";
-import {Team} from "entities/Team";
-import {useSetState} from "./useSetState";
-import {Match} from "entities/Match";
-import {matchFilter} from "components/utils/filters";
-import {useEffect} from "react";
-import { UseQueryResult } from "react-query";
+import { uuid } from 'utils/uuid';
+import { Team } from 'entities/Team';
+import { useSetState } from './useSetState';
+import { matchFilterByTeam } from 'components/utils/filters';
+import { useEffect } from 'react';
+import { UseQueryResult } from 'react-query';
+import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
 
 export interface State {
-  matches: Match[];
-  referees: { [id: uuid]: User };
-  observers: { [id: uuid]: User };
+  matches: MatchInfoEnriched[];
   filter: string;
 }
 
 export interface Props {
-  matches: Match[] | undefined;
+  matches: MatchInfoEnriched[] | undefined;
   teamsQuery: UseQueryResult<Team[]>;
-  observersQuery: UseQueryResult<User[]>;
-  refereesQuery: UseQueryResult<User[]>;
 }
 
 export const useGradesPanel = (props: Props) => {
-  let referees: { [id: uuid]: User } = {};
-  let observers: { [id: uuid]: User } = {};
-  let teams: { [id: uuid]: Team } = {};
-
-  props.refereesQuery.data!.forEach((referee) => referees[referee.id] = referee);
-  props.observersQuery.data!.forEach((observer) => observers[observer.id] = observer);
-  props.teamsQuery.data!.forEach((team) => teams[team.id] = team);
-
+  const teams: { [id: uuid]: Team } = {};
+  props.teamsQuery.data?.forEach((team) => (teams[team.id] = team));
 
   const [state, setState] = useSetState({
     matches: [],
-    referees: {},
-    observers: {},
     filter: '',
   } as State);
 
   useEffect(() => {
-    if (props.observersQuery.isSuccess) {
-      let mappedObservers: { [id: uuid]: User } = {};
-      props.observersQuery.data!.forEach((observer) => mappedObservers[observer.id] = observer);
-      setState({ observers: mappedObservers } as State);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.observersQuery.data]);
+    const filteredMatches: MatchInfoEnriched[] = props.matches
+      ? matchFilterByTeam(props.matches, teams, state.filter)
+      : [];
+    setState({ matches: filteredMatches });
+  }, [state.filter, props.matches]);
 
-  useEffect(() => {
-    if (props.refereesQuery.isSuccess) {
-      let mappedReferees: { [id: uuid]: User } = {};
-      props.refereesQuery.data!.forEach((referee) => mappedReferees[referee.id] = referee);
-      setState({ referees: mappedReferees } as State);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.refereesQuery.data]);
-
-  useEffect(() => {
-    const filteredMatches: Match[] = props.matches ? matchFilter(props.matches, teams, referees, observers, state.filter) : [];
-    setState({matches: filteredMatches});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.filter, state.observers, props.matches]);
-
-  return { state, setState }
-}
+  return { state, setState };
+};

@@ -3,9 +3,9 @@ import { useMutation, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { Path } from 'utils/Path';
 import { useStore } from 'zustandStore/store';
-import {uuid} from "utils/uuid";
-import {Role} from "utils/Role";
-import {toastError} from "./utils/toastError";
+import { uuid } from 'utils/uuid';
+import { Role } from 'utils/Role';
+import { toastError } from './utils/toastError';
 import { useToast } from '@chakra-ui/react';
 import { tokenExpired } from 'zustandStore/jwtExpiration';
 
@@ -29,7 +29,7 @@ export default function useAuth() {
   const login = async (googleData: any) => {
     const response = await axios.post('google/auth', { googleToken: googleData.tokenId });
     return response.data;
-  }
+  };
 
   const logout = () => {
     logoutFromStore();
@@ -43,10 +43,10 @@ export default function useAuth() {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.accessToken;
       navigate(Path.OWNER_DASHBOARD);
     },
-    onError: (error: AxiosError, _variables, _context) => toastError(toast, error),
+    onError: (error: AxiosError) => toastError(toast, error),
   });
 
-  const isLoggedIn: boolean = !(
+  const isLoggedIn = !(
     user === null ||
     user.accessToken === null ||
     user.email === null ||
@@ -58,5 +58,13 @@ export default function useAuth() {
   const isLoggedInAsReferee: boolean = isLoggedIn && user!.role === Role.Referee;
   const isLoggedInAsObserver: boolean = isLoggedIn && user!.role === Role.Observer;
 
-  return { loginMutation, isLoggedIn, isLoggedInAsAdmin, isLoggedInAsOwner, isLoggedInAsReferee, isLoggedInAsObserver, logout };
+  return {
+    loginMutation,
+    isLoggedIn,
+    isLoggedInAsAdmin,
+    isLoggedInAsOwner,
+    isLoggedInAsReferee,
+    isLoggedInAsObserver,
+    logout,
+  };
 }

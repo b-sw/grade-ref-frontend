@@ -1,4 +1,4 @@
-import Yup from "utils/yup";
+import Yup from 'utils/yup';
 
 export const detailsValidationSchema = Yup.object({
   date: Yup.string().required(),

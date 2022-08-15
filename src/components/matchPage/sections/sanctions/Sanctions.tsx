@@ -1,62 +1,110 @@
-import {Badge, Button, Flex, Icon, Spacer, useDisclosure} from "@chakra-ui/react"
-import {MdWarning} from "react-icons/md"
-import {IoIosShirt} from "react-icons/io"
-import {Column} from "react-table";
-import * as React from "react";
-import {DataTable} from "components/matchPage/sections/DataTable";
-import {Card, Foul} from "entities/Foul";
-import {Team} from "entities/Team";
-import {uuid} from "utils/uuid";
-import {AddIcon} from '@chakra-ui/icons';
-import {MatchData} from "components/matchPage/MatchSectionsPanel";
-import {timeItem} from "components/dashboard/matches/MatchListItem";
-import {useStore} from "zustandStore/store";
-import {Role} from "utils/Role";
-import {NoRecords} from "components/utils/NoRecords";
-import { SectionHeading } from "components/matchPage/components/SectionHeading";
-import { SanctionAddModal } from 'components/matchPage/sections/sanctions/SanctionAddModal';
-import { Match } from 'entities/Match';
+import { Badge, Button, Flex, Icon, Spacer, useDisclosure } from '@chakra-ui/react';
+import { MdWarning } from 'react-icons/md';
+import { IoIosShirt } from 'react-icons/io';
+import { Column } from 'react-table';
+import * as React from 'react';
+import { DataTable } from 'components/matchPage/components/DataTable';
+import { Card, Foul } from 'entities/Foul';
+import { Team } from 'entities/Team';
+import { uuid } from 'utils/uuid';
+import { AddIcon } from '@chakra-ui/icons';
+import { timeItem } from 'components/dashboard/matches/MatchListItem';
+import { useStore } from 'zustandStore/store';
+import { Role } from 'utils/Role';
+import { NoRecords } from 'components/utils/NoRecords';
+import { SectionHeading } from 'components/matchPage/components/SectionHeading';
+import { SanctionAddModal } from 'components/matchPage/sections/sanctions/modals/SanctionAddModal';
 import { SectionBody } from 'components/matchPage/components/SectionBody';
 import { Section } from 'components/matchPage/components/Section';
+import { useMatchFouls } from 'components/matchPage/sections/sanctions/useMatchFouls';
+import { SanctionEditModal } from 'components/matchPage/sections/sanctions/modals/SanctionEditModal';
+import { useTranslation } from 'react-i18next';
 
 interface SanctionsProps {
-  fouls: Foul[];
   teams: Team[];
-  match: Match;
 }
 
-export const Sanctions = ({ fouls, teams, match }: SanctionsProps) => {
+export const Sanctions = ({ teams }: SanctionsProps) => {
   const { isOpen: isAddOpen, onOpen: onAddOpen, onClose: onAddClose } = useDisclosure();
-  let mappedTeams: { [id: uuid]: Team } = {};
+  const { query: foulsQuery, deleteMutation } = useMatchFouls();
+  const mappedTeams: { [id: uuid]: Team } = {};
   const user = useStore((state) => state.user);
+  const { t } = useTranslation();
 
-  teams.forEach((team) => mappedTeams[team.id] = team);
+  teams.forEach((team) => (mappedTeams[team.id] = team));
+
+  const validityValues = {
+    [true.toString()]: t('matchPage.sanctions.correct'),
+    [false.toString()]: t('matchPage.sanctions.incorrect'),
+  };
+
+  const headers = {
+    minute: t('matchPage.sanctions.minute'),
+    card: t('matchPage.sanctions.card'),
+    player: t('matchPage.sanctions.player'),
+    team: t('matchPage.sanctions.team'),
+    description: t('matchPage.sanctions.description'),
+    validity: t('matchPage.sanctions.validity'),
+  };
+
+  const cardBadges: { [key: string]: JSX.Element } = {
+    [Card.Yellow]: (
+      <Badge colorScheme={'yellow'} variant={'solid'}>
+        {t('matchPage.sanctions.yellow')}
+      </Badge>
+    ),
+    [Card.Red]: (
+      <Badge colorScheme={'red'} variant={'solid'}>
+        {t('matchPage.sanctions.red')}
+      </Badge>
+    ),
+  };
 
   const cols: Column<Foul>[] = [
     {
-      Header: 'Minute',
-      accessor: d => <Flex><Spacer />{timeItem(d.minute.toString())}<Spacer /></Flex>,
+      Header: headers.minute,
+      accessor: (d) => d.minute,
+      Cell: (props: any) => (
+        <Flex>
+          <Spacer />
+          {timeItem(props.value.toString())}
+          <Spacer />
+        </Flex>
+      ),
+    },
+
+    {
+      Header: headers.card,
+      accessor: (d) => d.card,
+      Cell: (props: any) => cardBadges[props.value],
     },
     {
-      Header: 'Card',
-      accessor: d => <Badge colorScheme={d.card === Card.Red ? 'red' : 'yellow'} variant={'solid'}>{d.card}</Badge>
+      Header: headers.player,
+      accessor: (d) => d.playerNumber,
+      Cell: (props: any) => (
+        <Flex alignItems={'center'}>
+          <IoIosShirt />
+          {props.value}
+        </Flex>
+      ),
     },
     {
-      Header: 'Player',
-      accessor: d => <Flex alignItems={'center'}><IoIosShirt />{d.playerNumber}</Flex>,
+      Header: headers.team,
+      accessor: (d) => mappedTeams[d.teamId].name,
     },
     {
-      Header: 'Team',
-      accessor: d => mappedTeams[d.teamId].name,
-    },
-    {
-      Header: 'Description',
+      Header: headers.description,
       accessor: 'description',
     },
     {
       id: 'valid',
-      Header: 'Valid',
-      accessor: d => <Badge variant={'outline'} colorScheme={d.valid ? 'linkedin' : 'gray'}>{d.valid.toString()}</Badge>,
+      Header: headers.validity,
+      accessor: (d) => d.valid.toString(),
+      Cell: (props: any) => (
+        <Badge variant={'outline'} colorScheme={props.value === 'true' ? 'linkedin' : 'gray'}>
+          {validityValues[props.value]}
+        </Badge>
+      ),
     },
   ];
 
@@ -64,27 +112,28 @@ export const Sanctions = ({ fouls, teams, match }: SanctionsProps) => {
 
   return (
     <>
-      {userCanEdit && <SanctionAddModal isOpen={isAddOpen} handleClose={onAddClose} match={match} />}
+      {userCanEdit && <SanctionAddModal isOpen={isAddOpen} handleClose={onAddClose} />}
 
       <Section>
-        <SectionHeading title={MatchData.DisciplinarySanctions} icon={<Icon as={MdWarning} boxSize={25}/>}>
-          <Button
-            variant={'ghost'}
-            leftIcon={<Icon as={AddIcon} />}
-            onClick={onAddOpen}
-            disabled={!userCanEdit}
-          >
-            Add
+        <SectionHeading title={t('matchPage.sanctions.title')} icon={<Icon as={MdWarning} boxSize={25} />}>
+          <Button variant={'ghost'} leftIcon={<Icon as={AddIcon} />} onClick={onAddOpen} disabled={!userCanEdit}>
+            {t('modal.add')}
           </Button>
         </SectionHeading>
 
         <SectionBody>
           <>
-            <DataTable columns={cols} data={fouls} />
-            {!fouls.length && NoRecords()}
+            <DataTable
+              columns={cols}
+              data={foulsQuery.data!}
+              readOnly={!userCanEdit}
+              deleteMutation={deleteMutation}
+              EditModal={SanctionEditModal}
+            />
+            {!foulsQuery.data!.length && NoRecords(t('noRecords'))}
           </>
         </SectionBody>
       </Section>
     </>
   );
-}
+};

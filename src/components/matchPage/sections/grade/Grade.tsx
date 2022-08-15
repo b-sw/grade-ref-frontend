@@ -1,96 +1,82 @@
-import { EditIcon, WarningIcon } from "@chakra-ui/icons";
-import { Badge, Button, Flex, HStack, Icon, Text, Textarea, Tooltip, useDisclosure } from "@chakra-ui/react";
-import dayjs from "dayjs";
-import { Match } from "entities/Match";
-import { Constants } from "utils/Constants";
-import { BiDetail } from "react-icons/bi";
-import { TextField } from "components/matchPage/components/TextField";
-import { Field } from "components/matchPage/components/Field";
-import { GradeEditModal } from "components/matchPage/sections/grade/GradeEditModal";
-import { useStore } from "zustandStore/store";
-import { Role } from "utils/Role";
-import { SectionHeading } from "components/matchPage/components/SectionHeading";
-import { MatchData } from "components/matchPage/MatchSectionsPanel";
+import { EditIcon, WarningIcon } from '@chakra-ui/icons';
+import { Badge, Button, Flex, HStack, Icon, Text, Tooltip, useDisclosure } from '@chakra-ui/react';
+import dayjs from 'dayjs';
+import { GRADE_ADMISSION_TIME_WINDOW } from 'entities/Match';
+import { Constants } from 'utils/Constants';
+import { BiBarChartSquare } from 'react-icons/bi';
+import { Field } from 'components/matchPage/components/Field';
+import { GradeEditModal } from 'components/matchPage/sections/grade/GradeEditModal';
+import { useStore } from 'zustandStore/store';
+import { Role } from 'utils/Role';
+import { SectionHeading } from 'components/matchPage/components/SectionHeading';
 import { Section } from 'components/matchPage/components/Section';
 import { SectionBody } from 'components/matchPage/components/SectionBody';
+import { GradeStatus } from 'entities/utils/gradeInfo';
+import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
+import { useTranslation } from 'react-i18next';
 
 interface GradeProps {
-  match: Match;
+  match: MatchInfoEnriched;
 }
 
 export const Grade = ({ match }: GradeProps) => {
-  const user = useStore(state => state.user);
+  const user = useStore((state) => state.user);
   const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
+  const { t } = useTranslation();
 
-  const getReadableDatetime = (date: Date, format: string): string => {
+  const getReadableDatetime = (date: Date | undefined, format: string): string => {
     return date ? dayjs(date, Constants.DATETIME_FORMAT).format(format) : 'N/A';
-  }
+  };
 
   const refereeGradeDate: string = getReadableDatetime(match.refereeGradeDate, 'DD-MM-YYYY HH:mm');
-  const overallGradeDate: string = getReadableDatetime(match.overallGradeDate, 'DD-MM-YYYY HH:mm');
 
   const gradeBadge: JSX.Element = (
     <Flex align={'center'}>
-      <Badge variant={'outline'} colorScheme={match.gradeStatus.badgeScheme} fontSize={'md'} w={'auto'}>
+      <Badge variant={'outline'} colorScheme={match.gradeStatus.badgeScheme} fontSize={'xl'} w={'auto'}>
         {match.refereeGrade ?? 'N/A'}
       </Badge>
     </Flex>
   );
 
-  const gradeTextArea: JSX.Element = (
-    <Textarea
-      isReadOnly={true}
-      resize={'none'}
-      value={match.overallGrade ?? 'N/A'}
-      borderColor={'gray.400'}
-      focusBorderColor={'gray.400'}
-      backgroundColor={'gray.100'}
-      _hover={{}}
-    />
-  );
-
   const gradeDate: JSX.Element = (
     <Flex gap={2}>
-      <Text fontSize={'xl'} fontWeight={'medium'}>{refereeGradeDate}</Text>
-      {match.gradeStatus.delay &&
+      <Text fontSize={'xl'} fontWeight={'medium'}>
+        {refereeGradeDate}
+      </Text>
+      {match.gradeStatus.delay && (
         <HStack>
-          <Tooltip label='delay'>
-            <Icon as={WarningIcon} color={'red.600'}/>
+          <Tooltip label="delay">
+            <Icon as={WarningIcon} color={'red.600'} />
           </Tooltip>
           <Text color={'red.600'}>+{match.gradeStatus.delay}</Text>
         </HStack>
-      }
+      )}
     </Flex>
   );
 
-  const userCanEdit: boolean = user.role === Role.Admin || user.role === Role.Observer;
+  const userIsAdminOrObserver: boolean = user.role === Role.Admin || user.role === Role.Observer;
+  const gradeIsPastDue: boolean = dayjs(match.matchDate).add(GRADE_ADMISSION_TIME_WINDOW, 'hour').isBefore(dayjs());
+  const gradeIsReceived: boolean = match.gradeStatus.status === GradeStatus.Received;
+
+  const userCanEdit: boolean = userIsAdminOrObserver && (!gradeIsPastDue || !gradeIsReceived);
 
   return (
     <>
       {userCanEdit && <GradeEditModal isOpen={isEditOpen} handleClose={onEditClose} match={match} />}
       <Section>
-        <SectionHeading title={MatchData.Grade} icon={<Icon as={BiDetail} boxSize={25} />}>
-          <Button
-            variant={'ghost'}
-            leftIcon={<Icon as={EditIcon} />}
-            onClick={onEditOpen}
-            disabled={!userCanEdit}
-          >
-            Edit
+        <SectionHeading title={t('matchPage.grade.title')} icon={<Icon as={BiBarChartSquare} boxSize={25} />}>
+          <Button variant={'ghost'} leftIcon={<Icon as={EditIcon} />} onClick={onEditOpen} disabled={!userCanEdit}>
+            {t('modal.edit')}
           </Button>
         </SectionHeading>
 
         <SectionBody>
           <Flex direction={'column'} pr={[0, 20]} gap={2}>
-
-            <Field name={'grade'} element={gradeBadge} />
-            <Field name={'grade date'} element={gradeDate} />
-            <Field name={'overall grade'} element={gradeTextArea} />
-            <TextField name={'overall grade date'} text={overallGradeDate} />
-
+            <Field name={t('matchPage.grade.grade') + ':'} element={gradeBadge} />
+            <Field name={t('matchPage.grade.date') + ':'} element={gradeDate} />
           </Flex>
         </SectionBody>
       </Section>
     </>
   );
-}
+};

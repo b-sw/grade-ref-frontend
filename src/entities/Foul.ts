@@ -1,4 +1,4 @@
-import {uuid} from "utils/uuid";
+import { uuid } from 'utils/uuid';
 
 export enum Card {
   Yellow = 'Yellow',
@@ -14,4 +14,4 @@ export type Foul = {
   valid: boolean;
   teamId: uuid;
   matchId: uuid;
-}
+};

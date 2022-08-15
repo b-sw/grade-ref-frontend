@@ -1,4 +1,4 @@
-import { Flex, Spacer, Text } from "@chakra-ui/react";
+import { Flex, Spacer, Text } from '@chakra-ui/react';
 
 export interface SectionHeadingProps {
   title: string;
@@ -8,7 +8,7 @@ export interface SectionHeadingProps {
 
 export const SectionHeading = ({ title, icon, children }: SectionHeadingProps) => {
   return (
-    <Flex align={'center'} gap={2} mr={5}>
+    <Flex align={'center'} gap={2} mr={5} overflow={'hidden'}>
       {icon}
       <Text fontSize={'2xl'} fontWeight={'medium'}>
         {title}
@@ -17,4 +17,4 @@ export const SectionHeading = ({ title, icon, children }: SectionHeadingProps) =
       {children}
     </Flex>
   );
-}
+};
