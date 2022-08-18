@@ -65,6 +65,8 @@ export const matchGradeItem = (
   }
   const { badgeColor, badgeString } = getUserBadge(userRole, t);
 
+  const userName = userFullName === 'hidden' ? t('matchPage.assignments.hidden') : userFullName;
+
   const gradeStatuses: Map<GradeStatus, string> = new Map([
     [GradeStatus.Expected, t('grades.expected')],
     [GradeStatus.Overdue, t('grades.overdue')],
@@ -88,7 +90,7 @@ export const matchGradeItem = (
                 <Badge colorScheme={badgeColor} fontSize={'xs'}>
                   {badgeString}
                 </Badge>
-                <Text fontSize={'sm'}>{userFullName}</Text>
+                <Text fontSize={'sm'}>{userName}</Text>
               </HStack>
             </VStack>
           </HStack>

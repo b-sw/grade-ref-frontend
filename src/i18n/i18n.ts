@@ -238,6 +238,8 @@ i18next
               team: 'Team',
               description: 'Description',
               validity: 'Validity',
+              valid: 'valid',
+              invalid: 'invalid',
               modal: {
                 title: 'disciplinary sanctions',
               },
@@ -499,6 +501,8 @@ i18next
               team: 'Zespół',
               description: 'Opis',
               validity: 'Słuszna',
+              valid: 'Tak',
+              invalid: 'Nie',
               modal: {
                 title: 'karę indywidualną',
               },

@@ -33,6 +33,16 @@ export const SanctionModal = ({ isOpen, handleClose, match, mutation, foul }: Sa
   const { query: teamsQuery } = useLeagueTeams();
   const { t } = useTranslation();
 
+  const validOptionKeys = {
+    ['valid']: t('matchPage.sanctions.valid'),
+    ['invalid']: t('matchPage.sanctions.invalid'),
+  };
+
+  const cardOptionKeys = {
+    [Card.Yellow]: t('matchPage.sanctions.yellow'),
+    [Card.Red]: t('matchPage.sanctions.red'),
+  };
+
   useEffect(() => {
     if (mutation.isSuccess) {
       handleClose();
@@ -65,7 +75,9 @@ export const SanctionModal = ({ isOpen, handleClose, match, mutation, foul }: Sa
       <NumberInputControl name="minute" label={t('matchPage.sanctions.minute')} />
 
       <SelectControl name="card" label={t('matchPage.sanctions.card')}>
-        <SelectOptionsConstant valuesMap={{ [Card.Red]: Card.Red, [Card.Yellow]: Card.Yellow }} />
+        <SelectOptionsConstant
+          valuesMap={{ [cardOptionKeys[Card.Red]]: Card.Red, [cardOptionKeys[Card.Yellow]]: Card.Yellow }}
+        />
       </SelectControl>
 
       <NumberInputControl name="playerNumber" label={t('matchPage.sanctions.playerNumber')} />
@@ -77,7 +89,7 @@ export const SanctionModal = ({ isOpen, handleClose, match, mutation, foul }: Sa
       <InputControl name="description" label={t('matchPage.sanctions.description')} />
 
       <SelectControl name="valid" label={t('matchPage.sanctions.validity')}>
-        <SelectOptionsConstant valuesMap={{ true: true, false: false }} />
+        <SelectOptionsConstant valuesMap={{ [validOptionKeys['valid']]: true, [validOptionKeys['invalid']]: false }} />
       </SelectControl>
     </>
   );

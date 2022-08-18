@@ -25,6 +25,11 @@ interface ConclusionFormikValues {
 export const ConclusionModal = ({ isOpen, handleClose, match, mutation, feature }: ConclusionModalProps) => {
   const { t } = useTranslation();
 
+  const conclusionsTypeOptions = {
+    [FeatureType.Positive]: t('conclusions.positive'),
+    [FeatureType.Negative]: t('conclusions.negative'),
+  };
+
   useEffect(() => {
     if (mutation.isSuccess) {
       handleClose();
@@ -47,13 +52,16 @@ export const ConclusionModal = ({ isOpen, handleClose, match, mutation, feature 
 
   const modalBody: JSX.Element = (
     <>
-      <SelectControl name="type" label="Type">
+      <SelectControl name="type" label={t('conclusions.type')}>
         <SelectOptionsConstant
-          valuesMap={{ [FeatureType.Positive]: FeatureType.Positive, [FeatureType.Negative]: FeatureType.Negative }}
+          valuesMap={{
+            [conclusionsTypeOptions[FeatureType.Positive]]: FeatureType.Positive,
+            [conclusionsTypeOptions[FeatureType.Negative]]: FeatureType.Negative,
+          }}
         />
       </SelectControl>
 
-      <InputControl name="description" label="Description" />
+      <InputControl name="description" label={t('conclusions.description')} />
     </>
   );
 
