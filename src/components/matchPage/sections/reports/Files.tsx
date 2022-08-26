@@ -9,24 +9,24 @@ import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
 import { useTranslation } from 'react-i18next';
 
 interface ReportsProps {
-  match: MatchInfoEnriched;
+    match: MatchInfoEnriched;
 }
 
 export const Files = ({ match }: ReportsProps) => {
-  const { t } = useTranslation();
+    const { t } = useTranslation();
 
-  return (
-    <Section>
-      <SectionHeading title={t('matchPage.reports.title')} icon={<AttachmentIcon boxSize={25} />} />
+    return (
+        <Section>
+            <SectionHeading title={t('matchPage.reports.title')} icon={<AttachmentIcon boxSize={25} />} />
 
-      <SectionBody>
-        <Flex direction={'row'} gap={4}>
-          <Report isUploaded={!!match.observerReportKey} reportType={ReportType.Observer} />
-          <Report isUploaded={!!match.mentorReportKey} reportType={ReportType.Mentor} />
-          <Report isUploaded={!!match.tvReportKey} reportType={ReportType.Tv} />
-          <Report isUploaded={!!match.selfReportKey} reportType={ReportType.Self} />
-        </Flex>
-      </SectionBody>
-    </Section>
-  );
+            <SectionBody>
+                <Flex direction={'row'} gap={4}>
+                    <Report isUploaded={!!match.observerReportKey} reportType={ReportType.Observer} />
+                    <Report isUploaded={!!match.mentorReportKey} reportType={ReportType.Mentor} />
+                    <Report isUploaded={!!match.tvReportKey} reportType={ReportType.Tv} />
+                    <Report isUploaded={!!match.selfReportKey} reportType={ReportType.Self} />
+                </Flex>
+            </SectionBody>
+        </Section>
+    );
 };

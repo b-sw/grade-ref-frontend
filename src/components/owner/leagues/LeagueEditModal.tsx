@@ -1,12 +1,12 @@
 import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
+    Button,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
 } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { InputControl } from 'formik-chakra-ui';
@@ -15,67 +15,67 @@ import { League, leagueValidationSchema } from 'entities/League';
 import { useLeagues } from 'hooks/useLeagues';
 
 interface Props {
-  isOpen: boolean;
-  onClose: () => void;
-  league: League;
+    isOpen: boolean;
+    onClose: () => void;
+    league: League;
 }
 
 interface FormikValues {
-  name: string;
-  shortName: string;
-  country: string;
+    name: string;
+    shortName: string;
+    country: string;
 }
 
 export const LeagueEditModal = (props: Props) => {
-  const { updateMutation } = useLeagues();
+    const { updateMutation } = useLeagues();
 
-  useEffect(() => {
-    if (updateMutation.isSuccess) {
-      props.onClose();
-      updateMutation.reset();
-    }
-  }, [updateMutation.isSuccess]);
+    useEffect(() => {
+        if (updateMutation.isSuccess) {
+            props.onClose();
+            updateMutation.reset();
+        }
+    }, [updateMutation.isSuccess]);
 
-  const initialValues: FormikValues = {
-    name: props.league.name,
-    shortName: props.league.shortName,
-    country: props.league.country,
-  };
+    const initialValues: FormikValues = {
+        name: props.league.name,
+        shortName: props.league.shortName,
+        country: props.league.country,
+    };
 
-  const editLeague = (values: FormikValues) => {
-    updateMutation.mutate({
-      id: props.league.id,
-      name: values.name,
-      shortName: values.shortName,
-      country: values.country,
-    } as League);
-  };
+    const editLeague = (values: FormikValues) => {
+        updateMutation.mutate({
+            id: props.league.id,
+            name: values.name,
+            shortName: values.shortName,
+            country: values.country,
+        } as League);
+    };
 
-  return (
-    <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Edit league</ModalHeader>
-        <ModalCloseButton />
+    return (
+        <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
+            <ModalOverlay />
+            <ModalContent>
+                <ModalHeader>Edit league</ModalHeader>
+                <ModalCloseButton />
 
-        <Formik initialValues={initialValues} onSubmit={editLeague} validationSchema={leagueValidationSchema}>
-          {({ handleSubmit }) => (
-            <Form onSubmit={handleSubmit}>
-              <ModalBody>
-                <InputControl name="name" label="Name" />
-                <InputControl name="shortName" label="Short name" />
-                <InputControl name="country" label="Country" />
-              </ModalBody>
-              <ModalFooter>
-                <Button colorScheme="blue" mr={'3'} type="submit" isLoading={updateMutation.isLoading}>
-                  Save
-                </Button>
-                <Button onClick={props.onClose}>Cancel</Button>
-              </ModalFooter>
-            </Form>
-          )}
-        </Formik>
-      </ModalContent>
-    </Modal>
-  );
+                <Formik initialValues={initialValues} onSubmit={editLeague} validationSchema={leagueValidationSchema}>
+                    {({ handleSubmit }) => (
+                        <Form onSubmit={handleSubmit}>
+                            <ModalBody>
+                                <InputControl name="name" label="Name" />
+                                <InputControl name="shortName" label="Short name" />
+                                <InputControl name="country" label="Country" />
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button colorScheme="blue" mr={'3'} type="submit" isLoading={updateMutation.isLoading}>
+                                    Save
+                                </Button>
+                                <Button onClick={props.onClose}>Cancel</Button>
+                            </ModalFooter>
+                        </Form>
+                    )}
+                </Formik>
+            </ModalContent>
+        </Modal>
+    );
 };

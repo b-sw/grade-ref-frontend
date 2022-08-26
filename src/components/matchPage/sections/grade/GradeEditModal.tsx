@@ -7,53 +7,53 @@ import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
 import { useTranslation } from 'react-i18next';
 
 interface GradeEditModalProps {
-  isOpen: boolean;
-  handleClose: () => void;
-  match: MatchInfoEnriched;
+    isOpen: boolean;
+    handleClose: () => void;
+    match: MatchInfoEnriched;
 }
 
 interface GradeFormikValues {
-  refereeGrade: string;
+    refereeGrade: string;
 }
 
 export const GradeEditModal = ({ isOpen, handleClose, match }: GradeEditModalProps) => {
-  const { updateGradeMutation: updateMutation } = useGrades({ matchId: match.id });
-  const { t } = useTranslation();
+    const { updateGradeMutation: updateMutation } = useGrades({ matchId: match.id });
+    const { t } = useTranslation();
 
-  useEffect(() => {
-    if (updateMutation.isSuccess) {
-      handleClose();
-      updateMutation.reset();
-    }
-  }, [updateMutation.isSuccess]);
+    useEffect(() => {
+        if (updateMutation.isSuccess) {
+            handleClose();
+            updateMutation.reset();
+        }
+    }, [updateMutation.isSuccess]);
 
-  const initialValues: GradeFormikValues = {
-    refereeGrade: match.refereeGrade ?? 'N/A',
-  };
+    const initialValues: GradeFormikValues = {
+        refereeGrade: match.refereeGrade ?? 'N/A',
+    };
 
-  const handleEditGrade = (values: GradeFormikValues) => {
-    updateMutation.mutate({
-      ...match,
-      refereeGrade: values.refereeGrade,
-    } as MatchInfoEnriched);
-  };
+    const handleEditGrade = (values: GradeFormikValues) => {
+        updateMutation.mutate({
+            ...match,
+            refereeGrade: values.refereeGrade,
+        } as MatchInfoEnriched);
+    };
 
-  const modalBody: JSX.Element = (
-    <>
-      <InputControl name="refereeGrade" label={t('matchPage.grade.editModal.input')} />
-    </>
-  );
+    const modalBody: JSX.Element = (
+        <>
+            <InputControl name="refereeGrade" label={t('matchPage.grade.editModal.input')} />
+        </>
+    );
 
-  return (
-    <FormikModal
-      headingTitle={t('matchPage.grade.editModal.title')}
-      body={modalBody}
-      isOpen={isOpen}
-      handleSubmit={handleEditGrade}
-      isLoading={updateMutation.isLoading}
-      handleClose={handleClose}
-      initialValues={initialValues}
-      validationSchema={gradeValidationSchema}
-    />
-  );
+    return (
+        <FormikModal
+            headingTitle={t('matchPage.grade.editModal.title')}
+            body={modalBody}
+            isOpen={isOpen}
+            handleSubmit={handleEditGrade}
+            isLoading={updateMutation.isLoading}
+            handleClose={handleClose}
+            initialValues={initialValues}
+            validationSchema={gradeValidationSchema}
+        />
+    );
 };

@@ -1,12 +1,12 @@
 import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
+    Button,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
 } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { InputControl } from 'formik-chakra-ui';
@@ -16,72 +16,72 @@ import { useUsers } from 'hooks/useUsers';
 import { Role } from 'utils/Role';
 
 interface Props {
-  isOpen: boolean;
-  onClose: () => void;
-  observer: User;
+    isOpen: boolean;
+    onClose: () => void;
+    observer: User;
 }
 
 interface FormikValues {
-  email: string;
-  phoneNumber: string;
-  firstName: string;
-  lastName: string;
+    email: string;
+    phoneNumber: string;
+    firstName: string;
+    lastName: string;
 }
 
 export const ObserverEditModal = (props: Props) => {
-  const { updateMutation } = useUsers();
+    const { updateMutation } = useUsers();
 
-  useEffect(() => {
-    if (updateMutation.isSuccess) {
-      props.onClose();
-      updateMutation.reset();
-    }
-  }, [updateMutation.isSuccess]);
+    useEffect(() => {
+        if (updateMutation.isSuccess) {
+            props.onClose();
+            updateMutation.reset();
+        }
+    }, [updateMutation.isSuccess]);
 
-  const initialValues: FormikValues = {
-    email: props.observer.email,
-    phoneNumber: props.observer.phoneNumber,
-    firstName: props.observer.firstName,
-    lastName: props.observer.lastName,
-  };
+    const initialValues: FormikValues = {
+        email: props.observer.email,
+        phoneNumber: props.observer.phoneNumber,
+        firstName: props.observer.firstName,
+        lastName: props.observer.lastName,
+    };
 
-  const editObserver = (values: FormikValues) => {
-    updateMutation.mutate({
-      id: props.observer.id,
-      email: values.email,
-      phoneNumber: values.phoneNumber,
-      role: Role.Observer,
-      firstName: values.firstName,
-      lastName: values.lastName,
-    } as User);
-  };
+    const editObserver = (values: FormikValues) => {
+        updateMutation.mutate({
+            id: props.observer.id,
+            email: values.email,
+            phoneNumber: values.phoneNumber,
+            role: Role.Observer,
+            firstName: values.firstName,
+            lastName: values.lastName,
+        } as User);
+    };
 
-  return (
-    <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Edit observer</ModalHeader>
-        <ModalCloseButton />
+    return (
+        <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
+            <ModalOverlay />
+            <ModalContent>
+                <ModalHeader>Edit observer</ModalHeader>
+                <ModalCloseButton />
 
-        <Formik initialValues={initialValues} onSubmit={editObserver} validationSchema={userValidationSchema}>
-          {({ handleSubmit }) => (
-            <Form onSubmit={handleSubmit}>
-              <ModalBody>
-                <InputControl name="email" label="Email address" />
-                <InputControl name="phoneNumber" label="Phone number" />
-                <InputControl name="firstName" label="First name" />
-                <InputControl name="lastName" label="Last name" />
-              </ModalBody>
-              <ModalFooter>
-                <Button colorScheme="blue" mr={'3'} type="submit" isLoading={updateMutation.isLoading}>
-                  Save
-                </Button>
-                <Button onClick={props.onClose}>Cancel</Button>
-              </ModalFooter>
-            </Form>
-          )}
-        </Formik>
-      </ModalContent>
-    </Modal>
-  );
+                <Formik initialValues={initialValues} onSubmit={editObserver} validationSchema={userValidationSchema}>
+                    {({ handleSubmit }) => (
+                        <Form onSubmit={handleSubmit}>
+                            <ModalBody>
+                                <InputControl name="email" label="Email address" />
+                                <InputControl name="phoneNumber" label="Phone number" />
+                                <InputControl name="firstName" label="First name" />
+                                <InputControl name="lastName" label="Last name" />
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button colorScheme="blue" mr={'3'} type="submit" isLoading={updateMutation.isLoading}>
+                                    Save
+                                </Button>
+                                <Button onClick={props.onClose}>Cancel</Button>
+                            </ModalFooter>
+                        </Form>
+                    )}
+                </Formik>
+            </ModalContent>
+        </Modal>
+    );
 };

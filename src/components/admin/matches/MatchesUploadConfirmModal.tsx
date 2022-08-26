@@ -1,16 +1,16 @@
 import {
-  Button,
-  Flex,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
+    Button,
+    Flex,
+    Input,
+    InputGroup,
+    InputLeftElement,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
 } from '@chakra-ui/react';
 import { useFile } from 'hooks/useFile';
 import { useSetState } from 'hooks/useSetState';
@@ -31,104 +31,106 @@ import { getMatchInfoEnriched } from 'entities/utils/matchStatus';
 import { useTranslation } from 'react-i18next';
 
 interface Props {
-  isOpen: boolean;
-  onClose: () => void;
-  file: any;
+    isOpen: boolean;
+    onClose: () => void;
+    file: any;
 }
 
 interface State {
-  matches: MatchInfoEnriched[];
-  filter: string;
+    matches: MatchInfoEnriched[];
+    filter: string;
 }
 
 export const MatchesUploadConfirmModal = (props: Props) => {
-  const { query: uploadedMatchesQuery, postMutation } = useFile();
-  const { query: teamsQuery } = useLeagueTeams();
-  const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
-  const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
-  const { t } = useTranslation();
+    const { query: uploadedMatchesQuery, postMutation } = useFile();
+    const { query: teamsQuery } = useLeagueTeams();
+    const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
+    const { usersQuery: observersQuery } = useLeagueUsers(Role.Observer);
+    const { t } = useTranslation();
 
-  const referees: { [id: uuid]: User } = {};
-  const observers: { [id: uuid]: User } = {};
-  const teams: { [id: uuid]: Team } = {};
+    const referees: { [id: uuid]: User } = {};
+    const observers: { [id: uuid]: User } = {};
+    const teams: { [id: uuid]: Team } = {};
 
-  refereesQuery.data!.forEach((referee) => (referees[referee.id] = referee));
-  observersQuery.data!.forEach((observer) => (observers[observer.id] = observer));
-  teamsQuery.data!.forEach((team) => (teams[team.id] = team));
+    refereesQuery.data!.forEach((referee) => (referees[referee.id] = referee));
+    observersQuery.data!.forEach((observer) => (observers[observer.id] = observer));
+    teamsQuery.data!.forEach((team) => (teams[team.id] = team));
 
-  const [state, setState] = useSetState({
-    matches: [],
-    filter: '',
-  } as State);
+    const [state, setState] = useSetState({
+        matches: [],
+        filter: '',
+    } as State);
 
-  const uploadFile = () => {
-    const formData: FormData = new FormData();
-    formData.append('matches', props.file);
-    postMutation.mutate(formData);
-  };
+    const uploadFile = () => {
+        const formData: FormData = new FormData();
+        formData.append('matches', props.file);
+        postMutation.mutate(formData);
+    };
 
-  useEffect(() => {
-    if (postMutation.isSuccess) {
-      props.onClose();
-      postMutation.reset();
-    }
-  }, [postMutation.isSuccess]);
+    useEffect(() => {
+        if (postMutation.isSuccess) {
+            props.onClose();
+            postMutation.reset();
+        }
+    }, [postMutation.isSuccess]);
 
-  useEffect(() => {
-    const filteredMatches: MatchEnriched[] = matchFilter(
-      uploadedMatchesQuery.data!,
-      teams,
-      referees,
-      observers,
-      state.filter,
+    useEffect(() => {
+        const filteredMatches: MatchEnriched[] = matchFilter(
+            uploadedMatchesQuery.data!,
+            teams,
+            referees,
+            observers,
+            state.filter,
+        );
+        const filteredMatchesInfos = filteredMatches.map((match) =>
+            getMatchInfoEnriched(match, teams, referees, observers),
+        );
+        setState({ matches: filteredMatchesInfos });
+    }, [state.filter, uploadedMatchesQuery.data!]);
+
+    return (
+        <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered size={'5xl'}>
+            <ModalOverlay />
+            <ModalContent>
+                <ModalHeader>
+                    {t('matches.uploadConfirmModal.confirm')}: {uploadedMatchesQuery.data!.length}
+                </ModalHeader>
+                <ModalCloseButton />
+
+                <ModalBody>
+                    <InputGroup>
+                        <InputLeftElement pointerEvents={'none'} children={<MdSearch />} />
+                        <Input
+                            mb={2}
+                            placeholder={t('matches.searchMatch')}
+                            onChange={(event) => setState({ filter: event.target.value })}
+                        />
+                    </InputGroup>
+
+                    <Flex direction={'column'} gap={2} overflowY={'scroll'} h={'70vh'}>
+                        {state.matches.length
+                            ? state.matches.map((match) => (
+                                  <MatchListItem key={match.id} readOnly={true} match={match} />
+                              ))
+                            : NoRecords(t('noRecords'))}
+                    </Flex>
+                </ModalBody>
+
+                <ModalFooter>
+                    <Button
+                        colorScheme="blue"
+                        mr={'3'}
+                        onClick={uploadFile}
+                        disabled={postMutation.isLoading}
+                        isLoading={postMutation.isLoading}
+                    >
+                        {t('modal.confirm')}
+                    </Button>
+                    <Button colorScheme="red" onClick={props.onClose}>
+                        {t('modal.cancel')}
+                    </Button>
+                </ModalFooter>
+            </ModalContent>
+        </Modal>
     );
-    const filteredMatchesInfos = filteredMatches.map((match) =>
-      getMatchInfoEnriched(match, teams, referees, observers),
-    );
-    setState({ matches: filteredMatchesInfos });
-  }, [state.filter, uploadedMatchesQuery.data!]);
-
-  return (
-    <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered size={'5xl'}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>
-          {t('matches.uploadConfirmModal.confirm')}: {uploadedMatchesQuery.data!.length}
-        </ModalHeader>
-        <ModalCloseButton />
-
-        <ModalBody>
-          <InputGroup>
-            <InputLeftElement pointerEvents={'none'} children={<MdSearch />} />
-            <Input
-              mb={2}
-              placeholder={t('matches.searchMatch')}
-              onChange={(event) => setState({ filter: event.target.value })}
-            />
-          </InputGroup>
-
-          <Flex direction={'column'} gap={2} overflowY={'scroll'} h={'70vh'}>
-            {state.matches.length
-              ? state.matches.map((match) => <MatchListItem key={match.id} readOnly={true} match={match} />)
-              : NoRecords(t('noRecords'))}
-          </Flex>
-        </ModalBody>
-
-        <ModalFooter>
-          <Button
-            colorScheme="blue"
-            mr={'3'}
-            onClick={uploadFile}
-            disabled={postMutation.isLoading}
-            isLoading={postMutation.isLoading}
-          >
-            {t('modal.confirm')}
-          </Button>
-          <Button colorScheme="red" onClick={props.onClose}>
-            {t('modal.cancel')}
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
-  );
 };

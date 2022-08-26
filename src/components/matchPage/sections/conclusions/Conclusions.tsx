@@ -16,55 +16,60 @@ import { ConclusionEditModal } from 'components/matchPage/sections/conclusions/m
 import { useTranslation } from 'react-i18next';
 
 export const Conclusions = () => {
-  const { isOpen: isAddOpen, onOpen: onAddOpen, onClose: onAddClose } = useDisclosure();
-  const { query: featuresQuery, deleteMutation } = useMatchFeatures();
-  const user = useStore((state) => state.user);
-  const { t } = useTranslation();
+    const { isOpen: isAddOpen, onOpen: onAddOpen, onClose: onAddClose } = useDisclosure();
+    const { query: featuresQuery, deleteMutation } = useMatchFeatures();
+    const user = useStore((state) => state.user);
+    const { t } = useTranslation();
 
-  const headers = [t('conclusions.type'), t('conclusions.description')];
+    const headers = [t('conclusions.type'), t('conclusions.description')];
 
-  const cols: Column<Feature>[] = [
-    {
-      Header: headers[0],
-      accessor: (d) => d.type,
-      Cell: (props: any) => (
-        <Text fontWeight={'medium'} color={props.value === FeatureType.Positive ? 'green.500' : 'red.400'}>
-          {props.value === FeatureType.Positive ? t('conclusions.positive') : t('conclusions.negative')}
-        </Text>
-      ),
-    },
-    {
-      Header: headers[1],
-      accessor: 'description',
-    },
-  ];
+    const cols: Column<Feature>[] = [
+        {
+            Header: headers[0],
+            accessor: (d) => d.type,
+            Cell: (props: any) => (
+                <Text fontWeight={'medium'} color={props.value === FeatureType.Positive ? 'green.500' : 'red.400'}>
+                    {props.value === FeatureType.Positive ? t('conclusions.positive') : t('conclusions.negative')}
+                </Text>
+            ),
+        },
+        {
+            Header: headers[1],
+            accessor: 'description',
+        },
+    ];
 
-  const userCanEdit: boolean = user.role === Role.Observer;
+    const userCanEdit: boolean = user.role === Role.Observer;
 
-  return (
-    <>
-      {userCanEdit && <ConclusionAddModal isOpen={isAddOpen} handleClose={onAddClose} />}
+    return (
+        <>
+            {userCanEdit && <ConclusionAddModal isOpen={isAddOpen} handleClose={onAddClose} />}
 
-      <Section>
-        <SectionHeading title={t('matchPage.conclusions.title')} icon={<Icon as={MdGrade} boxSize={25} />}>
-          <Button variant={'ghost'} leftIcon={<Icon as={AddIcon} />} onClick={onAddOpen} disabled={!userCanEdit}>
-            {t('modal.add')}
-          </Button>
-        </SectionHeading>
+            <Section>
+                <SectionHeading title={t('matchPage.conclusions.title')} icon={<Icon as={MdGrade} boxSize={25} />}>
+                    <Button
+                        variant={'ghost'}
+                        leftIcon={<Icon as={AddIcon} />}
+                        onClick={onAddOpen}
+                        disabled={!userCanEdit}
+                    >
+                        {t('modal.add')}
+                    </Button>
+                </SectionHeading>
 
-        <SectionBody>
-          <>
-            <DataTable
-              columns={cols}
-              data={featuresQuery.data!}
-              readOnly={!userCanEdit}
-              deleteMutation={deleteMutation}
-              EditModal={ConclusionEditModal}
-            />
-            {!featuresQuery.data!.length && NoRecords(t('noRecords'))}
-          </>
-        </SectionBody>
-      </Section>
-    </>
-  );
+                <SectionBody>
+                    <>
+                        <DataTable
+                            columns={cols}
+                            data={featuresQuery.data!}
+                            readOnly={!userCanEdit}
+                            deleteMutation={deleteMutation}
+                            EditModal={ConclusionEditModal}
+                        />
+                        {!featuresQuery.data!.length && NoRecords(t('noRecords'))}
+                    </>
+                </SectionBody>
+            </Section>
+        </>
+    );
 };
