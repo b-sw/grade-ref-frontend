@@ -1,17 +1,17 @@
 import jwtDecode from 'jwt-decode';
 
 interface Token {
-  exp: number;
+    exp: number;
 }
 
 export const tokenExpired = (token: string | null): boolean => {
-  if (token !== null) {
-    const currentTime = new Date().getTime() / 1000;
-    const decoded = jwtDecode<Token>(token);
-    const expirationTime = decoded.exp;
+    if (token !== null) {
+        const currentTime = new Date().getTime() / 1000;
+        const decoded = jwtDecode<Token>(token);
+        const expirationTime = decoded.exp;
 
-    return currentTime > expirationTime;
-  } else {
-    return true;
-  }
+        return currentTime > expirationTime;
+    } else {
+        return true;
+    }
 };

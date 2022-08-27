@@ -3,13 +3,15 @@ import { ConclusionModal } from 'components/matchPage/sections/conclusions/modal
 import { useLeagueMatch } from 'hooks/useLeagueMatch';
 
 interface ConclusionAddModalProps {
-  isOpen: boolean;
-  handleClose: () => void;
+    isOpen: boolean;
+    handleClose: () => void;
 }
 
 export const ConclusionAddModal = ({ isOpen, handleClose }: ConclusionAddModalProps) => {
-  const { postMutation } = useMatchFeatures();
-  const { query: matchQuery } = useLeagueMatch();
+    const { postMutation } = useMatchFeatures();
+    const { query: matchQuery } = useLeagueMatch();
 
-  return <ConclusionModal isOpen={isOpen} handleClose={handleClose} match={matchQuery.data!} mutation={postMutation} />;
+    return (
+        <ConclusionModal isOpen={isOpen} handleClose={handleClose} match={matchQuery.data!} mutation={postMutation} />
+    );
 };

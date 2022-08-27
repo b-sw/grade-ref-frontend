@@ -8,39 +8,39 @@ import { Google } from 'react-bootstrap-icons';
 import { useTranslation } from 'react-i18next';
 
 export const HeroLoginPanel = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const { loginMutation } = useAuth();
-  const { t } = useTranslation();
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { loginMutation } = useAuth();
+    const { t } = useTranslation();
 
-  useEffect(() => {
-    const checkForFailure = () => {
-      if (loginMutation.isError) {
-        onOpen();
-      }
-    };
-    checkForFailure();
-  }, [loginMutation.status]);
+    useEffect(() => {
+        const checkForFailure = () => {
+            if (loginMutation.isError) {
+                onOpen();
+            }
+        };
+        checkForFailure();
+    }, [loginMutation.status]);
 
-  return (
-    <>
-      <LoginFailureModal onClose={onClose} isOpen={isOpen} />
-      <Flex p={5}>
-        <GoogleLogin
-          clientId={Constants.GOOGLE_OAUTH_CLIENT_ID}
-          onSuccess={(googleData: any) => loginMutation.mutate(googleData)}
-          cookiePolicy={'single_host_origin'}
-          render={(renderProps: { onClick: () => void; disabled?: boolean }) => (
-            <Button
-              colorScheme={'messenger'}
-              onClick={renderProps.onClick}
-              isLoading={loginMutation.isLoading}
-              leftIcon={<Google />}
-            >
-              {t('hero.logIn')}
-            </Button>
-          )}
-        />
-      </Flex>
-    </>
-  );
+    return (
+        <>
+            <LoginFailureModal onClose={onClose} isOpen={isOpen} />
+            <Flex p={5}>
+                <GoogleLogin
+                    clientId={Constants.GOOGLE_OAUTH_CLIENT_ID}
+                    onSuccess={(googleData: any) => loginMutation.mutate(googleData)}
+                    cookiePolicy={'single_host_origin'}
+                    render={(renderProps: { onClick: () => void; disabled?: boolean }) => (
+                        <Button
+                            colorScheme={'messenger'}
+                            onClick={renderProps.onClick}
+                            isLoading={loginMutation.isLoading}
+                            leftIcon={<Google />}
+                        >
+                            {t('hero.logIn')}
+                        </Button>
+                    )}
+                />
+            </Flex>
+        </>
+    );
 };

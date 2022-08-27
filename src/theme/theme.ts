@@ -10,27 +10,27 @@ import { Textarea } from 'theme/textarea';
 
 // 2. Add your color mode config
 const config = {
-  initialColorMode: 'light',
-  useSystemColorMode: false,
+    initialColorMode: 'light',
+    useSystemColorMode: false,
 };
 
 const colors = {
-  explorerButton: {
-    50: '#CBD5E0',
-    100: '#E2E8F0',
-    600: '#1A202C',
-  },
-  tabsButton: {
-    600: '#3182CE',
-  },
+    explorerButton: {
+        50: '#CBD5E0',
+        100: '#E2E8F0',
+        600: '#1A202C',
+    },
+    tabsButton: {
+        600: '#3182CE',
+    },
 };
 
 const components = {
-  Input,
-  NumberInput,
-  Modal,
-  Select,
-  Textarea,
+    Input,
+    NumberInput,
+    Modal,
+    Select,
+    Textarea,
 };
 
 // 3. extend the theme

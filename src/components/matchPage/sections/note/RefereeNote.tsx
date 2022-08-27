@@ -12,35 +12,40 @@ import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
 import { useTranslation } from 'react-i18next';
 
 interface RefereeNoteProps {
-  match: MatchInfoEnriched;
+    match: MatchInfoEnriched;
 }
 
 export const RefereeNote = ({ match }: RefereeNoteProps) => {
-  const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
-  const { t } = useTranslation();
+    const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
+    const { t } = useTranslation();
 
-  const user = useStore((state) => state.user);
+    const user = useStore((state) => state.user);
 
-  const userCanEdit: boolean = user.role === Role.Referee;
+    const userCanEdit: boolean = user.role === Role.Referee;
 
-  return (
-    <>
-      {userCanEdit && <RefereeNoteEditModal isOpen={isEditOpen} handleClose={onEditClose} match={match} />}
-      <Section>
-        <SectionHeading title={t('matchPage.note.title')} icon={<Icon as={MdNote} boxSize={25} />}>
-          <Button variant={'ghost'} leftIcon={<Icon as={EditIcon} />} onClick={onEditOpen} disabled={!userCanEdit}>
-            {t('modal.edit')}
-          </Button>
-        </SectionHeading>
+    return (
+        <>
+            {userCanEdit && <RefereeNoteEditModal isOpen={isEditOpen} handleClose={onEditClose} match={match} />}
+            <Section>
+                <SectionHeading title={t('matchPage.note.title')} icon={<Icon as={MdNote} boxSize={25} />}>
+                    <Button
+                        variant={'ghost'}
+                        leftIcon={<Icon as={EditIcon} />}
+                        onClick={onEditOpen}
+                        disabled={!userCanEdit}
+                    >
+                        {t('modal.edit')}
+                    </Button>
+                </SectionHeading>
 
-        <SectionBody>
-          <Flex>
-            <Spacer />
-            <AutoResizeTextFlex text={match.refereeNote || 'N/A'} />
-            <Spacer />
-          </Flex>
-        </SectionBody>
-      </Section>
-    </>
-  );
+                <SectionBody>
+                    <Flex>
+                        <Spacer />
+                        <AutoResizeTextFlex text={match.refereeNote || 'N/A'} />
+                        <Spacer />
+                    </Flex>
+                </SectionBody>
+            </Section>
+        </>
+    );
 };

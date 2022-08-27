@@ -10,79 +10,79 @@ import { useLeagueMatch } from 'hooks/useLeagueMatch';
 import { MatchStatus } from 'entities/utils/matchStatus';
 
 interface UploadReportZoneProps {
-  reportType: ReportType;
+    reportType: ReportType;
 }
 
 interface State {
-  files: File[];
-  isLoading: boolean;
+    files: File[];
+    isLoading: boolean;
 }
 
 export const UploadReportZone = ({ reportType }: UploadReportZoneProps) => {
-  const { postMutation } = useReports();
-  const toast = useToast();
-  const { t } = useTranslation();
+    const { postMutation } = useReports();
+    const toast = useToast();
+    const { t } = useTranslation();
 
-  const { query: matchQuery } = useLeagueMatch();
-  const matchIsUpcoming = matchQuery.data!.matchStatus === MatchStatus.Upcoming;
+    const { query: matchQuery } = useLeagueMatch();
+    const matchIsUpcoming = matchQuery.data!.matchStatus === MatchStatus.Upcoming;
 
-  const [state, setState] = useSetState({
-    files: [],
-    isLoading: false,
-  } as State);
+    const [state, setState] = useSetState({
+        files: [],
+        isLoading: false,
+    } as State);
 
-  const { getRootProps, getInputProps, fileRejections } = useDropzone({
-    onDrop: (files: File[]) => {
-      setState({ files: files });
-      uploadFile(files[0]);
-    },
-    disabled: postMutation.isLoading || matchIsUpcoming,
-    accept: {
-      'application/pdf': ['.pdf'],
-    },
-    maxSize: 1000000,
-    multiple: false,
-    maxFiles: 1,
-  });
+    const { getRootProps, getInputProps, fileRejections } = useDropzone({
+        onDrop: (files: File[]) => {
+            setState({ files: files });
+            uploadFile(files[0]);
+        },
+        disabled: postMutation.isLoading || matchIsUpcoming,
+        accept: {
+            'application/pdf': ['.pdf'],
+        },
+        maxSize: 1000000,
+        multiple: false,
+        maxFiles: 1,
+    });
 
-  useEffect(() => {
-    if (fileRejections.length) {
-      fileRejections.forEach((fileRejection) => {
-        fileRejection.errors.forEach((error) => {
-          toast({
-            title: error.message,
-            status: 'error',
-            duration: 5000,
-          });
-        });
-      });
-    }
-  }, [fileRejections]);
+    useEffect(() => {
+        if (fileRejections.length) {
+            fileRejections.forEach((fileRejection) => {
+                fileRejection.errors.forEach((error) => {
+                    toast({
+                        title: error.message,
+                        status: 'error',
+                        duration: 5000,
+                    });
+                });
+            });
+        }
+    }, [fileRejections]);
 
-  const uploadFile = (file: any) => {
-    const formData = new FormData();
-    formData.append('report', file);
+    const uploadFile = (file: any) => {
+        const formData = new FormData();
+        formData.append('report', file);
 
-    const reportDto: ReportDto = {
-      fileFormData: formData,
-      type: reportType,
+        const reportDto: ReportDto = {
+            fileFormData: formData,
+            type: reportType,
+        };
+
+        postMutation.mutate(reportDto);
     };
 
-    postMutation.mutate(reportDto);
-  };
+    const dropzoneText = state.files.length ? state.files[0].name : t('matchPage.reports.uploadMessage');
+    const borderStyle = 'dashed';
+    const _hover = { borderColor: postMutation.isLoading ? 'gray.400' : 'gray.500' };
+    const cursor = postMutation.isLoading ? 'default' : 'pointer';
+    const rootProps = { ...getRootProps({ className: 'dropzone' }) };
 
-  const dropzoneText = state.files.length ? state.files[0].name : t('matchPage.reports.uploadMessage');
-  const borderStyle = 'dashed';
-  const _hover = { borderColor: postMutation.isLoading ? 'gray.400' : 'gray.500' };
-  const cursor = postMutation.isLoading ? 'default' : 'pointer';
-  const rootProps = { ...getRootProps({ className: 'dropzone' }) };
+    return (
+        <Dropzone text={dropzoneText} flexProps={{ borderStyle, _hover, cursor, ...rootProps }}>
+            <input {...getInputProps()} />
+            {postMutation.isLoading && <Spinner />}
 
-  return (
-    <Dropzone text={dropzoneText} flexProps={{ borderStyle, _hover, cursor, ...rootProps }}>
-      <input {...getInputProps()} />
-      {postMutation.isLoading && <Spinner />}
-
-      {!postMutation.isLoading && <Icon as={MdFileUpload} boxSize={35} opacity={0.6} />}
-    </Dropzone>
-  );
+            {!postMutation.isLoading && <Icon as={MdFileUpload} boxSize={35} opacity={0.6} />}
+        </Dropzone>
+    );
 };
