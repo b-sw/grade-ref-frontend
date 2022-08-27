@@ -34,7 +34,7 @@ export const RefereesPanel = () => {
     }, [state.filter, refereesQuery.data]);
 
     const headerButtons = (
-        <Button variant={'ghost'} leftIcon={<AddIcon />} onClick={onCreateModalOpen} size={'lg'}>
+        <Button variant={'ghost'} leftIcon={<AddIcon />} onClick={onCreateModalOpen} size={'md'}>
             {t('modal.add')}
         </Button>
     );

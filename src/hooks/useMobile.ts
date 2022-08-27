@@ -3,17 +3,17 @@ import { MOBILE_WINDOW_WIDTH } from 'components/landingPage/hero/Hero';
 import { useEffect } from 'react';
 
 interface State {
-  isMobile: boolean;
+    isMobile: boolean;
 }
 
 export const useMobile = () => {
-  const [state, setState] = useSetState({
-    isMobile: window.innerWidth < MOBILE_WINDOW_WIDTH,
-  } as State);
+    const [state, setState] = useSetState({
+        isMobile: window.innerWidth < MOBILE_WINDOW_WIDTH,
+    } as State);
 
-  useEffect(() => {
-    window.addEventListener('resize', () => setState({ isMobile: window.innerWidth < MOBILE_WINDOW_WIDTH }));
-  }, []);
+    useEffect(() => {
+        window.addEventListener('resize', () => setState({ isMobile: window.innerWidth < MOBILE_WINDOW_WIDTH }));
+    }, []);
 
-  return { isMobile: state.isMobile };
+    return { isMobile: state.isMobile };
 };

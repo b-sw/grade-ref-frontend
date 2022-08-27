@@ -149,7 +149,7 @@ export const MatchSectionsPanel = ({ match }: MatchOverviewPanelProps) => {
                         </Flex>
 
                         <Flex direction={'column'} p={PADDING} w={'85%'} overflowY={'hidden'}>
-                            <Flex direction={'column'} overflowY={'scroll'} ref={overviewRef}>
+                            <Flex direction={'column'} overflowY={'scroll'} ref={overviewRef} pr={5}>
                                 <Flex ref={detailsRef}>
                                     <Details match={match} />
                                 </Flex>

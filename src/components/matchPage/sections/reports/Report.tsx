@@ -9,42 +9,42 @@ import { AiOutlineFileDone, AiOutlineFileUnknown } from 'react-icons/ai';
 import { useTranslation } from 'react-i18next';
 
 interface ReportProps {
-  reportType: ReportType;
-  isUploaded: boolean;
+    reportType: ReportType;
+    isUploaded: boolean;
 }
 
 export const Report = ({ reportType, isUploaded }: ReportProps) => {
-  const user = useStore((state) => state.user);
-  const { t } = useTranslation();
+    const user = useStore((state) => state.user);
+    const { t } = useTranslation();
 
-  const reportTypeNames = {
-    [ReportType.Observer]: t('matchPage.reports.observer'),
-    [ReportType.Mentor]: t('matchPage.reports.mentor'),
-    [ReportType.Tv]: t('matchPage.reports.tv'),
-    [ReportType.Self]: t('matchPage.reports.self'),
-  };
+    const reportTypeNames = {
+        [ReportType.Observer]: t('matchPage.reports.observer'),
+        [ReportType.Mentor]: t('matchPage.reports.mentor'),
+        [ReportType.Tv]: t('matchPage.reports.tv'),
+        [ReportType.Self]: t('matchPage.reports.self'),
+    };
 
-  const hasReadPermissions = GradeFilePermissions[user.role! as Role][ActionType.Read].has(reportType);
-  const hasWritePermissions = GradeFilePermissions[user.role! as Role][ActionType.Write].has(reportType);
+    const hasReadPermissions = GradeFilePermissions[user.role! as Role][ActionType.Read].has(reportType);
+    const hasWritePermissions = GradeFilePermissions[user.role! as Role][ActionType.Write].has(reportType);
 
-  let report = <ReadOnlyReportZone text={t('matchPage.reports.empty')} iconType={AiOutlineFileUnknown} />;
+    let report = <ReadOnlyReportZone text={t('matchPage.reports.empty')} iconType={AiOutlineFileUnknown} />;
 
-  if (hasReadPermissions) {
-    if (isUploaded) {
-      report = <DownloadReportZone reportType={reportType} hasWritePermissions={hasWritePermissions} />;
-    } else if (hasWritePermissions) {
-      report = <UploadReportZone reportType={reportType} />;
+    if (hasReadPermissions) {
+        if (isUploaded) {
+            report = <DownloadReportZone reportType={reportType} hasWritePermissions={hasWritePermissions} />;
+        } else if (hasWritePermissions) {
+            report = <UploadReportZone reportType={reportType} />;
+        }
+    } else if (isUploaded) {
+        report = <ReadOnlyReportZone text={t('matchPage.reports.uploaded')} iconType={AiOutlineFileDone} />;
     }
-  } else if (isUploaded) {
-    report = <ReadOnlyReportZone text={t('matchPage.reports.uploaded')} iconType={AiOutlineFileDone} />;
-  }
 
-  return (
-    <Flex direction={'column'} w={'100%'}>
-      <Text fontSize={'xl'} fontWeight={'medium'}>
-        {reportTypeNames[reportType]}:
-      </Text>
-      {report}
-    </Flex>
-  );
+    return (
+        <Flex direction={'column'} w={'100%'}>
+            <Text fontSize={'xl'} fontWeight={'medium'}>
+                {reportTypeNames[reportType]}:
+            </Text>
+            {report}
+        </Flex>
+    );
 };

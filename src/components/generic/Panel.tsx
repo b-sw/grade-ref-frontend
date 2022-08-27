@@ -11,7 +11,7 @@ export const Panel = ({ headerTitle, headerButtons, children, options }: PanelPr
     return (
         <Flex direction={'column'} overflow={'hidden'} flexGrow={1} {...options}>
             <Flex mb={1} mr={1} alignItems={'center'}>
-                <Text fontWeight={'bold'} fontSize={'4xl'}>
+                <Text fontWeight={'bold'} fontSize={'3xl'}>
                     {headerTitle}
                 </Text>
                 <Spacer />

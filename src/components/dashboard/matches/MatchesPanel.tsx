@@ -56,10 +56,10 @@ export const MatchesPanel = ({ matches, readOnly, hideTabs }: MatchesPanelProps)
 
     const headerButtons = !readOnly && (
         <>
-            <Button variant={'ghost'} leftIcon={<AttachmentIcon />} onClick={onUploadModalOpen} size={'lg'}>
+            <Button variant={'ghost'} leftIcon={<AttachmentIcon />} onClick={onUploadModalOpen} size={'md'}>
                 {t('matches.upload')}
             </Button>
-            <Button variant={'ghost'} leftIcon={<AddIcon />} onClick={onCreateModalOpen} size={'lg'}>
+            <Button variant={'ghost'} leftIcon={<AddIcon />} onClick={onCreateModalOpen} size={'md'}>
                 {t('matches.add')}
             </Button>
         </>

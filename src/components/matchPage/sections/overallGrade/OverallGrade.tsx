@@ -15,47 +15,52 @@ import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
 import { useTranslation } from 'react-i18next';
 
 interface OverallGradeProps {
-  match: MatchInfoEnriched;
+    match: MatchInfoEnriched;
 }
 
 export const OverallGrade = ({ match }: OverallGradeProps) => {
-  const user = useStore((state) => state.user);
-  const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
-  const { t } = useTranslation();
+    const user = useStore((state) => state.user);
+    const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
+    const { t } = useTranslation();
 
-  const getReadableDatetime = (date: Date | undefined, format: string): string => {
-    return date ? dayjs(date, Constants.DATETIME_FORMAT).format(format) : 'N/A';
-  };
+    const getReadableDatetime = (date: Date | undefined, format: string): string => {
+        return date ? dayjs(date, Constants.DATETIME_FORMAT).format(format) : 'N/A';
+    };
 
-  const overallGradeDate: string = getReadableDatetime(match.overallGradeDate, 'DD-MM-YYYY HH:mm');
+    const overallGradeDate: string = getReadableDatetime(match.overallGradeDate, 'DD-MM-YYYY HH:mm');
 
-  const gradeTextArea: JSX.Element = (
-    <Flex>
-      <Spacer />
-      <AutoResizeTextFlex text={match.overallGrade || 'N/A'} />
-      <Spacer />
-    </Flex>
-  );
+    const gradeTextArea: JSX.Element = (
+        <Flex>
+            <Spacer />
+            <AutoResizeTextFlex text={match.overallGrade || 'N/A'} />
+            <Spacer />
+        </Flex>
+    );
 
-  const userCanEdit: boolean = user.role === Role.Admin || user.role === Role.Observer;
+    const userCanEdit: boolean = user.role === Role.Admin || user.role === Role.Observer;
 
-  return (
-    <>
-      {userCanEdit && <OverallGradeEditModal isOpen={isEditOpen} handleClose={onEditClose} match={match} />}
-      <Section>
-        <SectionHeading title={t('matchPage.overallGrade.title')} icon={<Icon as={BiDetail} boxSize={25} />}>
-          <Button variant={'ghost'} leftIcon={<Icon as={EditIcon} />} onClick={onEditOpen} disabled={!userCanEdit}>
-            {t('modal.edit')}
-          </Button>
-        </SectionHeading>
+    return (
+        <>
+            {userCanEdit && <OverallGradeEditModal isOpen={isEditOpen} handleClose={onEditClose} match={match} />}
+            <Section>
+                <SectionHeading title={t('matchPage.overallGrade.title')} icon={<Icon as={BiDetail} boxSize={25} />}>
+                    <Button
+                        variant={'ghost'}
+                        leftIcon={<Icon as={EditIcon} />}
+                        onClick={onEditOpen}
+                        disabled={!userCanEdit}
+                    >
+                        {t('modal.edit')}
+                    </Button>
+                </SectionHeading>
 
-        <SectionBody>
-          <Flex direction={'column'} gap={2}>
-            {gradeTextArea}
-            <TextField name={t('matchPage.overallGrade.date') + ':'} text={overallGradeDate} />
-          </Flex>
-        </SectionBody>
-      </Section>
-    </>
-  );
+                <SectionBody>
+                    <Flex direction={'column'} gap={2}>
+                        {gradeTextArea}
+                        <TextField name={t('matchPage.overallGrade.date') + ':'} text={overallGradeDate} />
+                    </Flex>
+                </SectionBody>
+            </Section>
+        </>
+    );
 };
