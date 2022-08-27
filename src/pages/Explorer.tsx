@@ -8,6 +8,7 @@ import { LeagueCard } from 'components/explorer/LeagueCard';
 import { SettingsIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'react-i18next';
 import { LanguageSettingsModal } from 'components/explorer/LanguageSettingsModal';
+import { Page } from 'components/generic/Page';
 
 export const Explorer = () => {
     const { isOpen: isSettingsOpen, onOpen: onSettingsOpen, onClose: onSettingsClose } = useDisclosure();
@@ -21,7 +22,7 @@ export const Explorer = () => {
     }
 
     return (
-        <Flex p={[2, 4]} m={0} h={['100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
+        <Page>
             <LanguageSettingsModal isOpen={isSettingsOpen} onClose={onSettingsClose} />
             <Flex mb={5}>
                 <Spacer />
@@ -44,6 +45,6 @@ export const Explorer = () => {
                         leaguesQuery.data.map((league: League) => <LeagueCard key={league.id} league={league} />)}
                 </Flex>
             </Flex>
-        </Flex>
+        </Page>
     );
 };

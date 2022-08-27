@@ -1,11 +1,10 @@
 import { Flex } from '@chakra-ui/react';
 
 interface PageProps {
-    children: JSX.Element[];
-    child?: JSX.Element;
+    children?: (JSX.Element | false)[] | (JSX.Element | false);
 }
 
-export const Page = ({ children, child }: PageProps) => {
+export const Page = ({ children }: PageProps) => {
     return (
         <Flex
             p={[2, 4]}
@@ -15,8 +14,7 @@ export const Page = ({ children, child }: PageProps) => {
             overflow={'hidden'}
             backgroundColor={'gray.400'}
         >
-            {...children}
-            {child}
+            {children}
         </Flex>
     );
 };

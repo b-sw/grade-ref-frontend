@@ -12,6 +12,7 @@ import { Role } from 'utils/Role';
 import { useReferees } from 'hooks/useReferees';
 import { useObservers } from 'hooks/useObservers';
 import { PageTitle } from 'utils/PageTitle';
+import { Page } from 'components/generic/Page';
 
 export const AdminDashboard = () => {
     const { refereesQuery: allRefereesQuery } = useReferees({ enableAutoRefetch: true });
@@ -37,14 +38,7 @@ export const AdminDashboard = () => {
     }
 
     return (
-        <Flex
-            p={[2, 4]}
-            m={0}
-            h={['auto', '100vh']}
-            direction={'column'}
-            overflow={'hidden'}
-            backgroundColor={'gray.400'}
-        >
+        <Page>
             <AdminHeaderPanel pageTitle={PageTitle.AdminDashboard} />
             <SimpleGrid columns={[1, 1, 2]} flexGrow={1} overflow={'hidden'} spacing={4} p={[4, 4, 4]} m={-4}>
                 <MatchesPanel matches={matchesQuery.data!} />
@@ -53,6 +47,6 @@ export const AdminDashboard = () => {
                     <ObserversPanel />
                 </Flex>
             </SimpleGrid>
-        </Flex>
+        </Page>
     );
 };

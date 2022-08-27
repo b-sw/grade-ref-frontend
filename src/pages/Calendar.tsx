@@ -12,6 +12,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { useUserMatches } from 'hooks/useUserMatches';
 import { HeaderPanel } from 'components/header/HeaderPanel';
 import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
+import { Page } from 'components/generic/Page';
 
 interface State {
     matches: MatchInfoEnriched[];
@@ -41,12 +42,12 @@ export const Calendar = () => {
     }
 
     return (
-        <Flex p={[2, 4]} h={['auto', '100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
+        <Page>
             <HeaderPanel pageTitle={PageTitle.Calendar} />
             <Flex flexGrow={1} gap={[2, 2, 4]} direction={['column', 'row']} overflow={'hidden'} m={-10} p={10}>
                 <CalendarPanel matches={matchesQuery.data!} readOnly={true} />
                 <MatchesPanel matches={state.matches} readOnly={true} hideTabs={true} />
             </Flex>
-        </Flex>
+        </Page>
     );
 };

@@ -1,4 +1,4 @@
-import { Flex, SimpleGrid } from '@chakra-ui/react';
+import { SimpleGrid } from '@chakra-ui/react';
 import { GradesPanel } from 'components/dashboard/grades/GradesPanel';
 import { HeaderPanel } from 'components/header/HeaderPanel';
 import { LoadingOverlay } from './LoadingOverlay';
@@ -7,6 +7,7 @@ import { MatchesPanel } from 'components/dashboard/matches/MatchesPanel';
 import { useLeagueTeams } from 'hooks/useLeagueTeams';
 import { PageTitle } from 'utils/PageTitle';
 import { useLeagues } from 'hooks/useLeagues';
+import { Page } from 'components/generic/Page';
 
 export const Dashboard = () => {
     const { query: matchesQuery } = useUserMatches({ enableAutoRefetch: true });
@@ -20,29 +21,12 @@ export const Dashboard = () => {
     }
 
     return (
-        <>
-            <Flex
-                p={[2, 4]}
-                m={0}
-                h={['auto', '100vh']}
-                direction={'column'}
-                overflow={'hidden'}
-                backgroundColor={'gray.400'}
-            >
-                <HeaderPanel pageTitle={PageTitle.Dashboard} />
-                <SimpleGrid
-                    columns={[1, 1, 2]}
-                    flexGrow={1}
-                    overflowY={'hidden'}
-                    spacing={5}
-                    px={[5, 5, 5]}
-                    m={-5}
-                    py={5}
-                >
-                    <MatchesPanel readOnly={true} matches={matchesQuery.data!} />
-                    <GradesPanel matches={matchesQuery.data!} />
-                </SimpleGrid>
-            </Flex>
-        </>
+        <Page>
+            <HeaderPanel pageTitle={PageTitle.Dashboard} />
+            <SimpleGrid columns={[1, 1, 2]} flexGrow={1} overflowY={'hidden'} spacing={5} px={[5, 5, 5]} m={-5} py={5}>
+                <MatchesPanel readOnly={true} matches={matchesQuery.data!} />
+                <GradesPanel matches={matchesQuery.data!} />
+            </SimpleGrid>
+        </Page>
     );
 };

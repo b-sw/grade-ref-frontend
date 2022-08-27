@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { useStore } from 'zustandStore/store';
 import dayjs, { Dayjs } from 'dayjs';
 import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
+import { Page } from 'components/generic/Page';
 
 interface State {
     matches: MatchInfoEnriched[];
@@ -44,19 +45,12 @@ export const AdminCalendar = () => {
     }
 
     return (
-        <Flex
-            p={[2, 4]}
-            m={0}
-            h={['auto', '100vh']}
-            direction={'column'}
-            overflow={'hidden'}
-            backgroundColor={'gray.400'}
-        >
+        <Page>
             <AdminHeaderPanel pageTitle={PageTitle.Calendar} />
             <Flex flexGrow={1} gap={[2, 2, 4]} direction={['column', 'row']} overflow={'hidden'} m={-10} p={10}>
                 <CalendarPanel matches={matchesQuery.data!} />
                 <MatchesPanel matches={state.matches} hideTabs={true} />
             </Flex>
-        </Flex>
+        </Page>
     );
 };

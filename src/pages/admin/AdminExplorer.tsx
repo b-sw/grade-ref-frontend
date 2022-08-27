@@ -9,6 +9,7 @@ import { LoadingOverlay } from '../LoadingOverlay';
 import { LeagueCreateModal } from 'components/owner/leagues/LeagueCreateModal';
 import { LanguageSettingsModal } from 'components/explorer/LanguageSettingsModal';
 import { useTranslation } from 'react-i18next';
+import { Page } from 'components/generic/Page';
 
 export const AdminExplorer = () => {
     const { isOpen: isCreateLeagueOpen, onOpen: onCreateLeagueOpen, onClose: onCreateLeagueClose } = useDisclosure();
@@ -24,7 +25,7 @@ export const AdminExplorer = () => {
     }
 
     return (
-        <Flex p={[2, 4]} m={0} h={['100vh']} direction={'column'} overflow={'hidden'} backgroundColor={'gray.400'}>
+        <Page>
             <LanguageSettingsModal isOpen={isSettingsOpen} onClose={onSettingsClose} />
             <LeagueCreateModal isOpen={isCreateLeagueOpen} onClose={onCreateLeagueClose} />
             <Flex mb={5}>
@@ -60,6 +61,6 @@ export const AdminExplorer = () => {
                     </Button>
                 </Flex>
             </Flex>
-        </Flex>
+        </Page>
     );
 };
