@@ -1,4 +1,4 @@
-import { Button, Flex, Input, InputGroup, InputLeftElement, Spacer, Text, useDisclosure } from '@chakra-ui/react';
+import { Button, Flex, FlexProps, Input, InputGroup, InputLeftElement, useDisclosure } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import { ObserverAddModal } from 'components/admin/observers/ObserverAddModal';
 import { User } from 'entities/User';
@@ -11,6 +11,7 @@ import { userFilter } from 'components/utils/filters';
 import { useEffect } from 'react';
 import { NoRecords } from 'components/utils/NoRecords';
 import { useTranslation } from 'react-i18next';
+import { Panel } from 'components/generic/Panel';
 
 interface State {
     observers: User[];
@@ -32,31 +33,21 @@ export const ObserversPanel = () => {
         setState({ observers: filteredObservers });
     }, [state.filter, observersQuery.data]);
 
+    const headerButtons = (
+        <Button variant={'ghost'} leftIcon={<AddIcon />} onClick={onCreateModalOpen} size={'lg'}>
+            {t('modal.add')}
+        </Button>
+    );
+
+    const panelOptions: FlexProps = {
+        w: ['auto', '50%'],
+        h: ['auto', '100%'],
+    };
+
     return (
         <>
             <ObserverAddModal isOpen={isCreateModalOpen} onClose={onCreateModalClose} />
-            <Flex
-                direction={'column'}
-                borderRadius={10}
-                p={5}
-                backgroundColor={'gray.300'}
-                shadow={'md'}
-                overflowY={'hidden'}
-                flexGrow={1}
-                w={['auto', '50%']}
-                h={['auto', '100%']}
-                maxH={['90vh', '100%']}
-            >
-                <Flex mb={4}>
-                    <Text fontWeight={'bold'} fontSize={'2xl'}>
-                        {t('observer_many')}
-                    </Text>
-                    <Spacer />
-                    <Button variant={'ghost'} leftIcon={<AddIcon />} onClick={onCreateModalOpen}>
-                        {t('modal.add')}
-                    </Button>
-                </Flex>
-
+            <Panel headerTitle={t('observer_many')} headerButtons={headerButtons} options={panelOptions}>
                 <InputGroup>
                     <InputLeftElement pointerEvents={'none'} children={<MdSearch />} />
                     <Input
@@ -73,7 +64,7 @@ export const ObserversPanel = () => {
                           ))
                         : NoRecords(t('noRecords'))}
                 </Flex>
-            </Flex>
+            </Panel>
         </>
     );
 };

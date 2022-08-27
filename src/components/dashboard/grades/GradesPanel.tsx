@@ -1,16 +1,4 @@
-import {
-    Flex,
-    Input,
-    InputGroup,
-    InputLeftElement,
-    Spacer,
-    Tab,
-    TabList,
-    TabPanel,
-    TabPanels,
-    Tabs,
-    Text,
-} from '@chakra-ui/react';
+import { Input, InputGroup, InputLeftElement, Tab, TabPanel } from '@chakra-ui/react';
 import { GradeSummaryHeading } from 'components/dashboard/grades/GradeSummaryHeading';
 import { GradeListItem } from 'components/dashboard/grades/GradeListItem';
 import { Role } from 'utils/Role';
@@ -23,6 +11,11 @@ import { GradeStatus } from 'entities/utils/gradeInfo';
 import { NoRecords } from 'components/utils/NoRecords';
 import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
 import { useTranslation } from 'react-i18next';
+import { Panel } from 'components/generic/Panel';
+import { TabList } from 'components/generic/TabList';
+import { TabPanels } from 'components/generic/TabPanels';
+import { Tabs } from 'components/generic/Tabs';
+import { TabPanelDefaultProps } from 'components/generic/default-props';
 
 interface Props {
     matches: MatchInfoEnriched[];
@@ -40,24 +33,9 @@ export const GradesPanel = (props: Props) => {
 
     return (
         <>
-            <Flex
-                direction={'column'}
-                borderRadius={10}
-                p={5}
-                backgroundColor={'gray.300'}
-                shadow={'md'}
-                overflowY={'hidden'}
-                flexGrow={1}
-            >
-                <Flex mb={4}>
-                    <Text fontWeight={'bold'} fontSize={'2xl'}>
-                        {t('grades.title')}
-                    </Text>
-                    <Spacer />
-                </Flex>
-
+            <Panel headerTitle={t('grades.title')}>
                 <GradesPanelBody matches={matchesQuery.data!} state={state} setState={setState} />
-            </Flex>
+            </Panel>
         </>
     );
 };
@@ -79,6 +57,25 @@ export const GradesPanelBody = (props: GradesPanelBodyProps) => {
         return props.state.matches.filter((match) => match.gradeStatus.status === status);
     };
 
+    const getFilteredGradesTabPanel = (gradeStatus: GradeStatus) => {
+        const filteredGrades = getFilteredGrades(gradeStatus);
+        return (
+            <TabPanel {...TabPanelDefaultProps}>
+                {filteredGrades.length
+                    ? filteredGrades.map((match) => (
+                          <GradeListItem
+                              key={match.id}
+                              readOnly={props.readOnly ?? user.role !== Role.Observer}
+                              match={match}
+                              userFullName={showReferee ? match.referee : match.observer}
+                              userRole={showReferee ? Role.Referee : Role.Observer}
+                          />
+                      ))
+                    : NoRecords(t('noRecords'))}
+            </TabPanel>
+        );
+    };
+
     return (
         <>
             <GradeSummaryHeading matches={props.matches} />
@@ -91,24 +88,16 @@ export const GradesPanelBody = (props: GradesPanelBodyProps) => {
                 />
             </InputGroup>
 
-            <Tabs
-                display="flex"
-                flexDirection="column"
-                isFitted
-                variant="solid-rounded"
-                overflowY={'hidden'}
-                colorScheme="tabsButton"
-                h={'100%'}
-            >
-                <TabList mx={5} my={2} gap={5}>
+            <Tabs>
+                <TabList>
                     <Tab>{t('grades.all')}</Tab>
                     <Tab>{t('grades.received')}</Tab>
                     <Tab>{t('grades.overdue')}</Tab>
                     <Tab>{t('grades.pending')}</Tab>
                     <Tab>{t('grades.expected')}</Tab>
                 </TabList>
-                <TabPanels overflowY={'scroll'} h={'100%'}>
-                    <TabPanel display="flex" flexDirection="column" gap={2} h={'100%'}>
+                <TabPanels>
+                    <TabPanel {...TabPanelDefaultProps}>
                         {props.state.matches.length
                             ? props.state.matches.map((match) => (
                                   <GradeListItem
@@ -121,58 +110,10 @@ export const GradesPanelBody = (props: GradesPanelBodyProps) => {
                               ))
                             : NoRecords(t('noRecords'))}
                     </TabPanel>
-                    <TabPanel display="flex" flexDirection="column" gap={2} h={'100%'}>
-                        {getFilteredGrades(GradeStatus.Received).length
-                            ? getFilteredGrades(GradeStatus.Received).map((match) => (
-                                  <GradeListItem
-                                      key={match.id}
-                                      readOnly={props.readOnly ?? user.role !== Role.Observer}
-                                      match={match}
-                                      userFullName={showReferee ? match.referee : match.observer}
-                                      userRole={showReferee ? Role.Referee : Role.Observer}
-                                  />
-                              ))
-                            : NoRecords(t('noRecords'))}
-                    </TabPanel>
-                    <TabPanel display="flex" flexDirection="column" gap={2} h={'100%'}>
-                        {getFilteredGrades(GradeStatus.Overdue).length
-                            ? getFilteredGrades(GradeStatus.Overdue).map((match) => (
-                                  <GradeListItem
-                                      key={match.id}
-                                      readOnly={props.readOnly ?? user.role !== Role.Observer}
-                                      match={match}
-                                      userFullName={showReferee ? match.referee : match.observer}
-                                      userRole={showReferee ? Role.Referee : Role.Observer}
-                                  />
-                              ))
-                            : NoRecords(t('noRecords'))}
-                    </TabPanel>
-                    <TabPanel display="flex" flexDirection="column" gap={2} h={'100%'}>
-                        {getFilteredGrades(GradeStatus.Pending).length
-                            ? getFilteredGrades(GradeStatus.Pending).map((match) => (
-                                  <GradeListItem
-                                      key={match.id}
-                                      readOnly={props.readOnly ?? user.role !== Role.Observer}
-                                      match={match}
-                                      userFullName={showReferee ? match.referee : match.observer}
-                                      userRole={showReferee ? Role.Referee : Role.Observer}
-                                  />
-                              ))
-                            : NoRecords(t('noRecords'))}
-                    </TabPanel>
-                    <TabPanel display="flex" flexDirection="column" gap={2} h={'100%'}>
-                        {getFilteredGrades(GradeStatus.Expected).length
-                            ? getFilteredGrades(GradeStatus.Expected).map((match) => (
-                                  <GradeListItem
-                                      key={match.id}
-                                      readOnly={props.readOnly ?? user.role !== Role.Observer}
-                                      match={match}
-                                      userFullName={showReferee ? match.referee : match.observer}
-                                      userRole={showReferee ? Role.Referee : Role.Observer}
-                                  />
-                              ))
-                            : NoRecords(t('noRecords'))}
-                    </TabPanel>
+                    {getFilteredGradesTabPanel(GradeStatus.Received)}
+                    {getFilteredGradesTabPanel(GradeStatus.Overdue)}
+                    {getFilteredGradesTabPanel(GradeStatus.Pending)}
+                    {getFilteredGradesTabPanel(GradeStatus.Expected)}
                 </TabPanels>
             </Tabs>
         </>

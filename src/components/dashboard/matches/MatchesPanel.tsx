@@ -1,18 +1,4 @@
-import {
-    Button,
-    Flex,
-    Input,
-    InputGroup,
-    InputLeftElement,
-    Spacer,
-    Tab,
-    TabList,
-    TabPanel,
-    TabPanels,
-    Tabs,
-    Text,
-    useDisclosure,
-} from '@chakra-ui/react';
+import { Button, Flex, Input, InputGroup, InputLeftElement, Tab, TabPanel, useDisclosure } from '@chakra-ui/react';
 import { AddIcon, AttachmentIcon } from '@chakra-ui/icons';
 import { MatchListItem } from 'components/dashboard/matches/MatchListItem';
 import { MatchCreateModal } from 'components/admin/matches/MatchCreateModal';
@@ -28,6 +14,11 @@ import { NoRecords } from 'components/utils/NoRecords';
 import { MatchesUploadModal } from 'components/admin/matches/MatchesUploadModal';
 import { MatchInfoEnriched } from 'entities/MatchInfoEnriched';
 import { useTranslation } from 'react-i18next';
+import { Panel } from 'components/generic/Panel';
+import { Tabs } from 'components/generic/Tabs';
+import { TabList } from 'components/generic/TabList';
+import { TabPanels } from 'components/generic/TabPanels';
+import { TabPanelDefaultProps } from 'components/generic/default-props';
 
 interface State {
     matches: MatchInfoEnriched[];
@@ -63,37 +54,33 @@ export const MatchesPanel = ({ matches, readOnly, hideTabs }: MatchesPanelProps)
         return state.matches.filter((match) => match.matchStatus === status);
     };
 
+    const headerButtons = !readOnly && (
+        <>
+            <Button variant={'ghost'} leftIcon={<AttachmentIcon />} onClick={onUploadModalOpen} size={'lg'}>
+                {t('matches.upload')}
+            </Button>
+            <Button variant={'ghost'} leftIcon={<AddIcon />} onClick={onCreateModalOpen} size={'lg'}>
+                {t('matches.add')}
+            </Button>
+        </>
+    );
+
+    const getFilteredMatchesTabPanel = (matchStatus: MatchStatus) => {
+        const filteredMatches = getFilteredMatches(matchStatus);
+        return (
+            <TabPanel {...TabPanelDefaultProps}>
+                {filteredMatches.length
+                    ? filteredMatches.map((match) => <MatchListItem key={match.id} match={match} />)
+                    : NoRecords(t('noRecords'))}
+            </TabPanel>
+        );
+    };
+
     return (
         <>
             {!readOnly && <MatchCreateModal isOpen={isCreateModalOpen} onClose={onCreateModalClose} />}
             {!readOnly && <MatchesUploadModal isOpen={isUploadModalOpen} onClose={onUploadModalClose} />}
-            <Flex
-                direction={'column'}
-                borderRadius={10}
-                p={5}
-                backgroundColor={'gray.300'}
-                shadow={'md'}
-                overflowY={'hidden'}
-                flexGrow={1}
-                maxH={['90vh', '100%']}
-            >
-                <Flex mb={4}>
-                    <Text fontWeight={'bold'} fontSize={'2xl'}>
-                        {t('match_many')}
-                    </Text>
-                    <Spacer />
-                    {!readOnly && (
-                        <>
-                            <Button variant={'ghost'} leftIcon={<AttachmentIcon />} onClick={onUploadModalOpen}>
-                                {t('matches.upload')}
-                            </Button>
-                            <Button variant={'ghost'} leftIcon={<AddIcon />} onClick={onCreateModalOpen}>
-                                {t('matches.add')}
-                            </Button>
-                        </>
-                    )}
-                </Flex>
-
+            <Panel headerTitle={t('match_many')} headerButtons={headerButtons}>
                 <InputGroup>
                     <InputLeftElement pointerEvents={'none'} children={<MdSearch />} />
                     <Input
@@ -110,46 +97,20 @@ export const MatchesPanel = ({ matches, readOnly, hideTabs }: MatchesPanelProps)
                             : NoRecords(t('noRecords'))}
                     </Flex>
                 ) : (
-                    <Tabs
-                        display="flex"
-                        flexDirection="column"
-                        isFitted
-                        variant="solid-rounded"
-                        overflowY={'hidden'}
-                        colorScheme="tabsButton"
-                        h={'100%'}
-                    >
-                        <TabList mx={5} my={2} gap={5}>
+                    <Tabs>
+                        <TabList>
                             <Tab>{t('matches.upcoming')}</Tab>
                             <Tab>{t('matches.past')}</Tab>
                             <Tab>{t('matches.gradeOverdue')}</Tab>
                         </TabList>
-                        <TabPanels overflowY={'scroll'} h={'100%'}>
-                            <TabPanel display={'flex'} flexDirection={'column'} gap={2} h={'100%'}>
-                                {getFilteredMatches(MatchStatus.Upcoming).length
-                                    ? getFilteredMatches(MatchStatus.Upcoming).map((match) => (
-                                          <MatchListItem key={match.id} match={match} />
-                                      ))
-                                    : NoRecords(t('noRecords'))}
-                            </TabPanel>
-                            <TabPanel display={'flex'} flexDirection={'column'} gap={2} h={'100%'}>
-                                {getFilteredMatches(MatchStatus.Past).length
-                                    ? getFilteredMatches(MatchStatus.Past).map((match) => (
-                                          <MatchListItem key={match.id} match={match} />
-                                      ))
-                                    : NoRecords(t('noRecords'))}
-                            </TabPanel>
-                            <TabPanel display={'flex'} flexDirection={'column'} gap={2} h={'100%'}>
-                                {getFilteredMatches(MatchStatus.GradeOverdue).length
-                                    ? getFilteredMatches(MatchStatus.GradeOverdue).map((match) => (
-                                          <MatchListItem key={match.id} match={match} />
-                                      ))
-                                    : NoRecords(t('noRecords'))}
-                            </TabPanel>
+                        <TabPanels>
+                            {getFilteredMatchesTabPanel(MatchStatus.Upcoming)}
+                            {getFilteredMatchesTabPanel(MatchStatus.Past)}
+                            {getFilteredMatchesTabPanel(MatchStatus.GradeOverdue)}
                         </TabPanels>
                     </Tabs>
                 )}
-            </Flex>
+            </Panel>
         </>
     );
 };

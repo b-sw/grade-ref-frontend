@@ -1,4 +1,4 @@
-import { Button, Flex, Input, InputGroup, InputLeftElement, Spacer, Text, useDisclosure } from '@chakra-ui/react';
+import { Button, Flex, FlexProps, Input, InputGroup, InputLeftElement, useDisclosure } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import { User } from 'entities/User';
 import { RefereeListItem } from 'components/admin/referees/RefereeListItem';
@@ -11,67 +11,58 @@ import { useEffect } from 'react';
 import { MdSearch } from 'react-icons/md';
 import { NoRecords } from 'components/utils/NoRecords';
 import { useTranslation } from 'react-i18next';
+import { Panel } from 'components/generic/Panel';
 
 interface State {
-  referees: User[];
-  filter: string;
+    referees: User[];
+    filter: string;
 }
 
 export const RefereesPanel = () => {
-  const { isOpen: isCreateModalOpen, onOpen: onCreateModalOpen, onClose: onCreateModalClose } = useDisclosure();
-  const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
-  const { t } = useTranslation();
+    const { isOpen: isCreateModalOpen, onOpen: onCreateModalOpen, onClose: onCreateModalClose } = useDisclosure();
+    const { usersQuery: refereesQuery } = useLeagueUsers(Role.Referee);
+    const { t } = useTranslation();
 
-  const [state, setState] = useSetState({
-    referees: [],
-    filter: '',
-  } as State);
+    const [state, setState] = useSetState({
+        referees: [],
+        filter: '',
+    } as State);
 
-  useEffect(() => {
-    const filteredReferees: User[] = userFilter(refereesQuery.data!, state.filter);
-    setState({ referees: filteredReferees });
-  }, [state.filter, refereesQuery.data]);
+    useEffect(() => {
+        const filteredReferees: User[] = userFilter(refereesQuery.data!, state.filter);
+        setState({ referees: filteredReferees });
+    }, [state.filter, refereesQuery.data]);
 
-  return (
-    <>
-      <RefereeAddModal isOpen={isCreateModalOpen} onClose={onCreateModalClose} />
-      <Flex
-        direction={'column'}
-        borderRadius={10}
-        p={5}
-        backgroundColor={'gray.300'}
-        shadow={'md'}
-        overflow={'hidden'}
-        flexGrow={1}
-        h={['auto', '100%']}
-        w={['auto', '50%']}
-        maxH={['90vh', '100%']}
-      >
-        <Flex mb={4}>
-          <Text fontWeight={'bold'} fontSize={'2xl'}>
-            {t('referee_many')}
-          </Text>
-          <Spacer />
-          <Button variant={'ghost'} leftIcon={<AddIcon />} onClick={onCreateModalOpen}>
+    const headerButtons = (
+        <Button variant={'ghost'} leftIcon={<AddIcon />} onClick={onCreateModalOpen} size={'lg'}>
             {t('modal.add')}
-          </Button>
-        </Flex>
+        </Button>
+    );
 
-        <InputGroup>
-          <InputLeftElement pointerEvents={'none'} children={<MdSearch />} />
-          <Input
-            mb={2}
-            placeholder={t('referees.search')}
-            onChange={(event) => setState({ filter: event.target.value })}
-          />
-        </InputGroup>
+    const panelOptions: FlexProps = {
+        w: ['auto', '50%'],
+        h: ['auto', '100%'],
+    };
 
-        <Flex direction={'column'} gap={2} overflow={'scroll'}>
-          {state.referees.length
-            ? state.referees.map((referee: User) => <RefereeListItem key={referee.id} referee={referee} />)
-            : NoRecords(t('noRecords'))}
-        </Flex>
-      </Flex>
-    </>
-  );
+    return (
+        <>
+            <RefereeAddModal isOpen={isCreateModalOpen} onClose={onCreateModalClose} />
+            <Panel headerTitle={t('referee_many')} headerButtons={headerButtons} options={panelOptions}>
+                <InputGroup>
+                    <InputLeftElement pointerEvents={'none'} children={<MdSearch />} />
+                    <Input
+                        mb={2}
+                        placeholder={t('referees.search')}
+                        onChange={(event) => setState({ filter: event.target.value })}
+                    />
+                </InputGroup>
+
+                <Flex direction={'column'} gap={2} overflow={'scroll'}>
+                    {state.referees.length
+                        ? state.referees.map((referee: User) => <RefereeListItem key={referee.id} referee={referee} />)
+                        : NoRecords(t('noRecords'))}
+                </Flex>
+            </Panel>
+        </>
+    );
 };
